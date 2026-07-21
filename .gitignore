@@ -1,1 +1,8 @@
-PROMPT_FOR_PLANNING.md
+.venv/
+__pycache__/
+*.pyc
+.env
+
+Plan
+docs
+temp.py
