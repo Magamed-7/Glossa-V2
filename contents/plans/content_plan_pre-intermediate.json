@@ -1,0 +1,74 @@
+{
+  "level": "Pre-Intermediate",
+  "cefr": "B1",
+  "source_structure": "English File 4th ed. Pre-Intermediate (только структура)",
+  "locales": ["en", "ru", "tg"],
+  "volume_per_unit": {
+    "grammar_lessons": "по одному на урок (A/B/C)",
+    "grammar_lesson_contents": "объяснение, 4-5 примеров с переводом, 6 тестовых вопросов",
+    "stories": "2 на юнит, 150-220 слов, 8-12 ключевых слов с переводами",
+    "vocabulary": "~25 слов на юнит"
+  },
+  "units": [
+    {"unit": 1, "lessons": [
+      {"code": "1A", "theme": "Знакомство заново", "grammar": "порядок слов в вопросах", "vocabulary_topics": ["частые глагольные фразы"]},
+      {"code": "1B", "theme": "Идеальное свидание?", "grammar": "Present Simple", "vocabulary_topics": ["внешность и характер"]},
+      {"code": "1C", "theme": "Проект «Переделка»", "grammar": "Present Continuous", "vocabulary_topics": ["одежда", "предлоги места"]}
+    ], "practical_english": "звонок на ресепшен"},
+    {"unit": 2, "lessons": [
+      {"code": "2A", "theme": "Где мой паспорт?!", "grammar": "Past Simple: правильные и неправильные глаголы", "vocabulary_topics": ["отпуск и каникулы"]},
+      {"code": "2B", "theme": "Это я на фото!", "grammar": "Past Continuous", "vocabulary_topics": ["предлоги времени и места at/in/on"]},
+      {"code": "2C", "theme": "Тёмным октябрьским вечером", "grammar": "временные связки и коннекторы", "vocabulary_topics": ["глагольные фразы"]}
+    ]},
+    {"unit": 3, "lessons": [
+      {"code": "3A", "theme": "Планирование путешествия", "grammar": "be going to (планы и предсказания)", "vocabulary_topics": ["аэропорт"]},
+      {"code": "3B", "theme": "Отметь в календаре", "grammar": "Present Continuous (договорённости о будущем)", "vocabulary_topics": ["глагол + предлог: arrive in и т.п."]},
+      {"code": "3C", "theme": "Игры в слова", "grammar": "определительные придаточные (defining relative clauses)", "vocabulary_topics": ["перефразирование"]}
+    ], "practical_english": "в ресторане"},
+    {"unit": 4, "lessons": [
+      {"code": "4A", "theme": "Кто что делает по дому", "grammar": "Present Perfect + yet, just, already", "vocabulary_topics": ["домашние дела", "make или do"]},
+      {"code": "4B", "theme": "В твоей корзине", "grammar": "Present Perfect или Past Simple? (1)", "vocabulary_topics": ["покупки"]},
+      {"code": "4C", "theme": "Отличные выходные", "grammar": "something, anything, nothing и т.п.", "vocabulary_topics": ["прилагательные на -ed и -ing"]}
+    ]},
+    {"unit": 5, "lessons": [
+      {"code": "5A", "theme": "Хочу это сейчас!", "grammar": "сравнительные прилагательные и наречия, as...as", "vocabulary_topics": ["виды чисел"]},
+      {"code": "5B", "theme": "Двенадцать потерянных кошельков", "grammar": "превосходная степень (+ ever + Present Perfect)", "vocabulary_topics": ["описание города"]},
+      {"code": "5C", "theme": "Сколько достаточно?", "grammar": "квантификаторы, too, (not) enough", "vocabulary_topics": ["здоровье и тело"]}
+    ], "practical_english": "возврат покупки в магазин"},
+    {"unit": 6, "lessons": [
+      {"code": "6A", "theme": "Мыслить позитивно", "grammar": "will / won't (предсказания)", "vocabulary_topics": ["глаголы-антонимы"]},
+      {"code": "6B", "theme": "Я всегда буду любить тебя", "grammar": "will / won't / shall (другие употребления)", "vocabulary_topics": ["глагол + back"]},
+      {"code": "6C", "theme": "Что значат сны", "grammar": "повторение форм глагола: настоящее, прошедшее, будущее", "vocabulary_topics": ["модификаторы"]}
+    ]},
+    {"unit": 7, "lessons": [
+      {"code": "7A", "theme": "Волнение первого дня", "grammar": "употребление инфинитива с to", "vocabulary_topics": ["глагол + инфинитив: try to, forget to..."]},
+      {"code": "7B", "theme": "Счастье — это...", "grammar": "употребление герундия (verb + -ing)", "vocabulary_topics": ["глагол + герундий"]},
+      {"code": "7C", "theme": "Сдал бы ты экзамен?", "grammar": "have to, don't have to, must, mustn't", "vocabulary_topics": ["прилагательное + предлог: afraid of..."]}
+    ], "practical_english": "в аптеке, самочувствие"},
+    {"unit": 8, "lessons": [
+      {"code": "8A", "theme": "Остаться или уйти?", "grammar": "should", "vocabulary_topics": ["get: значения и фразы"]},
+      {"code": "8B", "theme": "Закон Мёрфи", "grammar": "if + present, will + инфинитив (первый кондиционал)", "vocabulary_topics": ["глаголы, которые путают"]},
+      {"code": "8C", "theme": "Кто такая Вивьен?", "grammar": "притяжательные местоимения (mine, yours...)", "vocabulary_topics": ["наречия образа действия"]}
+    ]},
+    {"unit": 9, "lessons": [
+      {"code": "9A", "theme": "Осторожно, злая собака", "grammar": "if + past, would + инфинитив (второй кондиционал)", "vocabulary_topics": ["животные и насекомые"]},
+      {"code": "9B", "theme": "Чего мы боимся", "grammar": "Present Perfect + for и since", "vocabulary_topics": ["страхи", "фразы с for/since"]},
+      {"code": "9C", "theme": "Королевы крика", "grammar": "Present Perfect или Past Simple? (2)", "vocabulary_topics": ["биографии"]}
+    ], "practical_english": "как добраться"},
+    {"unit": 10, "lessons": [
+      {"code": "10A", "theme": "В сети", "grammar": "выражение движения", "vocabulary_topics": ["спорт", "движение"]},
+      {"code": "10B", "theme": "Ранние пташки", "grammar": "порядок слов во фразовых глаголах", "vocabulary_topics": ["фразовые глаголы"]},
+      {"code": "10C", "theme": "Международные изобретения", "grammar": "пассивный залог", "vocabulary_topics": ["люди из разных стран"]}
+    ]},
+    {"unit": 11, "lessons": [
+      {"code": "11A", "theme": "Спроси учителя", "grammar": "used to", "vocabulary_topics": ["школьные предметы"]},
+      {"code": "11B", "theme": "Не могу решить!", "grammar": "might", "vocabulary_topics": ["словообразование: существительные"]},
+      {"code": "11C", "theme": "Двойники", "grammar": "so / neither + вспомогательные глаголы", "vocabulary_topics": ["сходства и различия"]}
+    ], "practical_english": "разговор по телефону"},
+    {"unit": 12, "lessons": [
+      {"code": "12A", "theme": "Невероятно!", "grammar": "Past Perfect", "vocabulary_topics": ["выражения времени"]},
+      {"code": "12B", "theme": "Думай, прежде чем говорить", "grammar": "косвенная речь (reported speech)", "vocabulary_topics": ["say или tell?"]},
+      {"code": "12C", "theme": "Большая викторина", "grammar": "вопросы без вспомогательных глаголов", "vocabulary_topics": ["повторение вопросительных слов"]}
+    ]}
+  ]
+}

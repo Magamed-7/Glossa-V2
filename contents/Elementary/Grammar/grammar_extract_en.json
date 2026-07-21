@@ -1,0 +1,2954 @@
+[
+ {
+  "unit": 1,
+  "lesson": "1A",
+  "topic": "verb be (affirmative); subject pronouns",
+  "rule_en": "Use the verb be to say who people are, where they are from and how they feel. Subject pronouns (I, you, he, she, it, we, they) always come before the verb. In everyday English we usually use contractions: I'm, you're, he's.",
+  "structure": "I + am / he, she, it + is / we, you, they + are",
+  "examples_en": [
+   "I'm Karim and I'm from Tajikistan.",
+   "She's a new student in our class.",
+   "We're very happy today.",
+   "They're from Canada."
+  ],
+  "tip": "Remember: every English sentence needs a subject — say 'It is cold', not 'Is cold'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I ___ twenty years old.",
+    "options": [
+     "am",
+     "is",
+     "are"
+    ],
+    "answer": "am",
+    "explanation": "'I' always takes 'am'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: My sister ___ a nurse.",
+    "options": [
+     "is",
+     "are",
+     "am"
+    ],
+    "answer": "is",
+    "explanation": "'My sister' = she → is."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: You and Ali ___ late.",
+    "options": [
+     "are",
+     "is",
+     "am"
+    ],
+    "answer": "are",
+    "explanation": "'You and Ali' = plural you → are."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct contraction: 'They are here' = ___",
+    "options": [
+     "They're here",
+     "Theyre here",
+     "They's here"
+    ],
+    "answer": "They're here",
+    "explanation": "'They are' becomes 'They're'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct pronoun: ___ is my brother.",
+    "options": [
+     "He",
+     "Him",
+     "His"
+    ],
+    "answer": "He",
+    "explanation": "Subject pronoun 'he' comes before the verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "It is Monday today.",
+     "Is Monday today.",
+     "Today is it Monday it."
+    ],
+    "answer": "It is Monday today.",
+    "explanation": "English sentences need a subject: 'It is Monday'."
+   }
+  ]
+ },
+ {
+  "unit": 1,
+  "lesson": "1B",
+  "topic": "verb be (negative and questions)",
+  "rule_en": "Make be negative with not: I'm not, he isn't, they aren't. Make questions by putting be before the subject: Are you...? Is she...? Answer with short answers: Yes, I am. / No, she isn't.",
+  "structure": "negative: subject + be + not; question: Be + subject...?",
+  "examples_en": [
+   "I'm not from Russia — I'm from Uzbekistan.",
+   "He isn't at home now.",
+   "Are you tired? — No, I'm not.",
+   "Is this seat free? — Yes, it is."
+  ],
+  "tip": "In short positive answers don't use contractions: say 'Yes, I am', not 'Yes, I'm'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: She ___ a teacher.",
+    "options": [
+     "isn't",
+     "aren't",
+     "don't"
+    ],
+    "answer": "isn't",
+    "explanation": "'She' + is + not = isn't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ they from Italy?",
+    "options": [
+     "Are",
+     "Is",
+     "Do"
+    ],
+    "answer": "Are",
+    "explanation": "'They' takes 'are'; the verb goes first in questions."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the short answer: Are you hungry? — Yes, I ___.",
+    "options": [
+     "am",
+     "are",
+     "do"
+    ],
+    "answer": "am",
+    "explanation": "Short answer: Yes, I am (no contraction)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: We ___ ready yet.",
+    "options": [
+     "aren't",
+     "isn't",
+     "am not"
+    ],
+    "answer": "aren't",
+    "explanation": "'We' + are + not = aren't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ your phone new?",
+    "options": [
+     "Is",
+     "Are",
+     "Am"
+    ],
+    "answer": "Is",
+    "explanation": "'Your phone' = it → Is."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "No, she isn't.",
+     "No, she isn't not.",
+     "No, she not is."
+    ],
+    "answer": "No, she isn't.",
+    "explanation": "Short negative answer: No, she isn't."
+   }
+  ]
+ },
+ {
+  "unit": 1,
+  "lesson": "1C",
+  "topic": "possessive adjectives: my, your, his...",
+  "rule_en": "Possessive adjectives (my, your, his, her, its, our, their) show who something belongs to. They come before a noun and never change for plural: my book, my books.",
+  "structure": "possessive adjective + noun",
+  "examples_en": [
+   "My email address is on this card.",
+   "What's your surname?",
+   "Her phone number is easy to remember.",
+   "Their teacher is from London."
+  ],
+  "tip": "Don't confuse its (possessive) and it's (= it is).",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: ___ name is Dilshod. (he)",
+    "options": [
+     "His",
+     "Her",
+     "He"
+    ],
+    "answer": "His",
+    "explanation": "For 'he' the possessive adjective is 'his'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: We love ___ new flat.",
+    "options": [
+     "our",
+     "us",
+     "ours we"
+    ],
+    "answer": "our",
+    "explanation": "'We' → 'our' before a noun."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: The dog is in ___ house.",
+    "options": [
+     "its",
+     "it's",
+     "it"
+    ],
+    "answer": "its",
+    "explanation": "'Its' without apostrophe is possessive."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: ___ books are on the table. (they)",
+    "options": [
+     "Their",
+     "There",
+     "They're"
+    ],
+    "answer": "Their",
+    "explanation": "'Their' is the possessive of 'they'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "What's your email address?",
+     "What's yours email address?",
+     "What's you email address?"
+    ],
+    "answer": "What's your email address?",
+    "explanation": "Before a noun we use 'your'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: She lives with ___ parents.",
+    "options": [
+     "her",
+     "his",
+     "she"
+    ],
+    "answer": "her",
+    "explanation": "'She' → 'her' before a noun."
+   }
+  ]
+ },
+ {
+  "unit": 2,
+  "lesson": "2A",
+  "topic": "singular and plural nouns",
+  "rule_en": "Most nouns add -s in the plural: key → keys. Nouns ending in -s, -sh, -ch, -x add -es: watch → watches. Consonant + y changes to -ies: city → cities. Some plurals are irregular: man → men, woman → women, child → children, person → people.",
+  "structure": "noun + -s / -es / -ies; irregular plurals",
+  "examples_en": [
+   "There are two windows in my room.",
+   "I need three boxes for these books.",
+   "The children are in the garden.",
+   "Most people here speak two languages."
+  ],
+  "tip": "Learn irregular plurals by heart — they are very common words.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the plural of 'city'.",
+    "options": [
+     "cities",
+     "citys",
+     "cityes"
+    ],
+    "answer": "cities",
+    "explanation": "Consonant + y → -ies."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the plural of 'child'.",
+    "options": [
+     "children",
+     "childs",
+     "childes"
+    ],
+    "answer": "children",
+    "explanation": "'Child' has an irregular plural: children."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the plural of 'box'.",
+    "options": [
+     "boxes",
+     "boxs",
+     "boxies"
+    ],
+    "answer": "boxes",
+    "explanation": "Nouns ending in -x add -es."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the plural of 'person'.",
+    "options": [
+     "people",
+     "persons all",
+     "peoples"
+    ],
+    "answer": "people",
+    "explanation": "The normal plural of 'person' is 'people'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "The keys are on the table.",
+     "The keyes are on the table.",
+     "The key are on the table."
+    ],
+    "answer": "The keys are on the table.",
+    "explanation": "key → keys (regular plural)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the plural of 'woman'.",
+    "options": [
+     "women",
+     "womans",
+     "womens"
+    ],
+    "answer": "women",
+    "explanation": "woman → women (irregular)."
+   }
+  ]
+ },
+ {
+  "unit": 2,
+  "lesson": "2B",
+  "topic": "adjectives; modifiers very / really / quite",
+  "rule_en": "Adjectives describe nouns. They go before the noun or after be, and they never change for plural: a black cat, black cats. Modifiers very, really and quite make an adjective stronger or weaker and go before it.",
+  "structure": "(modifier) + adjective + noun / be + (modifier) + adjective",
+  "examples_en": [
+   "It's a really interesting film.",
+   "These shoes are quite expensive.",
+   "My city is very old and beautiful.",
+   "He drives an expensive German car."
+  ],
+  "tip": "Quite is weaker than very: quite good < very good < really good.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct order.",
+    "options": [
+     "She has a very nice voice.",
+     "She has a nice very voice.",
+     "She has very a voice nice."
+    ],
+    "answer": "She has a very nice voice.",
+    "explanation": "Modifier + adjective + noun."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "These are old photos.",
+     "These are olds photos.",
+     "These are photos olds."
+    ],
+    "answer": "These are old photos.",
+    "explanation": "Adjectives never take -s."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Which is the weakest? 'The food is ___ good.'",
+    "options": [
+     "quite",
+     "very",
+     "really"
+    ],
+    "answer": "quite",
+    "explanation": "'Quite' is weaker than 'very' and 'really'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "This exercise is really difficult.",
+     "This exercise is difficult really.",
+     "Really is this exercise difficult."
+    ],
+    "answer": "This exercise is really difficult.",
+    "explanation": "The modifier goes directly before the adjective."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct order.",
+    "options": [
+     "It's a small red car.",
+     "It's a red small car.",
+     "It's a car small red."
+    ],
+    "answer": "It's a small red car.",
+    "explanation": "Size usually comes before colour: small red car."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "The hotel is quite cheap.",
+     "The hotel is cheap quite.",
+     "Quite the hotel is cheap."
+    ],
+    "answer": "The hotel is quite cheap.",
+    "explanation": "be + modifier + adjective."
+   }
+  ]
+ },
+ {
+  "unit": 2,
+  "lesson": "2C",
+  "topic": "imperatives; let's",
+  "rule_en": "Use the imperative (base verb) to give instructions and orders: Sit down. Open the window. The negative is Don't + verb: Don't worry. Use Let's + verb to make a suggestion for you and other people: Let's go home.",
+  "structure": "(Don't) + base verb; Let's + base verb",
+  "examples_en": [
+   "Turn off your phone, please.",
+   "Don't be nervous — it's only a test.",
+   "Let's have a break.",
+   "Slow down! You walk too fast."
+  ],
+  "tip": "Add 'please' to sound polite: 'Close the door, please.'",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct imperative.",
+    "options": [
+     "Open the window, please.",
+     "You open the window, please.",
+     "Opens the window, please."
+    ],
+    "answer": "Open the window, please.",
+    "explanation": "Imperative = base verb without a subject."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative imperative.",
+    "options": [
+     "Don't touch that!",
+     "Not touch that!",
+     "Touch not that!"
+    ],
+    "answer": "Don't touch that!",
+    "explanation": "Negative imperative = Don't + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the suggestion: ___ watch a film tonight.",
+    "options": [
+     "Let's",
+     "Do",
+     "We let"
+    ],
+    "answer": "Let's",
+    "explanation": "Let's + verb suggests doing something together."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Don't be late for class.",
+     "Don't are late for class.",
+     "Be not late for class."
+    ],
+    "answer": "Don't be late for class.",
+    "explanation": "With 'be' the negative imperative is 'Don't be'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Let's not talk about work.",
+     "Let's don't talk about work.",
+     "Not let's talk about work."
+    ],
+    "answer": "Let's not talk about work.",
+    "explanation": "The negative of Let's is Let's not + verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct instruction.",
+    "options": [
+     "Listen and repeat.",
+     "Listens and repeats.",
+     "To listen and to repeat you."
+    ],
+    "answer": "Listen and repeat.",
+    "explanation": "Instructions use the base form of the verb."
+   }
+  ]
+ },
+ {
+  "unit": 3,
+  "lesson": "3A",
+  "topic": "present simple (affirmative and negative)",
+  "rule_en": "Use the present simple for habits, routines and facts. With I/you/we/they use the base verb; with he/she/it add -s. The negative is don't / doesn't + base verb.",
+  "structure": "subject + verb(-s); subject + don't/doesn't + verb",
+  "examples_en": [
+   "I cook dinner every evening.",
+   "My father works in a bank.",
+   "We don't watch TV in the morning.",
+   "She doesn't drink coffee."
+  ],
+  "tip": "After doesn't the verb loses its -s: 'She doesn't work', not 'She doesn't works'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: He ___ breakfast at seven.",
+    "options": [
+     "has",
+     "have",
+     "haves"
+    ],
+    "answer": "has",
+    "explanation": "'He' takes the -s form; 'have' becomes 'has'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: I ___ meat.",
+    "options": [
+     "don't eat",
+     "doesn't eat",
+     "not eat"
+    ],
+    "answer": "don't eat",
+    "explanation": "With 'I' the negative is don't + verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: She ___ in this office.",
+    "options": [
+     "doesn't work",
+     "don't work",
+     "doesn't works"
+    ],
+    "answer": "doesn't work",
+    "explanation": "doesn't + base verb (no -s)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "They live near the park.",
+     "They lives near the park.",
+     "They living near the park."
+    ],
+    "answer": "They live near the park.",
+    "explanation": "'They' takes the base form."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: My mother ___ English at school.",
+    "options": [
+     "teaches",
+     "teach",
+     "teachs"
+    ],
+    "answer": "teaches",
+    "explanation": "Verbs in -ch add -es for he/she/it."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We don't go out on Mondays.",
+     "We doesn't go out on Mondays.",
+     "We don't goes out on Mondays."
+    ],
+    "answer": "We don't go out on Mondays.",
+    "explanation": "'We' → don't + base verb."
+   }
+  ]
+ },
+ {
+  "unit": 3,
+  "lesson": "3B",
+  "topic": "present simple (questions)",
+  "rule_en": "Make present simple questions with do / does + subject + base verb: Do you work? Does she work? Use do with I/you/we/they and does with he/she/it. The main verb never takes -s in questions.",
+  "structure": "Do/Does + subject + base verb?",
+  "examples_en": [
+   "Do you like your job?",
+   "Does he travel a lot?",
+   "Where do they have lunch?",
+   "What time does the shop open?"
+  ],
+  "tip": "Answer with do/does, not the main verb: 'Yes, I do', not 'Yes, I like'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ you work at weekends?",
+    "options": [
+     "Do",
+     "Does",
+     "Are"
+    ],
+    "answer": "Do",
+    "explanation": "'You' takes 'do' in questions."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ she speak German?",
+    "options": [
+     "Does",
+     "Do",
+     "Is"
+    ],
+    "answer": "Does",
+    "explanation": "'She' takes 'does'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Does he like his boss?",
+     "Does he likes his boss?",
+     "Do he like his boss?"
+    ],
+    "answer": "Does he like his boss?",
+    "explanation": "After 'does' the verb has no -s."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the short answer: Do they study here? — Yes, they ___.",
+    "options": [
+     "do",
+     "does",
+     "study"
+    ],
+    "answer": "do",
+    "explanation": "Short answers repeat do/does."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Where do you buy bread?",
+     "Where you buy bread?",
+     "Where buys you bread?"
+    ],
+    "answer": "Where do you buy bread?",
+    "explanation": "Question word + do + subject + verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "What time does the film start?",
+     "What time do the film start?",
+     "What time the film does start?"
+    ],
+    "answer": "What time does the film start?",
+    "explanation": "'The film' = it → does."
+   }
+  ]
+ },
+ {
+  "unit": 3,
+  "lesson": "3C",
+  "topic": "word order in questions; question words",
+  "rule_en": "English questions follow a fixed order: (Question word) + auxiliary + subject + verb. Common question words: What, Where, When, Who, Why, How, How much, How many, What kind of.",
+  "structure": "QW + do/does/be + subject + verb",
+  "examples_en": [
+   "Why do you get up so early?",
+   "How many brothers does she have?",
+   "What kind of music do they play?",
+   "When does the lesson finish?"
+  ],
+  "tip": "Remember ASI: Auxiliary before Subject In questions.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Why do you study English?",
+     "Why you study English?",
+     "Why study you English?"
+    ],
+    "answer": "Why do you study English?",
+    "explanation": "QW + do + subject + verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question word: ___ do you visit your grandparents? — Once a month.",
+    "options": [
+     "How often",
+     "How much",
+     "What"
+    ],
+    "answer": "How often",
+    "explanation": "'How often' asks about frequency."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Who is your favourite singer?",
+     "Who your favourite singer is?",
+     "Is who your favourite singer?"
+    ],
+    "answer": "Who is your favourite singer?",
+    "explanation": "QW + be + subject."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question word: ___ many students are in your class?",
+    "options": [
+     "How",
+     "What",
+     "Where"
+    ],
+    "answer": "How",
+    "explanation": "'How many' asks about quantity."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "What kind of films does he like?",
+     "What kind of films he likes?",
+     "What kind of films do he likes?"
+    ],
+    "answer": "What kind of films does he like?",
+    "explanation": "'He' → does + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "When do the banks close?",
+     "When close the banks?",
+     "When the banks do close?"
+    ],
+    "answer": "When do the banks close?",
+    "explanation": "QW + do + subject + verb."
+   }
+  ]
+ },
+ {
+  "unit": 4,
+  "lesson": "4A",
+  "topic": "possessive 's; Whose...?",
+  "rule_en": "Add 's to a person to show possession: Anna's bag. For regular plurals add only an apostrophe: my parents' house. Ask about possession with Whose: Whose phone is this?",
+  "structure": "person + 's + noun; Whose + noun + be...?",
+  "examples_en": [
+   "This is my brother's room.",
+   "Whose keys are these? — They're Omar's.",
+   "My grandparents' photos are very old.",
+   "Karim's wife works in a hospital."
+  ],
+  "tip": "'Whose' asks about the owner; 'Who's' means 'Who is' — they sound the same!",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: This is ___ car. (my father)",
+    "options": [
+     "my father's",
+     "my fathers",
+     "my father"
+    ],
+    "answer": "my father's",
+    "explanation": "Add 's to the owner: my father's car."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ jacket is this?",
+    "options": [
+     "Whose",
+     "Who's",
+     "Which who"
+    ],
+    "answer": "Whose",
+    "explanation": "'Whose' asks about possession."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: my ___ house (parents, plural)",
+    "options": [
+     "parents'",
+     "parent's",
+     "parents's"
+    ],
+    "answer": "parents'",
+    "explanation": "Regular plural + apostrophe only: parents'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "That's Laylo's phone.",
+     "That's Laylo phone.",
+     "That's phone of Laylo it."
+    ],
+    "answer": "That's Laylo's phone.",
+    "explanation": "Person + 's + thing."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct answer: Whose books are these? — They're ___.",
+    "options": [
+     "Anna's",
+     "Anna",
+     "the Anna"
+    ],
+    "answer": "Anna's",
+    "explanation": "The owner takes 's: Anna's."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "My sister's son is three.",
+     "My sisters' son is three years my.",
+     "My sister son is three."
+    ],
+    "answer": "My sister's son is three.",
+    "explanation": "One sister → sister's."
+   }
+  ]
+ },
+ {
+  "unit": 4,
+  "lesson": "4B",
+  "topic": "prepositions of time (at, in, on) and place (at, in, to)",
+  "rule_en": "Time: at + clock time (at six), on + day or date (on Monday), in + month, season, year (in July). Place: in + city or country (in Dushanbe), at + a point or place (at work, at home), to + movement (go to school).",
+  "structure": "at/on/in + time; in/at/to + place",
+  "examples_en": [
+   "I get up at half past six.",
+   "We have English on Tuesdays.",
+   "She was born in 1998.",
+   "He goes to the gym after work."
+  ],
+  "tip": "Say 'at night' but 'in the morning / afternoon / evening'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the preposition: The film starts ___ eight o'clock.",
+    "options": [
+     "at",
+     "on",
+     "in"
+    ],
+    "answer": "at",
+    "explanation": "at + clock time."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the preposition: My birthday is ___ May.",
+    "options": [
+     "in",
+     "on",
+     "at"
+    ],
+    "answer": "in",
+    "explanation": "in + month."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the preposition: We don't work ___ Sundays.",
+    "options": [
+     "on",
+     "in",
+     "at"
+    ],
+    "answer": "on",
+    "explanation": "on + days of the week."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the preposition: She lives ___ Samarkand.",
+    "options": [
+     "in",
+     "at",
+     "to"
+    ],
+    "answer": "in",
+    "explanation": "in + city."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the preposition: The children go ___ school by bus.",
+    "options": [
+     "to",
+     "in",
+     "at"
+    ],
+    "answer": "to",
+    "explanation": "to + movement towards a place."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the preposition: My mother is ___ work now.",
+    "options": [
+     "at",
+     "to",
+     "on"
+    ],
+    "answer": "at",
+    "explanation": "at + place where someone is: at work."
+   }
+  ]
+ },
+ {
+  "unit": 4,
+  "lesson": "4C",
+  "topic": "position of adverbs and expressions of frequency",
+  "rule_en": "Adverbs of frequency (always, usually, often, sometimes, hardly ever, never) go before the main verb but after be. Longer expressions (every day, twice a week, once a month) usually go at the end of the sentence.",
+  "structure": "subject + adverb + verb / be + adverb; expression at the end",
+  "examples_en": [
+   "I usually have lunch at one.",
+   "She is never late for work.",
+   "They visit their grandmother every Sunday.",
+   "We go to the cinema twice a month."
+  ],
+  "tip": "'Never' and 'hardly ever' are already negative — don't add 'not'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct order.",
+    "options": [
+     "He often plays tennis.",
+     "He plays often tennis.",
+     "Often plays he tennis."
+    ],
+    "answer": "He often plays tennis.",
+    "explanation": "Frequency adverb before the main verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct order with 'be'.",
+    "options": [
+     "They are usually at home in the evening.",
+     "They usually are at home in the evening.",
+     "Usually they are at usually home."
+    ],
+    "answer": "They are usually at home in the evening.",
+    "explanation": "After 'be': are usually."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We go shopping once a week.",
+     "We once a week go shopping.",
+     "We go once shopping a week."
+    ],
+    "answer": "We go shopping once a week.",
+    "explanation": "Longer expressions go at the end."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I never drink coffee at night.",
+     "I don't never drink coffee at night.",
+     "I drink never coffee at night."
+    ],
+    "answer": "I never drink coffee at night.",
+    "explanation": "'Never' goes before the verb and needs no 'not'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Which means about 90% of the time?",
+    "options": [
+     "usually",
+     "sometimes",
+     "hardly ever"
+    ],
+    "answer": "usually",
+    "explanation": "usually ≈ 90%, sometimes ≈ 50%, hardly ever ≈ 5%."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She is always happy on Fridays.",
+     "She always is happy on Fridays.",
+     "Always she is on Fridays happy."
+    ],
+    "answer": "She is always happy on Fridays.",
+    "explanation": "Adverb after 'be': is always."
+   }
+  ]
+ },
+ {
+  "unit": 5,
+  "lesson": "5A",
+  "topic": "can / can't (ability and permission)",
+  "rule_en": "Use can + base verb to talk about ability (I can swim) and permission (You can park here). The negative is can't (cannot). Can is the same for all persons and never takes -s or 'to'.",
+  "structure": "subject + can/can't + base verb",
+  "examples_en": [
+   "She can play the guitar really well.",
+   "I can't come to the meeting tomorrow.",
+   "You can buy a newspaper at the station.",
+   "Can we sit here? — Yes, of course."
+  ],
+  "tip": "Stress: in positive sentences 'can' is weak /kən/; 'can't' is strong /kɑːnt/.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: My grandmother ___ use a smartphone.",
+    "options": [
+     "can",
+     "cans",
+     "can to"
+    ],
+    "answer": "can",
+    "explanation": "'Can' is the same for all persons."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "He can cook very well.",
+     "He can cooks very well.",
+     "He cans cook very well."
+    ],
+    "answer": "He can cook very well.",
+    "explanation": "can + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: I ___ find my glasses.",
+    "options": [
+     "can't",
+     "don't can",
+     "can no"
+    ],
+    "answer": "can't",
+    "explanation": "The negative of can is can't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ you drive?",
+    "options": [
+     "Can",
+     "Do can",
+     "Are"
+    ],
+    "answer": "Can",
+    "explanation": "Can + subject + verb in questions."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the short answer: Can they swim? — No, they ___.",
+    "options": [
+     "can't",
+     "don't",
+     "aren't"
+    ],
+    "answer": "can't",
+    "explanation": "Short answer repeats can/can't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "You can pay by card here.",
+     "You can to pay by card here.",
+     "You can paying by card here."
+    ],
+    "answer": "You can pay by card here.",
+    "explanation": "can + base verb, never 'to' or '-ing'."
+   }
+  ]
+ },
+ {
+  "unit": 5,
+  "lesson": "5B",
+  "topic": "present continuous",
+  "rule_en": "Use the present continuous (be + verb-ing) for actions happening now or around now: I'm reading. She's making noise. Spelling: make → making, sit → sitting, study → studying.",
+  "structure": "subject + am/is/are + verb-ing",
+  "examples_en": [
+   "The neighbours are playing loud music.",
+   "I'm looking for my keys.",
+   "She's talking on the phone right now.",
+   "We're waiting for the bus."
+  ],
+  "tip": "Use time markers now, right now, at the moment with the present continuous.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: He ___ a shower now.",
+    "options": [
+     "is having",
+     "has",
+     "have"
+    ],
+    "answer": "is having",
+    "explanation": "Action now → present continuous."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: They ___ football in the park.",
+    "options": [
+     "are playing",
+     "is playing",
+     "are play"
+    ],
+    "answer": "are playing",
+    "explanation": "'They' → are + verb-ing."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the -ing form of 'sit'.",
+    "options": [
+     "sitting",
+     "siting",
+     "sitteng"
+    ],
+    "answer": "sitting",
+    "explanation": "Short vowel + consonant doubles: sitting."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: I ___ TV — I'm working.",
+    "options": [
+     "'m not watching",
+     "don't watching",
+     "am not watch"
+    ],
+    "answer": "'m not watching",
+    "explanation": "be + not + verb-ing."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ she sleeping?",
+    "options": [
+     "Is",
+     "Does",
+     "Are"
+    ],
+    "answer": "Is",
+    "explanation": "Questions: Is/Are + subject + verb-ing."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "The baby is crying at the moment.",
+     "The baby crying at the moment.",
+     "The baby is cry at the moment."
+    ],
+    "answer": "The baby is crying at the moment.",
+    "explanation": "Present continuous needs 'be' and '-ing'."
+   }
+  ]
+ },
+ {
+  "unit": 5,
+  "lesson": "5C",
+  "topic": "present simple or present continuous?",
+  "rule_en": "Present simple = habits, routines, facts (I work every day). Present continuous = actions now or temporary situations (I'm working today from home). Some verbs (like, want, know, need) are not normally used in the continuous.",
+  "structure": "habit → present simple; now/temporary → present continuous",
+  "examples_en": [
+   "It usually rains a lot in spring.",
+   "Take an umbrella — it's raining.",
+   "She works in a school, but this week she's working from home.",
+   "I want a cup of tea."
+  ],
+  "tip": "State verbs like 'want, like, know, need' stay in the present simple.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: Listen! Someone ___ the piano.",
+    "options": [
+     "is playing",
+     "plays",
+     "play"
+    ],
+    "answer": "is playing",
+    "explanation": "'Listen!' → happening now → continuous."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: The shops ___ at 9 a.m. every day.",
+    "options": [
+     "open",
+     "are opening",
+     "opens"
+    ],
+    "answer": "open",
+    "explanation": "Routine → present simple; 'shops' is plural."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I ___ this song — turn it up!",
+    "options": [
+     "like",
+     "am liking",
+     "likes"
+    ],
+    "answer": "like",
+    "explanation": "'Like' is a state verb → present simple."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: This month she ___ in a hotel.",
+    "options": [
+     "is staying",
+     "stays",
+     "stay"
+    ],
+    "answer": "is staying",
+    "explanation": "Temporary situation → continuous."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: What ___ you ___ at the moment?",
+    "options": [
+     "are / doing",
+     "do / do",
+     "does / do"
+    ],
+    "answer": "are / doing",
+    "explanation": "'At the moment' → present continuous."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "It snows a lot here in winter.",
+     "It is snowing a lot here in winter usually.",
+     "It snow a lot here in winter."
+    ],
+    "answer": "It snows a lot here in winter.",
+    "explanation": "General fact → present simple with -s."
+   }
+  ]
+ },
+ {
+  "unit": 6,
+  "lesson": "6A",
+  "topic": "object pronouns: me, you, him...",
+  "rule_en": "Object pronouns (me, you, him, her, it, us, them) replace a noun after a verb or preposition: I know him. Listen to me. Don't use the subject pronoun in this position.",
+  "structure": "verb/preposition + object pronoun",
+  "examples_en": [
+   "I love this story — read it again!",
+   "She calls her mother and talks to her every day.",
+   "Our teacher gives us a lot of homework.",
+   "Do you know them? — Yes, they're my neighbours."
+  ],
+  "tip": "Pairs to remember: I→me, he→him, she→her, we→us, they→them.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct pronoun: This is Amir. I work with ___.",
+    "options": [
+     "him",
+     "he",
+     "his"
+    ],
+    "answer": "him",
+    "explanation": "After a preposition: him."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct pronoun: We're here! Can you see ___?",
+    "options": [
+     "us",
+     "we",
+     "our"
+    ],
+    "answer": "us",
+    "explanation": "'We' → object 'us'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct pronoun: I like these photos. Look at ___.",
+    "options": [
+     "them",
+     "they",
+     "their"
+    ],
+    "answer": "them",
+    "explanation": "'They' → object 'them'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct pronoun: She's my best friend. I tell ___ everything.",
+    "options": [
+     "her",
+     "she",
+     "hers"
+    ],
+    "answer": "her",
+    "explanation": "'She' → object 'her'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Please help me with this exercise.",
+     "Please help I with this exercise.",
+     "Please help my with this exercise."
+    ],
+    "answer": "Please help me with this exercise.",
+    "explanation": "'I' → object 'me' after a verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct pronoun: The film is great. Don't miss ___!",
+    "options": [
+     "it",
+     "him",
+     "its"
+    ],
+    "answer": "it",
+    "explanation": "A thing → 'it'."
+   }
+  ]
+ },
+ {
+  "unit": 6,
+  "lesson": "6B",
+  "topic": "like + (verb + -ing); the date, ordinal numbers",
+  "rule_en": "After like, love, hate and enjoy we use verb + -ing: I like dancing. For dates use ordinal numbers: the first, the second, the third, the fourth... We write '5 May' but say 'the fifth of May'.",
+  "structure": "like/love/hate/enjoy + verb-ing; the + ordinal + of + month",
+  "examples_en": [
+   "I love getting presents.",
+   "He hates waiting in queues.",
+   "Her birthday is on the third of June.",
+   "New Year is on the first of January."
+  ],
+  "tip": "Ordinals to remember: 1st first, 2nd second, 3rd third, 5th fifth, 12th twelfth, 20th twentieth.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: She enjoys ___ new people.",
+    "options": [
+     "meeting",
+     "meet",
+     "meets"
+    ],
+    "answer": "meeting",
+    "explanation": "enjoy + verb-ing."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I hate ___ up early on Sundays.",
+    "options": [
+     "getting",
+     "get",
+     "to getting"
+    ],
+    "answer": "getting",
+    "explanation": "hate + verb-ing."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the ordinal for 3.",
+    "options": [
+     "third",
+     "three",
+     "threeth"
+    ],
+    "answer": "third",
+    "explanation": "3 → third (irregular)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the ordinal for 12.",
+    "options": [
+     "twelfth",
+     "twelvth",
+     "twelveth"
+    ],
+    "answer": "twelfth",
+    "explanation": "twelve → twelfth."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "How do we say the date '1 March'?",
+    "options": [
+     "the first of March",
+     "the one of March",
+     "first March day"
+    ],
+    "answer": "the first of March",
+    "explanation": "the + ordinal + of + month."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We love swimming in the sea.",
+     "We love swim in the sea.",
+     "We love to swimming in the sea."
+    ],
+    "answer": "We love swimming in the sea.",
+    "explanation": "love + verb-ing."
+   }
+  ]
+ },
+ {
+  "unit": 6,
+  "lesson": "6C",
+  "topic": "revision: be or do?",
+  "rule_en": "Use be (am/is/are) with nouns, adjectives and -ing forms: She's a singer. Are you tired? Use do/does with other verbs in questions and negatives: Do you sing? He doesn't play. Don't mix them.",
+  "structure": "be + noun/adjective/-ing; do/does + base verb",
+  "examples_en": [
+   "Are you a musician? — Yes, I am.",
+   "Do you play in a band? — No, I don't.",
+   "She isn't listening to music now.",
+   "He doesn't like jazz."
+  ],
+  "tip": "If the sentence has another main verb, use do/does; if not, use be.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question: ___ you like rock music?",
+    "options": [
+     "Do",
+     "Are",
+     "Is"
+    ],
+    "answer": "Do",
+    "explanation": "Main verb 'like' → do."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question: ___ you a student?",
+    "options": [
+     "Are",
+     "Do",
+     "Does"
+    ],
+    "answer": "Are",
+    "explanation": "No other verb → be."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct negative: He ___ speak French.",
+    "options": [
+     "doesn't",
+     "isn't",
+     "not"
+    ],
+    "answer": "doesn't",
+    "explanation": "Main verb 'speak' → doesn't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct negative: They ___ at the concert.",
+    "options": [
+     "aren't",
+     "don't",
+     "doesn't"
+    ],
+    "answer": "aren't",
+    "explanation": "'At the concert' has no verb → be."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question: ___ she singing now?",
+    "options": [
+     "Is",
+     "Does",
+     "Do"
+    ],
+    "answer": "Is",
+    "explanation": "-ing form → be: Is she singing?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I don't play the piano, but I'm a good listener.",
+     "I'm not play the piano, but I do a good listener.",
+     "I don't a pianist, but I am play well."
+    ],
+    "answer": "I don't play the piano, but I'm a good listener.",
+    "explanation": "don't + verb; be + noun phrase."
+   }
+  ]
+ },
+ {
+  "unit": 7,
+  "lesson": "7A",
+  "topic": "past simple of be: was / were",
+  "rule_en": "The past of am/is is was; the past of are is were. Negative: wasn't / weren't. Questions: Was she...? Were you...? Use it to talk about states and places in the past.",
+  "structure": "I/he/she/it + was; we/you/they + were",
+  "examples_en": [
+   "I was at my cousin's wedding yesterday.",
+   "The photos were beautiful.",
+   "Where were you last night?",
+   "The museum wasn't open on Monday."
+  ],
+  "tip": "'There was' + singular, 'there were' + plural.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: She ___ a famous writer.",
+    "options": [
+     "was",
+     "were",
+     "is yesterday"
+    ],
+    "answer": "was",
+    "explanation": "'She' → was in the past."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: We ___ very tired after the trip.",
+    "options": [
+     "were",
+     "was",
+     "are last week"
+    ],
+    "answer": "were",
+    "explanation": "'We' → were."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: The tickets ___ expensive.",
+    "options": [
+     "weren't",
+     "wasn't",
+     "aren't yesterday"
+    ],
+    "answer": "weren't",
+    "explanation": "Plural 'tickets' → weren't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ you at school yesterday?",
+    "options": [
+     "Were",
+     "Was",
+     "Did"
+    ],
+    "answer": "Were",
+    "explanation": "'You' → were: Were you...?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the short answer: Was the concert good? — Yes, it ___.",
+    "options": [
+     "was",
+     "were",
+     "is"
+    ],
+    "answer": "was",
+    "explanation": "Short answer repeats 'was'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "There were a lot of people at the party.",
+     "There was a lot of people at the party.",
+     "There is a lot of people at the party yesterday."
+    ],
+    "answer": "There were a lot of people at the party.",
+    "explanation": "Plural → there were."
+   }
+  ]
+ },
+ {
+  "unit": 7,
+  "lesson": "7B",
+  "topic": "past simple: regular verbs",
+  "rule_en": "Regular verbs add -ed in the past simple: work → worked. Spelling: live → lived, study → studied, stop → stopped. The form is the same for all persons. Use past time expressions: yesterday, last week, two years ago.",
+  "structure": "subject + verb-ed; time expression",
+  "examples_en": [
+   "We visited my uncle last weekend.",
+   "She studied French at university.",
+   "The bus stopped in front of the hotel.",
+   "I called you an hour ago."
+  ],
+  "tip": "'ago' goes after the time period: two days ago, not ago two days.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'live'.",
+    "options": [
+     "lived",
+     "liveed",
+     "livd"
+    ],
+    "answer": "lived",
+    "explanation": "Verbs ending in -e just add -d."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'study'.",
+    "options": [
+     "studied",
+     "studyed",
+     "studdied"
+    ],
+    "answer": "studied",
+    "explanation": "Consonant + y → -ied."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'plan'.",
+    "options": [
+     "planned",
+     "planed",
+     "plened"
+    ],
+    "answer": "planned",
+    "explanation": "Short vowel + consonant doubles: planned."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I watched a film last night.",
+     "I watch a film last night.",
+     "I am watched a film last night."
+    ],
+    "answer": "I watched a film last night.",
+    "explanation": "'Last night' → past simple: watched."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct time expression.",
+    "options": [
+     "We moved here three years ago.",
+     "We moved here ago three years.",
+     "We moved here three ago years."
+    ],
+    "answer": "We moved here three years ago.",
+    "explanation": "Time period + ago."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She worked in a cafe last summer.",
+     "She workeds in a cafe last summer.",
+     "She works in a cafe last summer."
+    ],
+    "answer": "She worked in a cafe last summer.",
+    "explanation": "Past form is the same for all persons: worked."
+   }
+  ]
+ },
+ {
+  "unit": 7,
+  "lesson": "7C",
+  "topic": "past simple: irregular verbs (go, have, get...)",
+  "rule_en": "Many common verbs are irregular in the past: go → went, have → had, get → got, buy → bought, see → saw, come → came, take → took. Negatives and questions use did/didn't + base verb for ALL verbs.",
+  "structure": "irregular past form; did/didn't + base verb",
+  "examples_en": [
+   "We went to the mountains on New Year's Eve.",
+   "She had a big party for her birthday.",
+   "I got a lovely present from my sister.",
+   "Did you see the fireworks? — Yes, I did."
+  ],
+  "tip": "After did/didn't always use the base form: 'Did you go?', not 'Did you went?'",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'buy'.",
+    "options": [
+     "bought",
+     "buyed",
+     "boughted"
+    ],
+    "answer": "bought",
+    "explanation": "buy → bought (irregular)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'come'.",
+    "options": [
+     "came",
+     "comed",
+     "come did"
+    ],
+    "answer": "came",
+    "explanation": "come → came."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We went to the beach yesterday.",
+     "We goed to the beach yesterday.",
+     "We did went to the beach yesterday."
+    ],
+    "answer": "We went to the beach yesterday.",
+    "explanation": "go → went; no 'did' in affirmative."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ you have a good time?",
+    "options": [
+     "Did",
+     "Do",
+     "Were"
+    ],
+    "answer": "Did",
+    "explanation": "Past questions: Did + subject + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: I ___ my homework.",
+    "options": [
+     "didn't do",
+     "didn't did",
+     "don't did"
+    ],
+    "answer": "didn't do",
+    "explanation": "didn't + base verb 'do'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She took a lot of photos.",
+     "She taked a lot of photos.",
+     "She did took a lot of photos."
+    ],
+    "answer": "She took a lot of photos.",
+    "explanation": "take → took."
+   }
+  ]
+ },
+ {
+  "unit": 8,
+  "lesson": "8A",
+  "topic": "past simple: regular and irregular (consolidation)",
+  "rule_en": "In stories we mix regular and irregular past forms. Word order stays the same as in the present. Questions: Did + subject + base verb. Negatives: didn't + base verb. Short answers: Yes, I did / No, I didn't.",
+  "structure": "past simple in positive, negative and question forms",
+  "examples_en": [
+   "The detective opened the door and saw a dark room.",
+   "Nobody heard the shot.",
+   "Why did she leave the party early?",
+   "He didn't say a word all evening."
+  ],
+  "tip": "Learn irregular verbs in groups with the same pattern: know–knew, grow–grew, throw–threw.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'hear'.",
+    "options": [
+     "heard",
+     "heared",
+     "heart"
+    ],
+    "answer": "heard",
+    "explanation": "hear → heard (irregular)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past form of 'leave'.",
+    "options": [
+     "left",
+     "leaved",
+     "lefted"
+    ],
+    "answer": "left",
+    "explanation": "leave → left."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Why did he call the police?",
+     "Why he called the police?",
+     "Why did he called the police?"
+    ],
+    "answer": "Why did he call the police?",
+    "explanation": "did + base verb: call."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: They ___ anything strange.",
+    "options": [
+     "didn't notice",
+     "didn't noticed",
+     "don't noticed"
+    ],
+    "answer": "didn't notice",
+    "explanation": "didn't + base form."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She knew the answer immediately.",
+     "She knowed the answer immediately.",
+     "She did knew the answer immediately."
+    ],
+    "answer": "She knew the answer immediately.",
+    "explanation": "know → knew."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the short answer: Did you lock the door? — No, I ___.",
+    "options": [
+     "didn't",
+     "don't",
+     "wasn't"
+    ],
+    "answer": "didn't",
+    "explanation": "Short answer: No, I didn't."
+   }
+  ]
+ },
+ {
+  "unit": 8,
+  "lesson": "8B",
+  "topic": "there is / there are; some / any",
+  "rule_en": "Use there is + singular and there are + plural to say what exists. In positive sentences use some with plurals (There are some chairs). In negatives and questions use any (There aren't any pictures. Are there any shelves?).",
+  "structure": "There is/are (+ some); there isn't/aren't + any; Is/Are there any...?",
+  "examples_en": [
+   "There's a big sofa in the living room.",
+   "There are some plants near the window.",
+   "There aren't any cupboards in this room.",
+   "Is there a balcony in your flat?"
+  ],
+  "tip": "some = positive, any = negative and questions.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: ___ two bedrooms in the flat.",
+    "options": [
+     "There are",
+     "There is",
+     "There has"
+    ],
+    "answer": "There are",
+    "explanation": "Plural → there are."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: There are ___ books on the shelf.",
+    "options": [
+     "some",
+     "any",
+     "a"
+    ],
+    "answer": "some",
+    "explanation": "Positive sentence + plural → some."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: There aren't ___ windows in the bathroom.",
+    "options": [
+     "any",
+     "some",
+     "no some"
+    ],
+    "answer": "any",
+    "explanation": "Negative → any."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ there a garage?",
+    "options": [
+     "Is",
+     "Are",
+     "Does"
+    ],
+    "answer": "Is",
+    "explanation": "Singular → Is there...?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Are there any good cafes near here?",
+     "Is there any good cafes near here?",
+     "Are there some good cafes near here usually?"
+    ],
+    "answer": "Are there any good cafes near here?",
+    "explanation": "Plural question → Are there any...?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "There's a lamp on the desk.",
+     "There are a lamp on the desk.",
+     "There have a lamp on the desk."
+    ],
+    "answer": "There's a lamp on the desk.",
+    "explanation": "One lamp → There is (There's)."
+   }
+  ]
+ },
+ {
+  "unit": 8,
+  "lesson": "8C",
+  "topic": "there was / there were",
+  "rule_en": "Talk about what existed in the past with there was + singular and there were + plural. Negative: there wasn't / there weren't. Questions: Was there...? Were there...?",
+  "structure": "There was/were; there wasn't/weren't; Was/Were there...?",
+  "examples_en": [
+   "There was an old piano in the hall.",
+   "There were strange noises at night.",
+   "There wasn't any light in the corridor.",
+   "Were there any guests in room 333?"
+  ],
+  "tip": "Same rule as the present: singular → was, plural → were.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: ___ a big garden behind the house.",
+    "options": [
+     "There was",
+     "There were",
+     "There is yesterday"
+    ],
+    "answer": "There was",
+    "explanation": "Singular 'garden' → there was."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: ___ many old photos in the box.",
+    "options": [
+     "There were",
+     "There was",
+     "There are last year"
+    ],
+    "answer": "There were",
+    "explanation": "Plural 'photos' → there were."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: ___ any hot water in the hotel.",
+    "options": [
+     "There wasn't",
+     "There weren't",
+     "There didn't"
+    ],
+    "answer": "There wasn't",
+    "explanation": "'Water' is uncountable → wasn't."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ there a lift in the building?",
+    "options": [
+     "Was",
+     "Were",
+     "Did"
+    ],
+    "answer": "Was",
+    "explanation": "Singular → Was there...?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "There weren't any towels in the bathroom.",
+     "There wasn't any towels in the bathroom.",
+     "There weren't some towels in the bathroom."
+    ],
+    "answer": "There weren't any towels in the bathroom.",
+    "explanation": "Plural negative → weren't any."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the short answer: Were there many people? — Yes, there ___.",
+    "options": [
+     "were",
+     "was",
+     "did"
+    ],
+    "answer": "were",
+    "explanation": "Short answer repeats 'were'."
+   }
+  ]
+ },
+ {
+  "unit": 9,
+  "lesson": "9A",
+  "topic": "countable / uncountable nouns; a/an, some/any",
+  "rule_en": "Countable nouns have a plural (an egg, two eggs). Uncountable nouns have no plural and no a/an (rice, milk, bread). Use some/any with plurals and uncountables: some rice, any apples.",
+  "structure": "a/an + countable singular; some/any + plural or uncountable",
+  "examples_en": [
+   "I had an egg and some bread for breakfast.",
+   "Is there any milk in the fridge?",
+   "We need some rice for this dish.",
+   "She doesn't eat meat."
+  ],
+  "tip": "Say 'a piece of bread' or 'a glass of water' to count uncountable things.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Which noun is uncountable?",
+    "options": [
+     "water",
+     "apple",
+     "egg"
+    ],
+    "answer": "water",
+    "explanation": "'Water' has no plural — it's uncountable."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: I'd like ___ orange, please.",
+    "options": [
+     "an",
+     "a",
+     "some"
+    ],
+    "answer": "an",
+    "explanation": "Countable singular starting with a vowel → an."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: There's ___ cheese in the fridge.",
+    "options": [
+     "some",
+     "a",
+     "an"
+    ],
+    "answer": "some",
+    "explanation": "Uncountable positive → some."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: Do we have ___ tomatoes?",
+    "options": [
+     "any",
+     "a",
+     "an"
+    ],
+    "answer": "any",
+    "explanation": "Question + plural → any."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I don't drink coffee.",
+     "I don't drink a coffee usually ever.",
+     "I don't drink coffees."
+    ],
+    "answer": "I don't drink coffee.",
+    "explanation": "Uncountable → no article, no plural."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Can I have a glass of water?",
+     "Can I have a water glass of?",
+     "Can I have glass a of water?"
+    ],
+    "answer": "Can I have a glass of water?",
+    "explanation": "a glass of + uncountable."
+   }
+  ]
+ },
+ {
+  "unit": 9,
+  "lesson": "9B",
+  "topic": "quantifiers: how much / how many, a lot of...",
+  "rule_en": "Use How many + countable plural (How many eggs?) and How much + uncountable (How much sugar?). A lot of works with both. Use much/many mostly in negatives and questions, a little + uncountable, a few + countable.",
+  "structure": "How many + plural; How much + uncountable; a lot of / a little / a few",
+  "examples_en": [
+   "How much sugar do you take in your tea?",
+   "How many bottles of water do we need?",
+   "There's a lot of salt in this soup.",
+   "Add a little oil and a few onions."
+  ],
+  "tip": "not much + uncountable, not many + plural: 'not much time', 'not many friends'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: How ___ bread do we have?",
+    "options": [
+     "much",
+     "many",
+     "lot"
+    ],
+    "answer": "much",
+    "explanation": "'Bread' is uncountable → how much."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: How ___ eggs are in the box?",
+    "options": [
+     "many",
+     "much",
+     "little"
+    ],
+    "answer": "many",
+    "explanation": "'Eggs' is plural countable → how many."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: There's ___ milk left — buy some more.",
+    "options": [
+     "a little",
+     "a few",
+     "many"
+    ],
+    "answer": "a little",
+    "explanation": "Uncountable → a little."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct word: I only need ___ potatoes.",
+    "options": [
+     "a few",
+     "a little",
+     "much"
+    ],
+    "answer": "a few",
+    "explanation": "Countable plural → a few."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We don't have much time.",
+     "We don't have many time.",
+     "We don't have a few time."
+    ],
+    "answer": "We don't have much time.",
+    "explanation": "'Time' is uncountable → much."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She drinks a lot of tea.",
+     "She drinks a lot tea.",
+     "She drinks lot of tea."
+    ],
+    "answer": "She drinks a lot of tea.",
+    "explanation": "a lot of + noun."
+   }
+  ]
+ },
+ {
+  "unit": 9,
+  "lesson": "9C",
+  "topic": "comparative adjectives",
+  "rule_en": "Short adjectives add -er: cheap → cheaper, big → bigger, easy → easier. Long adjectives use more: more expensive. Irregular: good → better, bad → worse, far → further. Use than to compare: Tea is cheaper than coffee.",
+  "structure": "adjective-er / more + adjective + than",
+  "examples_en": [
+   "This restaurant is cheaper than the one near the station.",
+   "The exam was more difficult than last year.",
+   "My new phone is better than my old one.",
+   "The traffic is worse in the evening."
+  ],
+  "tip": "One-syllable: -er; three or more syllables: more; two syllables — check the dictionary.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the comparative of 'cheap'.",
+    "options": [
+     "cheaper",
+     "more cheap",
+     "cheapest"
+    ],
+    "answer": "cheaper",
+    "explanation": "Short adjective → -er."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the comparative of 'expensive'.",
+    "options": [
+     "more expensive",
+     "expensiver",
+     "most expensive"
+    ],
+    "answer": "more expensive",
+    "explanation": "Long adjective → more + adjective."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the comparative of 'good'.",
+    "options": [
+     "better",
+     "gooder",
+     "more good"
+    ],
+    "answer": "better",
+    "explanation": "good → better (irregular)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the comparative of 'big'.",
+    "options": [
+     "bigger",
+     "biger",
+     "more big"
+    ],
+    "answer": "bigger",
+    "explanation": "Short vowel + consonant doubles: bigger."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "This street is quieter than mine.",
+     "This street is more quiet than mine always.",
+     "This street is quieter that mine."
+    ],
+    "answer": "This street is quieter than mine.",
+    "explanation": "Comparative + than."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the comparative of 'bad'.",
+    "options": [
+     "worse",
+     "badder",
+     "more bad"
+    ],
+    "answer": "worse",
+    "explanation": "bad → worse (irregular)."
+   }
+  ]
+ },
+ {
+  "unit": 10,
+  "lesson": "10A",
+  "topic": "superlative adjectives",
+  "rule_en": "Superlatives compare one thing with all the others in a group. Short adjectives: the + -est (the oldest). Long adjectives: the most + adjective (the most dangerous). Irregular: the best, the worst, the furthest.",
+  "structure": "the + adjective-est / the most + adjective",
+  "examples_en": [
+   "It's the oldest building in the city.",
+   "This is the most dangerous road in the country.",
+   "Which is the best cafe near here?",
+   "That was the worst journey of my life."
+  ],
+  "tip": "After superlatives we often use 'in': the tallest building in the world.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the superlative of 'tall'.",
+    "options": [
+     "the tallest",
+     "the most tall",
+     "the taller"
+    ],
+    "answer": "the tallest",
+    "explanation": "Short adjective → the + -est."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the superlative of 'beautiful'.",
+    "options": [
+     "the most beautiful",
+     "the beautifulest",
+     "the more beautiful"
+    ],
+    "answer": "the most beautiful",
+    "explanation": "Long adjective → the most."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the superlative of 'good'.",
+    "options": [
+     "the best",
+     "the goodest",
+     "the most good"
+    ],
+    "answer": "the best",
+    "explanation": "good → the best."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "It's the highest mountain in Asia.",
+     "It's the highest mountain of Asia at all.",
+     "It's the most high mountain in Asia."
+    ],
+    "answer": "It's the highest mountain in Asia.",
+    "explanation": "Superlative + in + place."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the superlative of 'hot'.",
+    "options": [
+     "the hottest",
+     "the hotest",
+     "the most hot"
+    ],
+    "answer": "the hottest",
+    "explanation": "Double the consonant: hottest."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "This is the most interesting museum in town.",
+     "This is most interesting museum in town.",
+     "This is the interestingest museum in town."
+    ],
+    "answer": "This is the most interesting museum in town.",
+    "explanation": "the most + long adjective."
+   }
+  ]
+ },
+ {
+  "unit": 10,
+  "lesson": "10B",
+  "topic": "be going to (plans); future time expressions",
+  "rule_en": "Use be going to + verb for plans and intentions: I'm going to visit five countries. Future time expressions: tomorrow, next week, next month, in two days, this summer.",
+  "structure": "subject + be + going to + base verb",
+  "examples_en": [
+   "We're going to travel around Europe next summer.",
+   "She's going to book the tickets tonight.",
+   "I'm not going to take a taxi — the metro is faster.",
+   "Are you going to see the Eiffel Tower?"
+  ],
+  "tip": "With the verb 'go' you can shorten: 'We're going to the beach' instead of 'going to go'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I ___ visit my aunt tomorrow.",
+    "options": [
+     "'m going to",
+     "going to",
+     "go to"
+    ],
+    "answer": "'m going to",
+    "explanation": "be + going to + verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: They ___ to move to a new flat.",
+    "options": [
+     "are going",
+     "is going",
+     "going"
+    ],
+    "answer": "are going",
+    "explanation": "'They' → are going to."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ she going to study abroad?",
+    "options": [
+     "Is",
+     "Does",
+     "Will do"
+    ],
+    "answer": "Is",
+    "explanation": "Questions: be + subject + going to."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: We ___ going to stay long.",
+    "options": [
+     "aren't",
+     "don't",
+     "won't be to"
+    ],
+    "answer": "aren't",
+    "explanation": "Negative: be + not + going to."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "He's going to buy a car next month.",
+     "He's going to buys a car next month.",
+     "He's going buy a car next month."
+    ],
+    "answer": "He's going to buy a car next month.",
+    "explanation": "going to + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the future expression.",
+    "options": [
+     "next week",
+     "last week",
+     "two days ago"
+    ],
+    "answer": "next week",
+    "explanation": "'Next week' points to the future."
+   }
+  ]
+ },
+ {
+  "unit": 10,
+  "lesson": "10C",
+  "topic": "be going to (predictions)",
+  "rule_en": "Use be going to also for predictions when we can see evidence now: Look at those clouds — it's going to rain. The structure is the same as for plans.",
+  "structure": "subject + be + going to + base verb (prediction)",
+  "examples_en": [
+   "Careful! You're going to drop the glasses.",
+   "It's very late — we're going to miss the train.",
+   "Look at the sky. It's going to snow.",
+   "She plays every day. She's going to be a great player."
+  ],
+  "tip": "Prediction with evidence now → going to.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: Look at those clouds! It ___ rain.",
+    "options": [
+     "is going to",
+     "goes to",
+     "will going to"
+    ],
+    "answer": "is going to",
+    "explanation": "Evidence now → be going to."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Slow down! We're going to have an accident!",
+     "Slow down! We go to have an accident!",
+     "Slow down! We're going have an accident!"
+    ],
+    "answer": "Slow down! We're going to have an accident!",
+    "explanation": "be going to + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: The team plays very well. They ___ win.",
+    "options": [
+     "are going to",
+     "is going to",
+     "going to"
+    ],
+    "answer": "are going to",
+    "explanation": "'They' → are going to."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: Don't worry, you ___ fall.",
+    "options": [
+     "aren't going to",
+     "don't going to",
+     "won't going to"
+    ],
+    "answer": "aren't going to",
+    "explanation": "be + not + going to."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ it going to be cold tomorrow?",
+    "options": [
+     "Is",
+     "Does",
+     "Will be"
+    ],
+    "answer": "Is",
+    "explanation": "be + subject + going to in questions."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She's going to be famous one day.",
+     "She's go to be famous one day.",
+     "She going to is famous one day."
+    ],
+    "answer": "She's going to be famous one day.",
+    "explanation": "be going to + base verb 'be'."
+   }
+  ]
+ },
+ {
+  "unit": 11,
+  "lesson": "11A",
+  "topic": "adverbs of manner and modifiers",
+  "rule_en": "Adverbs of manner say how we do something. Most are adjective + -ly: slow → slowly, careful → carefully. Irregular: good → well, fast → fast, hard → hard. They usually go after the verb or object.",
+  "structure": "verb (+ object) + adverb",
+  "examples_en": [
+   "Please speak slowly — I'm still learning.",
+   "She sings really well.",
+   "He works very hard.",
+   "They welcomed us warmly."
+  ],
+  "tip": "'Hardly' is NOT the adverb of 'hard' — it means 'almost not'.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the adverb of 'careful'.",
+    "options": [
+     "carefully",
+     "carefull",
+     "carefuly"
+    ],
+    "answer": "carefully",
+    "explanation": "careful + -ly = carefully."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the adverb of 'good'.",
+    "options": [
+     "well",
+     "goodly",
+     "good"
+    ],
+    "answer": "well",
+    "explanation": "good → well (irregular)."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "He drives fast.",
+     "He drives fastly.",
+     "He fast drives."
+    ],
+    "answer": "He drives fast.",
+    "explanation": "'Fast' is both adjective and adverb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct order.",
+    "options": [
+     "She speaks English fluently.",
+     "She speaks fluently English.",
+     "She fluently speaks English always."
+    ],
+    "answer": "She speaks English fluently.",
+    "explanation": "Adverb after the object."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "They work very hard.",
+     "They work very hardly.",
+     "They hardly work very."
+    ],
+    "answer": "They work very hard.",
+    "explanation": "hard = with effort; hardly = almost not."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the adverb of 'easy'.",
+    "options": [
+     "easily",
+     "easyly",
+     "easely"
+    ],
+    "answer": "easily",
+    "explanation": "y → -ily: easily."
+   }
+  ]
+ },
+ {
+  "unit": 11,
+  "lesson": "11B",
+  "topic": "verb + to + infinitive",
+  "rule_en": "Some verbs are followed by to + infinitive: want, need, decide, hope, plan, learn, try, forget, promise. Example: I want to see the world. She decided to buy the tickets.",
+  "structure": "verb + to + base verb",
+  "examples_en": [
+   "I want to learn to drive.",
+   "We decided to spend less money on things.",
+   "She hopes to visit Japan one day.",
+   "Don't forget to call me."
+  ],
+  "tip": "After 'would like' also use to + infinitive: I'd like to try.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I want ___ a new language.",
+    "options": [
+     "to learn",
+     "learning",
+     "learn to"
+    ],
+    "answer": "to learn",
+    "explanation": "want + to + infinitive."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: They decided ___ at home.",
+    "options": [
+     "to stay",
+     "staying",
+     "stay"
+    ],
+    "answer": "to stay",
+    "explanation": "decide + to + infinitive."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: She's learning ___ the piano.",
+    "options": [
+     "to play",
+     "playing to",
+     "play"
+    ],
+    "answer": "to play",
+    "explanation": "learn + to + infinitive."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We hope to see you soon.",
+     "We hope seeing you soon.",
+     "We hope see you soon."
+    ],
+    "answer": "We hope to see you soon.",
+    "explanation": "hope + to + infinitive."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "He promised to help us.",
+     "He promised helping us.",
+     "He promised help us to."
+    ],
+    "answer": "He promised to help us.",
+    "explanation": "promise + to + infinitive."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I need ___ some money.",
+    "options": [
+     "to change",
+     "changing",
+     "change"
+    ],
+    "answer": "to change",
+    "explanation": "need + to + infinitive."
+   }
+  ]
+ },
+ {
+  "unit": 11,
+  "lesson": "11C",
+  "topic": "definite article: the or no the",
+  "rule_en": "Use the when both speakers know which thing we mean, or when there is only one (the sun, the internet). Don't use the with general plurals and uncountables (I love music), with meals, most streets, languages and 'go home / go to work / go to bed'.",
+  "structure": "the + specific noun; no article + general noun",
+  "examples_en": [
+   "I found the article you sent me.",
+   "I read news on the internet every morning.",
+   "She loves music and plays the piano.",
+   "We had dinner and went home."
+  ],
+  "tip": "Musical instruments take 'the': play the guitar; sports don't: play football.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I love music.",
+     "I love the music generally.",
+     "I love a music."
+    ],
+    "answer": "I love music.",
+    "explanation": "General uncountable → no article."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "She plays the violin.",
+     "She plays violin.",
+     "She plays a violin every."
+    ],
+    "answer": "She plays the violin.",
+    "explanation": "Instruments take 'the'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "We play tennis on Saturdays.",
+     "We play the tennis on Saturdays.",
+     "We play a tennis on Saturdays."
+    ],
+    "answer": "We play tennis on Saturdays.",
+    "explanation": "Sports → no article."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I go to bed at eleven.",
+     "I go to the bed at eleven.",
+     "I go to a bed at eleven."
+    ],
+    "answer": "I go to bed at eleven.",
+    "explanation": "Fixed phrase: go to bed."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "Can you close the window, please?",
+     "Can you close window, please?",
+     "Can you close a window, please, the?"
+    ],
+    "answer": "Can you close the window, please?",
+    "explanation": "Both people know which window → the."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "The sun rises in the east.",
+     "Sun rises in east.",
+     "A sun rises in an east."
+    ],
+    "answer": "The sun rises in the east.",
+    "explanation": "Only one sun → the sun; compass points → the east."
+   }
+  ]
+ },
+ {
+  "unit": 12,
+  "lesson": "12A",
+  "topic": "present perfect",
+  "rule_en": "Form the present perfect with have/has + past participle: I have seen, she has been. Use it for experiences at an unspecified time: I've seen this film ten times. Past participles: regular = -ed; irregular: see → seen, be → been, do → done, eat → eaten.",
+  "structure": "subject + have/has + past participle",
+  "examples_en": [
+   "I've seen this film three times.",
+   "She's been to twenty countries.",
+   "We've eaten at this restaurant before.",
+   "Have you ever done a bungee jump?"
+  ],
+  "tip": "'Been' vs 'gone': He's been to Paris (and returned) / He's gone to Paris (he's still there).",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I ___ this film before.",
+    "options": [
+     "have seen",
+     "have saw",
+     "has seen"
+    ],
+    "answer": "have seen",
+    "explanation": "have + past participle 'seen'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: She ___ sushi many times.",
+    "options": [
+     "has eaten",
+     "have eaten",
+     "has ate"
+    ],
+    "answer": "has eaten",
+    "explanation": "'She' → has + eaten."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the past participle of 'do'.",
+    "options": [
+     "done",
+     "did",
+     "doed"
+    ],
+    "answer": "done",
+    "explanation": "do → did → done."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the question: ___ you ever visited London?",
+    "options": [
+     "Have",
+     "Did",
+     "Do"
+    ],
+    "answer": "Have",
+    "explanation": "Present perfect question: Have you (ever)...?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "He has been to Turkey twice.",
+     "He has gone to Turkey twice and is here.",
+     "He has be to Turkey twice."
+    ],
+    "answer": "He has been to Turkey twice.",
+    "explanation": "'Been to' = visited and came back."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the negative: We ___ that new series.",
+    "options": [
+     "haven't watched",
+     "haven't watch",
+     "don't have watched"
+    ],
+    "answer": "haven't watched",
+    "explanation": "have + not + past participle."
+   }
+  ]
+ },
+ {
+  "unit": 12,
+  "lesson": "12B",
+  "topic": "present perfect or past simple?",
+  "rule_en": "Use the present perfect for experiences without a specific time (I've been to Rome). Use the past simple when we say WHEN (I went to Rome in 2023). Time markers: ever/never/before → present perfect; yesterday, last year, ago, in 2020 → past simple.",
+  "structure": "no time → present perfect; finished time → past simple",
+  "examples_en": [
+   "I've never tried horse milk.",
+   "She visited Istanbul last spring.",
+   "Have you ever met a famous person? — Yes, I met an actor two years ago.",
+   "We've travelled a lot, but we didn't travel anywhere last year."
+  ],
+  "tip": "If the answer says WHEN, switch to the past simple.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: I ___ to Spain in 2022.",
+    "options": [
+     "went",
+     "have been",
+     "have went"
+    ],
+    "answer": "went",
+    "explanation": "Specific time (2022) → past simple."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: She ___ never ___ plov.",
+    "options": [
+     "has / tried",
+     "did / try",
+     "has / try"
+    ],
+    "answer": "has / tried",
+    "explanation": "'Never' (experience) → present perfect."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: ___ you ever ___ a horse?",
+    "options": [
+     "Have / ridden",
+     "Did / ride ever",
+     "Have / rode"
+    ],
+    "answer": "Have / ridden",
+    "explanation": "ever → present perfect; participle 'ridden'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct form: We ___ that museum two weeks ago.",
+    "options": [
+     "visited",
+     "have visited",
+     "visit"
+    ],
+    "answer": "visited",
+    "explanation": "'Ago' → past simple."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct sentence.",
+    "options": [
+     "I've read this book, and I read it last month.",
+     "I've read this book last month.",
+     "I read this book, and I've read it last month."
+    ],
+    "answer": "I've read this book, and I read it last month.",
+    "explanation": "Experience → perfect; with time → past simple."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Which marker goes with the past simple?",
+    "options": [
+     "yesterday",
+     "ever",
+     "never"
+    ],
+    "answer": "yesterday",
+    "explanation": "'Yesterday' is a finished time → past simple."
+   }
+  ]
+ },
+ {
+  "unit": 12,
+  "lesson": "12C",
+  "topic": "revision: question formation",
+  "rule_en": "Review of questions: with be invert the verb (Are you...?); with other verbs use do/does (present) or did (past); with can put it first (Can you...?); with the present perfect use have/has (Have you ever...?). Question word always comes first.",
+  "structure": "QW + auxiliary + subject + verb",
+  "examples_en": [
+   "Where were you born?",
+   "What do you do at weekends?",
+   "Did you study English at school?",
+   "How long have you lived here?"
+  ],
+  "tip": "Choose the auxiliary by tense: do/does → present, did → past, have/has → present perfect.",
+  "questions": [
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Where were you born?",
+     "Where you were born?",
+     "Where did you born?"
+    ],
+    "answer": "Where were you born?",
+    "explanation": "'Born' goes with 'be': Where were you born?"
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "What did you do yesterday?",
+     "What you did yesterday?",
+     "What have you do yesterday?"
+    ],
+    "answer": "What did you do yesterday?",
+    "explanation": "Past + finished time → did."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "How long have you studied English?",
+     "How long do you have studied English?",
+     "How long you have studied English?"
+    ],
+    "answer": "How long have you studied English?",
+    "explanation": "Duration until now → present perfect."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Can you play chess?",
+     "Do you can play chess?",
+     "Are you can play chess?"
+    ],
+    "answer": "Can you play chess?",
+    "explanation": "'Can' goes first — no 'do'."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Does your brother work here?",
+     "Do your brother works here?",
+     "Does your brother works here?"
+    ],
+    "answer": "Does your brother work here?",
+    "explanation": "does + base verb."
+   },
+   {
+    "type": "multiple_choice",
+    "text": "Choose the correct question.",
+    "options": [
+     "Is she coming to the party?",
+     "Does she coming to the party?",
+     "Is she come to the party?"
+    ],
+    "answer": "Is she coming to the party?",
+    "explanation": "-ing form → be: Is she coming?"
+   }
+  ]
+ }
+]

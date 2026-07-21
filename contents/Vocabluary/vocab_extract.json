@@ -1,0 +1,3140 @@
+[
+  {
+    "unit": 1,
+    "word": "zero",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "one",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "two",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "three",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "four",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "five",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "six",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "seven",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "eight",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "nine",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "ten",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "eleven",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "twelve",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "thirteen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "fourteen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "fifteen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "sixteen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "seventeen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "eighteen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "nineteen",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "twenty",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "twenty-one",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "twenty-two",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "thirty",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "thirty-three",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "forty",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "forty-four",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "fifty",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "fifty-five",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "sixty",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "sixty-six",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "seventy",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "seventy-seven",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "eighty",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "eighty-eight",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "ninety",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "ninety-nine",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a hundred",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Brazil",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "China",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Egypt",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "England",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "the UK",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "France",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Germany",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Italy",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Japan",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Mexico",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Poland",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Russia",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Spain",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Switzerland",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Turkey",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "the United States",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Brazilian",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Chinese",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Egyptian",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "English",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "French",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "German",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Italian",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Japanese",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Mexican",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Polish",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Russian",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Spanish",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Swiss",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Turkish",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "American",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "British",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "the board",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "the door",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a window",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a chair",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a coat",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a table",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a laptop",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a dictionary",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a piece of paper",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a pen",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a bag",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Look at the board, please.",
+    "part_of_speech": "phrase",
+    "example_en": "Look at the board, please."
+  },
+  {
+    "unit": 2,
+    "word": "Open your books.",
+    "part_of_speech": "phrase",
+    "example_en": "Open your books."
+  },
+  {
+    "unit": 2,
+    "word": "Go to page 10.",
+    "part_of_speech": "phrase",
+    "example_en": "Go to page 10."
+  },
+  {
+    "unit": 2,
+    "word": "Close your books.",
+    "part_of_speech": "phrase",
+    "example_en": "Close your books."
+  },
+  {
+    "unit": 2,
+    "word": "Stand up, please.",
+    "part_of_speech": "phrase",
+    "example_en": "Stand up, please."
+  },
+  {
+    "unit": 2,
+    "word": "Sit down.",
+    "part_of_speech": "phrase",
+    "example_en": "Sit down."
+  },
+  {
+    "unit": 2,
+    "word": "How do you spell it?",
+    "part_of_speech": "phrase",
+    "example_en": "How do you spell it?"
+  },
+  {
+    "unit": 2,
+    "word": "Sorry? Can you repeat that, please?",
+    "part_of_speech": "phrase",
+    "example_en": "Sorry? Can you repeat that, please?"
+  },
+  {
+    "unit": 2,
+    "word": "Excuse me. What's ... in English?",
+    "part_of_speech": "phrase",
+    "example_en": "Excuse me. What's ... in English?"
+  },
+  {
+    "unit": 2,
+    "word": "I don't understand.",
+    "part_of_speech": "phrase",
+    "example_en": "I don't understand."
+  },
+  {
+    "unit": 2,
+    "word": "I don't know.",
+    "part_of_speech": "phrase",
+    "example_en": "I don't know."
+  },
+  {
+    "unit": 2,
+    "word": "Sorry I'm late.",
+    "part_of_speech": "phrase",
+    "example_en": "Sorry I'm late."
+  },
+  {
+    "unit": 3,
+    "word": "a (mobile) phone",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a watch",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a tablet",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a wallet",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a purse",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a pencil",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a notebook",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "glasses",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a photo",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a (phone) charger",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "an ID card",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a passport",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "an umbrella",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a camera",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a credit card",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a debit card",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a key",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "a newspaper",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a boy",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a girl",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a man",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a woman",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "children",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "friends",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "husband",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "wife",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "mother",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "father",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "son",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "daughter",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "brother",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "sister",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "grandmother",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "grandfather",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "boyfriend",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "girlfriend",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "black",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "blue",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "brown",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "green",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "grey",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "orange",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "pink",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "red",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "white",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "big",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "small",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "old",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "new",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "fast",
+    "part_of_speech": "adjective",
+    "example_en": "It's a very fast car."
+  },
+  {
+    "unit": 4,
+    "word": "slow",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "beautiful",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "ugly",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "cheap",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "expensive",
+    "part_of_speech": "adjective",
+    "example_en": "A Ferrari is very expensive."
+  },
+  {
+    "unit": 4,
+    "word": "long",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "short",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "clean",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "dirty",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "easy",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "difficult",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "fish",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "meat",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "pasta",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "rice",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "eggs",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "yogurt",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "vegetables",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "salad",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "fruit",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "bread",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "butter",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "cheese",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "sugar",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a sandwich",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "cereal",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "chocolate",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "coffee",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "tea",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "milk",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "orange juice",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "wine",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "beer",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "breakfast",
+    "part_of_speech": "noun",
+    "example_en": "I have breakfast at 8.00."
+  },
+  {
+    "unit": 5,
+    "word": "lunch",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "dinner",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "live in a flat",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "have breakfast (lunch / dinner)",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "watch TV",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "listen to the radio",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "read the newspaper",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "eat fast food",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "drink tea",
+    "part_of_speech": "phrase",
+    "example_en": "Do you drink tea? Yes, I do. No, I don't."
+  },
+  {
+    "unit": 5,
+    "word": "speak English",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "want a coffee",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "have a dog",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "like cats",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "work in a bank",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "study Spanish",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "go to English classes",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "need a new car",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a teacher",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a doctor",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a nurse",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a journalist",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a waiter",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a waitress",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a shop assistant",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a receptionist",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a policeman",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a policewoman",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a factory worker",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a taxi driver",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in a hospital",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in a shop",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in a restaurant",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in an office",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in a school",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in a factory",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "at home",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "in the street",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "I work for an American company.",
+    "part_of_speech": "phrase",
+    "example_en": "I work for an American company."
+  },
+  {
+    "unit": 6,
+    "word": "I'm at university.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm at university."
+  },
+  {
+    "unit": 6,
+    "word": "I'm a student.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm a student."
+  },
+  {
+    "unit": 6,
+    "word": "I study economics.",
+    "part_of_speech": "phrase",
+    "example_en": "I study economics."
+  },
+  {
+    "unit": 6,
+    "word": "I'm at school.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm at school."
+  },
+  {
+    "unit": 6,
+    "word": "I'm unemployed at the moment.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm unemployed at the moment."
+  },
+  {
+    "unit": 6,
+    "word": "I'm retired.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm retired."
+  },
+  {
+    "unit": 6,
+    "word": "What do you do?",
+    "part_of_speech": "phrase",
+    "example_en": "What do you do?"
+  },
+  {
+    "unit": 6,
+    "word": "get up",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "have breakfast",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "have a shower",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "go to work",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "have a coffee",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "have lunch",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "finish work",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "go home",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "go shopping",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "go to the gym",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "make dinner",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "have dinner",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "do housework",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "watch TV",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "have a bath",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "go to bed",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "go out (at night)",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "play computer games",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "do sport",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "go to the beach (the cinema, the theatre, etc.)",
+    "part_of_speech": "phrase",
+    "example_en": "I sometimes go to the cinema. I never play computer games."
+  },
+  {
+    "unit": 7,
+    "word": "stay at home",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "play tennis",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "walk (in the mountains)",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "play the piano",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "swim",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "meet friends",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "relax",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 7,
+    "word": "travel",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "book tickets",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "pack a suitcase",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "leave the house",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "carry a suitcase",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "wear sunglasses",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "get a taxi (a train, a bus)",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "wait for a flight",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "rent a car",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "arrive at a hotel (in a city)",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "stay in a hotel",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "phone home",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "buy presents",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "January",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "February",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "March",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "April",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "May",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "June",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "July",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "August",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "September",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "October",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "November",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "December",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "first",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "second",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "third",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "fourth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "fifth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "sixth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "seventh",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "eighth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "ninth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "tenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "eleventh",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twelfth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "thirteenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "fourteenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "fifteenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "sixteenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "seventeenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "eighteenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "nineteenth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twentieth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-first",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-second",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-third",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-fourth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-fifth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-sixth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-seventh",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-eighth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "twenty-ninth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "thirtieth",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "thirty-first",
+    "part_of_speech": "other",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "buying clothes",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "camping",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "cooking",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "cycling",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "doing yoga",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "eating out",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "flying",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "going for a walk",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "going to the cinema",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "painting",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "reading",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "running",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "shopping",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "singing",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "sleeping",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "swimming",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "travelling",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 8,
+    "word": "watching TV series",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "sweater",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "T-shirt",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "shirt",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "trousers",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "jeans",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "shorts",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "suit",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "dress",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "skirt",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "coat",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "jacket",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "socks",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "trainers",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "shoes",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "hat",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 9,
+    "word": "cap",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a bed",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a pillow",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a table",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a lamp",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a light",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a remote control",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "the floor",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "the bathroom",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a bath",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a shower",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a towel",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a cupboard",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a swimming pool",
+    "part_of_speech": "noun",
+    "example_en": "Where's the swimming pool? It's on the fifth floor."
+  },
+  {
+    "unit": 10,
+    "word": "a spa",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "toilets",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a restaurant",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a bar",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a gym",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a lift",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a gift shop",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "reception",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a garden",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 10,
+    "word": "a car park",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "Hello.",
+    "part_of_speech": "phrase",
+    "example_en": "Hello."
+  },
+  {
+    "unit": 1,
+    "word": "Hi.",
+    "part_of_speech": "phrase",
+    "example_en": "Hi."
+  },
+  {
+    "unit": 1,
+    "word": "What's your name?",
+    "part_of_speech": "phrase",
+    "example_en": "What's your name?"
+  },
+  {
+    "unit": 1,
+    "word": "Nice to meet you.",
+    "part_of_speech": "phrase",
+    "example_en": "Nice to meet you."
+  },
+  {
+    "unit": 1,
+    "word": "A cappuccino, please.",
+    "part_of_speech": "phrase",
+    "example_en": "A cappuccino, please."
+  },
+  {
+    "unit": 1,
+    "word": "A tea.",
+    "part_of_speech": "phrase",
+    "example_en": "A tea."
+  },
+  {
+    "unit": 1,
+    "word": "Yes.",
+    "part_of_speech": "phrase",
+    "example_en": "Yes."
+  },
+  {
+    "unit": 1,
+    "word": "No.",
+    "part_of_speech": "phrase",
+    "example_en": "No."
+  },
+  {
+    "unit": 1,
+    "word": "OK.",
+    "part_of_speech": "phrase",
+    "example_en": "OK."
+  },
+  {
+    "unit": 1,
+    "word": "Thanks.",
+    "part_of_speech": "phrase",
+    "example_en": "Thanks."
+  },
+  {
+    "unit": 1,
+    "word": "Sorry.",
+    "part_of_speech": "phrase",
+    "example_en": "Sorry."
+  },
+  {
+    "unit": 1,
+    "word": "Just a minute.",
+    "part_of_speech": "phrase",
+    "example_en": "Just a minute."
+  },
+  {
+    "unit": 1,
+    "word": "Goodbye.",
+    "part_of_speech": "phrase",
+    "example_en": "Goodbye."
+  },
+  {
+    "unit": 1,
+    "word": "Bye.",
+    "part_of_speech": "phrase",
+    "example_en": "Bye."
+  },
+  {
+    "unit": 1,
+    "word": "See you on Friday.",
+    "part_of_speech": "phrase",
+    "example_en": "See you on Friday."
+  },
+  {
+    "unit": 1,
+    "word": "See you tomorrow.",
+    "part_of_speech": "phrase",
+    "example_en": "See you tomorrow."
+  },
+  {
+    "unit": 1,
+    "word": "Where are you from?",
+    "part_of_speech": "phrase",
+    "example_en": "Where are you from?"
+  },
+  {
+    "unit": 1,
+    "word": "I'm from Spain.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm from Spain."
+  },
+  {
+    "unit": 1,
+    "word": "Where's Izmir?",
+    "part_of_speech": "phrase",
+    "example_en": "Where's Izmir?"
+  },
+  {
+    "unit": 1,
+    "word": "I think it's in Turkey.",
+    "part_of_speech": "phrase",
+    "example_en": "I think it's in Turkey."
+  },
+  {
+    "unit": 1,
+    "word": "It's a nice city.",
+    "part_of_speech": "phrase",
+    "example_en": "It's a nice city."
+  },
+  {
+    "unit": 1,
+    "word": "I don't know.",
+    "part_of_speech": "phrase",
+    "example_en": "I don't know."
+  },
+  {
+    "unit": 1,
+    "word": "Very good.",
+    "part_of_speech": "phrase",
+    "example_en": "Very good."
+  },
+  {
+    "unit": 1,
+    "word": "Wow!",
+    "part_of_speech": "phrase",
+    "example_en": "Wow!"
+  },
+  {
+    "unit": 1,
+    "word": "tourists",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "dogs",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 1,
+    "word": "over there",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "Excuse me.",
+    "part_of_speech": "phrase",
+    "example_en": "Excuse me."
+  },
+  {
+    "unit": 2,
+    "word": "Are they free?",
+    "part_of_speech": "phrase",
+    "example_en": "Are they free?"
+  },
+  {
+    "unit": 2,
+    "word": "Are you on holiday?",
+    "part_of_speech": "phrase",
+    "example_en": "Are you on holiday?"
+  },
+  {
+    "unit": 2,
+    "word": "We're on business.",
+    "part_of_speech": "phrase",
+    "example_en": "We're on business."
+  },
+  {
+    "unit": 2,
+    "word": "What's that?",
+    "part_of_speech": "phrase",
+    "example_en": "What's that?"
+  },
+  {
+    "unit": 2,
+    "word": "Have a nice day!",
+    "part_of_speech": "phrase",
+    "example_en": "Have a nice day!"
+  },
+  {
+    "unit": 2,
+    "word": "It's a beautiful city.",
+    "part_of_speech": "phrase",
+    "example_en": "It's a beautiful city."
+  },
+  {
+    "unit": 2,
+    "word": "Who's he?",
+    "part_of_speech": "phrase",
+    "example_en": "Who's he?"
+  },
+  {
+    "unit": 2,
+    "word": "How old is he?",
+    "part_of_speech": "phrase",
+    "example_en": "How old is he?"
+  },
+  {
+    "unit": 2,
+    "word": "He's very good-looking.",
+    "part_of_speech": "phrase",
+    "example_en": "He's very good-looking."
+  },
+  {
+    "unit": 2,
+    "word": "How are you?",
+    "part_of_speech": "phrase",
+    "example_en": "How are you?"
+  },
+  {
+    "unit": 2,
+    "word": "I'm fine.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm fine."
+  },
+  {
+    "unit": 2,
+    "word": "This is Alex.",
+    "part_of_speech": "phrase",
+    "example_en": "This is Alex."
+  },
+  {
+    "unit": 2,
+    "word": "That's my bus.",
+    "part_of_speech": "phrase",
+    "example_en": "That's my bus."
+  },
+  {
+    "unit": 2,
+    "word": "This is my bus stop.",
+    "part_of_speech": "phrase",
+    "example_en": "This is my bus stop."
+  },
+  {
+    "unit": 2,
+    "word": "What class are you in?",
+    "part_of_speech": "phrase",
+    "example_en": "What class are you in?"
+  },
+  {
+    "unit": 2,
+    "word": "What's your phone number?",
+    "part_of_speech": "phrase",
+    "example_en": "What's your phone number?"
+  },
+  {
+    "unit": 2,
+    "word": "See you later.",
+    "part_of_speech": "phrase",
+    "example_en": "See you later."
+  },
+  {
+    "unit": 2,
+    "word": "a bedroom",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a kitchen",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "a garden",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "big",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "small",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 2,
+    "word": "in the south of England",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "Oh no!",
+    "part_of_speech": "phrase",
+    "example_en": "Oh no!"
+  },
+  {
+    "unit": 3,
+    "word": "Where's my phone?",
+    "part_of_speech": "phrase",
+    "example_en": "Where's my phone?"
+  },
+  {
+    "unit": 3,
+    "word": "Where are my glasses?",
+    "part_of_speech": "phrase",
+    "example_en": "Where are my glasses?"
+  },
+  {
+    "unit": 3,
+    "word": "What is it?",
+    "part_of_speech": "phrase",
+    "example_en": "What is it?"
+  },
+  {
+    "unit": 3,
+    "word": "What are they?",
+    "part_of_speech": "phrase",
+    "example_en": "What are they?"
+  },
+  {
+    "unit": 3,
+    "word": "I think it's an ID card.",
+    "part_of_speech": "phrase",
+    "example_en": "I think it's an ID card."
+  },
+  {
+    "unit": 3,
+    "word": "I think they're keys.",
+    "part_of_speech": "phrase",
+    "example_en": "I think they're keys."
+  },
+  {
+    "unit": 3,
+    "word": "What's in your bag?",
+    "part_of_speech": "phrase",
+    "example_en": "What's in your bag?"
+  },
+  {
+    "unit": 3,
+    "word": "I have two credit cards.",
+    "part_of_speech": "phrase",
+    "example_en": "I have two credit cards."
+  },
+  {
+    "unit": 3,
+    "word": "How much is this mug?",
+    "part_of_speech": "phrase",
+    "example_en": "How much is this mug?"
+  },
+  {
+    "unit": 3,
+    "word": "How much are these key rings?",
+    "part_of_speech": "phrase",
+    "example_en": "How much are these key rings?"
+  },
+  {
+    "unit": 3,
+    "word": "They're twenty pounds.",
+    "part_of_speech": "phrase",
+    "example_en": "They're twenty pounds."
+  },
+  {
+    "unit": 3,
+    "word": "A T-shirt, please.",
+    "part_of_speech": "phrase",
+    "example_en": "A T-shirt, please."
+  },
+  {
+    "unit": 3,
+    "word": "Is this your phone?",
+    "part_of_speech": "phrase",
+    "example_en": "Is this your phone?"
+  },
+  {
+    "unit": 3,
+    "word": "Thank you very much.",
+    "part_of_speech": "phrase",
+    "example_en": "Thank you very much."
+  },
+  {
+    "unit": 3,
+    "word": "You're welcome.",
+    "part_of_speech": "phrase",
+    "example_en": "You're welcome."
+  },
+  {
+    "unit": 3,
+    "word": "souvenirs",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "here",
+    "part_of_speech": "adverb",
+    "example_en": null
+  },
+  {
+    "unit": 3,
+    "word": "there",
+    "part_of_speech": "adverb",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "Come in.",
+    "part_of_speech": "phrase",
+    "example_en": "Come in."
+  },
+  {
+    "unit": 4,
+    "word": "Be good.",
+    "part_of_speech": "phrase",
+    "example_en": "Be good."
+  },
+  {
+    "unit": 4,
+    "word": "Let's order pizza.",
+    "part_of_speech": "phrase",
+    "example_en": "Let's order pizza."
+  },
+  {
+    "unit": 4,
+    "word": "What a lovely card!",
+    "part_of_speech": "phrase",
+    "example_en": "What a lovely card!"
+  },
+  {
+    "unit": 4,
+    "word": "Can I see?",
+    "part_of_speech": "phrase",
+    "example_en": "Can I see?"
+  },
+  {
+    "unit": 4,
+    "word": "I remember.",
+    "part_of_speech": "phrase",
+    "example_en": "I remember."
+  },
+  {
+    "unit": 4,
+    "word": "on the table",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "in my phone",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "Mum",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "Dad",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a babysitter",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "perhaps",
+    "part_of_speech": "adverb",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "Sir",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "madam",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "an electric car",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a sports car",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "easy to park",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "perfect",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "in her (my, your, ...) opinion",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "Is the car for you?",
+    "part_of_speech": "phrase",
+    "example_en": "Is the car for you?"
+  },
+  {
+    "unit": 4,
+    "word": "I prefer this red car.",
+    "part_of_speech": "phrase",
+    "example_en": "I prefer this red car."
+  },
+  {
+    "unit": 4,
+    "word": "I love it!",
+    "part_of_speech": "phrase",
+    "example_en": "I love it!"
+  },
+  {
+    "unit": 4,
+    "word": "Come with me.",
+    "part_of_speech": "phrase",
+    "example_en": "Come with me."
+  },
+  {
+    "unit": 4,
+    "word": "a museum",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a village",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "a motorbike",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 4,
+    "word": "famous",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a scientist",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a doctor",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "sometimes",
+    "part_of_speech": "adverb",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "usually",
+    "part_of_speech": "adverb",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "I'm not hungry.",
+    "part_of_speech": "phrase",
+    "example_en": "I'm not hungry."
+  },
+  {
+    "unit": 5,
+    "word": "early",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "healthy",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "traditional",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "important",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "different",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "favourite",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "in a cafe",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "at home",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "at work",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "soup",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "green tea",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "toast",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a lot of (fruit)",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a writer",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a taxi driver",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a British (American) company",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a flight",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "traffic",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "a gate",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "at university",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "at school",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 5,
+    "word": "Do you want fish or pasta?",
+    "part_of_speech": "phrase",
+    "example_en": "Do you want fish or pasta?"
+  },
+  {
+    "unit": 5,
+    "word": "How's your pasta?",
+    "part_of_speech": "phrase",
+    "example_en": "How's your pasta?"
+  },
+  {
+    "unit": 5,
+    "word": "I need to go to the toilet.",
+    "part_of_speech": "phrase",
+    "example_en": "I need to go to the toilet."
+  },
+  {
+    "unit": 5,
+    "word": "What time do we arrive?",
+    "part_of_speech": "phrase",
+    "example_en": "What time do we arrive?"
+  },
+  {
+    "unit": 5,
+    "word": "Keep the change.",
+    "part_of_speech": "phrase",
+    "example_en": "Keep the change."
+  },
+  {
+    "unit": 5,
+    "word": "Can I see your passport and boarding pass, please?",
+    "part_of_speech": "phrase",
+    "example_en": "Can I see your passport and boarding pass, please?"
+  },
+  {
+    "unit": 5,
+    "word": "What a nice surprise!",
+    "part_of_speech": "phrase",
+    "example_en": "What a nice surprise!"
+  },
+  {
+    "unit": 6,
+    "word": "What does she do?",
+    "part_of_speech": "phrase",
+    "example_en": "What does she do?"
+  },
+  {
+    "unit": 6,
+    "word": "Where does he teach?",
+    "part_of_speech": "phrase",
+    "example_en": "Where does he teach?"
+  },
+  {
+    "unit": 6,
+    "word": "She's a journalist.",
+    "part_of_speech": "phrase",
+    "example_en": "She's a journalist."
+  },
+  {
+    "unit": 6,
+    "word": "She doesn't wear glasses.",
+    "part_of_speech": "phrase",
+    "example_en": "She doesn't wear glasses."
+  },
+  {
+    "unit": 6,
+    "word": "Her hair's blonde.",
+    "part_of_speech": "phrase",
+    "example_en": "Her hair's blonde."
+  },
+  {
+    "unit": 6,
+    "word": "He's married to Lisa.",
+    "part_of_speech": "phrase",
+    "example_en": "He's married to Lisa."
+  },
+  {
+    "unit": 6,
+    "word": "Great to see you.",
+    "part_of_speech": "phrase",
+    "example_en": "Great to see you."
+  },
+  {
+    "unit": 6,
+    "word": "How awful!",
+    "part_of_speech": "phrase",
+    "example_en": "How awful!"
+  },
+  {
+    "unit": 6,
+    "word": "I love your shoes.",
+    "part_of_speech": "phrase",
+    "example_en": "I love your shoes."
+  },
+  {
+    "unit": 6,
+    "word": "intelligent",
+    "part_of_speech": "adjective",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a barman",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a banker",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "customers",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "dishes",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a multinational company",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "meetings",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "Why? Because ...",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "Are you a morning person?",
+    "part_of_speech": "phrase",
+    "example_en": "Are you a morning person?"
+  },
+  {
+    "unit": 6,
+    "word": "What time do you get up?",
+    "part_of_speech": "phrase",
+    "example_en": "What time do you get up?"
+  },
+  {
+    "unit": 6,
+    "word": "At eight o'clock.",
+    "part_of_speech": "phrase",
+    "example_en": "At eight o'clock."
+  },
+  {
+    "unit": 6,
+    "word": "He gets up at about 9.30.",
+    "part_of_speech": "phrase",
+    "example_en": "He gets up at about 9.30."
+  },
+  {
+    "unit": 6,
+    "word": "It's delicious.",
+    "part_of_speech": "phrase",
+    "example_en": "It's delicious."
+  },
+  {
+    "unit": 6,
+    "word": "feel tired",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "on the way to work",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "after work",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "every morning",
+    "part_of_speech": "phrase",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "then",
+    "part_of_speech": "adverb",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "a tour guide",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "an apartment",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "the subway",
+    "part_of_speech": "noun",
+    "example_en": null
+  },
+  {
+    "unit": 6,
+    "word": "an omelette",
+    "part_of_speech": "noun",
+    "example_en": null
+  }
+]

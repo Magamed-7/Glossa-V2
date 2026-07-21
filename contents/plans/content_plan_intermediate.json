@@ -1,0 +1,54 @@
+{
+  "level": "Intermediate",
+  "cefr": "B2",
+  "source_structure": "English File 4th ed. Intermediate (только структура)",
+  "locales": ["en", "ru", "tg"],
+  "volume_per_unit": {
+    "grammar_lessons": "по одному на урок (A/B)",
+    "grammar_lesson_contents": "объяснение, 4-5 примеров с переводом, 6 тестовых вопросов",
+    "stories": "2 на юнит, 180-250 слов, 8-12 ключевых слов с переводами",
+    "vocabulary": "~25 слов на юнит"
+  },
+  "units": [
+    {"unit": 1, "lessons": [
+      {"code": "1A", "theme": "Еда дома и вне дома", "grammar": "Present Simple и Continuous; глаголы действия и состояния", "vocabulary_topics": ["еда и готовка"]},
+      {"code": "1B", "theme": "Современные семьи", "grammar": "формы будущего: Present Continuous, be going to, will/won't", "vocabulary_topics": ["семья", "прилагательные характера"]}
+    ], "practical_english": "реакция на слова собеседника"},
+    {"unit": 2, "lessons": [
+      {"code": "2A", "theme": "Как мы тратим деньги", "grammar": "Present Perfect и Past Simple", "vocabulary_topics": ["деньги"]},
+      {"code": "2B", "theme": "Жизнь меняется", "grammar": "Present Perfect + for/since; Present Perfect Continuous", "vocabulary_topics": ["сильные прилагательные: exhausted, amazed..."]}
+    ]},
+    {"unit": 3, "lessons": [
+      {"code": "3A", "theme": "Выжить в дороге", "grammar": "выбор между сравнительной и превосходной степенью", "vocabulary_topics": ["транспорт"]},
+      {"code": "3B", "theme": "Мужчины, женщины и дети", "grammar": "артикли: a/an, the, без артикля", "vocabulary_topics": ["коллокации: глагол/прилагательное + предлог"]}
+    ], "practical_english": "выражение мнения"},
+    {"unit": 4, "lessons": [
+      {"code": "4A", "theme": "Плохие манеры?", "grammar": "обязанность и запрет: have to, must, should", "vocabulary_topics": ["телефонная лексика"]},
+      {"code": "4B", "theme": "Да, я могу!", "grammar": "способность и возможность: can, could, be able to", "vocabulary_topics": ["прилагательные на -ed / -ing"]}
+    ]},
+    {"unit": 5, "lessons": [
+      {"code": "5A", "theme": "Спортивные суеверия", "grammar": "прошедшие времена: Simple, Continuous, Perfect", "vocabulary_topics": ["спорт"]},
+      {"code": "5B", "theme": "Как мы познакомились", "grammar": "привычки в прошлом и настоящем: used to, usually", "vocabulary_topics": ["отношения"]}
+    ], "practical_english": "разрешения и просьбы"},
+    {"unit": 6, "lessons": [
+      {"code": "6A", "theme": "За кадром", "grammar": "пассив (все времена)", "vocabulary_topics": ["кино"]},
+      {"code": "6B", "theme": "Каждая картина рассказывает историю", "grammar": "модальные глаголы предположения: might, can't, must", "vocabulary_topics": ["тело человека"]}
+    ]},
+    {"unit": 7, "lessons": [
+      {"code": "7A", "theme": "Век живи — век учись", "grammar": "первый кондиционал и придаточные будущего времени + when, until", "vocabulary_topics": ["образование"]},
+      {"code": "7B", "theme": "Отель «Мама и папа»", "grammar": "второй кондиционал; выбор между кондиционалами", "vocabulary_topics": ["дом и жильё"]}
+    ], "practical_english": "предложения и идеи"},
+    {"unit": 8, "lessons": [
+      {"code": "8A", "theme": "Работа для тебя", "grammar": "выбор между герундием и инфинитивом", "vocabulary_topics": ["работа"]},
+      {"code": "8B", "theme": "Хорошего дня!", "grammar": "косвенная речь: утверждения и вопросы", "vocabulary_topics": ["покупки", "существительные из глаголов"]}
+    ]},
+    {"unit": 9, "lessons": [
+      {"code": "9A", "theme": "Счастливые встречи", "grammar": "третий кондиционал", "vocabulary_topics": ["образование прилагательных и наречий"]},
+      {"code": "9B", "theme": "Цифровой детокс", "grammar": "квантификаторы", "vocabulary_topics": ["электронные устройства"]}
+    ], "practical_english": "непрямые вопросы"},
+    {"unit": 10, "lessons": [
+      {"code": "10A", "theme": "Кумиры и иконы", "grammar": "относительные придаточные: определительные и неопределительные", "vocabulary_topics": ["сложные существительные"]},
+      {"code": "10B", "theme": "И убийца — ...", "grammar": "разделительные вопросы (question tags)", "vocabulary_topics": ["преступление"]}
+    ]}
+  ]
+}

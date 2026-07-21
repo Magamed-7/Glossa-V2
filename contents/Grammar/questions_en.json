@@ -1,0 +1,186 @@
+[
+[
+{"type":"multiple_choice","text":"Choose the correct form: I ___ a student.","options":["am","are","is"],"answer":"am","explanation":"With 'I' we always use 'am'."},
+{"type":"multiple_choice","text":"Choose the correct form: You ___ my friend.","options":["are","am","is"],"answer":"are","explanation":"With 'you' we always use 'are'."},
+{"type":"multiple_choice","text":"Choose the contraction: 'I am' = ___","options":["I'm","Im'","I's"],"answer":"I'm","explanation":"'I am' becomes 'I'm' in speech and informal writing."},
+{"type":"multiple_choice","text":"Choose the negative: I ___ a teacher.","options":["am not","are not","not am"],"answer":"am not","explanation":"The negative of 'I am' is 'I am not' (I'm not)."},
+{"type":"multiple_choice","text":"Choose the question: ___ you in room 3?","options":["Are","Am","Is"],"answer":"Are","explanation":"In questions with 'you', 'are' goes first: Are you...?"},
+{"type":"multiple_choice","text":"Choose the correct answer: Am I in class 2? — Yes, you ___.","options":["are","am","is"],"answer":"are","explanation":"We answer a question about 'I' with 'you are'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: He ___ from Brazil.","options":["is","am","are"],"answer":"is","explanation":"With 'he', 'she' and 'it' we use 'is'."},
+{"type":"multiple_choice","text":"Choose the correct form: She ___ a doctor.","options":["is","are","am"],"answer":"is","explanation":"With 'she' we use 'is'."},
+{"type":"multiple_choice","text":"Choose the contraction: 'It is cold' = ___","options":["It's cold","Its cold","It is's cold"],"answer":"It's cold","explanation":"'It is' becomes 'It's' with an apostrophe."},
+{"type":"multiple_choice","text":"Choose the negative: He ___ my brother.","options":["isn't","aren't","am not"],"answer":"isn't","explanation":"The negative of 'he is' is 'he isn't' (is not)."},
+{"type":"multiple_choice","text":"Choose the question: ___ she your teacher?","options":["Is","Are","Am"],"answer":"Is","explanation":"Questions with 'she' start with 'Is': Is she...?"},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["It is a big city.","It are a big city.","It am a big city."],"answer":"It is a big city.","explanation":"'It' takes 'is'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: We ___ students.","options":["are","is","am"],"answer":"are","explanation":"With 'we', 'you' and 'they' we use 'are'."},
+{"type":"multiple_choice","text":"Choose the correct form: They ___ from Italy.","options":["are","is","am"],"answer":"are","explanation":"'They' takes 'are'."},
+{"type":"multiple_choice","text":"Choose the contraction: 'We are' = ___","options":["We're","Were","We's"],"answer":"We're","explanation":"'We are' becomes 'We're'. Note: 'were' without apostrophe is a different word."},
+{"type":"multiple_choice","text":"Choose the negative: They ___ at home.","options":["aren't","isn't","am not"],"answer":"aren't","explanation":"The negative of 'they are' is 'they aren't'."},
+{"type":"multiple_choice","text":"Choose the question: ___ you and Tom in the same class?","options":["Are","Is","Am"],"answer":"Are","explanation":"'You and Tom' = plural 'you', so we use 'Are'."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["We are happy.","We is happy.","We am happy."],"answer":"We are happy.","explanation":"'We' always takes 'are'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the question word: ___ are you from? — Mexico.","options":["Where","What","Who"],"answer":"Where","explanation":"'Where' asks about a place."},
+{"type":"multiple_choice","text":"Choose the question word: ___ is your name? — Anna.","options":["What","Where","How"],"answer":"What","explanation":"'What' asks about a thing or name."},
+{"type":"multiple_choice","text":"Choose the question word: ___ old are you? — I'm twenty.","options":["How","What","Where"],"answer":"How","explanation":"'How old' asks about age."},
+{"type":"multiple_choice","text":"Choose the question word: ___ is that man? — He's my father.","options":["Who","What","Where"],"answer":"Who","explanation":"'Who' asks about a person."},
+{"type":"multiple_choice","text":"Choose the correct word order.","options":["Where is your school?","Where your school is?","Your school where is?"],"answer":"Where is your school?","explanation":"Question word + be + subject."},
+{"type":"multiple_choice","text":"Choose the question: ___ your phone number? — It's 555-0134.","options":["What's","Who's","How's"],"answer":"What's","explanation":"We ask about a phone number with 'What's your phone number?'"}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct article: ___ apple","options":["an","a","two"],"answer":"an","explanation":"Before a vowel sound we use 'an': an apple."},
+{"type":"multiple_choice","text":"Choose the correct article: ___ book","options":["a","an","the two"],"answer":"a","explanation":"Before a consonant sound we use 'a': a book."},
+{"type":"multiple_choice","text":"Choose the plural of 'watch'.","options":["watches","watchs","watch"],"answer":"watches","explanation":"Nouns ending in -ch add -es: watches."},
+{"type":"multiple_choice","text":"Choose the plural of 'country'.","options":["countries","countrys","countryes"],"answer":"countries","explanation":"Consonant + y changes to -ies: countries."},
+{"type":"multiple_choice","text":"Choose the plural of 'man'.","options":["men","mans","manes"],"answer":"men","explanation":"'Man' has an irregular plural: men."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["I have two keys.","I have two key.","I have a keys."],"answer":"I have two keys.","explanation":"After a number bigger than one, the noun is plural; 'a' is only for singular."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct word for one thing near you: ___ is my phone.","options":["This","These","Those"],"answer":"This","explanation":"'This' = one thing near the speaker."},
+{"type":"multiple_choice","text":"Choose the correct word for one thing far from you: ___ is my car.","options":["That","This","These"],"answer":"That","explanation":"'That' = one thing far from the speaker."},
+{"type":"multiple_choice","text":"Choose the correct word: ___ are my keys, here in my hand.","options":["These","This","That"],"answer":"These","explanation":"'These' = several things near the speaker."},
+{"type":"multiple_choice","text":"Choose the correct word: ___ are your books, over there.","options":["Those","These","This"],"answer":"Those","explanation":"'Those' = several things far from the speaker."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["How much is this postcard?","How much is these postcard?","How much are that postcard?"],"answer":"How much is this postcard?","explanation":"'This' with singular noun and singular verb 'is'."},
+{"type":"multiple_choice","text":"Choose the correct question about far objects.","options":["What are those?","What are this?","What is these?"],"answer":"What are those?","explanation":"'Those' is plural and far; it takes 'are'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct word: ___ name is Marta. (I)","options":["My","Your","Her"],"answer":"My","explanation":"'I' → 'my': my name."},
+{"type":"multiple_choice","text":"Choose the correct word: This is my brother. ___ name is Aziz.","options":["His","Her","Its"],"answer":"His","explanation":"For a man or boy we use 'his'."},
+{"type":"multiple_choice","text":"Choose the correct word: This is my sister. ___ name is Layla.","options":["Her","His","Their"],"answer":"Her","explanation":"For a woman or girl we use 'her'."},
+{"type":"multiple_choice","text":"Choose the correct form: This is ___ car. (Tom)","options":["Tom's","Toms","Tom"],"answer":"Tom's","explanation":"Possessive 's shows that something belongs to a person: Tom's car."},
+{"type":"multiple_choice","text":"Choose the correct word: We love ___ parents.","options":["our","us","we"],"answer":"our","explanation":"'We' → 'our': our parents."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["My mother's sister is my aunt.","My mothers sister is my aunt.","My mother sister is my aunt."],"answer":"My mother's sister is my aunt.","explanation":"Use 's after the owner: my mother's sister."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct order.","options":["It's a red car.","It's a car red.","It's red a car."],"answer":"It's a red car.","explanation":"Adjectives go before the noun: a red car."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["They are old houses.","They are olds houses.","They are houses old."],"answer":"They are old houses.","explanation":"Adjectives never take plural -s in English."},
+{"type":"multiple_choice","text":"Choose the opposite of 'big'.","options":["small","short","slow"],"answer":"small","explanation":"big ↔ small."},
+{"type":"multiple_choice","text":"Choose the opposite of 'expensive'.","options":["cheap","rich","new"],"answer":"cheap","explanation":"expensive ↔ cheap."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["The car is fast.","The car is a fast.","The car fast is."],"answer":"The car is fast.","explanation":"After 'be', the adjective stands alone: is fast."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["What colour is your bag?","What colour your bag is?","Is what colour your bag?"],"answer":"What colour is your bag?","explanation":"Question word phrase + be + subject."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: I ___ coffee every morning.","options":["drink","drinks","drinking"],"answer":"drink","explanation":"With I/you/we/they the present simple verb has no ending."},
+{"type":"multiple_choice","text":"Choose the negative: We ___ meat.","options":["don't eat","doesn't eat","not eat"],"answer":"don't eat","explanation":"With I/you/we/they the negative is don't + verb."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["They live in Dushanbe.","They lives in Dushanbe.","They living in Dushanbe."],"answer":"They live in Dushanbe.","explanation":"'They' takes the base form: live."},
+{"type":"multiple_choice","text":"Choose the negative: I ___ breakfast at home.","options":["don't have","doesn't have","no have"],"answer":"don't have","explanation":"Negative with 'I' = don't + base verb."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["You speak English very well.","You speaks English very well.","You speaking English very well."],"answer":"You speak English very well.","explanation":"'You' takes the base form of the verb."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["We don't drink tea at night.","We don't drinks tea at night.","We doesn't drink tea at night."],"answer":"We don't drink tea at night.","explanation":"After don't the verb is always the base form."}
+],
+[
+{"type":"multiple_choice","text":"Choose the question: ___ you like pizza?","options":["Do","Does","Are"],"answer":"Do","explanation":"Questions with I/you/we/they use 'Do'."},
+{"type":"multiple_choice","text":"Choose the short answer: Do you speak Russian? — Yes, I ___.","options":["do","does","speak"],"answer":"do","explanation":"Short answers repeat the auxiliary: Yes, I do."},
+{"type":"multiple_choice","text":"Choose the question.","options":["Where do they work?","Where they work?","Where does they work?"],"answer":"Where do they work?","explanation":"Question word + do + subject + verb."},
+{"type":"multiple_choice","text":"Choose the question: ___ we have class today?","options":["Do","Does","Is"],"answer":"Do","explanation":"'We' uses 'do' in questions."},
+{"type":"multiple_choice","text":"Choose the short answer: Do they live here? — No, they ___.","options":["don't","doesn't","aren't"],"answer":"don't","explanation":"Negative short answer: No, they don't."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["What do you do at the weekend?","What you do at the weekend?","What are you do at the weekend?"],"answer":"What do you do at the weekend?","explanation":"Present simple questions need the auxiliary 'do'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: She ___ in a hospital.","options":["works","work","working"],"answer":"works","explanation":"With he/she/it the verb takes -s: works."},
+{"type":"multiple_choice","text":"Choose the correct form: He ___ TV in the evening.","options":["watches","watchs","watch"],"answer":"watches","explanation":"Verbs ending in -ch add -es: watches."},
+{"type":"multiple_choice","text":"Choose the correct form: My brother ___ English.","options":["studies","studys","study"],"answer":"studies","explanation":"Consonant + y → -ies: studies."},
+{"type":"multiple_choice","text":"Choose the negative: She ___ fish.","options":["doesn't eat","don't eat","doesn't eats"],"answer":"doesn't eat","explanation":"With he/she/it: doesn't + base verb (no -s)."},
+{"type":"multiple_choice","text":"Choose the question: ___ he work in a bank?","options":["Does","Do","Is"],"answer":"Does","explanation":"Questions with he/she/it use 'Does'."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["It rains a lot here.","It rain a lot here.","It raining a lot here."],"answer":"It rains a lot here.","explanation":"'It' takes the -s form: rains."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct order.","options":["I always drink tea in the morning.","I drink always tea in the morning.","Always I drink tea in the morning always."],"answer":"I always drink tea in the morning.","explanation":"Frequency adverbs go before the main verb."},
+{"type":"multiple_choice","text":"Choose the correct order with 'be'.","options":["She is never late.","She never is late.","Never she is late."],"answer":"She is never late.","explanation":"With 'be', the adverb goes after the verb: is never."},
+{"type":"multiple_choice","text":"Which adverb means 100% of the time?","options":["always","sometimes","never"],"answer":"always","explanation":"always = every time."},
+{"type":"multiple_choice","text":"Which adverb means 0% of the time?","options":["never","usually","often"],"answer":"never","explanation":"never = at no time."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["He usually gets up at seven.","He gets usually up at seven.","Usually he gets up at usually seven."],"answer":"He usually gets up at seven.","explanation":"'Usually' goes before the main verb 'gets'."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["How often do you go to the gym?","How often you go to the gym?","How do often you go to the gym?"],"answer":"How often do you go to the gym?","explanation":"'How often' + do + subject + verb asks about frequency."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct question.","options":["Where do you live?","Where you live?","Where live you?"],"answer":"Where do you live?","explanation":"Present simple: question word + do/does + subject + verb."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["Is she a nurse?","Does she a nurse?","She is a nurse?"],"answer":"Is she a nurse?","explanation":"With 'be' we invert: Is + subject."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["What time does the film start?","What time the film starts?","What time do the film start?"],"answer":"What time does the film start?","explanation":"'The film' = it → does; the main verb loses -s."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["Are they at work?","Do they at work?","They are at work?"],"answer":"Are they at work?","explanation":"'At work' has no verb, so we use 'be': Are they...?"},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["Do you play football?","Are you play football?","Play you football?"],"answer":"Do you play football?","explanation":"Action verb 'play' needs the auxiliary 'do', not 'are'."},
+{"type":"multiple_choice","text":"Choose the correct question.","options":["Why is he sad?","Why does he sad?","Why he is sad?"],"answer":"Why is he sad?","explanation":"'Sad' is an adjective, so we use 'be': Why is he...?"}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct imperative.","options":["Open your books, please.","You open your books, please.","Opens your books, please."],"answer":"Open your books, please.","explanation":"Imperatives use the base verb without a subject."},
+{"type":"multiple_choice","text":"Choose the negative imperative.","options":["Don't be late.","Not be late.","Don't to be late."],"answer":"Don't be late.","explanation":"Negative imperative = Don't + base verb."},
+{"type":"multiple_choice","text":"Choose the correct pronoun: I like Anna. I see ___ every day.","options":["her","she","hers"],"answer":"her","explanation":"After a verb we use the object pronoun: her."},
+{"type":"multiple_choice","text":"Choose the correct pronoun: This is my father. Look at ___.","options":["him","he","his"],"answer":"him","explanation":"'He' → object form 'him'."},
+{"type":"multiple_choice","text":"Choose the correct pronoun: We are here! Wait for ___!","options":["us","we","our"],"answer":"us","explanation":"'We' → object form 'us'."},
+{"type":"multiple_choice","text":"Choose the correct pronoun: I love this song. Listen to ___!","options":["it","him","its"],"answer":"it","explanation":"For a thing we use 'it'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: I ___ swim.","options":["can","cans","can to"],"answer":"can","explanation":"'Can' never changes and takes the verb without 'to'."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["She can drive.","She cans drive.","She can drives."],"answer":"She can drive.","explanation":"After 'can' the verb is the base form; 'can' has no -s."},
+{"type":"multiple_choice","text":"Choose the negative: We ___ park here.","options":["can't","don't can","can not to"],"answer":"can't","explanation":"The negative of 'can' is 'can't' (cannot)."},
+{"type":"multiple_choice","text":"Choose the question: ___ you help me, please?","options":["Can","Do can","Are"],"answer":"Can","explanation":"Questions with 'can': Can + subject + verb."},
+{"type":"multiple_choice","text":"Choose the short answer: Can he cook? — Yes, he ___.","options":["can","cans","does"],"answer":"can","explanation":"Short answer repeats 'can': Yes, he can."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["I can speak three languages.","I can to speak three languages.","I can speaking three languages."],"answer":"I can speak three languages.","explanation":"can + base verb, never 'to' or '-ing'."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: I love ___ to music.","options":["listening","listen","listens"],"answer":"listening","explanation":"After like/love/hate we use verb + -ing."},
+{"type":"multiple_choice","text":"Choose the correct form: She hates ___ up early.","options":["getting","get","gets"],"answer":"getting","explanation":"hate + verb-ing: hates getting."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["We like cooking at home.","We like cook at home.","We like cooks at home."],"answer":"We like cooking at home.","explanation":"like + -ing form: like cooking."},
+{"type":"multiple_choice","text":"Choose the -ing form of 'swim'.","options":["swimming","swiming","swimmying"],"answer":"swimming","explanation":"Short vowel + consonant doubles: swimming."},
+{"type":"multiple_choice","text":"Choose the -ing form of 'make'.","options":["making","makeing","makking"],"answer":"making","explanation":"Verbs ending in -e drop it: making."},
+{"type":"multiple_choice","text":"Choose the question: ___ he like playing football?","options":["Does","Do","Is"],"answer":"Does","explanation":"'He' takes 'does' in present simple questions."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: I ___ working now.","options":["am","is","are"],"answer":"am","explanation":"Present continuous = be + verb-ing; 'I' takes 'am'."},
+{"type":"multiple_choice","text":"Choose the correct form: She ___ reading a book.","options":["is","are","am"],"answer":"is","explanation":"'She' takes 'is': she is reading."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["They are watching TV.","They is watching TV.","They are watch TV."],"answer":"They are watching TV.","explanation":"are + verb-ing: are watching."},
+{"type":"multiple_choice","text":"Choose the negative: We ___ sleeping.","options":["aren't","don't","isn't"],"answer":"aren't","explanation":"Negative present continuous: aren't + -ing."},
+{"type":"multiple_choice","text":"Choose the question: ___ you listening to me?","options":["Are","Do","Is"],"answer":"Are","explanation":"Questions: Are + subject + verb-ing."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["He is wearing a blue jacket today.","He wearing a blue jacket today.","He is wear a blue jacket today."],"answer":"He is wearing a blue jacket today.","explanation":"Present continuous needs both 'be' and the -ing form."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: Listen! The baby ___ now.","options":["is crying","cries","cry"],"answer":"is crying","explanation":"An action happening now → present continuous."},
+{"type":"multiple_choice","text":"Choose the correct form: I usually ___ tea, but today I ___ coffee.","options":["drink / am drinking","am drinking / drink","drinks / drinking"],"answer":"drink / am drinking","explanation":"Habit → present simple; now → present continuous."},
+{"type":"multiple_choice","text":"Choose the correct form: She ___ to work by bus every day.","options":["goes","is going","go"],"answer":"goes","explanation":"'Every day' shows a routine → present simple."},
+{"type":"multiple_choice","text":"Choose the correct form: Look! It ___.","options":["is snowing","snows","snow"],"answer":"is snowing","explanation":"'Look!' points to right now → present continuous."},
+{"type":"multiple_choice","text":"Which time word usually goes with the present simple?","options":["always","now","at the moment"],"answer":"always","explanation":"'Always' describes habits; 'now / at the moment' describe current actions."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["We are studying English this year.","We study English at the moment.","We are study English this year."],"answer":"We are studying English this year.","explanation":"A temporary activity ('this year') → present continuous."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: ___ a big bed in the room.","options":["There's","There are","There is a are"],"answer":"There's","explanation":"One thing → There is (There's)."},
+{"type":"multiple_choice","text":"Choose the correct form: ___ some chairs in the kitchen.","options":["There are","There is","There's"],"answer":"There are","explanation":"Several things → There are."},
+{"type":"multiple_choice","text":"Choose the negative: ___ a TV in my room.","options":["There isn't","There aren't","There no is"],"answer":"There isn't","explanation":"Singular negative: There isn't a..."},
+{"type":"multiple_choice","text":"Choose the question: ___ a lift in the hotel?","options":["Is there","There is","Are there"],"answer":"Is there","explanation":"Question: Is there + singular noun?"},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["There are some books on the table.","There is some books on the table.","There are a books on the table."],"answer":"There are some books on the table.","explanation":"Plural noun → There are + some."},
+{"type":"multiple_choice","text":"Choose the short answer: Are there any shops near here? — Yes, there ___.","options":["are","is","have"],"answer":"are","explanation":"Short answer repeats 'are': Yes, there are."}
+],
+[
+{"type":"multiple_choice","text":"Choose the correct form: I ___ at home yesterday.","options":["was","were","am"],"answer":"was","explanation":"Past of 'am/is' = was."},
+{"type":"multiple_choice","text":"Choose the correct form: They ___ at the cinema last night.","options":["were","was","are"],"answer":"were","explanation":"Past of 'are' = were."},
+{"type":"multiple_choice","text":"Choose the negative: She ___ at school on Monday.","options":["wasn't","weren't","isn't"],"answer":"wasn't","explanation":"Singular past negative: wasn't."},
+{"type":"multiple_choice","text":"Choose the question: ___ you at the party?","options":["Were","Was","Are"],"answer":"Were","explanation":"With 'you' we use 'were': Were you...?"},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["We were very tired after the trip.","We was very tired after the trip.","We are very tired yesterday."],"answer":"We were very tired after the trip.","explanation":"'We' takes 'were' in the past."},
+{"type":"multiple_choice","text":"Choose the short answer: Was the film good? — Yes, it ___.","options":["was","were","is"],"answer":"was","explanation":"Short answer repeats 'was': Yes, it was."}
+],
+[
+{"type":"multiple_choice","text":"Choose the past form of 'work'.","options":["worked","workt","worken"],"answer":"worked","explanation":"Regular verbs add -ed: worked."},
+{"type":"multiple_choice","text":"Choose the past form of 'study'.","options":["studied","studyed","studed"],"answer":"studied","explanation":"Consonant + y → -ied: studied."},
+{"type":"multiple_choice","text":"Choose the past form of 'stop'.","options":["stopped","stoped","stopt"],"answer":"stopped","explanation":"Short vowel + consonant doubles: stopped."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["I lived in London in 2020.","I lifed in London in 2020.","I am lived in London in 2020."],"answer":"I lived in London in 2020.","explanation":"live → lived; no 'am' with past simple."},
+{"type":"multiple_choice","text":"Choose the negative: We ___ TV last night.","options":["didn't watch","didn't watched","don't watched"],"answer":"didn't watch","explanation":"didn't + base verb (no -ed)."},
+{"type":"multiple_choice","text":"Choose the question: ___ you play tennis yesterday?","options":["Did","Do","Were"],"answer":"Did","explanation":"Past simple questions use 'Did' + base verb."}
+],
+[
+{"type":"multiple_choice","text":"Choose the past form of 'go'.","options":["went","goed","gone to"],"answer":"went","explanation":"'Go' is irregular: go → went."},
+{"type":"multiple_choice","text":"Choose the past form of 'have'.","options":["had","haved","has"],"answer":"had","explanation":"'Have' is irregular: have → had."},
+{"type":"multiple_choice","text":"Choose the past form of 'get'.","options":["got","getted","gat"],"answer":"got","explanation":"'Get' is irregular: get → got."},
+{"type":"multiple_choice","text":"Choose the past form of 'do'.","options":["did","doed","done did"],"answer":"did","explanation":"'Do' is irregular: do → did."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["She went to work at eight.","She goed to work at eight.","She did go to work at eight yesterday usually."],"answer":"She went to work at eight.","explanation":"Affirmative past uses the irregular form: went."},
+{"type":"multiple_choice","text":"Choose the negative: I ___ breakfast this morning.","options":["didn't have","didn't had","don't had"],"answer":"didn't have","explanation":"After didn't the verb returns to the base form: have."}
+],
+[
+{"type":"multiple_choice","text":"Choose the past form: see → ___","options":["saw","seed","seen did"],"answer":"saw","explanation":"'See' is irregular: see → saw."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["We arrived late and missed the train.","We arrive late and miss the train yesterday.","We arrived late and missing the train."],"answer":"We arrived late and missed the train.","explanation":"Both actions are in the past: arrived, missed."},
+{"type":"multiple_choice","text":"Choose the question: Where ___ you go last summer?","options":["did","do","were"],"answer":"did","explanation":"Past simple question: Where did you go...?"},
+{"type":"multiple_choice","text":"Choose the negative: They ___ to the party.","options":["didn't come","didn't came","don't came"],"answer":"didn't come","explanation":"didn't + base form: come."},
+{"type":"multiple_choice","text":"Choose the correct sentence.","options":["He bought a ticket and took the bus.","He buyed a ticket and taked the bus.","He did bought a ticket and took the bus."],"answer":"He bought a ticket and took the bus.","explanation":"buy → bought, take → took (irregular)."},
+{"type":"multiple_choice","text":"Choose the short answer: Did you like the film? — Yes, I ___.","options":["did","do","liked"],"answer":"did","explanation":"Short answer repeats 'did': Yes, I did."}
+]
+]

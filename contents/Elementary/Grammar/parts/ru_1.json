@@ -1,0 +1,146 @@
+[
+{"unit":1,"lesson":"1A","topic":"глагол be (утверждение); личные местоимения","rule_en":"Глагол be используется, чтобы сказать, кто человек, откуда он и как себя чувствует. Личные местоимения (I, you, he, she, it, we, they) всегда стоят перед глаголом. В повседневной речи обычно используются сокращения: I'm, you're, he's.","structure":"I + am / he, she, it + is / we, you, they + are","examples_en":["Я Карим, и я из Таджикистана.","Она новая ученица в нашем классе.","Мы сегодня очень счастливы.","Они из Канады."],"tip":"Помните: в английском предложении всегда есть подлежащее — говорим «It is cold», а не «Is cold».","questions":[
+{"text":"Выберите форму: I ___ twenty years old.","explanation":"С «I» всегда «am»."},
+{"text":"Выберите форму: My sister ___ a nurse.","explanation":"«My sister» = she → is."},
+{"text":"Выберите форму: You and Ali ___ late.","explanation":"«You and Ali» = множественное «you» → are."},
+{"text":"Выберите сокращение: «They are here» = ___","explanation":"«They are» сокращается до «They're»."},
+{"text":"Выберите местоимение: ___ is my brother.","explanation":"Подлежащее «he» стоит перед глаголом."},
+{"text":"Выберите правильное предложение.","explanation":"Английскому предложению нужно подлежащее: «It is Monday»."}
+]},
+{"unit":1,"lesson":"1B","topic":"глагол be (отрицание и вопросы)","rule_en":"Отрицание be образуется с not: I'm not, he isn't, they aren't. Вопросы — переносом be перед подлежащее: Are you...? Is she...? Отвечаем кратко: Yes, I am. / No, she isn't.","structure":"отрицание: подлежащее + be + not; вопрос: Be + подлежащее...?","examples_en":["Я не из России — я из Узбекистана.","Его сейчас нет дома.","Ты устал? — Нет.","Это место свободно? — Да."],"tip":"В кратких утвердительных ответах сокращения не используются: «Yes, I am», а не «Yes, I'm».","questions":[
+{"text":"Выберите отрицание: She ___ a teacher.","explanation":"«She» + is + not = isn't."},
+{"text":"Выберите вопрос: ___ they from Italy?","explanation":"«They» требует «are»; в вопросе глагол идёт первым."},
+{"text":"Выберите краткий ответ: Are you hungry? — Yes, I ___.","explanation":"Краткий ответ: Yes, I am (без сокращения)."},
+{"text":"Выберите отрицание: We ___ ready yet.","explanation":"«We» + are + not = aren't."},
+{"text":"Выберите вопрос: ___ your phone new?","explanation":"«Your phone» = it → Is."},
+{"text":"Выберите правильное предложение.","explanation":"Краткий отрицательный ответ: No, she isn't."}
+]},
+{"unit":1,"lesson":"1C","topic":"притяжательные прилагательные: my, your, his...","rule_en":"Притяжательные прилагательные (my, your, his, her, its, our, their) показывают принадлежность. Они стоят перед существительным и не меняются во множественном числе: my book, my books.","structure":"притяжательное прилагательное + существительное","examples_en":["Мой адрес электронной почты — на этой карточке.","Какая у тебя фамилия?","Её номер телефона легко запомнить.","Их учитель из Лондона."],"tip":"Не путайте its (притяжательное) и it's (= it is).","questions":[
+{"text":"Выберите слово: ___ name is Dilshod. (he)","explanation":"Для «he» притяжательное — «his»."},
+{"text":"Выберите слово: We love ___ new flat.","explanation":"«We» → «our» перед существительным."},
+{"text":"Выберите слово: The dog is in ___ house.","explanation":"«Its» без апострофа — притяжательное."},
+{"text":"Выберите слово: ___ books are on the table. (they)","explanation":"«Their» — притяжательное от «they»."},
+{"text":"Выберите правильное предложение.","explanation":"Перед существительным используется «your»."},
+{"text":"Выберите слово: She lives with ___ parents.","explanation":"«She» → «her» перед существительным."}
+]},
+{"unit":2,"lesson":"2A","topic":"единственное и множественное число существительных","rule_en":"Большинство существительных получают -s: key → keys. После -s, -sh, -ch, -x добавляется -es: watch → watches. Согласная + y меняется на -ies: city → cities. Есть неправильные формы: man → men, woman → women, child → children, person → people.","structure":"существительное + -s / -es / -ies; неправильные формы","examples_en":["В моей комнате два окна.","Мне нужны три коробки для этих книг.","Дети в саду.","Большинство людей здесь говорят на двух языках."],"tip":"Выучите неправильные формы наизусть — это очень частые слова.","questions":[
+{"text":"Выберите множественное число слова «city».","explanation":"Согласная + y → -ies."},
+{"text":"Выберите множественное число слова «child».","explanation":"У «child» неправильная форма: children."},
+{"text":"Выберите множественное число слова «box».","explanation":"Слова на -x получают -es."},
+{"text":"Выберите множественное число слова «person».","explanation":"Обычное множественное от «person» — «people»."},
+{"text":"Выберите правильное предложение.","explanation":"key → keys (правильная форма)."},
+{"text":"Выберите множественное число слова «woman».","explanation":"woman → women (неправильная форма)."}
+]},
+{"unit":2,"lesson":"2B","topic":"прилагательные; усилители very / really / quite","rule_en":"Прилагательные описывают существительные, стоят перед ними или после be и не изменяются во множественном числе: a black cat, black cats. Усилители very, really и quite делают прилагательное сильнее или слабее и стоят перед ним.","structure":"(усилитель) + прилагательное + существительное / be + (усилитель) + прилагательное","examples_en":["Это действительно интересный фильм.","Эти туфли довольно дорогие.","Мой город очень старый и красивый.","Он водит дорогую немецкую машину."],"tip":"Quite слабее, чем very: quite good < very good < really good.","questions":[
+{"text":"Выберите правильный порядок.","explanation":"Усилитель + прилагательное + существительное."},
+{"text":"Выберите правильное предложение.","explanation":"Прилагательные никогда не получают -s."},
+{"text":"Что самое слабое? «The food is ___ good.»","explanation":"«Quite» слабее, чем «very» и «really»."},
+{"text":"Выберите правильное предложение.","explanation":"Усилитель стоит прямо перед прилагательным."},
+{"text":"Выберите правильный порядок.","explanation":"Размер обычно идёт перед цветом: small red car."},
+{"text":"Выберите правильное предложение.","explanation":"be + усилитель + прилагательное."}
+]},
+{"unit":2,"lesson":"2C","topic":"императивы; let's","rule_en":"Императив (базовая форма глагола) — для инструкций и приказов: Sit down. Отрицание — Don't + глагол: Don't worry. Let's + глагол — предложение сделать что-то вместе: Let's go home.","structure":"(Don't) + глагол; Let's + глагол","examples_en":["Выключите телефон, пожалуйста.","Не нервничай — это всего лишь тест.","Давай сделаем перерыв.","Помедленнее! Ты идёшь слишком быстро."],"tip":"Добавьте «please», чтобы звучать вежливо: «Close the door, please».","questions":[
+{"text":"Выберите правильный императив.","explanation":"Императив = базовая форма без подлежащего."},
+{"text":"Выберите отрицательный императив.","explanation":"Отрицательный императив = Don't + глагол."},
+{"text":"Выберите предложение: ___ watch a film tonight.","explanation":"Let's + глагол — предложение сделать вместе."},
+{"text":"Выберите правильное предложение.","explanation":"С «be» отрицательный императив — «Don't be»."},
+{"text":"Выберите правильное предложение.","explanation":"Отрицание Let's — Let's not + глагол."},
+{"text":"Выберите правильную инструкцию.","explanation":"Инструкции используют базовую форму глагола."}
+]},
+{"unit":3,"lesson":"3A","topic":"Present Simple (утверждение и отрицание)","rule_en":"Present Simple — для привычек, распорядка и фактов. С I/you/we/they — базовая форма; с he/she/it добавляется -s. Отрицание: don't / doesn't + глагол.","structure":"подлежащее + глагол(-s); подлежащее + don't/doesn't + глагол","examples_en":["Я готовлю ужин каждый вечер.","Мой отец работает в банке.","Мы не смотрим телевизор по утрам.","Она не пьёт кофе."],"tip":"После doesn't глагол теряет -s: «She doesn't work», а не «She doesn't works».","questions":[
+{"text":"Выберите форму: He ___ breakfast at seven.","explanation":"«He» требует форму с -s; «have» → «has»."},
+{"text":"Выберите отрицание: I ___ meat.","explanation":"С «I» отрицание: don't + глагол."},
+{"text":"Выберите отрицание: She ___ in this office.","explanation":"doesn't + базовый глагол (без -s)."},
+{"text":"Выберите правильное предложение.","explanation":"«They» требует базовую форму."},
+{"text":"Выберите форму: My mother ___ English at school.","explanation":"Глаголы на -ch получают -es для he/she/it."},
+{"text":"Выберите правильное предложение.","explanation":"«We» → don't + базовый глагол."}
+]},
+{"unit":3,"lesson":"3B","topic":"Present Simple (вопросы)","rule_en":"Вопросы образуются с do / does + подлежащее + базовый глагол: Do you work? Does she work? Do — с I/you/we/they, does — с he/she/it. Основной глагол в вопросе никогда не получает -s.","structure":"Do/Does + подлежащее + глагол?","examples_en":["Тебе нравится твоя работа?","Он много путешествует?","Где они обедают?","Во сколько открывается магазин?"],"tip":"Отвечайте с do/does, а не основным глаголом: «Yes, I do», а не «Yes, I like».","questions":[
+{"text":"Выберите вопрос: ___ you work at weekends?","explanation":"«You» требует «do» в вопросах."},
+{"text":"Выберите вопрос: ___ she speak German?","explanation":"«She» требует «does»."},
+{"text":"Выберите правильный вопрос.","explanation":"После «does» глагол без -s."},
+{"text":"Выберите краткий ответ: Do they study here? — Yes, they ___.","explanation":"Краткие ответы повторяют do/does."},
+{"text":"Выберите правильный вопрос.","explanation":"Вопросительное слово + do + подлежащее + глагол."},
+{"text":"Выберите правильный вопрос.","explanation":"«The film» = it → does."}
+]},
+{"unit":3,"lesson":"3C","topic":"порядок слов в вопросах; вопросительные слова","rule_en":"Английские вопросы имеют жёсткий порядок: (Вопросительное слово) + вспомогательный глагол + подлежащее + глагол. Частые слова: What, Where, When, Who, Why, How, How much, How many, What kind of.","structure":"ВС + do/does/be + подлежащее + глагол","examples_en":["Почему ты встаёшь так рано?","Сколько у неё братьев?","Какую музыку они играют?","Когда заканчивается урок?"],"tip":"Запомните: в вопросе вспомогательный глагол идёт перед подлежащим.","questions":[
+{"text":"Выберите правильный вопрос.","explanation":"ВС + do + подлежащее + глагол."},
+{"text":"Выберите слово: ___ do you visit your grandparents? — Once a month.","explanation":"«How often» спрашивает о частоте."},
+{"text":"Выберите правильный вопрос.","explanation":"ВС + be + подлежащее."},
+{"text":"Выберите слово: ___ many students are in your class?","explanation":"«How many» спрашивает о количестве."},
+{"text":"Выберите правильный вопрос.","explanation":"«He» → does + базовый глагол."},
+{"text":"Выберите правильный вопрос.","explanation":"ВС + do + подлежащее + глагол."}
+]},
+{"unit":4,"lesson":"4A","topic":"притяжательное 's; Whose...?","rule_en":"Добавьте 's к человеку, чтобы показать принадлежность: Anna's bag. К правильному множественному числу — только апостроф: my parents' house. О владельце спрашиваем с Whose: Whose phone is this?","structure":"человек + 's + предмет; Whose + существительное + be...?","examples_en":["Это комната моего брата.","Чьи это ключи? — Омара.","Фотографии моих бабушки и дедушки очень старые.","Жена Карима работает в больнице."],"tip":"«Whose» спрашивает о владельце; «Who's» значит «Who is» — звучат одинаково!","questions":[
+{"text":"Выберите форму: This is ___ car. (my father)","explanation":"К владельцу добавляем 's: my father's car."},
+{"text":"Выберите вопрос: ___ jacket is this?","explanation":"«Whose» спрашивает о принадлежности."},
+{"text":"Выберите форму: my ___ house (parents, мн.ч.)","explanation":"Правильное множественное + только апостроф: parents'."},
+{"text":"Выберите правильное предложение.","explanation":"Человек + 's + предмет."},
+{"text":"Выберите ответ: Whose books are these? — They're ___.","explanation":"Владелец получает 's: Anna's."},
+{"text":"Выберите правильное предложение.","explanation":"Одна сестра → sister's."}
+]},
+{"unit":4,"lesson":"4B","topic":"предлоги времени (at, in, on) и места (at, in, to)","rule_en":"Время: at + час (at six), on + день/дата (on Monday), in + месяц, сезон, год (in July). Место: in + город/страна (in Dushanbe), at + точка (at work, at home), to + движение (go to school).","structure":"at/on/in + время; in/at/to + место","examples_en":["Я встаю в полседьмого.","У нас английский по вторникам.","Она родилась в 1998 году.","После работы он идёт в спортзал."],"tip":"Говорим «at night», но «in the morning / afternoon / evening».","questions":[
+{"text":"Выберите предлог: The film starts ___ eight o'clock.","explanation":"at + время на часах."},
+{"text":"Выберите предлог: My birthday is ___ May.","explanation":"in + месяц."},
+{"text":"Выберите предлог: We don't work ___ Sundays.","explanation":"on + дни недели."},
+{"text":"Выберите предлог: She lives ___ Samarkand.","explanation":"in + город."},
+{"text":"Выберите предлог: The children go ___ school by bus.","explanation":"to + движение к месту."},
+{"text":"Выберите предлог: My mother is ___ work now.","explanation":"at + место, где кто-то находится: at work."}
+]},
+{"unit":4,"lesson":"4C","topic":"позиция наречий и выражений частотности","rule_en":"Наречия частотности (always, usually, often, sometimes, hardly ever, never) стоят перед основным глаголом, но после be. Длинные выражения (every day, twice a week, once a month) обычно идут в конце предложения.","structure":"подлежащее + наречие + глагол / be + наречие; выражение — в конце","examples_en":["Я обычно обедаю в час.","Она никогда не опаздывает на работу.","Они навещают бабушку каждое воскресенье.","Мы ходим в кино два раза в месяц."],"tip":"«Never» и «hardly ever» уже отрицательные — не добавляйте «not».","questions":[
+{"text":"Выберите правильный порядок.","explanation":"Наречие частотности — перед основным глаголом."},
+{"text":"Выберите правильный порядок с «be».","explanation":"После «be»: are usually."},
+{"text":"Выберите правильное предложение.","explanation":"Длинные выражения идут в конце."},
+{"text":"Выберите правильное предложение.","explanation":"«Never» стоит перед глаголом и не требует «not»."},
+{"text":"Что означает примерно 90% времени?","explanation":"usually ≈ 90%, sometimes ≈ 50%, hardly ever ≈ 5%."},
+{"text":"Выберите правильное предложение.","explanation":"Наречие после «be»: is always."}
+]},
+{"unit":5,"lesson":"5A","topic":"can / can't (умение и разрешение)","rule_en":"Can + глагол — об умении (I can swim) и разрешении (You can park here). Отрицание — can't (cannot). Can одинаков для всех лиц, не получает -s и не требует «to».","structure":"подлежащее + can/can't + глагол","examples_en":["Она очень хорошо играет на гитаре.","Я не могу прийти на завтрашнюю встречу.","Газету можно купить на вокзале.","Можно нам сесть здесь? — Да, конечно."],"tip":"Произношение: в утверждениях «can» слабое /kən/; «can't» — сильное /kɑːnt/.","questions":[
+{"text":"Выберите форму: My grandmother ___ use a smartphone.","explanation":"«Can» одинаков для всех лиц."},
+{"text":"Выберите правильное предложение.","explanation":"can + базовый глагол."},
+{"text":"Выберите отрицание: I ___ find my glasses.","explanation":"Отрицание can — can't."},
+{"text":"Выберите вопрос: ___ you drive?","explanation":"Can + подлежащее + глагол."},
+{"text":"Выберите краткий ответ: Can they swim? — No, they ___.","explanation":"Краткий ответ повторяет can/can't."},
+{"text":"Выберите правильное предложение.","explanation":"can + базовый глагол, без «to» и «-ing»."}
+]},
+{"unit":5,"lesson":"5B","topic":"Present Continuous","rule_en":"Present Continuous (be + глагол-ing) — о действиях сейчас или около этого времени: I'm reading. Правописание: make → making, sit → sitting, study → studying.","structure":"подлежащее + am/is/are + глагол-ing","examples_en":["Соседи играют громкую музыку.","Я ищу свои ключи.","Она прямо сейчас говорит по телефону.","Мы ждём автобус."],"tip":"Маркеры времени: now, right now, at the moment.","questions":[
+{"text":"Выберите форму: He ___ a shower now.","explanation":"Действие сейчас → Present Continuous."},
+{"text":"Выберите форму: They ___ football in the park.","explanation":"«They» → are + глагол-ing."},
+{"text":"Выберите -ing форму глагола «sit».","explanation":"Краткий гласный + согласная удваивается: sitting."},
+{"text":"Выберите отрицание: I ___ TV — I'm working.","explanation":"be + not + глагол-ing."},
+{"text":"Выберите вопрос: ___ she sleeping?","explanation":"Вопросы: Is/Are + подлежащее + глагол-ing."},
+{"text":"Выберите правильное предложение.","explanation":"Present Continuous требует «be» и «-ing»."}
+]},
+{"unit":5,"lesson":"5C","topic":"Present Simple или Present Continuous?","rule_en":"Present Simple = привычки, распорядок, факты (I work every day). Present Continuous = действия сейчас или временные ситуации (I'm working today from home). Некоторые глаголы (like, want, know, need) обычно не употребляются в Continuous.","structure":"привычка → Present Simple; сейчас/временно → Present Continuous","examples_en":["Весной здесь обычно много дождей.","Возьми зонт — идёт дождь.","Она работает в школе, но на этой неделе работает из дома.","Я хочу чашку чая."],"tip":"Глаголы состояния «want, like, know, need» остаются в Present Simple.","questions":[
+{"text":"Выберите форму: Listen! Someone ___ the piano.","explanation":"«Listen!» → происходит сейчас → Continuous."},
+{"text":"Выберите форму: The shops ___ at 9 a.m. every day.","explanation":"Распорядок → Present Simple; «shops» — множественное."},
+{"text":"Выберите форму: I ___ this song — turn it up!","explanation":"«Like» — глагол состояния → Present Simple."},
+{"text":"Выберите форму: This month she ___ in a hotel.","explanation":"Временная ситуация → Continuous."},
+{"text":"Выберите форму: What ___ you ___ at the moment?","explanation":"«At the moment» → Present Continuous."},
+{"text":"Выберите правильное предложение.","explanation":"Общий факт → Present Simple с -s."}
+]},
+{"unit":6,"lesson":"6A","topic":"объектные местоимения: me, you, him...","rule_en":"Объектные местоимения (me, you, him, her, it, us, them) заменяют существительное после глагола или предлога: I know him. Listen to me. В этой позиции нельзя использовать субъектное местоимение.","structure":"глагол/предлог + объектное местоимение","examples_en":["Мне нравится эта история — прочитай её ещё раз!","Она звонит маме и разговаривает с ней каждый день.","Наш учитель задаёт нам много домашней работы.","Ты их знаешь? — Да, это мои соседи."],"tip":"Пары для запоминания: I→me, he→him, she→her, we→us, they→them.","questions":[
+{"text":"Выберите местоимение: This is Amir. I work with ___.","explanation":"После предлога: him."},
+{"text":"Выберите местоимение: We're here! Can you see ___?","explanation":"«We» → объектное «us»."},
+{"text":"Выберите местоимение: I like these photos. Look at ___.","explanation":"«They» → объектное «them»."},
+{"text":"Выберите местоимение: She's my best friend. I tell ___ everything.","explanation":"«She» → объектное «her»."},
+{"text":"Выберите правильное предложение.","explanation":"«I» → объектное «me» после глагола."},
+{"text":"Выберите местоимение: The film is great. Don't miss ___!","explanation":"Предмет → «it»."}
+]},
+{"unit":6,"lesson":"6B","topic":"like + (глагол + -ing); даты, порядковые числительные","rule_en":"После like, love, hate и enjoy используется глагол + -ing: I like dancing. В датах — порядковые числительные: the first, the second, the third... Пишем «5 May», говорим «the fifth of May».","structure":"like/love/hate/enjoy + глагол-ing; the + порядковое + of + месяц","examples_en":["Я люблю получать подарки.","Он ненавидит стоять в очередях.","Её день рождения — третьего июня.","Новый год — первого января."],"tip":"Запомните: 1st first, 2nd second, 3rd third, 5th fifth, 12th twelfth, 20th twentieth.","questions":[
+{"text":"Выберите форму: She enjoys ___ new people.","explanation":"enjoy + глагол-ing."},
+{"text":"Выберите форму: I hate ___ up early on Sundays.","explanation":"hate + глагол-ing."},
+{"text":"Выберите порядковое для 3.","explanation":"3 → third (неправильное)."},
+{"text":"Выберите порядковое для 12.","explanation":"twelve → twelfth."},
+{"text":"Как сказать дату «1 March»?","explanation":"the + порядковое + of + месяц."},
+{"text":"Выберите правильное предложение.","explanation":"love + глагол-ing."}
+]},
+{"unit":6,"lesson":"6C","topic":"повторение: be или do?","rule_en":"Be (am/is/are) — с существительными, прилагательными и формами -ing: She's a singer. Are you tired? Do/does — с другими глаголами в вопросах и отрицаниях: Do you sing? He doesn't play. Не смешивайте их.","structure":"be + существительное/прилагательное/-ing; do/does + глагол","examples_en":["Ты музыкант? — Да.","Ты играешь в группе? — Нет.","Она сейчас не слушает музыку.","Он не любит джаз."],"tip":"Если в предложении есть другой основной глагол — do/does; если нет — be.","questions":[
+{"text":"Выберите вопрос: ___ you like rock music?","explanation":"Основной глагол «like» → do."},
+{"text":"Выберите вопрос: ___ you a student?","explanation":"Другого глагола нет → be."},
+{"text":"Выберите отрицание: He ___ speak French.","explanation":"Основной глагол «speak» → doesn't."},
+{"text":"Выберите отрицание: They ___ at the concert.","explanation":"«At the concert» без глагола → be."},
+{"text":"Выберите вопрос: ___ she singing now?","explanation":"Форма -ing → be: Is she singing?"},
+{"text":"Выберите правильное предложение.","explanation":"don't + глагол; be + именная часть."}
+]}
+]

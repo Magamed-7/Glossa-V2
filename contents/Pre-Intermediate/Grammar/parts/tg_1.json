@@ -1,0 +1,146 @@
+[
+{"unit":1,"lesson":"1A","topic":"тартиби калимаҳо дар саволҳо","rule_en":"Саволҳои англисӣ бо ин тартиб сохта мешаванд: калимаи саволӣ, феъли ёвар, мубтадо, масдар. Барои Present Simple do/does истифода мешавад, барои Past Simple — did. Бо феъли be мубтадо ва феъл ҷои худро иваз мекунанд, феъли ёвар илова намешавад.","structure":"(КС) + ёвар + мубтадо + масдар; (КС) + be + мубтадо","examples_en":["Ту чӣ гуна китобҳо мехонӣ?","Забони англисиро дар куҷо омӯхтаӣ?","Ҷиянат чанд бор ба ту меояд?","Волидони ту аз як шаҳранд?"],"tip":"Ба саволҳо бо be ҳеҷ гоҳ do/does/did илова накунед: «Where are you from?», на «Where do you are from?»","questions":[
+{"text":"Саволи дурустро интихоб кунед.","explanation":"КС + do + мубтадо + феъл."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"did + феъли аслӣ."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«Калонсол» be-ро мехоҳад, бинобар ин инверсия: Is your brother...?"},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Пас аз does феъл дар шакли аслӣ."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Пешоянд одатан ба охир меравад: live with."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Саволи инкорӣ: didn't + мубтадо + феъли аслӣ."}
+]},
+{"unit":1,"lesson":"1B","topic":"Present Simple","rule_en":"Present Simple барои одатҳо, реҷаи рӯз, ақидаҳо ва вазъиятҳои доимӣ истифода мешавад. -s-ро барои he/she/it фаромӯш накунед ва don't/doesn't-ро дар инкор. Зарфҳои такрор (always, usually, often) пеш аз феъли асосӣ меоянд.","structure":"мубтадо + феъл(-s); don't/doesn't + феъл","examples_en":["Вай одатан бо одамони нав зуд забон меёбад.","Дӯсти беҳтарини ман ҳеҷ гоҳ дар бораи чизҳои хурд нигарон намешавад.","Вай ба падараш тамоман монанд нест.","Ту рӯзҳои истироҳат чӣ кор мекунӣ?"],"tip":"«What does he do?» дар бораи касб мепурсад; «What is he doing?» — дар бораи ҳозир.","questions":[
+{"text":"Шаклро интихоб кунед: My sister ___ care of her plants every day.","explanation":"«My sister» = she → takes."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"doesn't + феъли аслӣ."},
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"Зарфи такрор пеш аз феъли асосӣ."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"does + феъли аслӣ."},
+{"text":"Шаклро интихоб кунед: Water ___ at 100 degrees.","explanation":"Факти илмӣ → Present Simple бо -s."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«I» → don't + феъли аслӣ."}
+]},
+{"unit":1,"lesson":"1C","topic":"Present Continuous","rule_en":"Present Continuous (be + феъл-ing) барои амалҳои ҳозира, наздик ба ҳозира ё вазъиятҳои муваққатӣ истифода мешавад. Инчунин барои тасвири суратҳо ва саҳнаҳо. Феълҳои ҳолат (know, want, like, need, believe) одатан дар Continuous истифода намешаванд.","structure":"мубтадо + am/is/are + феъл-ing","examples_en":["Ман куртаи сиёҳи андозаи миёна меҷӯям.","Дар ин сурат дӯстонам назди театр истодаанд.","Вай назди аммааш зиндагӣ мекунад, то хонааш тайёр шавад.","Чаро палто пӯшидаӣ? Имрӯз гарм аст!"],"tip":"Барои тасвири сурат Continuous истифода баред: «Дар ин расм одамон рақс мекунанд».","questions":[
+{"text":"Шаклро интихоб кунед: Look, the model ___ a traditional dress.","explanation":"Ҳозир рӯй медиҳад / тасвири саҳна → Continuous."},
+{"text":"Шаклро интихоб кунед: I ___ a new phone at the moment — mine is broken.","explanation":"Вазъияти муваққатӣ → Continuous."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Need» феъли ҳолат аст → Present Simple."},
+{"text":"Саволро интихоб кунед: ___ they still ___ in the queue?","explanation":"be + мубтадо + феъл-ing."},
+{"text":"Шаклро интихоб кунед: She usually wears jeans, but today she ___ a suit.","explanation":"Одат vs имрӯз: имрӯз → Continuous."},
+{"text":"Инкорро интихоб кунед: We ___ anything special this week.","explanation":"be + not + феъл-ing."}
+]},
+{"unit":2,"lesson":"2A","topic":"Past Simple: феълҳои мунтазам ва номунтазам","rule_en":"Past Simple барои амалҳои тамомшуда дар гузашта, аксар вақт бо ишораи вақт (last year, in 2020, two days ago). Феълҳои мунтазам -ed мегиранд; номунтазамҳоро бояд омӯхт (go–went, buy–bought, lose–lost). Саволу инкор бо did/didn't + шакли аслӣ.","structure":"феъл-ed / шакли номунтазам; did(n't) + феъли аслӣ","examples_en":["Мо меҳмонхонаро онлайн брон карда, бо корт пардохт кардем.","Пасспортамро дар рӯзи охирини таътил гум кардам.","Онҳо аз саёҳат хурсанд нашуданд, зеро тамоми рӯз борон борид.","Ту дар Истанбул бисёр сурат гирифтӣ?"],"tip":"Ибораҳои вақти гузашта: yesterday, last week, ago, in 2015, when I was a child.","questions":[
+{"text":"Шакли гузаштаи «fly»-ро интихоб кунед.","explanation":"fly → flew (номунтазам)."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"spend → spent."},
+{"text":"Инкорро интихоб кунед: The guide ___ any English.","explanation":"didn't + шакли аслӣ."},
+{"text":"Саволро интихоб кунед: ___ you ___ the castle?","explanation":"Did + феъли аслӣ."},
+{"text":"Шакли гузаштаи «catch»-ро интихоб кунед.","explanation":"catch → caught."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"feel → felt; stay → stayed."}
+]},
+{"unit":2,"lesson":"2B","topic":"Past Continuous","rule_en":"Past Continuous (was/were + феъл-ing) барои амале, ки дар лаҳзаи муайяни гузашта рафта истода буд, аксар вақт бо амали дигари Past Simple канда мешавад. Инчунин барои эҷоди фон дар ҳикоя.","structure":"was/were + феъл-ing; when + Past Simple","examples_en":["Соати нӯҳ мо ҳанӯз наҳорӣ мекардем.","Вай сурат мегирифт, вақте паррандае ба сараш нишаст.","Офтоб медурахшид ва одамон дар қаҳвахонаҳо менишастанд.","Ту дар нисфи шаб чӣ кор мекардӣ?"],"tip":"Амали дарози фонӣ → Past Continuous; амали кӯтоҳи каннда → Past Simple.","questions":[
+{"text":"Шаклро интихоб кунед: I ___ TV when you called.","explanation":"Амал дар раванд, бо «called» канда шуд."},
+{"text":"Шаклро интихоб кунед: They ___ football at five o'clock yesterday.","explanation":"«They» → were + -ing дар лаҳзаи гузашта."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Continuous-и фонӣ + Past Simple-и кӯтоҳ."},
+{"text":"Саволро интихоб кунед: What ___ you ___ when I saw you?","explanation":"were + мубтадо + феъл-ing."},
+{"text":"Инкорро интихоб кунед: He ___ attention during the meeting.","explanation":"was/were + not + феъл-ing."},
+{"text":"Оғози дурусти ҳикояро интихоб кунед.","explanation":"Тасвири саҳна → Past Continuous."}
+]},
+{"unit":2,"lesson":"2C","topic":"пайвандакҳои вақт ва алоқа","rule_en":"Пайвандакҳои вақт воқеаҳоро дар ҳикоя тартиб медиҳанд: first, then, after that, later, when, suddenly, finally. Пайвандакҳои алоқа андешаҳоро мепайванданд: because (сабаб), so (натиҷа), but (муқобилгузорӣ), although (муқобилгузории ғайричашмдошт).","structure":"пайвандак + ҷумла; ҷумла + алоқа + ҷумла","examples_en":["Аввал мошинро гузоштем, баъд ба маркат рафтем.","Ногаҳон саг ба вағидан сар кард.","Ман хаста будам, бинобар ин барвақт хобидам.","Гарчанде сард буд, мо берун нишастем."],"tip":"because = сабаб, so = натиҷа: «Ман хона мондам, зеро бемор шудам» / «Ман бемор шудам, бинобар ин хона мондам».","questions":[
+{"text":"Калимаро интихоб кунед: We missed the bus, ___ we took a taxi.","explanation":"Натиҷа → so."},
+{"text":"Калимаро интихоб кунед: She stayed at home ___ she felt ill.","explanation":"Сабаб → because."},
+{"text":"Калимаро интихоб кунед: ___ it was expensive, he bought the jacket.","explanation":"Муқобилгузории ғайричашмдошт → although."},
+{"text":"Калимаро интихоб кунед: ___ , the lights went out and everyone screamed.","explanation":"«Suddenly» воқеаи ногаҳониро муаррифӣ мекунад."},
+{"text":"Калимаи тартибро интихоб кунед: ___ we had dinner, and after that we watched a film.","explanation":"«First» силсилаи воқеаҳоро сар мекунад."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Муқобилгузорӣ → but."}
+]},
+{"unit":3,"lesson":"3A","topic":"be going to (нақшаҳо ва пешгӯиҳо)","rule_en":"Be going to + феъл барои нақшаву ниятҳое, ки пеш аз гуфтугӯ қарор дода шудаанд, ва барои пешгӯиҳо аз рӯи далели ҳозира истифода мешавад. Инкор: be + not + going to. Саволҳо: be + мубтадо + going to.","structure":"be + going to + феъли аслӣ","examples_en":["Мо дар фурудгоҳ мошин иҷора мекунем.","Ман бор супоридан намехоҳам — танҳо бори дастӣ.","Ба навбат нигар! Мо соатҳо интизор мешавем.","Пас аз парвоз чӣ кор карданӣ ҳастӣ?"],"tip":"Нақшаи пешакӣ → going to; қарори лаҳзавӣ → will.","questions":[
+{"text":"Шаклро интихоб кунед: They ___ a house near the sea next year.","explanation":"be + going to + феъли аслӣ."},
+{"text":"Пешгӯиро бо далел интихоб кунед: The plane is shaking! I think we ___ a storm.","explanation":"Далел ҳозир → going to."},
+{"text":"Инкорро интихоб кунед: She ___ to work abroad.","explanation":"be + not + going to."},
+{"text":"Саволро интихоб кунед: ___ you ___ your grandparents this summer?","explanation":"be + мубтадо + going to + феъл."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"going to + феъли аслӣ."},
+{"text":"Шаклро интихоб кунед: It's 5 a.m. and he's still awake — he ___ tired at work.","explanation":"Пешгӯӣ аз далел → going to be."}
+]},
+{"unit":3,"lesson":"3B","topic":"Present Continuous (тартиботи оянда)","rule_en":"Present Continuous барои тартиботи собити оянда — нақшаҳо бо вақту ҷои муайян, аксар вақт дар рӯзномача навишташуда истифода мешавад: We're meeting at six. Хеле маъмул бо феълҳои ҳаракат (go, come, leave, arrive).","structure":"мубтадо + be + феъл-ing + вақти оянда","examples_en":["Пагоҳ субҳ ман назди дандонпизишк меравам.","Онҳо моҳи сентябр хонадор мешаванд.","Мо соати ҳафт меравем, бинобар ин дер накун.","Вай якшанбе бегоҳ ба Душанбе мерасад."],"tip":"Тартиботи бо вақт/ҷои муайян → Present Continuous; нияти умумӣ → going to.","questions":[
+{"text":"Шаклро интихоб кунед: We ___ dinner with my boss on Friday.","explanation":"Тартиботи муайян → Present Continuous."},
+{"text":"Шаклро интихоб кунед: What time ___ your train ___ tomorrow?","explanation":"Тартибот: is + феъл-ing."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"be + феъл-ing барои тартиботи дар рӯзномача."},
+{"text":"Инкорро интихоб кунед: I ___ tonight — I'm too busy.","explanation":"be + not + феъл-ing."},
+{"text":"Пешояндро интихоб кунед: The team arrives ___ Tashkent at noon.","explanation":"arrive in + шаҳр."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Тартиботи оянда бо вақти муайян → Present Continuous."}
+]},
+{"unit":3,"lesson":"3C","topic":"ҷумлаҳои пайрави муайянкунанда","rule_en":"Ҷумлаҳои пайрави муайянкунанда мушаххас мекунанд, дар бораи кӣ ё чӣ гап меравад. Who — барои одамон, which — барои чизҳо, that — барои ҳарду, where — барои ҷойҳо: A chef is a person who cooks in a restaurant. Ҷонишини дуюми мубтадо илова накунед.","structure":"исм + who/which/that/where + ҷумлаи пайрав","examples_en":["Луғат китобест, ки калимаҳоро шарҳ медиҳад.","Вай духтуре аст, ки ба бибиям ёрӣ дод.","Ин қаҳвахонаест, ки мо аввал вохӯрдем.","Ман одамонеро дӯст медорам, ки фикрашонро мегӯянд."],"tip":"Тасвиркунӣ: агар калимаро фаромӯш кунед, онро тасвир кунед — «It's a thing which you use for...»","questions":[
+{"text":"Калимаро интихоб кунед: A pilot is a person ___ flies planes.","explanation":"Одам → who."},
+{"text":"Калимаро интихоб кунед: A fridge is a machine ___ keeps food cold.","explanation":"Чиз → which."},
+{"text":"Калимаро интихоб кунед: A market is a place ___ you can buy fresh food.","explanation":"Ҷой → where."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"who + феъл, бе ҷонишини иловагӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Чиз → that/which."},
+{"text":"Таърифи дурустро интихоб кунед.","explanation":"Чиз → which."}
+]},
+{"unit":4,"lesson":"4A","topic":"Present Perfect + yet, just, already","rule_en":"Present Perfect (have/has + сифати феълӣ) бо just (амали хеле охирин), already (пештар аз интизорӣ) ва yet (дар инкору саволҳо, то ҳол) истифода мешавад: I've just finished. She's already done it. Have you washed up yet?","structure":"have/has (+ just/already) + сифати феълӣ; ... yet (охири инкору саволҳо)","examples_en":["Ман ҳозир кроватҳоро мондам.","Вай аллакай харид кардааст.","Ошхонаро тоза кардаӣ?","Мо ҳанӯз партовро набаровардаем."],"tip":"just/already дар миён меоянд; yet дар охир меояд.","questions":[
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Just» байни have ва сифати феълӣ меояд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Already» пеш аз сифати феълӣ."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«Yet» дар охир меояд."},
+{"text":"Инкорро интихоб кунед: They ___ the table yet.","explanation":"have + not + сифати феълӣ (lay → laid)."},
+{"text":"Сифати феълии «make»-ро интихоб кунед.","explanation":"make → made → made."},
+{"text":"Ҷавоби дурустро интихоб кунед: Can you help me? — Sorry, I ___ left the house.","explanation":"have + just + сифати феълӣ."}
+]},
+{"unit":4,"lesson":"4B","topic":"Present Perfect ё Past Simple? (1)","rule_en":"Present Perfect барои амалҳои охирин ва таҷриба бе вақти мушаххас истифода мешавад. Past Simple — вақте вақт гуфта шудааст ё тамом шудааст: I've bought a new bag (охирин, бе вақт) vs I bought it last Saturday (вақт гуфта шуд). Сӯҳбат аксар вақт бо Perfect сар мешавад ва бо Past Simple идома меёбад.","structure":"perfect: бе вақт; past simple: вақти тамомшуда","examples_en":["Ман сумкаи нав харидам. — Ҳақиқатан? Онро дар куҷо харидӣ?","Вай тамоми пулашро сарф кард. Бештарашро ба пойафзол.","Ту ягон бор ба мағоза чизе баргардонда будӣ? — Ҳа, моҳи гузашта курта баргардондам.","Мо ду бор дар он маркази савдо будем."],"tip":"Мавзӯъро бо Perfect сар кунед, тафсилотро бо Past Simple диҳед.","questions":[
+{"text":"Шаклро интихоб кунед: I ___ my wallet! I can't find it anywhere.","explanation":"Амали охирин, натиҷа ҳозир → Present Perfect."},
+{"text":"Шаклро интихоб кунед: We ___ this sofa in 2021.","explanation":"Вақт гуфта шуд (2021) → Past Simple."},
+{"text":"Ҷуфти дурустро интихоб кунед: I ___ a great film. — When ___ you see it?","explanation":"Perfect барои сар кардани мавзӯъ; Past Simple бо «when»."},
+{"text":"Шаклро интихоб кунед: ___ you ever ___ anything online?","explanation":"Таҷриба → Present Perfect + сифати феълӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"wear → worn (сифати феълӣ)."},
+{"text":"Шаклро интихоб кунед: They ___ the bill an hour ago.","explanation":"«Як соат пеш» → Past Simple."}
+]},
+{"unit":4,"lesson":"4C","topic":"something, anything, nothing ва ғ.","rule_en":"Калимаҳои таркибӣ бо some- дар ҷумлаҳои тасдиқӣ (something, someone, somewhere); any- дар инкору саволҳо (anything, anyone, anywhere); no- ҷумларо бо феъли тасдиқӣ инкорӣ мекунад (nothing, no one, nowhere). Everything/everyone феъли танҳоро мехоҳанд.","structure":"some-/any-/no-/every- + thing/one/where","examples_en":["Ман барои истироҳат чизи махсусе харидам.","Вақте ки ман набудам, касе занг зад?","Имшаб дар телевизион чизи ҷолибе нест.","Ҳама аз сафар ба ваҷд омада буданд."],"tip":"Ду инкорро истифода набаред: «I didn't see anything», на «I didn't see nothing».","questions":[
+{"text":"Калимаро интихоб кунед: I'm hungry — is there ___ to eat?","explanation":"Савол → anything."},
+{"text":"Калимаро интихоб кунед: She said ___ , and left the room quietly.","explanation":"Феъли тасдиқӣ + nothing = маънои инкорӣ."},
+{"text":"Калимаро интихоб кунед: Let's go ___ warm this winter.","explanation":"Пешниҳоди мусбат → somewhere."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Феъли инкорӣ → anyone."},
+{"text":"Шаклро интихоб кунед: Everything ___ ready for the party.","explanation":"Everything + феъли танҳо."},
+{"text":"Калимаро интихоб кунед: ___ knocked at the door, but when I opened it, ___ was there.","explanation":"Тасдиқ → someone; маънои инкорӣ → no one."}
+]},
+{"unit":5,"lesson":"5A","topic":"дараҷаи муқоисавии сифатҳо ва зарфҳо; as...as","rule_en":"Муқоиса: сифат-er / more + сифат + than. Зарфҳо одатан more истифода мебаранд: more quickly. Барои баробарӣ as...as ва барои фарқ not as...as: He's as tall as his father. It's not as cold as yesterday. Номунтазам: better, worse, further.","structure":"-er / more ... than; (not) as ... as","examples_en":["Метро аз автобус тезтар аст.","Вай англисиро аз ман равонтар гап мезанад.","Имрӯз мисли дирӯз гарм нест.","Натиҷаҳои ман аз соли гузашта бадтаранд."],"tip":"as...as = баробар; not as...as = камтар.","questions":[
+{"text":"Шаклро интихоб кунед: This exam was ___ than the last one.","explanation":"easy → easier."},
+{"text":"Шаклро интихоб кунед: He drives ___ than his brother.","explanation":"Зарфҳои бо -ly → more + зарф."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"as + сифат + as."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"not as ... as = камтар аз."},
+{"text":"Дараҷаи муқоисавии «far»-ро интихоб кунед.","explanation":"far → further (номунтазам)."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Сифати кӯтоҳ + -er + than."}
+]},
+{"unit":5,"lesson":"5B","topic":"дараҷаи олӣ (+ ever + Present Perfect)","rule_en":"Дараҷаи олӣ як чизро бо тамоми гурӯҳ муқоиса мекунад: the biggest, the most beautiful. Модели хеле маъмул: дараҷаи олӣ + ever + Present Perfect: It's the best film I've ever seen. Пас аз дараҷаи олӣ бо ҷойҳо in истифода мешавад: the tallest building in the city.","structure":"the + сифат-est / the most + сифат (+ I've ever + сифати феълӣ)","examples_en":["Аз рӯи тест, ин шаҳри содиқтарини ҷаҳон аст.","Он бадтарин хӯроке буд, ки ман ягон бор хӯрдаам.","Вай меҳрубонтарин шахс дар идораи мост.","Ин ҷолибтарин осорхонаест, ки ман ягон бор дидаам."],"tip":"«Беҳтарин филме, ки ман ягон бор дидаам» — ever + Present Perfect пас аз дараҷаи олӣ.","questions":[
+{"text":"Шаклро интихоб кунед: It's ___ city in the country.","explanation":"Сифати дароз → the most."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Дараҷаи олӣ + ever + Present Perfect."},
+{"text":"Пешояндро интихоб кунед: the highest peak ___ Central Asia.","explanation":"Дараҷаи олӣ + in + ҷой."},
+{"text":"Дараҷаи олии «busy»-ро интихоб кунед.","explanation":"y → -iest."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"the most + сифат; ever + perfect."},
+{"text":"Дараҷаи олии «bad»-ро интихоб кунед.","explanation":"bad → the worst."}
+]},
+{"unit":5,"lesson":"5C","topic":"квантификаторҳо: too, (not) enough","rule_en":"too + сифат = бештар аз лозим (too tired); too much + ҳисобнашаванда, too many + ҳисобшаванда. Enough ПАС аз сифатҳо (not warm enough), вале ПЕШ аз исмҳо (enough time, enough vegetables). not...enough = камтар аз лозим.","structure":"too + сифат; too much/many + исм; сифат + enough; enough + исм","examples_en":["Ман шакари зиёд мехӯрам ва машқи кофӣ намекунам.","Дар маркази шаҳр мошини зиёд аст.","Ин шӯрбо ба қадри кофӣ гарм нест.","Ту оби кофӣ менӯшӣ?"],"tip":"Тартиб: «enough money», вале «good enough».","questions":[
+{"text":"Ибораро интихоб кунед: I feel ill — I ate ___ sweets.","explanation":"«Sweets» ҳисобшаванда → too many."},
+{"text":"Ибораро интихоб кунед: There's ___ salt in this soup.","explanation":"«Salt» ҳисобнашаванда → too much."},
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"enough ПАС аз сифат."},
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"enough ПЕШ аз исм."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"too + сифат + to + феъл."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"феъл + enough дар охир."}
+]},
+{"unit":6,"lesson":"6A","topic":"will / won't (пешгӯиҳо)","rule_en":"Will/won't + феъли аслӣ барои пешгӯиҳо дар бораи оянда, аксар вақт бо I think, probably, definitely: I think it'll rain. He probably won't come. Will барои ҳама шахсҳо якхела.","structure":"мубтадо + will/won't + феъли аслӣ","examples_en":["Боварӣ дорам, ки дастаи мо фардо мебарад.","Ин китобро дӯст медорӣ — олиҷаноб аст.","Вай, эҳтимол, бо мо розӣ намешавад.","Пас аз панҷоҳ сол зиндагӣ хеле дигар мешавад."],"tip":"Ҷой: «probably» пас аз will, вале пеш аз won't: «will probably go» / «probably won't go».","questions":[
+{"text":"Шаклро интихоб кунед: I'm sure you ___ the exam.","explanation":"will + феъли аслӣ."},
+{"text":"Инкорро интихоб кунед: Don't worry, it ___ long.","explanation":"will not = won't + феъли аслӣ."},
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"«Probably» пас аз will."},
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"«Probably» пеш аз won't."},
+{"text":"Саволро интихоб кунед: ___ people ___ on Mars one day?","explanation":"Will + мубтадо + феъли аслӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Забони англисӣ «I don't think + will»-ро тарҷеҳ медиҳад."}
+]},
+{"unit":6,"lesson":"6B","topic":"will / won't / shall (истифодаҳои дигар)","rule_en":"Will барои қарорҳои лаҳзавӣ (I'll take this one), ваъдаҳо (I'll always help you), пешниҳоди кӯмак (I'll carry that) ва хоҳишҳо истифода мешавад. Shall I...? / Shall we...? — барои пешниҳод ва маслиҳат: Shall I open the window? Shall we start?","structure":"I'll + феъл (қарор/ваъда/пешниҳод); Shall I/we + феъл?","examples_en":["Сард аст — ман тирезаро мепӯшам.","Ҷумъа пулатро бармегардонам, ваъда медиҳам.","Ин сумкаҳоятро бардорам?","Биёед танаффус кунем?"],"tip":"«Shall» асосан бо I ва we дар пешниҳоду маслиҳат истифода мешавад.","questions":[
+{"text":"Қарори лаҳзавиро интихоб кунед: The phone is ringing — I ___ it.","explanation":"Қарор дар лаҳзаи гуфтугӯ → will."},
+{"text":"Пешниҳоди кӯмакро интихоб кунед: ___ I carry your suitcase?","explanation":"Пешниҳод бо I → Shall I...?"},
+{"text":"Маслиҳатро интихоб кунед: ___ we invite the neighbours?","explanation":"Маслиҳат бо we → Shall we...?"},
+{"text":"Ваъдаро интихоб кунед.","explanation":"Ваъда → will + феъли аслӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Фармоиш = қарори лаҳзавӣ → I'll have..."},
+{"text":"Ҷавоби дурустро интихоб кунед: My car has broken down. — ___","explanation":"Пешниҳоди кӯмак ҳозир → will."}
+]},
+{"unit":6,"lesson":"6C","topic":"такрори шаклҳои феъл: ҳозира, гузашта, оянда","rule_en":"Замонро аз рӯи маъно интихоб кунед: Present Simple (одатҳо), Present Continuous (ҳозир/тартибот), Past Simple (гузаштаи тамомшуда), Past Continuous (раванд дар гузашта), going to (нақшаҳо/далел), will (пешгӯӣ/қарор). Калимаҳои нишондиҳанда кӯмак мекунанд: usually, now, yesterday, while, tomorrow, next week.","structure":"замон аз рӯи вақт ва маънои амал","examples_en":["Ман одатан хоби рангин мебинам, вале дишаб хоби сиёҳу сафед дидам.","Вай ҳозир хоб аст — баъдтар занг зан.","Дар вақти хоб дидан, соати бедоркунандаам занг зад.","Олимон фикр мекунанд, ки мо ба зудӣ хобро беҳтар мефаҳмем."],"tip":"Аввал калимаи вақтро ёбед, баъд замонро интихоб кунед.","questions":[
+{"text":"Шаклро интихоб кунед: He ___ eight hours every night.","explanation":"Одат → Present Simple."},
+{"text":"Шаклро интихоб кунед: Quiet, please! The baby ___.","explanation":"Ҳозир → Present Continuous."},
+{"text":"Шаклро интихоб кунед: I ___ a strange dream last night.","explanation":"Гузаштаи тамомшуда + вақт → Past Simple."},
+{"text":"Шаклро интихоб кунед: The phone rang while I ___.","explanation":"Раванд дар гузашта → Past Continuous."},
+{"text":"Шаклро интихоб кунед: Look at those clouds — it ___ rain.","explanation":"Далел ҳозир → going to."},
+{"text":"Шаклро интихоб кунед: I'm tired. I think I ___ to bed.","explanation":"Қарор ҳозир → will."}
+]}
+]

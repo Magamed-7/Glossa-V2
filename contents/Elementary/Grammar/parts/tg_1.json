@@ -1,0 +1,146 @@
+[
+{"unit":1,"lesson":"1A","topic":"феъли be (тасдиқ); ҷонишинҳои шахсӣ","rule_en":"Феъли be барои гуфтани он ки кас кист, аз куҷост ва худро чӣ гуна ҳис мекунад, истифода мешавад. Ҷонишинҳои шахсӣ (I, you, he, she, it, we, they) ҳамеша пеш аз феъл меоянд. Дар гуфтугӯ одатан шаклҳои кӯтоҳ истифода мешаванд: I'm, you're, he's.","structure":"I + am / he, she, it + is / we, you, they + are","examples_en":["Ман Карим ҳастам ва аз Тоҷикистонам.","Вай шогирди нави синфи мост.","Мо имрӯз хеле хушҳолем.","Онҳо аз Канада ҳастанд."],"tip":"Дар хотир доред: ҷумлаи англисӣ ҳамеша мубтадо дорад — мегӯем «It is cold», на «Is cold».","questions":[
+{"text":"Шаклро интихоб кунед: I ___ twenty years old.","explanation":"Бо «I» ҳамеша «am»."},
+{"text":"Шаклро интихоб кунед: My sister ___ a nurse.","explanation":"«My sister» = she → is."},
+{"text":"Шаклро интихоб кунед: You and Ali ___ late.","explanation":"«You and Ali» = «you»-и ҷамъ → are."},
+{"text":"Шакли кӯтоҳро интихоб кунед: «They are here» = ___","explanation":"«They are» ба «They're» кӯтоҳ мешавад."},
+{"text":"Ҷонишинро интихоб кунед: ___ is my brother.","explanation":"Мубтадои «he» пеш аз феъл меояд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҷумлаи англисӣ мубтадо мехоҳад: «It is Monday»."}
+]},
+{"unit":1,"lesson":"1B","topic":"феъли be (инкор ва саволҳо)","rule_en":"Инкори be бо not сохта мешавад: I'm not, he isn't, they aren't. Савол — бо гузоштани be пеш аз мубтадо: Are you...? Is she...? Ҷавоби кӯтоҳ: Yes, I am. / No, she isn't.","structure":"инкор: мубтадо + be + not; савол: Be + мубтадо...?","examples_en":["Ман аз Русия нестам — ман аз Ӯзбекистонам.","Вай ҳозир дар хона нест.","Ту хастаӣ? — Не.","Ин ҷой холӣ аст? — Ҳа."],"tip":"Дар ҷавобҳои кӯтоҳи тасдиқӣ шакли кӯтоҳ истифода намешавад: «Yes, I am», на «Yes, I'm».","questions":[
+{"text":"Инкорро интихоб кунед: She ___ a teacher.","explanation":"«She» + is + not = isn't."},
+{"text":"Саволро интихоб кунед: ___ they from Italy?","explanation":"«They» феъли «are»-ро мехоҳад; дар савол феъл аввал меояд."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Are you hungry? — Yes, I ___.","explanation":"Ҷавоби кӯтоҳ: Yes, I am (бе кӯтоҳкунӣ)."},
+{"text":"Инкорро интихоб кунед: We ___ ready yet.","explanation":"«We» + are + not = aren't."},
+{"text":"Саволро интихоб кунед: ___ your phone new?","explanation":"«Your phone» = it → Is."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҷавоби кӯтоҳи инкорӣ: No, she isn't."}
+]},
+{"unit":1,"lesson":"1C","topic":"сифатҳои соҳибӣ: my, your, his...","rule_en":"Сифатҳои соҳибӣ (my, your, his, her, its, our, their) мансубиятро нишон медиҳанд. Онҳо пеш аз исм меоянд ва дар ҷамъ тағйир намеёбанд: my book, my books.","structure":"сифати соҳибӣ + исм","examples_en":["Суроғаи почтаи ман дар ин корт аст.","Насаби ту чист?","Рақами телефони вайро осон дар хотир нигоҳ доштан мумкин аст.","Муаллими онҳо аз Лондон аст."],"tip":"Its (соҳибӣ) ва it's (= it is)-ро омехта накунед.","questions":[
+{"text":"Калимаро интихоб кунед: ___ name is Dilshod. (he)","explanation":"Барои «he» сифати соҳибӣ «his» аст."},
+{"text":"Калимаро интихоб кунед: We love ___ new flat.","explanation":"«We» → «our» пеш аз исм."},
+{"text":"Калимаро интихоб кунед: The dog is in ___ house.","explanation":"«Its» бе апостроф — соҳибист."},
+{"text":"Калимаро интихоб кунед: ___ books are on the table. (they)","explanation":"«Their» — соҳибии «they»."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пеш аз исм «your» меояд."},
+{"text":"Калимаро интихоб кунед: She lives with ___ parents.","explanation":"«She» → «her» пеш аз исм."}
+]},
+{"unit":2,"lesson":"2A","topic":"шумораи танҳо ва ҷамъи исмҳо","rule_en":"Аксари исмҳо -s мегиранд: key → keys. Пас аз -s, -sh, -ch, -x — -es: watch → watches. Ҳамсадо + y ба -ies мубаддал мешавад: city → cities. Шаклҳои номунтазам: man → men, woman → women, child → children, person → people.","structure":"исм + -s / -es / -ies; шаклҳои номунтазам","examples_en":["Дар ҳуҷраи ман ду тиреза ҳаст.","Барои ин китобҳо ба ман се қуттӣ лозим аст.","Кӯдакон дар боғанд.","Аксари одамони ин ҷо бо ду забон гап мезананд."],"tip":"Шаклҳои номунтазамро аз ёд кунед — инҳо калимаҳои хеле серистеъмоланд.","questions":[
+{"text":"Шакли ҷамъи «city»-ро интихоб кунед.","explanation":"Ҳамсадо + y → -ies."},
+{"text":"Шакли ҷамъи «child»-ро интихоб кунед.","explanation":"«Child» шакли номунтазам дорад: children."},
+{"text":"Шакли ҷамъи «box»-ро интихоб кунед.","explanation":"Калимаҳои бо -x тамомшаванда -es мегиранд."},
+{"text":"Шакли ҷамъи «person»-ро интихоб кунед.","explanation":"Ҷамъи маъмулии «person» — «people»."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"key → keys (шакли мунтазам)."},
+{"text":"Шакли ҷамъи «woman»-ро интихоб кунед.","explanation":"woman → women (номунтазам)."}
+]},
+{"unit":2,"lesson":"2B","topic":"сифатҳо; пурқувваткунандаҳо very / really / quite","rule_en":"Сифатҳо исмҳоро тасвир мекунанд, пеш аз онҳо ё пас аз be меоянд ва дар ҷамъ тағйир намеёбанд: a black cat, black cats. Пурқувваткунандаҳои very, really ва quite сифатро қавитар ё сусттар мекунанд ва пеш аз он меоянд.","structure":"(пурқувваткунанда) + сифат + исм / be + (пурқувваткунанда) + сифат","examples_en":["Ин филми дар ҳақиқат ҷолиб аст.","Ин пойафзол хеле қиммат аст.","Шаҳри ман хеле қадима ва зебост.","Вай мошини қиммати олмониро меронад."],"tip":"Quite аз very сусттар аст: quite good < very good < really good.","questions":[
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"Пурқувваткунанда + сифат + исм."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Сифатҳо ҳеҷ гоҳ -s намегиранд."},
+{"text":"Кадомаш сусттарин аст? «The food is ___ good.»","explanation":"«Quite» аз «very» ва «really» сусттар аст."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пурқувваткунанда бевосита пеш аз сифат меояд."},
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"Андоза одатан пеш аз ранг меояд: small red car."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"be + пурқувваткунанда + сифат."}
+]},
+{"unit":2,"lesson":"2C","topic":"амрҳо; let's","rule_en":"Амр (шакли аслии феъл) барои дастуру фармонҳо: Sit down. Инкор — Don't + феъл: Don't worry. Let's + феъл — пешниҳоди якҷоя кардани коре: Let's go home.","structure":"(Don't) + феъл; Let's + феъл","examples_en":["Телефонатонро хомӯш кунед, лутфан.","Асабӣ нашав — ин танҳо тест аст.","Биё танаффус кунем.","Оҳистатар! Ту хеле тез мегардӣ."],"tip":"Барои хушмуомила будан «please» илова кунед: «Close the door, please».","questions":[
+{"text":"Амри дурустро интихоб кунед.","explanation":"Амр = шакли аслӣ бе мубтадо."},
+{"text":"Амри инкориро интихоб кунед.","explanation":"Амри инкорӣ = Don't + феъл."},
+{"text":"Пешниҳодро интихоб кунед: ___ watch a film tonight.","explanation":"Let's + феъл — пешниҳоди кори якҷоя."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Бо «be» амри инкорӣ «Don't be» аст."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Инкори Let's — Let's not + феъл."},
+{"text":"Дастури дурустро интихоб кунед.","explanation":"Дастурҳо шакли аслии феълро истифода мебаранд."}
+]},
+{"unit":3,"lesson":"3A","topic":"Present Simple (тасдиқ ва инкор)","rule_en":"Present Simple барои одатҳо, реҷаи рӯз ва фактҳо. Бо I/you/we/they — шакли аслӣ; бо he/she/it -s илова мешавад. Инкор: don't / doesn't + феъл.","structure":"мубтадо + феъл(-s); мубтадо + don't/doesn't + феъл","examples_en":["Ман ҳар бегоҳ хӯроки шом мепазам.","Падарам дар бонк кор мекунад.","Мо пагоҳӣ телевизор тамошо намекунем.","Вай қаҳва наменӯшад."],"tip":"Пас аз doesn't феъл -s-ро гум мекунад: «She doesn't work», на «She doesn't works».","questions":[
+{"text":"Шаклро интихоб кунед: He ___ breakfast at seven.","explanation":"«He» шакли бо -s мехоҳад; «have» → «has»."},
+{"text":"Инкорро интихоб кунед: I ___ meat.","explanation":"Бо «I» инкор: don't + феъл."},
+{"text":"Инкорро интихоб кунед: She ___ in this office.","explanation":"doesn't + феъли аслӣ (бе -s)."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«They» шакли аслиро мехоҳад."},
+{"text":"Шаклро интихоб кунед: My mother ___ English at school.","explanation":"Феълҳои бо -ch барои he/she/it -es мегиранд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«We» → don't + феъли аслӣ."}
+]},
+{"unit":3,"lesson":"3B","topic":"Present Simple (саволҳо)","rule_en":"Саволҳо бо do / does + мубтадо + феъли аслӣ сохта мешаванд: Do you work? Does she work? Do — бо I/you/we/they, does — бо he/she/it. Феъли асосӣ дар савол ҳеҷ гоҳ -s намегирад.","structure":"Do/Does + мубтадо + феъл?","examples_en":["Кори худро дӯст медорӣ?","Вай бисёр сафар мекунад?","Онҳо дар куҷо хӯроки нисфирӯзӣ мехӯранд?","Мағоза кай кушода мешавад?"],"tip":"Бо do/does ҷавоб диҳед, на бо феъли асосӣ: «Yes, I do», на «Yes, I like».","questions":[
+{"text":"Саволро интихоб кунед: ___ you work at weekends?","explanation":"«You» дар саволҳо «do» мехоҳад."},
+{"text":"Саволро интихоб кунед: ___ she speak German?","explanation":"«She» «does»-ро мехоҳад."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Пас аз «does» феъл бе -s."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Do they study here? — Yes, they ___.","explanation":"Ҷавобҳои кӯтоҳ do/does-ро такрор мекунанд."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Калимаи саволӣ + do + мубтадо + феъл."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«The film» = it → does."}
+]},
+{"unit":3,"lesson":"3C","topic":"тартиби калимаҳо дар саволҳо; калимаҳои саволӣ","rule_en":"Саволҳои англисӣ тартиби қатъӣ доранд: (Калимаи саволӣ) + феъли ёвар + мубтадо + феъл. Калимаҳои маъмул: What, Where, When, Who, Why, How, How much, How many, What kind of.","structure":"КС + do/does/be + мубтадо + феъл","examples_en":["Чаро ту ин қадар барвақт мехезӣ?","Вай чанд бародар дорад?","Онҳо чӣ гуна мусиқӣ менавозанд?","Дарс кай тамом мешавад?"],"tip":"Дар хотир доред: дар савол феъли ёвар пеш аз мубтадо меояд.","questions":[
+{"text":"Саволи дурустро интихоб кунед.","explanation":"КС + do + мубтадо + феъл."},
+{"text":"Калимаро интихоб кунед: ___ do you visit your grandparents? — Once a month.","explanation":"«How often» дар бораи такрор мепурсад."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"КС + be + мубтадо."},
+{"text":"Калимаро интихоб кунед: ___ many students are in your class?","explanation":"«How many» дар бораи миқдор мепурсад."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«He» → does + феъли аслӣ."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"КС + do + мубтадо + феъл."}
+]},
+{"unit":4,"lesson":"4A","topic":"'s-и соҳибӣ; Whose...?","rule_en":"Ба шахс 's илова кунед, то мансубиятро нишон диҳед: Anna's bag. Ба ҷамъи мунтазам — танҳо апостроф: my parents' house. Дар бораи соҳиб бо Whose мепурсем: Whose phone is this?","structure":"шахс + 's + чиз; Whose + исм + be...?","examples_en":["Ин ҳуҷраи бародари ман аст.","Инҳо калидҳои кистанд? — Аз они Умар.","Суратҳои бобою бибиям хеле кӯҳнаанд.","Зани Карим дар беморхона кор мекунад."],"tip":"«Whose» дар бораи соҳиб мепурсад; «Who's» маънои «Who is»-ро дорад — якхела садо медиҳанд!","questions":[
+{"text":"Шаклро интихоб кунед: This is ___ car. (my father)","explanation":"Ба соҳиб 's илова мекунем: my father's car."},
+{"text":"Саволро интихоб кунед: ___ jacket is this?","explanation":"«Whose» дар бораи мансубият мепурсад."},
+{"text":"Шаклро интихоб кунед: my ___ house (parents, ҷамъ)","explanation":"Ҷамъи мунтазам + танҳо апостроф: parents'."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Шахс + 's + чиз."},
+{"text":"Ҷавобро интихоб кунед: Whose books are these? — They're ___.","explanation":"Соҳиб 's мегирад: Anna's."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Як хоҳар → sister's."}
+]},
+{"unit":4,"lesson":"4B","topic":"пешояндҳои вақт (at, in, on) ва ҷой (at, in, to)","rule_en":"Вақт: at + соат (at six), on + рӯз/сана (on Monday), in + моҳ, фасл, сол (in July). Ҷой: in + шаҳр/кишвар (in Dushanbe), at + нуқта (at work, at home), to + ҳаракат (go to school).","structure":"at/on/in + вақт; in/at/to + ҷой","examples_en":["Ман соати шашу ним мехезам.","Дарси англисии мо рӯзҳои сешанбе аст.","Вай соли 1998 таваллуд шудааст.","Пас аз кор вай ба толори варзиш меравад."],"tip":"Мегӯем «at night», аммо «in the morning / afternoon / evening».","questions":[
+{"text":"Пешояндро интихоб кунед: The film starts ___ eight o'clock.","explanation":"at + вақти соат."},
+{"text":"Пешояндро интихоб кунед: My birthday is ___ May.","explanation":"in + моҳ."},
+{"text":"Пешояндро интихоб кунед: We don't work ___ Sundays.","explanation":"on + рӯзҳои ҳафта."},
+{"text":"Пешояндро интихоб кунед: She lives ___ Samarkand.","explanation":"in + шаҳр."},
+{"text":"Пешояндро интихоб кунед: The children go ___ school by bus.","explanation":"to + ҳаракат ба сӯи ҷой."},
+{"text":"Пешояндро интихоб кунед: My mother is ___ work now.","explanation":"at + ҷое, ки кас дар он аст: at work."}
+]},
+{"unit":4,"lesson":"4C","topic":"ҷои зарфҳо ва ибораҳои такрор","rule_en":"Зарфҳои такрор (always, usually, often, sometimes, hardly ever, never) пеш аз феъли асосӣ, вале пас аз be меоянд. Ибораҳои дарозтар (every day, twice a week, once a month) одатан дар охири ҷумла меоянд.","structure":"мубтадо + зарф + феъл / be + зарф; ибора — дар охир","examples_en":["Ман одатан соати як хӯроки нисфирӯзӣ мехӯрам.","Вай ҳеҷ гоҳ ба кор дер намемонад.","Онҳо ҳар якшанбе бибиашонро зиёрат мекунанд.","Мо моҳе ду бор ба кинотеатр меравем."],"tip":"«Never» ва «hardly ever» худ инкорианд — «not» илова накунед.","questions":[
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"Зарфи такрор пеш аз феъли асосӣ."},
+{"text":"Тартиби дурустро бо «be» интихоб кунед.","explanation":"Пас аз «be»: are usually."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ибораҳои дароз дар охир меоянд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Never» пеш аз феъл меояд ва «not» намехоҳад."},
+{"text":"Чӣ тақрибан 90% вақтро мефаҳмонад?","explanation":"usually ≈ 90%, sometimes ≈ 50%, hardly ever ≈ 5%."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Зарф пас аз «be»: is always."}
+]},
+{"unit":5,"lesson":"5A","topic":"can / can't (маҳорат ва иҷозат)","rule_en":"Can + феъл — дар бораи маҳорат (I can swim) ва иҷозат (You can park here). Инкор — can't (cannot). Can барои ҳама шахсҳо якхела аст, -s намегирад ва «to» намехоҳад.","structure":"мубтадо + can/can't + феъл","examples_en":["Вай гитараро хеле хуб менавозад.","Ман ба вохӯрии фардо омада наметавонам.","Рӯзномаро дар вокзал харидан мумкин аст.","Мумкин ин ҷо шинем? — Ҳа, албатта."],"tip":"Талаффуз: дар тасдиқ «can» суст /kən/; «can't» қавӣ /kɑːnt/.","questions":[
+{"text":"Шаклро интихоб кунед: My grandmother ___ use a smartphone.","explanation":"«Can» барои ҳама шахсҳо якхела аст."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"can + феъли аслӣ."},
+{"text":"Инкорро интихоб кунед: I ___ find my glasses.","explanation":"Инкори can — can't."},
+{"text":"Саволро интихоб кунед: ___ you drive?","explanation":"Can + мубтадо + феъл."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Can they swim? — No, they ___.","explanation":"Ҷавоби кӯтоҳ can/can't-ро такрор мекунад."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"can + феъли аслӣ, бе «to» ва «-ing»."}
+]},
+{"unit":5,"lesson":"5B","topic":"Present Continuous","rule_en":"Present Continuous (be + феъл-ing) — дар бораи амалҳои ҳозира: I'm reading. Имло: make → making, sit → sitting, study → studying.","structure":"мубтадо + am/is/are + феъл-ing","examples_en":["Ҳамсояҳо мусиқии баланд менавозанд.","Ман калидҳоямро мекобам.","Вай ҳозир бо телефон гап мезанад.","Мо автобусро интизорем."],"tip":"Нишонаҳои вақт: now, right now, at the moment.","questions":[
+{"text":"Шаклро интихоб кунед: He ___ a shower now.","explanation":"Амали ҳозира → Present Continuous."},
+{"text":"Шаклро интихоб кунед: They ___ football in the park.","explanation":"«They» → are + феъл-ing."},
+{"text":"Шакли -ing-и «sit»-ро интихоб кунед.","explanation":"Садоноки кӯтоҳ + ҳамсадо дучанд: sitting."},
+{"text":"Инкорро интихоб кунед: I ___ TV — I'm working.","explanation":"be + not + феъл-ing."},
+{"text":"Саволро интихоб кунед: ___ she sleeping?","explanation":"Саволҳо: Is/Are + мубтадо + феъл-ing."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Present Continuous ҳам «be» ва ҳам «-ing» мехоҳад."}
+]},
+{"unit":5,"lesson":"5C","topic":"Present Simple ё Present Continuous?","rule_en":"Present Simple = одатҳо, реҷа, фактҳо (I work every day). Present Continuous = амалҳои ҳозира ё вазъиятҳои муваққатӣ (I'm working today from home). Баъзе феълҳо (like, want, know, need) одатан дар Continuous истифода намешаванд.","structure":"одат → Present Simple; ҳозир/муваққатӣ → Present Continuous","examples_en":["Дар баҳор ин ҷо одатан бисёр борон меборад.","Чатр гир — борон борида истодааст.","Вай дар мактаб кор мекунад, вале ин ҳафта аз хона кор мекунад.","Ман як пиёла чой мехоҳам."],"tip":"Феълҳои ҳолат «want, like, know, need» дар Present Simple мемонанд.","questions":[
+{"text":"Шаклро интихоб кунед: Listen! Someone ___ the piano.","explanation":"«Listen!» → ҳозир рӯй медиҳад → Continuous."},
+{"text":"Шаклро интихоб кунед: The shops ___ at 9 a.m. every day.","explanation":"Реҷа → Present Simple; «shops» ҷамъ аст."},
+{"text":"Шаклро интихоб кунед: I ___ this song — turn it up!","explanation":"«Like» феъли ҳолат → Present Simple."},
+{"text":"Шаклро интихоб кунед: This month she ___ in a hotel.","explanation":"Вазъияти муваққатӣ → Continuous."},
+{"text":"Шаклро интихоб кунед: What ___ you ___ at the moment?","explanation":"«At the moment» → Present Continuous."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Факти умумӣ → Present Simple бо -s."}
+]},
+{"unit":6,"lesson":"6A","topic":"ҷонишинҳои пуркунанда: me, you, him...","rule_en":"Ҷонишинҳои пуркунанда (me, you, him, her, it, us, them) исмро пас аз феъл ё пешоянд иваз мекунанд: I know him. Listen to me. Дар ин ҷой ҷонишини мубтадо истифода намешавад.","structure":"феъл/пешоянд + ҷонишини пуркунанда","examples_en":["Ин ҳикоя ба ман маъқул — онро боз хон!","Вай ба модараш занг мезанад ва ҳар рӯз бо ӯ гап мезанад.","Муаллими мо ба мо бисёр вазифаи хонагӣ медиҳад.","Ту онҳоро мешиносӣ? — Ҳа, онҳо ҳамсояҳои мананд."],"tip":"Ҷуфтҳо барои азёдкунӣ: I→me, he→him, she→her, we→us, they→them.","questions":[
+{"text":"Ҷонишинро интихоб кунед: This is Amir. I work with ___.","explanation":"Пас аз пешоянд: him."},
+{"text":"Ҷонишинро интихоб кунед: We're here! Can you see ___?","explanation":"«We» → пуркунандаи «us»."},
+{"text":"Ҷонишинро интихоб кунед: I like these photos. Look at ___.","explanation":"«They» → пуркунандаи «them»."},
+{"text":"Ҷонишинро интихоб кунед: She's my best friend. I tell ___ everything.","explanation":"«She» → пуркунандаи «her»."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«I» → пуркунандаи «me» пас аз феъл."},
+{"text":"Ҷонишинро интихоб кунед: The film is great. Don't miss ___!","explanation":"Чиз → «it»."}
+]},
+{"unit":6,"lesson":"6B","topic":"like + (феъл + -ing); санаҳо, рақамҳои тартибӣ","rule_en":"Пас аз like, love, hate ва enjoy феъл + -ing меояд: I like dancing. Дар санаҳо рақамҳои тартибӣ: the first, the second, the third... Менависем «5 May», мегӯем «the fifth of May».","structure":"like/love/hate/enjoy + феъл-ing; the + тартибӣ + of + моҳ","examples_en":["Ман тӯҳфа гирифтанро дӯст медорам.","Вай дар навбат истоданро бад мебинад.","Зодрӯзи вай сеюми июн аст.","Соли нав якуми январ аст."],"tip":"Дар хотир доред: 1st first, 2nd second, 3rd third, 5th fifth, 12th twelfth, 20th twentieth.","questions":[
+{"text":"Шаклро интихоб кунед: She enjoys ___ new people.","explanation":"enjoy + феъл-ing."},
+{"text":"Шаклро интихоб кунед: I hate ___ up early on Sundays.","explanation":"hate + феъл-ing."},
+{"text":"Рақами тартибии 3-ро интихоб кунед.","explanation":"3 → third (номунтазам)."},
+{"text":"Рақами тартибии 12-ро интихоб кунед.","explanation":"twelve → twelfth."},
+{"text":"Санаи «1 March»-ро чӣ тавр мегӯем?","explanation":"the + тартибӣ + of + моҳ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"love + феъл-ing."}
+]},
+{"unit":6,"lesson":"6C","topic":"такрор: be ё do?","rule_en":"Be (am/is/are) — бо исмҳо, сифатҳо ва шаклҳои -ing: She's a singer. Are you tired? Do/does — бо феълҳои дигар дар саволу инкор: Do you sing? He doesn't play. Онҳоро омехта накунед.","structure":"be + исм/сифат/-ing; do/does + феъл","examples_en":["Ту навозандаӣ? — Ҳа.","Ту дар гурӯҳ менавозӣ? — Не.","Вай ҳозир мусиқӣ гӯш намекунад.","Вай ҷазро дӯст намедорад."],"tip":"Агар дар ҷумла феъли асосии дигар бошад — do/does; агар набошад — be.","questions":[
+{"text":"Саволро интихоб кунед: ___ you like rock music?","explanation":"Феъли асосии «like» → do."},
+{"text":"Саволро интихоб кунед: ___ you a student?","explanation":"Феъли дигар нест → be."},
+{"text":"Инкорро интихоб кунед: He ___ speak French.","explanation":"Феъли асосии «speak» → doesn't."},
+{"text":"Инкорро интихоб кунед: They ___ at the concert.","explanation":"«At the concert» бе феъл → be."},
+{"text":"Саволро интихоб кунед: ___ she singing now?","explanation":"Шакли -ing → be: Is she singing?"},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"don't + феъл; be + қисми номӣ."}
+]}
+]

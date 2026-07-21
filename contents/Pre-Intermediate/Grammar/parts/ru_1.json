@@ -1,0 +1,146 @@
+[
+{"unit":1,"lesson":"1A","topic":"порядок слов в вопросах","rule_en":"Английские вопросы строятся по схеме: вопросительное слово, вспомогательный глагол, подлежащее, инфинитив. Для Present Simple используется do/does, для Past Simple — did. С глаголом be подлежащее и глагол меняются местами, вспомогательный глагол не добавляется.","structure":"(ВС) + вспомогательный + подлежащее + инфинитив; (ВС) + be + подлежащее","examples_en":["Какие книги ты читаешь?","Где ты выучил английский?","Как часто твой двоюродный брат тебя навещает?","Твои родители из одного города?"],"tip":"Никогда не добавляйте do/does/did к вопросам с be: «Where are you from?», а не «Where do you are from?»","questions":[
+{"text":"Выберите правильный вопрос.","explanation":"ВС + do + подлежащее + глагол."},
+{"text":"Выберите правильный вопрос.","explanation":"did + базовый глагол."},
+{"text":"Выберите правильный вопрос.","explanation":"«Старше» требует be, поэтому инверсия: Is your brother...?"},
+{"text":"Выберите правильный вопрос.","explanation":"После does глагол в базовой форме."},
+{"text":"Выберите правильный вопрос.","explanation":"Предлог обычно ставится в конец: live with."},
+{"text":"Выберите правильный вопрос.","explanation":"Отрицательный вопрос: didn't + подлежащее + базовый глагол."}
+]},
+{"unit":1,"lesson":"1B","topic":"Present Simple","rule_en":"Present Simple используется для привычек, распорядка, мнений и постоянных ситуаций. Не забывайте -s для he/she/it и don't/doesn't в отрицаниях. Наречия частотности (always, usually, often) ставятся перед основным глаголом.","structure":"подлежащее + глагол(-s); don't/doesn't + глагол","examples_en":["Она обычно легко находит общий язык с новыми людьми.","Мой лучший друг никогда не переживает по мелочам.","Он совсем не похож на своего отца.","Что ты делаешь по выходным?"],"tip":"«What does he do?» спрашивает о профессии; «What is he doing?» — о том, что он делает сейчас.","questions":[
+{"text":"Выберите форму: My sister ___ care of her plants every day.","explanation":"«My sister» = she → takes."},
+{"text":"Выберите правильное предложение.","explanation":"doesn't + базовый глагол."},
+{"text":"Выберите правильный порядок.","explanation":"Наречие частотности перед основным глаголом."},
+{"text":"Выберите правильный вопрос.","explanation":"does + базовый глагол."},
+{"text":"Выберите форму: Water ___ at 100 degrees.","explanation":"Научный факт → Present Simple с -s."},
+{"text":"Выберите правильное предложение.","explanation":"«I» → don't + базовый глагол."}
+]},
+{"unit":1,"lesson":"1C","topic":"Present Continuous","rule_en":"Present Continuous (be + глагол-ing) используется для действий, происходящих сейчас, около этого времени, или временных ситуаций. Также используется для описания фотографий и сцен. Глаголы состояния (know, want, like, need, believe) обычно не употребляются в Continuous.","structure":"подлежащее + am/is/are + глагол-ing","examples_en":["Я ищу чёрную куртку среднего размера.","На этом фото мои друзья стоят у театра.","Она живёт у тёти, пока квартира не готова.","Почему ты в пальто? Сегодня тепло!"],"tip":"Для описания фото используйте Continuous: «На этой картинке люди танцуют».","questions":[
+{"text":"Выберите форму: Look, the model ___ a traditional dress.","explanation":"Происходит сейчас / описание сцены → Continuous."},
+{"text":"Выберите форму: I ___ a new phone at the moment — mine is broken.","explanation":"Временная ситуация → Continuous."},
+{"text":"Выберите правильное предложение.","explanation":"«Need» — глагол состояния → Present Simple."},
+{"text":"Выберите вопрос: ___ they still ___ in the queue?","explanation":"be + подлежащее + глагол-ing."},
+{"text":"Выберите форму: She usually wears jeans, but today she ___ a suit.","explanation":"Привычка vs сегодня: сегодня → Continuous."},
+{"text":"Выберите отрицание: We ___ anything special this week.","explanation":"be + not + глагол-ing."}
+]},
+{"unit":2,"lesson":"2A","topic":"Past Simple: правильные и неправильные глаголы","rule_en":"Past Simple используется для завершённых действий в прошлом, часто с указанием времени (last year, in 2020, two days ago). Правильные глаголы получают -ed; неправильные нужно учить (go–went, buy–bought, lose–lost). Вопросы и отрицания образуются с did/didn't + базовая форма.","structure":"глагол-ed / неправильная форма; did(n't) + базовый глагол","examples_en":["Мы забронировали отель онлайн и оплатили картой.","Я потерял паспорт в последний день отпуска.","Им не понравилась экскурсия, потому что весь день шёл дождь.","Ты сделал много фото в Стамбуле?"],"tip":"Выражения прошедшего времени: yesterday, last week, ago, in 2015, when I was a child.","questions":[
+{"text":"Выберите прошедшую форму глагола «fly».","explanation":"fly → flew (неправильный)."},
+{"text":"Выберите правильное предложение.","explanation":"spend → spent."},
+{"text":"Выберите отрицание: The guide ___ any English.","explanation":"didn't + базовая форма."},
+{"text":"Выберите вопрос: ___ you ___ the castle?","explanation":"Did + базовый глагол."},
+{"text":"Выберите прошедшую форму глагола «catch».","explanation":"catch → caught."},
+{"text":"Выберите правильное предложение.","explanation":"feel → felt; stay → stayed."}
+]},
+{"unit":2,"lesson":"2B","topic":"Past Continuous","rule_en":"Past Continuous (was/were + глагол-ing) используется для действия, происходившего в определённый момент в прошлом, часто прерванного другим действием в Past Simple: I was walking home when it started to rain. Также используется для создания фона в рассказе.","structure":"was/were + глагол-ing; when + Past Simple","examples_en":["В девять часов мы всё ещё завтракали.","Она фотографировала, когда птица села ей на голову.","Светило солнце, и люди сидели в кафе.","Что ты делал в полночь?"],"tip":"Длинное фоновое действие → Past Continuous; короткое прерывающее действие → Past Simple.","questions":[
+{"text":"Выберите форму: I ___ TV when you called.","explanation":"Действие в процессе, прерванное словом «called»."},
+{"text":"Выберите форму: They ___ football at five o'clock yesterday.","explanation":"«They» → were + -ing в момент в прошлом."},
+{"text":"Выберите правильное предложение.","explanation":"Фоновое continuous + короткое past simple."},
+{"text":"Выберите вопрос: What ___ you ___ when I saw you?","explanation":"were + подлежащее + глагол-ing."},
+{"text":"Выберите отрицание: He ___ attention during the meeting.","explanation":"was/were + not + глагол-ing."},
+{"text":"Выберите правильное начало рассказа.","explanation":"Описание сцены → Past Continuous."}
+]},
+{"unit":2,"lesson":"2C","topic":"временные связки и коннекторы","rule_en":"Временные связки упорядочивают события в рассказе: first, then, after that, later, when, suddenly, finally. Коннекторы соединяют идеи: because (причина), so (результат), but (противопоставление), although (неожиданное противопоставление).","structure":"связка + предложение; предложение + коннектор + предложение","examples_en":["Сначала мы припарковали машину, а потом пошли в центр.","Вдруг собака начала лаять.","Я устал, поэтому лёг спать пораньше.","Хотя было холодно, мы сидели на улице."],"tip":"because = причина, so = результат: «Я остался дома, потому что заболел» / «Я заболел, поэтому остался дома».","questions":[
+{"text":"Выберите слово: We missed the bus, ___ we took a taxi.","explanation":"Результат → so."},
+{"text":"Выберите слово: She stayed at home ___ she felt ill.","explanation":"Причина → because."},
+{"text":"Выберите слово: ___ it was expensive, he bought the jacket.","explanation":"Неожиданное противопоставление → although."},
+{"text":"Выберите слово: ___ , the lights went out and everyone screamed.","explanation":"«Suddenly» вводит неожиданное событие."},
+{"text":"Выберите слово порядка: ___ we had dinner, and after that we watched a film.","explanation":"«First» начинает последовательность событий."},
+{"text":"Выберите правильное предложение.","explanation":"Противопоставление → but."}
+]},
+{"unit":3,"lesson":"3A","topic":"be going to (планы и предсказания)","rule_en":"Be going to + глагол используется для планов и намерений, решённых до момента речи, и для предсказаний на основе доказательств в настоящем. Отрицание: be + not + going to. Вопросы: be + подлежащее + going to.","structure":"be + going to + базовый глагол","examples_en":["Мы собираемся арендовать машину в аэропорту.","Я не собираюсь сдавать багаж — только ручная кладь.","Посмотри на очередь! Мы будем ждать часами.","Что ты собираешься делать после перелёта?"],"tip":"План, принятый заранее → going to; мгновенное решение → will.","questions":[
+{"text":"Выберите форму: They ___ a house near the sea next year.","explanation":"be + going to + базовый глагол."},
+{"text":"Выберите предсказание с доказательством: The plane is shaking! I think we ___ a storm.","explanation":"Доказательство сейчас → going to."},
+{"text":"Выберите отрицание: She ___ to work abroad.","explanation":"be + not + going to."},
+{"text":"Выберите вопрос: ___ you ___ your grandparents this summer?","explanation":"be + подлежащее + going to + глагол."},
+{"text":"Выберите правильное предложение.","explanation":"going to + базовый глагол."},
+{"text":"Выберите форму: It's 5 a.m. and he's still awake — he ___ tired at work.","explanation":"Предсказание из доказательства → going to be."}
+]},
+{"unit":3,"lesson":"3B","topic":"Present Continuous (договорённости о будущем)","rule_en":"Present Continuous используется для фиксированных будущих договорённостей — планов с указанием времени и места, часто записанных в ежедневнике: We're meeting at six. Очень часто с глаголами движения (go, come, leave, arrive).","structure":"подлежащее + be + глагол-ing + будущее время","examples_en":["Завтра утром у меня приём у стоматолога.","Они женятся в сентябре.","Мы уезжаем в семь, так что не опаздывай.","Она прибывает в Душанбе в воскресенье вечером."],"tip":"Договорённость с фиксированным временем/местом → Present Continuous; общее намерение → going to.","questions":[
+{"text":"Выберите форму: We ___ dinner with my boss on Friday.","explanation":"Фиксированная договорённость → Present Continuous."},
+{"text":"Выберите форму: What time ___ your train ___ tomorrow?","explanation":"Договорённость: is + глагол-ing."},
+{"text":"Выберите правильное предложение.","explanation":"be + глагол-ing для договорённости в ежедневнике."},
+{"text":"Выберите отрицание: I ___ tonight — I'm too busy.","explanation":"be + not + глагол-ing."},
+{"text":"Выберите предлог: The team arrives ___ Tashkent at noon.","explanation":"arrive in + город."},
+{"text":"Выберите правильное предложение.","explanation":"Фиксированная будущая договорённость → Present Continuous."}
+]},
+{"unit":3,"lesson":"3C","topic":"определительные придаточные (defining relative clauses)","rule_en":"Определительные придаточные уточняют, о ком или чём речь. Who — для людей, which — для вещей, that — для обоих, where — для мест: A chef is a person who cooks in a restaurant. Не добавляйте второе подлежащее-местоимение.","structure":"существительное + who/which/that/where + придаточное","examples_en":["Словарь — это книга, которая объясняет слова.","Она врач, которая помогла моей бабушке.","Это кафе, где мы впервые встретились.","Мне нравятся люди, которые говорят то, что думают."],"tip":"Перефразирование: если забыли слово, опишите его — «It's a thing which you use for...»","questions":[
+{"text":"Выберите слово: A pilot is a person ___ flies planes.","explanation":"Человек → who."},
+{"text":"Выберите слово: A fridge is a machine ___ keeps food cold.","explanation":"Вещь → which."},
+{"text":"Выберите слово: A market is a place ___ you can buy fresh food.","explanation":"Место → where."},
+{"text":"Выберите правильное предложение.","explanation":"who + глагол, без лишнего местоимения."},
+{"text":"Выберите правильное предложение.","explanation":"Вещь → that/which."},
+{"text":"Выберите правильное определение.","explanation":"Вещь → which."}
+]},
+{"unit":4,"lesson":"4A","topic":"Present Perfect + yet, just, already","rule_en":"Present Perfect (have/has + причастие) используется с just (совсем недавнее действие), already (раньше, чем ожидалось) и yet (в отрицаниях и вопросах, до сих пор): I've just finished. She's already done it. Have you washed up yet?","structure":"have/has (+ just/already) + причастие; ... yet (конец отрицаний/вопросов)","examples_en":["Я только что застелила кровати.","Он уже сходил за покупками.","Ты уже убрал кухню?","Мы ещё не вынесли мусор."],"tip":"just/already ставятся в середине; yet — в конце.","questions":[
+{"text":"Выберите правильное предложение.","explanation":"«Just» стоит между have и причастием."},
+{"text":"Выберите правильное предложение.","explanation":"«Already» перед причастием."},
+{"text":"Выберите правильный вопрос.","explanation":"«Yet» ставится в конце."},
+{"text":"Выберите отрицание: They ___ the table yet.","explanation":"have + not + причастие (lay → laid)."},
+{"text":"Выберите причастие глагола «make».","explanation":"make → made → made."},
+{"text":"Выберите правильный ответ: Can you help me? — Sorry, I ___ left the house.","explanation":"have + just + причастие."}
+]},
+{"unit":4,"lesson":"4B","topic":"Present Perfect или Past Simple? (1)","rule_en":"Present Perfect используется для недавних действий и опыта без указания конкретного времени. Past Simple — когда время указано или прошло: I've bought a new bag (недавно, без времени) vs I bought it last Saturday (время указано). Разговор часто начинается в Perfect и продолжается в Past Simple.","structure":"perfect: без времени; past simple: законченное время","examples_en":["Я купила новую куртку. — Правда? Где ты её купила?","Она потратила все деньги. Большую часть — на обувь.","Ты когда-нибудь возвращал что-то в магазин? — Да, в прошлом месяце я вернул рубашку.","Мы были в этом торговом центре дважды."],"tip":"Начинайте тему с Perfect, детали давайте в Past Simple.","questions":[
+{"text":"Выберите форму: I ___ my wallet! I can't find it anywhere.","explanation":"Недавнее действие, результат сейчас → Present Perfect."},
+{"text":"Выберите форму: We ___ this sofa in 2021.","explanation":"Указано время (2021) → Past Simple."},
+{"text":"Выберите правильную пару: I ___ a great film. — When ___ you see it?","explanation":"Perfect для начала темы; Past Simple с «when»."},
+{"text":"Выберите форму: ___ you ever ___ anything online?","explanation":"Опыт → Present Perfect + причастие."},
+{"text":"Выберите правильное предложение.","explanation":"wear → worn (причастие)."},
+{"text":"Выберите форму: They ___ the bill an hour ago.","explanation":"«Час назад» → Past Simple."}
+]},
+{"unit":4,"lesson":"4C","topic":"something, anything, nothing и т.д.","rule_en":"Составные слова с some- в утвердительных предложениях (something, someone, somewhere); any- в отрицаниях и вопросах (anything, anyone, anywhere); no- делает предложение отрицательным с утвердительным глаголом (nothing, no one, nowhere). Everything/everyone требуют глагола в единственном числе.","structure":"some-/any-/no-/every- + thing/one/where","examples_en":["Я купила что-то особенное на выходные.","Кто-нибудь звонил, пока меня не было?","Сегодня вечером по телевизору нет ничего интересного.","Все были в восторге от поездки."],"tip":"Не используйте двойное отрицание: «I didn't see anything», а не «I didn't see nothing».","questions":[
+{"text":"Выберите слово: I'm hungry — is there ___ to eat?","explanation":"Вопрос → anything."},
+{"text":"Выберите слово: She said ___ , and left the room quietly.","explanation":"Утвердительный глагол + nothing = отрицательный смысл."},
+{"text":"Выберите слово: Let's go ___ warm this winter.","explanation":"Положительное предложение → somewhere."},
+{"text":"Выберите правильное предложение.","explanation":"Отрицательный глагол → anyone."},
+{"text":"Выберите форму: Everything ___ ready for the party.","explanation":"Everything + глагол в единственном числе."},
+{"text":"Выберите слово: ___ knocked at the door, but when I opened it, ___ was there.","explanation":"Утверждение → someone; отрицательный смысл → no one."}
+]},
+{"unit":5,"lesson":"5A","topic":"сравнительная степень прилагательных и наречий; as...as","rule_en":"Сравнение: прилагательное-er / more + прилагательное + than. Наречия обычно используют more: more quickly. Используйте as...as для равенства и not as...as для различия: He's as tall as his father. It's not as cold as yesterday. Неправильные: better, worse, further.","structure":"-er / more ... than; (not) as ... as","examples_en":["Метро быстрее автобуса.","Она говорит по-английски более бегло, чем я.","Сегодня не так жарко, как вчера.","Мои результаты хуже, чем в прошлом году."],"tip":"as...as = одинаково; not as...as = меньше.","questions":[
+{"text":"Выберите форму: This exam was ___ than the last one.","explanation":"easy → easier."},
+{"text":"Выберите форму: He drives ___ than his brother.","explanation":"Наречия на -ly → more + наречие."},
+{"text":"Выберите правильное предложение.","explanation":"as + прилагательное + as."},
+{"text":"Выберите правильное предложение.","explanation":"not as ... as = меньше чем."},
+{"text":"Выберите сравнительную степень «far».","explanation":"far → further (неправильное)."},
+{"text":"Выберите правильное предложение.","explanation":"Короткое прилагательное + -er + than."}
+]},
+{"unit":5,"lesson":"5B","topic":"превосходная степень (+ ever + Present Perfect)","rule_en":"Превосходная степень сравнивает один предмет со всей группой: the biggest, the most beautiful. Очень частая модель: превосходная степень + ever + Present Perfect: It's the best film I've ever seen. После превосходной степени с местами используется in: the tallest building in the city.","structure":"the + прилагательное-est / the most + прилагательное (+ I've ever + причастие)","examples_en":["Согласно тесту, это самый честный город в мире.","Это была худшая еда, которую я когда-либо ел.","Она самый дружелюбный человек в нашем офисе.","Это самый интересный музей, который я когда-либо посещал."],"tip":"«Лучший фильм, который я когда-либо видел» — ever + Present Perfect после превосходной степени.","questions":[
+{"text":"Выберите форму: It's ___ city in the country.","explanation":"Длинное прилагательное → the most."},
+{"text":"Выберите правильное предложение.","explanation":"Превосходная степень + ever + Present Perfect."},
+{"text":"Выберите предлог: the highest peak ___ Central Asia.","explanation":"Превосходная степень + in + место."},
+{"text":"Выберите превосходную степень «busy».","explanation":"y → -iest."},
+{"text":"Выберите правильный вопрос.","explanation":"the most + прилагательное; ever + perfect."},
+{"text":"Выберите превосходную степень «bad».","explanation":"bad → the worst."}
+]},
+{"unit":5,"lesson":"5C","topic":"квантификаторы: too, (not) enough","rule_en":"too + прилагательное = больше, чем нужно (too tired); too much + неисчисляемое, too many + исчисляемое. Enough ставится ПОСЛЕ прилагательных (not warm enough), но ПЕРЕД существительными (enough time, enough vegetables). not...enough = меньше, чем нужно.","structure":"too + прил.; too much/many + сущ.; прил. + enough; enough + сущ.","examples_en":["Я ем слишком много сахара и мало занимаюсь спортом.","В центре города слишком много машин.","Этот суп недостаточно горячий.","Ты пьёшь достаточно воды?"],"tip":"Порядок: «enough money», но «good enough».","questions":[
+{"text":"Выберите фразу: I feel ill — I ate ___ sweets.","explanation":"«Sweets» исчисляемое → too many."},
+{"text":"Выберите фразу: There's ___ salt in this soup.","explanation":"«Salt» неисчисляемое → too much."},
+{"text":"Выберите правильный порядок.","explanation":"enough ПОСЛЕ прилагательного."},
+{"text":"Выберите правильный порядок.","explanation":"enough ПЕРЕД существительным."},
+{"text":"Выберите правильное предложение.","explanation":"too + прилагательное + to + глагол."},
+{"text":"Выберите правильное предложение.","explanation":"глагол + enough в конце."}
+]},
+{"unit":6,"lesson":"6A","topic":"will / won't (предсказания)","rule_en":"Will/won't + базовый глагол используется для предсказаний о будущем, часто с I think, probably, definitely: I think it'll rain. He probably won't come. Will одинаков для всех лиц.","structure":"подлежащее + will/won't + базовый глагол","examples_en":["Я уверен, что наша команда выиграет завтра.","Тебе понравится эта книга — она великолепна.","Она, вероятно, не согласится с нами.","Через пятьдесят лет жизнь будет совсем другой."],"tip":"Позиция: «probably» после will, но перед won't: «will probably go» / «probably won't go».","questions":[
+{"text":"Выберите форму: I'm sure you ___ the exam.","explanation":"will + базовый глагол."},
+{"text":"Выберите отрицание: Don't worry, it ___ long.","explanation":"will not = won't + базовый глагол."},
+{"text":"Выберите правильный порядок.","explanation":"«Probably» после will."},
+{"text":"Выберите правильный порядок.","explanation":"«Probably» перед won't."},
+{"text":"Выберите вопрос: ___ people ___ on Mars one day?","explanation":"Will + подлежащее + базовый глагол."},
+{"text":"Выберите правильное предложение.","explanation":"Английский предпочитает «I don't think + will»."}
+]},
+{"unit":6,"lesson":"6B","topic":"will / won't / shall (другие употребления)","rule_en":"Will используется для мгновенных решений (I'll take this one), обещаний (I'll always help you), предложений помощи (I'll carry that) и просьб. Shall I...? / Shall we...? — для предложений и советов: Shall I open the window? Shall we start?","structure":"I'll + глагол (решение/обещание/предложение); Shall I/we + глагол?","examples_en":["Холодно — я закрою окно.","Я верну тебе деньги в пятницу, обещаю.","Помочь тебе с этими сумками?","Давай сделаем перерыв?"],"tip":"«Shall» используется в основном с I и we в предложениях и советах.","questions":[
+{"text":"Выберите мгновенное решение: The phone is ringing — I ___ it.","explanation":"Решение в момент речи → will."},
+{"text":"Выберите предложение помощи: ___ I carry your suitcase?","explanation":"Предложение с I → Shall I...?"},
+{"text":"Выберите совет: ___ we invite the neighbours?","explanation":"Совет с we → Shall we...?"},
+{"text":"Выберите обещание.","explanation":"Обещание → will + базовый глагол."},
+{"text":"Выберите правильное предложение.","explanation":"Заказ = мгновенное решение → I'll have..."},
+{"text":"Выберите правильный ответ: My car has broken down. — ___","explanation":"Предложение помощи сейчас → will."}
+]},
+{"unit":6,"lesson":"6C","topic":"повторение форм глагола: настоящее, прошедшее, будущее","rule_en":"Выбирайте время по смыслу: Present Simple (привычки), Present Continuous (сейчас/договорённости), Past Simple (законченное прошлое), Past Continuous (процесс в прошлом), going to (планы/доказательства), will (предсказания/решения). Слова-сигналы помогают: usually, now, yesterday, while, tomorrow, next week.","structure":"время в зависимости от смысла и времени действия","examples_en":["Обычно мне снятся цветные сны, но прошлой ночью мне снился чёрно-белый сон.","Она сейчас спит — перезвони позже.","Пока мне снился сон, зазвонил будильник.","Учёные думают, что скоро мы лучше поймём сны."],"tip":"Сначала найдите слово-время, потом выбирайте время глагола.","questions":[
+{"text":"Выберите форму: He ___ eight hours every night.","explanation":"Привычка → Present Simple."},
+{"text":"Выберите форму: Quiet, please! The baby ___.","explanation":"Сейчас → Present Continuous."},
+{"text":"Выберите форму: I ___ a strange dream last night.","explanation":"Законченное прошлое + время → Past Simple."},
+{"text":"Выберите форму: The phone rang while I ___.","explanation":"Процесс в прошлом → Past Continuous."},
+{"text":"Выберите форму: Look at those clouds — it ___ rain.","explanation":"Доказательство сейчас → going to."},
+{"text":"Выберите форму: I'm tired. I think I ___ to bed.","explanation":"Решение сейчас → will."}
+]}
+]

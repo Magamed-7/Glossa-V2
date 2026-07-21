@@ -1,0 +1,1610 @@
+[
+ {
+  "book_unit": "Unit 1 - Welcome to the class / One world",
+  "json_unit_source": 1,
+  "grammar_topic": "verb be; possessive adjectives",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "The First Lesson",
+  "body": "My name is Zarina and I'm from Khujand. Today is my first English lesson in a new school. I'm nervous, but the classroom is warm and friendly. Our teacher is Mr Adams. He's from Manchester, and his accent is funny for me. There are twelve students in our class. Farrukh and Aziz are from Dushanbe, Elena is from Moscow, and the twins are from Istanbul. 'One class, one world!' Mr Adams says. His first question is easy: 'What's your name and where are you from?' My answer is short: 'I'm Zarina, and I'm from Tajikistan.' Everyone smiles. Now I'm not nervous. My new school is great, and my classmates are interesting people. English is difficult, but our teacher says: 'Mistakes are OK. They're your friends, not your enemies.'",
+  "words": [
+   {
+    "word": "nervous",
+    "translation_ru": "нервничающий, взволнованный",
+    "translation_tg": "асабонӣ",
+    "part_of_speech": "adjective",
+    "context": "I'm nervous, but the classroom is warm and friendly."
+   },
+   {
+    "word": "classroom",
+    "translation_ru": "класс, аудитория",
+    "translation_tg": "синфхона",
+    "part_of_speech": "noun",
+    "context": "The classroom is warm and friendly."
+   },
+   {
+    "word": "accent",
+    "translation_ru": "акцент",
+    "translation_tg": "лаҳҷа",
+    "part_of_speech": "noun",
+    "context": "His accent is funny for me."
+   },
+   {
+    "word": "twins",
+    "translation_ru": "близнецы",
+    "translation_tg": "дугоникҳо",
+    "part_of_speech": "noun",
+    "context": "The twins are from Istanbul."
+   },
+   {
+    "word": "classmate",
+    "translation_ru": "одноклассник",
+    "translation_tg": "ҳамсинф",
+    "part_of_speech": "noun",
+    "context": "My classmates are interesting people."
+   },
+   {
+    "word": "mistake",
+    "translation_ru": "ошибка",
+    "translation_tg": "хато",
+    "part_of_speech": "noun",
+    "context": "Mistakes are OK."
+   },
+   {
+    "word": "enemy",
+    "translation_ru": "враг",
+    "translation_tg": "душман",
+    "part_of_speech": "noun",
+    "context": "They're your friends, not your enemies."
+   },
+   {
+    "word": "smile",
+    "translation_ru": "улыбаться",
+    "translation_tg": "табассум кардан",
+    "part_of_speech": "verb",
+    "context": "Everyone smiles."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 1 - Welcome to the class / One world",
+  "json_unit_source": 1,
+  "grammar_topic": "verb be (negative and questions)",
+  "cefr_level": "A2",
+  "genre": "comedy",
+  "title": "Is This Seat Free?",
+  "body": "It's Monday morning, and the bus to the city centre is full. Karim is tired and his bag is heavy. There's one free seat next to a young woman. 'Excuse me, is this seat free?' he asks. 'Yes, it is,' she says. Karim sits down. The woman's phone rings. 'Hello? No, I'm not at home. I'm on the bus... No, it isn't late... No, I'm not angry!' Karim looks out of the window. Wait! This street isn't right. These shops aren't familiar. 'Excuse me,' he asks the woman, 'is this bus number 8?' 'No, it isn't,' she says. 'It's number 18. Are you on the wrong bus?' Karim's face is red. 'Yes, I am,' he says. The woman laughs: 'Don't worry. The next stop isn't far. And the view from this bus is beautiful!'",
+  "words": [
+   {
+    "word": "full",
+    "translation_ru": "полный, переполненный",
+    "translation_tg": "пур",
+    "part_of_speech": "adjective",
+    "context": "The bus to the city centre is full."
+   },
+   {
+    "word": "heavy",
+    "translation_ru": "тяжёлый",
+    "translation_tg": "вазнин",
+    "part_of_speech": "adjective",
+    "context": "His bag is heavy."
+   },
+   {
+    "word": "seat",
+    "translation_ru": "место, сиденье",
+    "translation_tg": "ҷои нишаст",
+    "part_of_speech": "noun",
+    "context": "Is this seat free?"
+   },
+   {
+    "word": "ring",
+    "translation_ru": "звонить",
+    "translation_tg": "занг задан",
+    "part_of_speech": "verb",
+    "context": "The woman's phone rings."
+   },
+   {
+    "word": "angry",
+    "translation_ru": "сердитый",
+    "translation_tg": "хашмгин",
+    "part_of_speech": "adjective",
+    "context": "No, I'm not angry!"
+   },
+   {
+    "word": "familiar",
+    "translation_ru": "знакомый",
+    "translation_tg": "шинос",
+    "part_of_speech": "adjective",
+    "context": "These shops aren't familiar."
+   },
+   {
+    "word": "wrong",
+    "translation_ru": "неправильный, не тот",
+    "translation_tg": "нодуруст",
+    "part_of_speech": "adjective",
+    "context": "Are you on the wrong bus?"
+   },
+   {
+    "word": "view",
+    "translation_ru": "вид",
+    "translation_tg": "манзара",
+    "part_of_speech": "noun",
+    "context": "The view from this bus is beautiful!"
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 2 - Are you tidy or untidy? / Made in America",
+  "json_unit_source": 2,
+  "grammar_topic": "singular and plural nouns; adjectives",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "Two Sisters, One Room",
+  "body": "Madina and her sister Shahlo share a room, but they are very different people. Madina is tidy. Her books are on the shelves, her pens are in a box, and her clothes are in the cupboard. Shahlo is untidy. Her things are everywhere: keys on the bed, papers under the chair, and three cups on the desk. 'Where are my glasses?' Shahlo asks every morning. 'Look under those magazines,' Madina answers. Today their mother has a new idea. 'This room needs two zones,' she says. 'Madina, this side is yours. Shahlo, that side is yours.' Now the room is half tidy and half untidy. The sisters are happy. 'Our room is like our family,' Madina laughs. 'Different, but together.'",
+  "words": [
+   {
+    "word": "share",
+    "translation_ru": "делить (что-то с кем-то)",
+    "translation_tg": "якҷоя истифода бурдан",
+    "part_of_speech": "verb",
+    "context": "Madina and her sister share a room."
+   },
+   {
+    "word": "tidy",
+    "translation_ru": "аккуратный",
+    "translation_tg": "озода",
+    "part_of_speech": "adjective",
+    "context": "Madina is tidy."
+   },
+   {
+    "word": "untidy",
+    "translation_ru": "неаккуратный",
+    "translation_tg": "бетартиб",
+    "part_of_speech": "adjective",
+    "context": "Shahlo is untidy."
+   },
+   {
+    "word": "shelf",
+    "translation_ru": "полка",
+    "translation_tg": "раф",
+    "part_of_speech": "noun",
+    "context": "Her books are on the shelves."
+   },
+   {
+    "word": "cupboard",
+    "translation_ru": "шкаф",
+    "translation_tg": "ҷевон",
+    "part_of_speech": "noun",
+    "context": "Her clothes are in the cupboard."
+   },
+   {
+    "word": "everywhere",
+    "translation_ru": "везде",
+    "translation_tg": "дар ҳама ҷо",
+    "part_of_speech": "adverb",
+    "context": "Her things are everywhere."
+   },
+   {
+    "word": "glasses",
+    "translation_ru": "очки",
+    "translation_tg": "айнак",
+    "part_of_speech": "noun",
+    "context": "Where are my glasses?"
+   },
+   {
+    "word": "magazine",
+    "translation_ru": "журнал",
+    "translation_tg": "маҷалла",
+    "part_of_speech": "noun",
+    "context": "Look under those magazines."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 2 - Are you tidy or untidy? / Made in America",
+  "json_unit_source": 2,
+  "grammar_topic": "imperatives; let's; feelings",
+  "cefr_level": "A2",
+  "genre": "adventure",
+  "title": "Slow Down, Aziz!",
+  "body": "Aziz does everything fast. He walks fast, he talks fast, and he eats fast. His friends are often tired of it. Today the friends are on a trip to the mountains near their town. 'Come on! Walk faster! Don't stop!' Aziz shouts from the front. But the path is narrow and the day is hot. 'Aziz, slow down!' says Nilufar. 'Look around you. Don't just run — enjoy this place.' Aziz stops. He looks at the green valley, the white peaks and the small river below. The air is fresh and quiet. 'Wow,' he says. 'I feel calm. And a little hungry.' Nilufar laughs: 'Great! Let's sit here and have lunch. And please, eat slowly this time!' They sit on the warm rocks and open their bags. It's a perfect moment.",
+  "words": [
+   {
+    "word": "shout",
+    "translation_ru": "кричать",
+    "translation_tg": "фарёд задан",
+    "part_of_speech": "verb",
+    "context": "Aziz shouts from the front."
+   },
+   {
+    "word": "path",
+    "translation_ru": "тропа",
+    "translation_tg": "пайраҳа",
+    "part_of_speech": "noun",
+    "context": "The path is narrow and the day is hot."
+   },
+   {
+    "word": "narrow",
+    "translation_ru": "узкий",
+    "translation_tg": "танг",
+    "part_of_speech": "adjective",
+    "context": "The path is narrow."
+   },
+   {
+    "word": "valley",
+    "translation_ru": "долина",
+    "translation_tg": "водӣ",
+    "part_of_speech": "noun",
+    "context": "He looks at the green valley."
+   },
+   {
+    "word": "peak",
+    "translation_ru": "вершина",
+    "translation_tg": "қулла",
+    "part_of_speech": "noun",
+    "context": "...the white peaks and the small river below."
+   },
+   {
+    "word": "fresh",
+    "translation_ru": "свежий",
+    "translation_tg": "тоза",
+    "part_of_speech": "adjective",
+    "context": "The air is fresh and quiet."
+   },
+   {
+    "word": "calm",
+    "translation_ru": "спокойный",
+    "translation_tg": "ором",
+    "part_of_speech": "adjective",
+    "context": "I feel calm."
+   },
+   {
+    "word": "rock",
+    "translation_ru": "камень, скала",
+    "translation_tg": "санг",
+    "part_of_speech": "noun",
+    "context": "They sit on the warm rocks."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 3 - Britain: the good and the bad / 9 to 5",
+  "json_unit_source": 3,
+  "grammar_topic": "present simple (affirmative and negative)",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "My Strange Work Day",
+  "body": "My name is Suhrob and I work at night. I'm a baker in a small bakery in our town. My work day starts at eleven in the evening, when most people go to bed. I don't drink coffee — the smell of fresh bread wakes me up. First, I make the dough. Then I bake bread, sweet rolls and my favourite — apple pies. At six in the morning, the first customers arrive. They buy warm bread for breakfast. I finish work at seven and walk home. The streets are quiet, and the morning sun is soft. My wife makes breakfast, but I don't eat much — I'm too tired. I sleep in the day and live at night. It's a strange life, but I love it. People need bread every day, and I make it for them.",
+  "words": [
+   {
+    "word": "baker",
+    "translation_ru": "пекарь",
+    "translation_tg": "нонвой",
+    "part_of_speech": "noun",
+    "context": "I'm a baker in a small bakery."
+   },
+   {
+    "word": "bakery",
+    "translation_ru": "пекарня",
+    "translation_tg": "нонвойхона",
+    "part_of_speech": "noun",
+    "context": "...in a small bakery in our town."
+   },
+   {
+    "word": "smell",
+    "translation_ru": "запах",
+    "translation_tg": "бӯй",
+    "part_of_speech": "noun",
+    "context": "The smell of fresh bread wakes me up."
+   },
+   {
+    "word": "dough",
+    "translation_ru": "тесто",
+    "translation_tg": "хамир",
+    "part_of_speech": "noun",
+    "context": "First, I make the dough."
+   },
+   {
+    "word": "bake",
+    "translation_ru": "печь, выпекать",
+    "translation_tg": "пухтан",
+    "part_of_speech": "verb",
+    "context": "Then I bake bread, sweet rolls and apple pies."
+   },
+   {
+    "word": "customer",
+    "translation_ru": "покупатель, клиент",
+    "translation_tg": "харидор",
+    "part_of_speech": "noun",
+    "context": "The first customers arrive at six."
+   },
+   {
+    "word": "arrive",
+    "translation_ru": "прибывать, приходить",
+    "translation_tg": "расидан",
+    "part_of_speech": "verb",
+    "context": "The first customers arrive."
+   },
+   {
+    "word": "quiet",
+    "translation_ru": "тихий",
+    "translation_tg": "ором",
+    "part_of_speech": "adjective",
+    "context": "The streets are quiet."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 3 - Britain: the good and the bad / 9 to 5",
+  "json_unit_source": 3,
+  "grammar_topic": "present simple (questions); word order",
+  "cefr_level": "A2",
+  "genre": "comedy",
+  "title": "The Curious Neighbour",
+  "body": "Mrs Rahimova knows everything about our street. Every day she sits by her window and watches. When I meet her, she asks a hundred questions. 'Where do you work now? Do you like your new job? How much do they pay you?' I smile and give short answers. 'What time do you get up? Why does your brother drive so fast? When do your parents come back?' One day I decide to play her game. 'Mrs Rahimova,' I say, 'what do YOU do all day? Why do you watch our street? Don't you get bored?' She laughs. 'Young man, I don't watch. I take care. Do you remember last winter? Who calls the doctor when old Mr Karimov falls? Who feeds the cats when you travel? Me.' Now I understand. She isn't curious. She's the guard of our street, and her questions are her work.",
+  "words": [
+   {
+    "word": "curious",
+    "translation_ru": "любопытный",
+    "translation_tg": "кунҷков",
+    "part_of_speech": "adjective",
+    "context": "She isn't curious. She's the guard of our street."
+   },
+   {
+    "word": "neighbour",
+    "translation_ru": "сосед",
+    "translation_tg": "ҳамсоя",
+    "part_of_speech": "noun",
+    "context": "The Curious Neighbour"
+   },
+   {
+    "word": "pay",
+    "translation_ru": "платить",
+    "translation_tg": "пул додан",
+    "part_of_speech": "verb",
+    "context": "How much do they pay you?"
+   },
+   {
+    "word": "bored",
+    "translation_ru": "скучающий",
+    "translation_tg": "зиқшуда",
+    "part_of_speech": "adjective",
+    "context": "Don't you get bored?"
+   },
+   {
+    "word": "take care",
+    "translation_ru": "заботиться",
+    "translation_tg": "ғамхорӣ кардан",
+    "part_of_speech": "phrase",
+    "context": "I don't watch. I take care."
+   },
+   {
+    "word": "fall",
+    "translation_ru": "падать",
+    "translation_tg": "афтидан",
+    "part_of_speech": "verb",
+    "context": "...when old Mr Karimov falls."
+   },
+   {
+    "word": "feed",
+    "translation_ru": "кормить",
+    "translation_tg": "хӯрондан",
+    "part_of_speech": "verb",
+    "context": "Who feeds the cats when you travel?"
+   },
+   {
+    "word": "guard",
+    "translation_ru": "страж, охранник",
+    "translation_tg": "посбон",
+    "part_of_speech": "noun",
+    "context": "She's the guard of our street."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 4 - Family photos / From morning to night",
+  "json_unit_source": 4,
+  "grammar_topic": "possessive 's; prepositions of time and place",
+  "cefr_level": "A2",
+  "genre": "family drama",
+  "title": "Grandmother's Album",
+  "body": "On Sunday afternoons our family drinks tea at my grandmother's house. Today she opens an old photo album. 'Look,' she says. 'This is your grandfather's first car. And this is my mother's garden in spring.' The photos are black and white, but grandmother's stories are full of colour. 'Whose wedding is this?' asks my little cousin. 'It's your uncle's wedding, in 1995. And this baby in the photo? That's your mother!' We laugh. My mother's face is red. At six o'clock in the evening, grandmother closes the album. 'Family isn't only photos,' she says. 'Family is people at one table. Come again on Friday — I make plov on Fridays.' We kiss her goodbye. Her house is small, but her heart is the biggest place in the world.",
+  "words": [
+   {
+    "word": "album",
+    "translation_ru": "альбом",
+    "translation_tg": "албом",
+    "part_of_speech": "noun",
+    "context": "Today she opens an old photo album."
+   },
+   {
+    "word": "wedding",
+    "translation_ru": "свадьба",
+    "translation_tg": "тӯй",
+    "part_of_speech": "noun",
+    "context": "Whose wedding is this?"
+   },
+   {
+    "word": "cousin",
+    "translation_ru": "двоюродный брат/сестра",
+    "translation_tg": "ҷиян, писари амак",
+    "part_of_speech": "noun",
+    "context": "...asks my little cousin."
+   },
+   {
+    "word": "uncle",
+    "translation_ru": "дядя",
+    "translation_tg": "амак, тағо",
+    "part_of_speech": "noun",
+    "context": "It's your uncle's wedding."
+   },
+   {
+    "word": "laugh",
+    "translation_ru": "смеяться",
+    "translation_tg": "хандидан",
+    "part_of_speech": "verb",
+    "context": "We laugh."
+   },
+   {
+    "word": "close",
+    "translation_ru": "закрывать",
+    "translation_tg": "пӯшидан",
+    "part_of_speech": "verb",
+    "context": "Grandmother closes the album."
+   },
+   {
+    "word": "kiss",
+    "translation_ru": "целовать",
+    "translation_tg": "бӯсидан",
+    "part_of_speech": "verb",
+    "context": "We kiss her goodbye."
+   },
+   {
+    "word": "heart",
+    "translation_ru": "сердце",
+    "translation_tg": "дил",
+    "part_of_speech": "noun",
+    "context": "Her heart is the biggest place in the world."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 4 - Family photos / From morning to night",
+  "json_unit_source": 4,
+  "grammar_topic": "adverbs and expressions of frequency",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "A Day in Two Lives",
+  "body": "Dilnoza and her grandfather live in the same house, but their days are very different. Dilnoza usually gets up at ten. Grandfather always gets up at five. He often says, 'The morning is the best part of the day!' She never agrees. Grandfather has breakfast at six, works in the garden, and reads his newspaper twice a day. Dilnoza studies online, chats with friends, and hardly ever goes to bed before midnight. But every evening at eight, something special happens. Grandfather makes green tea, and Dilnoza brings sweets. They sit together on the veranda and talk about their days. He tells stories about the past; she shows him videos about the future. 'We are sometimes different,' grandfather says, 'but we are always a team.' It's their favourite hour, and they never miss it.",
+  "words": [
+   {
+    "word": "agree",
+    "translation_ru": "соглашаться",
+    "translation_tg": "розӣ шудан",
+    "part_of_speech": "verb",
+    "context": "She never agrees."
+   },
+   {
+    "word": "newspaper",
+    "translation_ru": "газета",
+    "translation_tg": "рӯзнома",
+    "part_of_speech": "noun",
+    "context": "He reads his newspaper twice a day."
+   },
+   {
+    "word": "chat",
+    "translation_ru": "болтать, переписываться",
+    "translation_tg": "сӯҳбат кардан",
+    "part_of_speech": "verb",
+    "context": "Dilnoza chats with friends."
+   },
+   {
+    "word": "midnight",
+    "translation_ru": "полночь",
+    "translation_tg": "нисфи шаб",
+    "part_of_speech": "noun",
+    "context": "...hardly ever goes to bed before midnight."
+   },
+   {
+    "word": "happen",
+    "translation_ru": "происходить",
+    "translation_tg": "рӯй додан",
+    "part_of_speech": "verb",
+    "context": "Something special happens."
+   },
+   {
+    "word": "sweets",
+    "translation_ru": "сладости",
+    "translation_tg": "шириниҳо",
+    "part_of_speech": "noun",
+    "context": "Dilnoza brings sweets."
+   },
+   {
+    "word": "veranda",
+    "translation_ru": "веранда",
+    "translation_tg": "айвон",
+    "part_of_speech": "noun",
+    "context": "They sit together on the veranda."
+   },
+   {
+    "word": "miss",
+    "translation_ru": "пропускать",
+    "translation_tg": "гузарондан (аз даст додан)",
+    "part_of_speech": "verb",
+    "context": "They never miss it."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 5 - Vote for me! / A quiet life?",
+  "json_unit_source": 5,
+  "grammar_topic": "can / can't",
+  "cefr_level": "A2",
+  "genre": "comedy",
+  "title": "The Class President",
+  "body": "Our class needs a president, and today is the election. Three students want the job. Rustam speaks first: 'I can play football very well. Vote for me!' The class is quiet. Football is nice, but how can it help us? Then Malika stands up: 'I can sing and I can dance. Our parties can be fantastic!' Some students clap. Finally, quiet Farida goes to the board. 'I can't play football,' she says. 'I can't sing. But I can listen. You can come to me with any problem, and I can talk to the teachers about it. I can also make very good plans — look at my notebook.' She shows us a plan: 'Class trip in May. Study groups before exams. Film night every month.' Now nobody is quiet. Everybody claps. Farida can't sing, but she can think — and that's the most important skill for a president.",
+  "words": [
+   {
+    "word": "president",
+    "translation_ru": "президент, староста",
+    "translation_tg": "раис",
+    "part_of_speech": "noun",
+    "context": "Our class needs a president."
+   },
+   {
+    "word": "election",
+    "translation_ru": "выборы",
+    "translation_tg": "интихобот",
+    "part_of_speech": "noun",
+    "context": "Today is the election."
+   },
+   {
+    "word": "vote",
+    "translation_ru": "голосовать",
+    "translation_tg": "овоз додан",
+    "part_of_speech": "verb",
+    "context": "Vote for me!"
+   },
+   {
+    "word": "clap",
+    "translation_ru": "хлопать",
+    "translation_tg": "қарсак задан",
+    "part_of_speech": "verb",
+    "context": "Some students clap."
+   },
+   {
+    "word": "board",
+    "translation_ru": "доска",
+    "translation_tg": "тахта",
+    "part_of_speech": "noun",
+    "context": "Farida goes to the board."
+   },
+   {
+    "word": "notebook",
+    "translation_ru": "тетрадь",
+    "translation_tg": "дафтар",
+    "part_of_speech": "noun",
+    "context": "Look at my notebook."
+   },
+   {
+    "word": "trip",
+    "translation_ru": "поездка",
+    "translation_tg": "сафар",
+    "part_of_speech": "noun",
+    "context": "Class trip in May."
+   },
+   {
+    "word": "skill",
+    "translation_ru": "навык",
+    "translation_tg": "маҳорат",
+    "part_of_speech": "noun",
+    "context": "That's the most important skill for a president."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 5 - Vote for me! / A quiet life?",
+  "json_unit_source": 5,
+  "grammar_topic": "present continuous; present simple or continuous",
+  "cefr_level": "A2",
+  "genre": "mystery",
+  "title": "The Noise Upstairs",
+  "body": "It's eleven at night, and I'm trying to sleep. But someone is making noise upstairs. Bang! Bang! What is my neighbour doing? He usually goes to bed early. He never makes noise. I listen carefully. Now he is moving furniture... now he is walking fast... now something is falling! I can't sleep like this. I go upstairs and knock on his door. The door opens slowly. My neighbour is standing there in sports clothes. His face is red and wet. 'Oh, sorry for the noise!' he says. 'I'm training. Look!' In the middle of his room, there is a big box with a picture of the sea. 'I'm learning to surf! The championship in Turkey is in June, and I'm practising my balance every night.' He is standing on a surfboard — in his living room, a thousand kilometres from the sea. Now I hear the noise every night. But I don't get angry. I just smile and think: my neighbour is riding waves in his dreams.",
+  "words": [
+   {
+    "word": "noise",
+    "translation_ru": "шум",
+    "translation_tg": "садо, ғавғо",
+    "part_of_speech": "noun",
+    "context": "Someone is making noise upstairs."
+   },
+   {
+    "word": "upstairs",
+    "translation_ru": "наверху, этажом выше",
+    "translation_tg": "дар ошёнаи боло",
+    "part_of_speech": "adverb",
+    "context": "The Noise Upstairs"
+   },
+   {
+    "word": "furniture",
+    "translation_ru": "мебель",
+    "translation_tg": "мебел",
+    "part_of_speech": "noun",
+    "context": "Now he is moving furniture."
+   },
+   {
+    "word": "knock",
+    "translation_ru": "стучать",
+    "translation_tg": "тақ-тақ кардан",
+    "part_of_speech": "verb",
+    "context": "I knock on his door."
+   },
+   {
+    "word": "wet",
+    "translation_ru": "мокрый",
+    "translation_tg": "тар",
+    "part_of_speech": "adjective",
+    "context": "His face is red and wet."
+   },
+   {
+    "word": "train",
+    "translation_ru": "тренироваться",
+    "translation_tg": "машқ кардан",
+    "part_of_speech": "verb",
+    "context": "I'm training."
+   },
+   {
+    "word": "championship",
+    "translation_ru": "чемпионат",
+    "translation_tg": "чемпионат",
+    "part_of_speech": "noun",
+    "context": "The championship in Turkey is in June."
+   },
+   {
+    "word": "wave",
+    "translation_ru": "волна",
+    "translation_tg": "мавҷ",
+    "part_of_speech": "noun",
+    "context": "My neighbour is riding waves in his dreams."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 6 - A North African story / The third Friday in June",
+  "json_unit_source": 6,
+  "grammar_topic": "object pronouns; like + -ing",
+  "cefr_level": "A2",
+  "genre": "adventure",
+  "title": "The Lost Camera",
+  "body": "Layla likes taking photos. She takes them everywhere: in the park, at the market, on the roof of her house. Her camera is old, but she loves it. One day she visits the big Saturday market with her brother. She photographs an old man with his colourful carpets. He sees her and calls her: 'Girl! Come here!' Layla is afraid, but she goes to him. 'You like taking photos,' the man says. 'Show me them.' She shows him the pictures. He looks at them for a long time. 'My carpets are beautiful in your photos,' he says. 'Nobody photographs them like this. Can you print this one for me? My granddaughter is in Canada. I want to send it to her — she misses the market and me.' A week later, Layla brings him the photo. The old man gives her a small carpet. 'For you, artist,' he says. Layla still likes taking photos. But now she knows: a good photo isn't about things. It's about people who love them.",
+  "words": [
+   {
+    "word": "camera",
+    "translation_ru": "фотоаппарат",
+    "translation_tg": "фотоаппарат",
+    "part_of_speech": "noun",
+    "context": "Her camera is old, but she loves it."
+   },
+   {
+    "word": "market",
+    "translation_ru": "рынок, базар",
+    "translation_tg": "бозор",
+    "part_of_speech": "noun",
+    "context": "She visits the big Saturday market."
+   },
+   {
+    "word": "roof",
+    "translation_ru": "крыша",
+    "translation_tg": "бом",
+    "part_of_speech": "noun",
+    "context": "...on the roof of her house."
+   },
+   {
+    "word": "carpet",
+    "translation_ru": "ковёр",
+    "translation_tg": "қолин",
+    "part_of_speech": "noun",
+    "context": "An old man with his colourful carpets."
+   },
+   {
+    "word": "afraid",
+    "translation_ru": "испуганный, боящийся",
+    "translation_tg": "тарсида",
+    "part_of_speech": "adjective",
+    "context": "Layla is afraid, but she goes to him."
+   },
+   {
+    "word": "print",
+    "translation_ru": "печатать",
+    "translation_tg": "чоп кардан",
+    "part_of_speech": "verb",
+    "context": "Can you print this one for me?"
+   },
+   {
+    "word": "granddaughter",
+    "translation_ru": "внучка",
+    "translation_tg": "набера (духтар)",
+    "part_of_speech": "noun",
+    "context": "My granddaughter is in Canada."
+   },
+   {
+    "word": "artist",
+    "translation_ru": "художник, мастер",
+    "translation_tg": "ҳунарманд",
+    "part_of_speech": "noun",
+    "context": "For you, artist."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 6 - A North African story / The third Friday in June",
+  "json_unit_source": 6,
+  "grammar_topic": "revision: be or do; dates",
+  "cefr_level": "A2",
+  "genre": "family drama",
+  "title": "The Birthday Mistake",
+  "body": "'What date is it today?' Kamol asks his wife at breakfast. 'The twelfth of June. Why?' 'No reason,' he says, but his face is strange. In the car, Kamol thinks hard. Is it his mother's birthday today? Or is it on the twenty-first? He doesn't remember. Does his brother know? He calls him. 'Salom! Quick question: when is Mum's birthday?' His brother laughs: 'Are you serious? It's today! Don't you remember? I'm buying flowers now.' Kamol drives to the biggest flower shop in town. He buys roses, a cake and a card. In the evening, the family meets at their mother's house. She opens the door and looks at the flowers, the cakes — there are three cakes! — and her three sons. 'My dear boys,' she smiles. 'Thank you. But my birthday is on the twenty-first of June. Today is your father's birthday.' The brothers look at each other. From his chair, their father laughs: 'Don't worry, boys. Cake is cake. Sit down — let's celebrate me!'",
+  "words": [
+   {
+    "word": "date",
+    "translation_ru": "дата, число",
+    "translation_tg": "сана",
+    "part_of_speech": "noun",
+    "context": "What date is it today?"
+   },
+   {
+    "word": "reason",
+    "translation_ru": "причина",
+    "translation_tg": "сабаб",
+    "part_of_speech": "noun",
+    "context": "No reason, he says."
+   },
+   {
+    "word": "remember",
+    "translation_ru": "помнить",
+    "translation_tg": "дар хотир доштан",
+    "part_of_speech": "verb",
+    "context": "He doesn't remember."
+   },
+   {
+    "word": "serious",
+    "translation_ru": "серьёзный",
+    "translation_tg": "ҷиддӣ",
+    "part_of_speech": "adjective",
+    "context": "Are you serious?"
+   },
+   {
+    "word": "rose",
+    "translation_ru": "роза",
+    "translation_tg": "садбарг",
+    "part_of_speech": "noun",
+    "context": "He buys roses, a cake and a card."
+   },
+   {
+    "word": "card",
+    "translation_ru": "открытка",
+    "translation_tg": "табрикнома",
+    "part_of_speech": "noun",
+    "context": "He buys roses, a cake and a card."
+   },
+   {
+    "word": "son",
+    "translation_ru": "сын",
+    "translation_tg": "писар",
+    "part_of_speech": "noun",
+    "context": "...and her three sons."
+   },
+   {
+    "word": "celebrate",
+    "translation_ru": "праздновать",
+    "translation_tg": "ҷашн гирифтан",
+    "part_of_speech": "verb",
+    "context": "Sit down — let's celebrate me!"
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 7 - Selfies / Wrong name, wrong place",
+  "json_unit_source": 7,
+  "grammar_topic": "past simple of be: was / were",
+  "cefr_level": "A2",
+  "genre": "mystery",
+  "title": "The Photo from 1985",
+  "body": "Last month my father was in the attic of our old house. There were many boxes there, and in one box there was a photo. In the photo, there were two young men in front of our house. 'Who were they?' I asked. 'The one on the left was my father — your grandfather,' Dad said. 'But who was the other man? I don't know.' We were curious. The photo was from 1985 — the year was on the back. We showed the photo to our oldest neighbour. She was quiet for a minute. Then she smiled: 'Oh! That was Anvar, your grandfather's best friend. They were students together. He was funny and kind. His family was from Khorog, and after university he was a teacher there.' That evening, Dad found Anvar's son online. Now our families are friends again — because of one old photo. The attic wasn't just a room with boxes. It was a door to the past.",
+  "words": [
+   {
+    "word": "attic",
+    "translation_ru": "чердак",
+    "translation_tg": "болохона",
+    "part_of_speech": "noun",
+    "context": "My father was in the attic of our old house."
+   },
+   {
+    "word": "box",
+    "translation_ru": "коробка",
+    "translation_tg": "қуттӣ",
+    "part_of_speech": "noun",
+    "context": "There were many boxes there."
+   },
+   {
+    "word": "back",
+    "translation_ru": "обратная сторона",
+    "translation_tg": "пушт",
+    "part_of_speech": "noun",
+    "context": "The year was on the back."
+   },
+   {
+    "word": "kind",
+    "translation_ru": "добрый",
+    "translation_tg": "меҳрубон",
+    "part_of_speech": "adjective",
+    "context": "He was funny and kind."
+   },
+   {
+    "word": "university",
+    "translation_ru": "университет",
+    "translation_tg": "донишгоҳ",
+    "part_of_speech": "noun",
+    "context": "After university he was a teacher there."
+   },
+   {
+    "word": "online",
+    "translation_ru": "онлайн, в интернете",
+    "translation_tg": "онлайн",
+    "part_of_speech": "adverb",
+    "context": "Dad found Anvar's son online."
+   },
+   {
+    "word": "past",
+    "translation_ru": "прошлое",
+    "translation_tg": "гузашта",
+    "part_of_speech": "noun",
+    "context": "It was a door to the past."
+   },
+   {
+    "word": "door",
+    "translation_ru": "дверь",
+    "translation_tg": "дар",
+    "part_of_speech": "noun",
+    "context": "It was a door to the past."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 7 - Selfies / Wrong name, wrong place",
+  "json_unit_source": 7,
+  "grammar_topic": "past simple: regular and irregular verbs",
+  "cefr_level": "A2",
+  "genre": "comedy",
+  "title": "The Wrong Wedding",
+  "body": "Last Saturday, my friend Behruz received an invitation: 'Wedding of Firdavs and Madina, Restaurant Gulistan, 6 p.m.' He bought a nice present, put on his best suit and went to the restaurant. The music played, people danced, and Behruz enjoyed the party. He ate plov, talked to the guests and congratulated the groom's father. After two hours, he wanted to give his present to the happy couple. He walked to their table and stopped. The groom wasn't Firdavs! Behruz looked around. He didn't know these people! Then he checked the invitation and understood everything. Restaurant Gulistan had two halls. The wedding of HIS friends was in the second hall! Behruz laughed, said sorry to everyone and moved to the right hall. He arrived just in time for the cake. Later he told his friends the story. Firdavs laughed the most: 'You danced for two hours at a stranger's wedding — and nobody asked you anything?' 'People are friendly at weddings,' Behruz answered. 'Everyone thought I was a cousin!'",
+  "words": [
+   {
+    "word": "invitation",
+    "translation_ru": "приглашение",
+    "translation_tg": "даъватнома",
+    "part_of_speech": "noun",
+    "context": "Behruz received an invitation."
+   },
+   {
+    "word": "suit",
+    "translation_ru": "костюм",
+    "translation_tg": "костюм",
+    "part_of_speech": "noun",
+    "context": "He put on his best suit."
+   },
+   {
+    "word": "guest",
+    "translation_ru": "гость",
+    "translation_tg": "меҳмон",
+    "part_of_speech": "noun",
+    "context": "He talked to the guests."
+   },
+   {
+    "word": "congratulate",
+    "translation_ru": "поздравлять",
+    "translation_tg": "табрик кардан",
+    "part_of_speech": "verb",
+    "context": "He congratulated the groom's father."
+   },
+   {
+    "word": "groom",
+    "translation_ru": "жених",
+    "translation_tg": "домод",
+    "part_of_speech": "noun",
+    "context": "The groom wasn't Firdavs!"
+   },
+   {
+    "word": "couple",
+    "translation_ru": "пара",
+    "translation_tg": "ҷуфт",
+    "part_of_speech": "noun",
+    "context": "He wanted to give his present to the happy couple."
+   },
+   {
+    "word": "hall",
+    "translation_ru": "зал",
+    "translation_tg": "толор",
+    "part_of_speech": "noun",
+    "context": "Restaurant Gulistan had two halls."
+   },
+   {
+    "word": "stranger",
+    "translation_ru": "незнакомец",
+    "translation_tg": "бегона",
+    "part_of_speech": "noun",
+    "context": "You danced at a stranger's wedding."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 8 - A murder mystery / A house with a history",
+  "json_unit_source": 8,
+  "grammar_topic": "past simple consolidation",
+  "cefr_level": "A2",
+  "genre": "mystery",
+  "title": "Who Ate the Cake?",
+  "body": "Yesterday was my mother's birthday, and I made a chocolate cake for her. I finished it at three o'clock and left it on the kitchen table. At five o'clock, I came back — and saw only an empty plate! Who ate the cake? There were four people at home. I started my investigation. First, I asked my sister. 'I didn't eat it,' she said. 'I was at my music lesson. I came home at half past four.' Then I asked my father. 'I didn't do it,' he said. 'I watched football in the living room all afternoon.' My little brother said: 'I don't like chocolate.' That wasn't true — but he had no chocolate on his face, and his hands were clean. Then I heard a strange sound under the table. Our cat Barsik didn't look at me. There was chocolate cream on his white nose. 'Barsik! Cats can't eat chocolate — it's dangerous!' We called the vet, but Barsik was fine. He ate only the cream. The cake itself was on the floor behind the door. My investigation found two things: a guilty cat and a very dirty kitchen.",
+  "words": [
+   {
+    "word": "empty",
+    "translation_ru": "пустой",
+    "translation_tg": "холӣ",
+    "part_of_speech": "adjective",
+    "context": "I saw only an empty plate!"
+   },
+   {
+    "word": "plate",
+    "translation_ru": "тарелка",
+    "translation_tg": "табақ",
+    "part_of_speech": "noun",
+    "context": "I saw only an empty plate!"
+   },
+   {
+    "word": "investigation",
+    "translation_ru": "расследование",
+    "translation_tg": "тафтишот",
+    "part_of_speech": "noun",
+    "context": "I started my investigation."
+   },
+   {
+    "word": "true",
+    "translation_ru": "правда, правдивый",
+    "translation_tg": "рост",
+    "part_of_speech": "adjective",
+    "context": "That wasn't true."
+   },
+   {
+    "word": "sound",
+    "translation_ru": "звук",
+    "translation_tg": "садо",
+    "part_of_speech": "noun",
+    "context": "I heard a strange sound under the table."
+   },
+   {
+    "word": "dangerous",
+    "translation_ru": "опасный",
+    "translation_tg": "хатарнок",
+    "part_of_speech": "adjective",
+    "context": "Chocolate is dangerous for cats."
+   },
+   {
+    "word": "vet",
+    "translation_ru": "ветеринар",
+    "translation_tg": "духтури ҳайвонот",
+    "part_of_speech": "noun",
+    "context": "We called the vet."
+   },
+   {
+    "word": "guilty",
+    "translation_ru": "виновный",
+    "translation_tg": "гунаҳкор",
+    "part_of_speech": "adjective",
+    "context": "My investigation found a guilty cat."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 8 - A murder mystery / A house with a history",
+  "json_unit_source": 8,
+  "grammar_topic": "there is/are; there was/were",
+  "cefr_level": "A2",
+  "genre": "mystery",
+  "title": "The House on Green Street",
+  "body": "There is an old house on Green Street, and children tell scary stories about it. 'There was a rich man there a hundred years ago,' they say. 'And now there are ghosts!' Last week, my friends and I decided to check. In the morning, we opened the old gate and went in. Inside, there was a lot of dust and there were spiders on the walls. But there weren't any ghosts. There was a big library with hundreds of old books. There was a piano — very old, but beautiful. And there was a photo on the wall: a man with kind eyes, and children around him. Our teacher explained everything at school: 'That man was a doctor. There was a free hospital for poor children in his house. He wasn't rich at the end of his life — he spent all his money on medicine for them.' Now there is a plan in our town: to make a museum in the house. There aren't any ghosts on Green Street. There is only a good story that people forgot.",
+  "words": [
+   {
+    "word": "scary",
+    "translation_ru": "страшный",
+    "translation_tg": "даҳшатнок",
+    "part_of_speech": "adjective",
+    "context": "Children tell scary stories about it."
+   },
+   {
+    "word": "ghost",
+    "translation_ru": "привидение",
+    "translation_tg": "арвоҳ",
+    "part_of_speech": "noun",
+    "context": "And now there are ghosts!"
+   },
+   {
+    "word": "gate",
+    "translation_ru": "ворота",
+    "translation_tg": "дарвоза",
+    "part_of_speech": "noun",
+    "context": "We opened the old gate."
+   },
+   {
+    "word": "dust",
+    "translation_ru": "пыль",
+    "translation_tg": "чанг",
+    "part_of_speech": "noun",
+    "context": "There was a lot of dust."
+   },
+   {
+    "word": "spider",
+    "translation_ru": "паук",
+    "translation_tg": "тортанак",
+    "part_of_speech": "noun",
+    "context": "There were spiders on the walls."
+   },
+   {
+    "word": "library",
+    "translation_ru": "библиотека",
+    "translation_tg": "китобхона",
+    "part_of_speech": "noun",
+    "context": "There was a big library."
+   },
+   {
+    "word": "poor",
+    "translation_ru": "бедный",
+    "translation_tg": "камбағал",
+    "part_of_speech": "adjective",
+    "context": "A free hospital for poor children."
+   },
+   {
+    "word": "medicine",
+    "translation_ru": "лекарство",
+    "translation_tg": "дору",
+    "part_of_speech": "noun",
+    "context": "He spent all his money on medicine."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 9 - #mydinnerlastnight / White gold",
+  "json_unit_source": 9,
+  "grammar_topic": "countable/uncountable; quantifiers",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "Osh for Twenty People",
+  "body": "On Sunday my uncle cooks osh for the whole family — about twenty people. In the morning we go to the market together. 'How much rice do we need?' I ask. 'Three kilos,' he says. 'And a lot of carrots — two kilos, and some good meat.' At the market, there is a mountain of yellow carrots. My uncle checks them carefully. 'Not these. Those are better.' We buy some oil, a few onions and a little garlic. 'How many onions?' — 'Five or six. And how much salt? Nobody knows — the hand knows!' At home, my uncle starts the fire. First the oil, then the meat, then the onions and the carrots. The smell is fantastic. He adds the rice and some water. 'Now we wait. Don't touch it! Don't open it!' After an hour, the osh is ready. There isn't much talk at the table — everyone is busy. 'Uncle, how much osh is left?' my cousin asks after lunch. My uncle looks into the big pot and laughs: 'Not much. Only a little — for breakfast!'",
+  "words": [
+   {
+    "word": "rice",
+    "translation_ru": "рис",
+    "translation_tg": "биринҷ",
+    "part_of_speech": "noun",
+    "context": "How much rice do we need?"
+   },
+   {
+    "word": "carrot",
+    "translation_ru": "морковь",
+    "translation_tg": "сабзӣ",
+    "part_of_speech": "noun",
+    "context": "A lot of carrots — two kilos."
+   },
+   {
+    "word": "meat",
+    "translation_ru": "мясо",
+    "translation_tg": "гӯшт",
+    "part_of_speech": "noun",
+    "context": "...and some good meat."
+   },
+   {
+    "word": "oil",
+    "translation_ru": "масло (растительное)",
+    "translation_tg": "равған",
+    "part_of_speech": "noun",
+    "context": "We buy some oil."
+   },
+   {
+    "word": "onion",
+    "translation_ru": "лук",
+    "translation_tg": "пиёз",
+    "part_of_speech": "noun",
+    "context": "A few onions and a little garlic."
+   },
+   {
+    "word": "garlic",
+    "translation_ru": "чеснок",
+    "translation_tg": "сир",
+    "part_of_speech": "noun",
+    "context": "...and a little garlic."
+   },
+   {
+    "word": "salt",
+    "translation_ru": "соль",
+    "translation_tg": "намак",
+    "part_of_speech": "noun",
+    "context": "How much salt? Nobody knows!"
+   },
+   {
+    "word": "pot",
+    "translation_ru": "котёл, кастрюля",
+    "translation_tg": "дег",
+    "part_of_speech": "noun",
+    "context": "My uncle looks into the big pot."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 9 - #mydinnerlastnight / White gold",
+  "json_unit_source": 9,
+  "grammar_topic": "comparative adjectives",
+  "cefr_level": "A2",
+  "genre": "comedy",
+  "title": "The Melon Championship",
+  "body": "Every August, our village has a small championship: whose melon is the best? My father takes it very seriously. 'My melons are sweeter than Rustam's,' he says every year. 'And bigger. And rounder.' This year, his main melon was truly enormous — heavier than our cat and bigger than a football. Father was happier than a child. On the day of the competition, the judges walked from table to table. Rustam's melon was beautiful, but smaller. Our neighbour's melon was big, but paler. Father smiled. And then came Grandmother Zulfiya, eighty years old, with a melon on a little cart. Her melon was... not very big. Not very round. But the judges cut it, tried one piece — and their faces changed. It was sweeter than honey. 'Size is important,' said the main judge, 'but taste is more important.' Grandmother Zulfiya took the first prize. My father took the second. Now he says: 'Next year my melon is going to be bigger AND sweeter. I have a secret plan.' We'll see. In our village, the melon championship is more serious than football.",
+  "words": [
+   {
+    "word": "melon",
+    "translation_ru": "дыня",
+    "translation_tg": "харбуза",
+    "part_of_speech": "noun",
+    "context": "Whose melon is the best?"
+   },
+   {
+    "word": "enormous",
+    "translation_ru": "огромный",
+    "translation_tg": "бузург",
+    "part_of_speech": "adjective",
+    "context": "His main melon was truly enormous."
+   },
+   {
+    "word": "competition",
+    "translation_ru": "соревнование",
+    "translation_tg": "озмун",
+    "part_of_speech": "noun",
+    "context": "On the day of the competition..."
+   },
+   {
+    "word": "judge",
+    "translation_ru": "судья",
+    "translation_tg": "довар",
+    "part_of_speech": "noun",
+    "context": "The judges walked from table to table."
+   },
+   {
+    "word": "pale",
+    "translation_ru": "бледный",
+    "translation_tg": "камранг",
+    "part_of_speech": "adjective",
+    "context": "Our neighbour's melon was big, but paler."
+   },
+   {
+    "word": "cart",
+    "translation_ru": "тележка",
+    "translation_tg": "аробача",
+    "part_of_speech": "noun",
+    "context": "...with a melon on a little cart."
+   },
+   {
+    "word": "honey",
+    "translation_ru": "мёд",
+    "translation_tg": "асал",
+    "part_of_speech": "noun",
+    "context": "It was sweeter than honey."
+   },
+   {
+    "word": "prize",
+    "translation_ru": "приз",
+    "translation_tg": "ҷоиза",
+    "part_of_speech": "noun",
+    "context": "Grandmother Zulfiya took the first prize."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 10 - The most dangerous place / Five continents in a day",
+  "json_unit_source": 10,
+  "grammar_topic": "superlative adjectives",
+  "cefr_level": "A2",
+  "genre": "adventure",
+  "title": "The Highest Road",
+  "body": "My cousin Daler is a driver, and his route is one of the highest roads in the world — the Pamir Highway. Last summer he took me with him. 'This is the most beautiful office on Earth,' he said and started the engine. The first day was easy. But then the road climbed higher and higher. The mountains were the biggest things I have ever seen. The air became thinner, and my head felt strange. 'Drink more water,' Daler said. 'It's the best medicine here.' We stopped in a small village for the night. It was the quietest place in the world — no cars, no internet, only stars. An old man gave us bread and tea. 'You have the most difficult job,' I said to Daler in the morning. He shook his head: 'No. I have the most interesting one. Every week I see the highest mountains, the cleanest lakes and the kindest people in the country. What is difficult about that?' I looked at the white peaks around us and agreed. Sometimes the hardest roads go to the most wonderful places.",
+  "words": [
+   {
+    "word": "route",
+    "translation_ru": "маршрут",
+    "translation_tg": "хатсайр",
+    "part_of_speech": "noun",
+    "context": "His route is one of the highest roads in the world."
+   },
+   {
+    "word": "highway",
+    "translation_ru": "шоссе, тракт",
+    "translation_tg": "шоҳроҳ",
+    "part_of_speech": "noun",
+    "context": "The Pamir Highway."
+   },
+   {
+    "word": "engine",
+    "translation_ru": "двигатель",
+    "translation_tg": "муҳаррик",
+    "part_of_speech": "noun",
+    "context": "He started the engine."
+   },
+   {
+    "word": "climb",
+    "translation_ru": "подниматься",
+    "translation_tg": "боло рафтан",
+    "part_of_speech": "verb",
+    "context": "The road climbed higher and higher."
+   },
+   {
+    "word": "thin",
+    "translation_ru": "тонкий, разреженный",
+    "translation_tg": "тунук",
+    "part_of_speech": "adjective",
+    "context": "The air became thinner."
+   },
+   {
+    "word": "star",
+    "translation_ru": "звезда",
+    "translation_tg": "ситора",
+    "part_of_speech": "noun",
+    "context": "No cars, no internet, only stars."
+   },
+   {
+    "word": "lake",
+    "translation_ru": "озеро",
+    "translation_tg": "кӯл",
+    "part_of_speech": "noun",
+    "context": "...the cleanest lakes in the country."
+   },
+   {
+    "word": "wonderful",
+    "translation_ru": "чудесный",
+    "translation_tg": "аҷоиб",
+    "part_of_speech": "adjective",
+    "context": "The hardest roads go to the most wonderful places."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 10 - The most dangerous place / Five continents in a day",
+  "json_unit_source": 10,
+  "grammar_topic": "be going to (plans and predictions)",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "Big Plans",
+  "body": "It's the last evening of the school year, and my friends and I are sitting on the roof of my house. The city lights are below us, and our future is in front of us. 'What are you going to do after school?' asks Jamshed. Everyone has a plan. 'I'm going to study medicine in Dushanbe,' says Nigora. 'I'm going to be a doctor like my mother.' 'I'm going to open a small computer club,' says Jamshed. 'Kids are going to learn programming there.' Aziz is quiet for a minute. 'You're going to laugh,' he says, 'but I'm going to be a chef. I'm going to cook the best osh in the country, and my restaurant is going to be famous.' Nobody laughs. His plov is already the best in our street. 'And you?' they ask me. I look at the stars. 'I'm going to travel,' I say. 'First Samarkand, then Istanbul, then the world. And one day I'm going to write a book about it.' 'It's going to be a boring book,' Jamshed jokes, 'without a chapter about my computer club!' We laugh, but I know: we're going to remember this evening for a long time.",
+  "words": [
+   {
+    "word": "future",
+    "translation_ru": "будущее",
+    "translation_tg": "оянда",
+    "part_of_speech": "noun",
+    "context": "Our future is in front of us."
+   },
+   {
+    "word": "medicine",
+    "translation_ru": "медицина",
+    "translation_tg": "тиб",
+    "part_of_speech": "noun",
+    "context": "I'm going to study medicine."
+   },
+   {
+    "word": "chef",
+    "translation_ru": "шеф-повар",
+    "translation_tg": "ошпаз",
+    "part_of_speech": "noun",
+    "context": "I'm going to be a chef."
+   },
+   {
+    "word": "famous",
+    "translation_ru": "известный",
+    "translation_tg": "машҳур",
+    "part_of_speech": "adjective",
+    "context": "My restaurant is going to be famous."
+   },
+   {
+    "word": "travel",
+    "translation_ru": "путешествовать",
+    "translation_tg": "сафар кардан",
+    "part_of_speech": "verb",
+    "context": "I'm going to travel."
+   },
+   {
+    "word": "chapter",
+    "translation_ru": "глава (книги)",
+    "translation_tg": "боб",
+    "part_of_speech": "noun",
+    "context": "...without a chapter about my computer club!"
+   },
+   {
+    "word": "joke",
+    "translation_ru": "шутить",
+    "translation_tg": "шӯхӣ кардан",
+    "part_of_speech": "verb",
+    "context": "Jamshed jokes."
+   },
+   {
+    "word": "light",
+    "translation_ru": "свет, огонёк",
+    "translation_tg": "чароғ",
+    "part_of_speech": "noun",
+    "context": "The city lights are below us."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 11 - Culture shock / Experiences or things?",
+  "json_unit_source": 11,
+  "grammar_topic": "adverbs of manner; verb + to + infinitive",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "Learning to Drive",
+  "body": "Last month I decided to learn to drive. My teacher, Mr Nazarov, is a calm man with thirty years of experience. On our first lesson, he spoke slowly and clearly: 'Rule number one: drive carefully. Rule number two: think quickly, but decide calmly.' I started the car nervously. It moved... backwards. 'Interesting choice,' Mr Nazarov said quietly. 'Most students want to go forwards.' Week after week, I learned to drive better. I stopped smoothly at traffic lights, turned correctly and parked... well, I tried to park. Parking was my enemy. 'You need to feel the car,' my teacher explained patiently. 'Don't fight it.' Yesterday was my exam. I drove slowly and carefully. The inspector nodded and wrote something. Then came the parking. I breathed deeply, turned the wheel gently — and the car entered the space perfectly. 'Congratulations,' the inspector said. I wanted to dance happily on the street. Mr Nazarov shook my hand warmly: 'Remember: a good driver never stops learning.'",
+  "words": [
+   {
+    "word": "experience",
+    "translation_ru": "опыт",
+    "translation_tg": "таҷриба",
+    "part_of_speech": "noun",
+    "context": "A calm man with thirty years of experience."
+   },
+   {
+    "word": "backwards",
+    "translation_ru": "назад",
+    "translation_tg": "ба ақиб",
+    "part_of_speech": "adverb",
+    "context": "It moved... backwards."
+   },
+   {
+    "word": "forwards",
+    "translation_ru": "вперёд",
+    "translation_tg": "ба пеш",
+    "part_of_speech": "adverb",
+    "context": "Most students want to go forwards."
+   },
+   {
+    "word": "smoothly",
+    "translation_ru": "плавно",
+    "translation_tg": "ҳамвор",
+    "part_of_speech": "adverb",
+    "context": "I stopped smoothly at traffic lights."
+   },
+   {
+    "word": "patiently",
+    "translation_ru": "терпеливо",
+    "translation_tg": "бо сабр",
+    "part_of_speech": "adverb",
+    "context": "My teacher explained patiently."
+   },
+   {
+    "word": "breathe",
+    "translation_ru": "дышать",
+    "translation_tg": "нафас кашидан",
+    "part_of_speech": "verb",
+    "context": "I breathed deeply."
+   },
+   {
+    "word": "wheel",
+    "translation_ru": "руль",
+    "translation_tg": "чамбарак",
+    "part_of_speech": "noun",
+    "context": "I turned the wheel gently."
+   },
+   {
+    "word": "congratulations",
+    "translation_ru": "поздравляю",
+    "translation_tg": "табрик",
+    "part_of_speech": "phrase",
+    "context": "'Congratulations,' the inspector said."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 11 - Culture shock / Experiences or things?",
+  "json_unit_source": 11,
+  "grammar_topic": "the or no the",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "Presents or Memories?",
+  "body": "My aunt Mavluda lives in Canada, and every year she sends us money for New Year. 'Buy something nice,' she writes. Last year my brother bought a phone. I bought clothes. This year, our mother had a different idea. 'Things break and get old,' she said. 'Let's buy an experience.' So we bought four tickets to the mountains — for the whole family. We stayed in a small guest house near a lake. In the mornings we walked in the forest. In the evenings we played games and drank tea with honey. My brother forgot about the internet — there wasn't any! On the last day, we sent Aunt Mavluda a photo: four happy faces, white mountains, golden sun. She answered quickly: 'This is the best present in years! Next December I'm going to come, and we're going to go together.' My old phone still works. My clothes from last year are still fine. But those three days in the mountains? They are going to stay with me forever. Mum was right: things get old, memories don't.",
+  "words": [
+   {
+    "word": "present",
+    "translation_ru": "подарок",
+    "translation_tg": "тӯҳфа",
+    "part_of_speech": "noun",
+    "context": "This is the best present in years!"
+   },
+   {
+    "word": "memory",
+    "translation_ru": "воспоминание",
+    "translation_tg": "хотира",
+    "part_of_speech": "noun",
+    "context": "Things get old, memories don't."
+   },
+   {
+    "word": "break",
+    "translation_ru": "ломаться",
+    "translation_tg": "шикастан",
+    "part_of_speech": "verb",
+    "context": "Things break and get old."
+   },
+   {
+    "word": "ticket",
+    "translation_ru": "билет",
+    "translation_tg": "чипта",
+    "part_of_speech": "noun",
+    "context": "We bought four tickets to the mountains."
+   },
+   {
+    "word": "guest house",
+    "translation_ru": "гостевой дом",
+    "translation_tg": "меҳмонхонаи хурд",
+    "part_of_speech": "phrase",
+    "context": "We stayed in a small guest house."
+   },
+   {
+    "word": "forest",
+    "translation_ru": "лес",
+    "translation_tg": "ҷангал",
+    "part_of_speech": "noun",
+    "context": "We walked in the forest."
+   },
+   {
+    "word": "golden",
+    "translation_ru": "золотой",
+    "translation_tg": "тиллоӣ",
+    "part_of_speech": "adjective",
+    "context": "...white mountains, golden sun."
+   },
+   {
+    "word": "forever",
+    "translation_ru": "навсегда",
+    "translation_tg": "то абад",
+    "part_of_speech": "adverb",
+    "context": "They are going to stay with me forever."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 12 - I've seen it ten times! / He's been everywhere!",
+  "json_unit_source": 12,
+  "grammar_topic": "present perfect",
+  "cefr_level": "A2",
+  "genre": "comedy",
+  "title": "The Film Expert",
+  "body": "My friend Sino is a film expert. At least, he thinks so. 'Have you seen this film?' — this is his favourite question. He has seen everything. 'I've watched all the famous films,' he says proudly. 'I've seen the old ones and the new ones. I've watched films from ten different countries.' Last Friday our teacher started a film club at school. The first film was a classic — a black-and-white comedy from the 1960s. 'Ah, this one!' Sino said loudly. 'I've seen it ten times! It's brilliant!' The film started. After twenty minutes, Sino looked confused. After forty minutes, he was completely quiet. The film was in French — and the ending was sad, not funny. 'Sino,' I whispered, 'have you really seen this film?' He was red like a tomato. 'I've... seen the poster,' he said. 'Many times. In my film book.' The class laughed for five minutes. Sino is still our film expert. But now he has a new rule: 'Never say you've seen a film... before you've actually watched it.'",
+  "words": [
+   {
+    "word": "expert",
+    "translation_ru": "эксперт, знаток",
+    "translation_tg": "мутахассис",
+    "part_of_speech": "noun",
+    "context": "My friend Sino is a film expert."
+   },
+   {
+    "word": "proudly",
+    "translation_ru": "гордо",
+    "translation_tg": "бо ифтихор",
+    "part_of_speech": "adverb",
+    "context": "'I've watched all the famous films,' he says proudly."
+   },
+   {
+    "word": "classic",
+    "translation_ru": "классика",
+    "translation_tg": "классика",
+    "part_of_speech": "noun",
+    "context": "The first film was a classic."
+   },
+   {
+    "word": "brilliant",
+    "translation_ru": "блестящий, великолепный",
+    "translation_tg": "олӣ",
+    "part_of_speech": "adjective",
+    "context": "It's brilliant!"
+   },
+   {
+    "word": "confused",
+    "translation_ru": "растерянный",
+    "translation_tg": "саргаранг",
+    "part_of_speech": "adjective",
+    "context": "Sino looked confused."
+   },
+   {
+    "word": "ending",
+    "translation_ru": "концовка",
+    "translation_tg": "анҷом",
+    "part_of_speech": "noun",
+    "context": "The ending was sad, not funny."
+   },
+   {
+    "word": "whisper",
+    "translation_ru": "шептать",
+    "translation_tg": "пичиррос задан",
+    "part_of_speech": "verb",
+    "context": "'Sino,' I whispered."
+   },
+   {
+    "word": "poster",
+    "translation_ru": "постер, афиша",
+    "translation_tg": "постер",
+    "part_of_speech": "noun",
+    "context": "I've seen the poster."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 12 - I've seen it ten times! / He's been everywhere!",
+  "json_unit_source": 12,
+  "grammar_topic": "present perfect or past simple",
+  "cefr_level": "A2",
+  "genre": "slice of life",
+  "title": "Grandfather's Map",
+  "body": "My grandfather has a big map on his wall, with small red pins on it. Each pin is a place he has visited. 'I've been to eleven countries,' he told me yesterday. 'Have you ever been to India?' I asked. 'Yes, I have. I went there in 1979, when I was a young engineer. We built a power station. The heat was unbelievable!' 'And China?' 'I've been there twice. The first time was in 1985. The second time was last year — your uncle took me. Everything has changed! In 1985 everyone rode bicycles. Now the cities are full of electric cars.' I looked at the map. 'Which country have you loved the most?' Grandfather smiled and put his finger on Tajikistan. 'I've seen beautiful places, but I've never found a better one than home. Travel, my dear. See the world. And then you'll understand me.' Yesterday I bought my own map. It has one pin so far — our town. But I've already made a list: Samarkand, Almaty, Istanbul... My journey has just started.",
+  "words": [
+   {
+    "word": "map",
+    "translation_ru": "карта",
+    "translation_tg": "харита",
+    "part_of_speech": "noun",
+    "context": "My grandfather has a big map on his wall."
+   },
+   {
+    "word": "pin",
+    "translation_ru": "булавка, кнопка",
+    "translation_tg": "сӯзанак",
+    "part_of_speech": "noun",
+    "context": "Each pin is a place he has visited."
+   },
+   {
+    "word": "engineer",
+    "translation_ru": "инженер",
+    "translation_tg": "муҳандис",
+    "part_of_speech": "noun",
+    "context": "I was a young engineer."
+   },
+   {
+    "word": "power station",
+    "translation_ru": "электростанция",
+    "translation_tg": "нерӯгоҳ",
+    "part_of_speech": "phrase",
+    "context": "We built a power station."
+   },
+   {
+    "word": "heat",
+    "translation_ru": "жара",
+    "translation_tg": "гармӣ",
+    "part_of_speech": "noun",
+    "context": "The heat was unbelievable!"
+   },
+   {
+    "word": "bicycle",
+    "translation_ru": "велосипед",
+    "translation_tg": "дучарха",
+    "part_of_speech": "noun",
+    "context": "In 1985 everyone rode bicycles."
+   },
+   {
+    "word": "finger",
+    "translation_ru": "палец",
+    "translation_tg": "ангушт",
+    "part_of_speech": "noun",
+    "context": "He put his finger on Tajikistan."
+   },
+   {
+    "word": "journey",
+    "translation_ru": "путешествие",
+    "translation_tg": "сафар",
+    "part_of_speech": "noun",
+    "context": "My journey has just started."
+   }
+  ]
+ }
+]

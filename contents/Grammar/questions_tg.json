@@ -1,0 +1,186 @@
+[
+[
+{"text":"Шакли дурустро интихоб кунед: I ___ a student.","explanation":"Бо «I» ҳамеша «am» истифода мешавад."},
+{"text":"Шакли дурустро интихоб кунед: You ___ my friend.","explanation":"Бо «you» ҳамеша «are» истифода мешавад."},
+{"text":"Шакли кӯтоҳро интихоб кунед: «I am» = ___","explanation":"«I am» дар гуфтугӯ ба «I'm» кӯтоҳ мешавад."},
+{"text":"Инкорро интихоб кунед: I ___ a teacher.","explanation":"Инкори «I am» — «I am not» (I'm not)."},
+{"text":"Саволро интихоб кунед: ___ you in room 3?","explanation":"Дар саволҳо бо «you» феъли «are» аввал меояд: Are you...?"},
+{"text":"Ҷавоби дурустро интихоб кунед: Am I in class 2? — Yes, you ___.","explanation":"Ба саволи дар бораи «I» бо «you are» ҷавоб медиҳем."}
+],
+[
+{"text":"Шакли дурустро интихоб кунед: He ___ from Brazil.","explanation":"Бо «he», «she» ва «it» феъли «is» истифода мешавад."},
+{"text":"Шакли дурустро интихоб кунед: She ___ a doctor.","explanation":"Бо «she» феъли «is» меояд."},
+{"text":"Шакли кӯтоҳро интихоб кунед: «It is cold» = ___","explanation":"«It is» бо апостроф ба «It's» кӯтоҳ мешавад."},
+{"text":"Инкорро интихоб кунед: He ___ my brother.","explanation":"Инкори «he is» — «he isn't» (is not)."},
+{"text":"Саволро интихоб кунед: ___ she your teacher?","explanation":"Саволҳо бо «she» аз «Is» сар мешаванд: Is she...?"},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Бо «it» феъли «is» меояд."}
+],
+[
+{"text":"Шакли дурустро интихоб кунед: We ___ students.","explanation":"Бо «we», «you» ва «they» феъли «are» истифода мешавад."},
+{"text":"Шакли дурустро интихоб кунед: They ___ from Italy.","explanation":"«They» феъли «are»-ро талаб мекунад."},
+{"text":"Шакли кӯтоҳро интихоб кунед: «We are» = ___","explanation":"«We are» ба «We're» кӯтоҳ мешавад. «Were» бе апостроф калимаи дигар аст."},
+{"text":"Инкорро интихоб кунед: They ___ at home.","explanation":"Инкори «they are» — «they aren't»."},
+{"text":"Саволро интихоб кунед: ___ you and Tom in the same class?","explanation":"«You and Tom» — «you»-и ҷамъ аст, бинобар ин «Are»."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«We» ҳамеша бо «are» меояд."}
+],
+[
+{"text":"Калимаи саволиро интихоб кунед: ___ are you from? — Mexico.","explanation":"«Where» дар бораи ҷой мепурсад."},
+{"text":"Калимаи саволиро интихоб кунед: ___ is your name? — Anna.","explanation":"«What» дар бораи чиз ё ном мепурсад."},
+{"text":"Калимаи саволиро интихоб кунед: ___ old are you? — I'm twenty.","explanation":"«How old» дар бораи синну сол мепурсад."},
+{"text":"Калимаи саволиро интихоб кунед: ___ is that man? — He's my father.","explanation":"«Who» дар бораи шахс мепурсад."},
+{"text":"Тартиби дурусти калимаҳоро интихоб кунед.","explanation":"Калимаи саволӣ + be + мубтадо."},
+{"text":"Саволро интихоб кунед: ___ your phone number? — It's 555-0134.","explanation":"Дар бораи рақами телефон мепурсанд: What's your phone number?"}
+],
+[
+{"text":"Артикли дурустро интихоб кунед: ___ apple","explanation":"Пеш аз садоноки овозӣ «an» меояд: an apple."},
+{"text":"Артикли дурустро интихоб кунед: ___ book","explanation":"Пеш аз ҳамсадо «a» меояд: a book."},
+{"text":"Шакли ҷамъи калимаи «watch»-ро интихоб кунед.","explanation":"Исмҳои бо -ch тамомшаванда -es мегиранд: watches."},
+{"text":"Шакли ҷамъи калимаи «country»-ро интихоб кунед.","explanation":"Ҳамсадо + y ба -ies мубаддал мешавад: countries."},
+{"text":"Шакли ҷамъи калимаи «man»-ро интихоб кунед.","explanation":"«Man» шакли ҷамъи номунтазам дорад: men."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пас аз рақами аз як зиёд исм дар шакли ҷамъ меояд; «a» танҳо барои танҳост."}
+],
+[
+{"text":"Калимаро барои як чизи наздик интихоб кунед: ___ is my phone.","explanation":"«This» — як чизи наздики гӯянда."},
+{"text":"Калимаро барои як чизи дур интихоб кунед: ___ is my car.","explanation":"«That» — як чизи дур аз гӯянда."},
+{"text":"Калимаро интихоб кунед: ___ are my keys, here in my hand.","explanation":"«These» — якчанд чизи наздик."},
+{"text":"Калимаро интихоб кунед: ___ are your books, over there.","explanation":"«Those» — якчанд чизи дур."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«This» бо исми танҳо ва феъли «is» меояд."},
+{"text":"Саволи дурустро дар бораи чизҳои дур интихоб кунед.","explanation":"«Those» ҷамъ ва дур аст; феъли «are»-ро талаб мекунад."}
+],
+[
+{"text":"Калимаро интихоб кунед: ___ name is Marta. (I)","explanation":"«I» → «my»: my name."},
+{"text":"Калимаро интихоб кунед: This is my brother. ___ name is Aziz.","explanation":"Дар бораи мард ё писар — «his»."},
+{"text":"Калимаро интихоб кунед: This is my sister. ___ name is Layla.","explanation":"Дар бораи зан ё духтар — «her»."},
+{"text":"Шаклро интихоб кунед: This is ___ car. (Tom)","explanation":"'s-и соҳибӣ мансубиятро нишон медиҳад: Tom's car."},
+{"text":"Калимаро интихоб кунед: We love ___ parents.","explanation":"«We» → «our»: our parents."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"'s пас аз соҳиб меояд: my mother's sister."}
+],
+[
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"Сифат пеш аз исм меояд: a red car."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Сифатҳо дар англисӣ дар шакли ҷамъ -s намегиранд."},
+{"text":"Муқобили калимаи «big»-ро интихоб кунед.","explanation":"big ↔ small."},
+{"text":"Муқобили калимаи «expensive»-ро интихоб кунед.","explanation":"expensive ↔ cheap."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пас аз «be» сифат танҳо меистад: is fast."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Ибораи саволӣ + be + мубтадо."}
+],
+[
+{"text":"Шаклро интихоб кунед: I ___ coffee every morning.","explanation":"Бо I/you/we/they феъл дар Present Simple бе анҷома меояд."},
+{"text":"Инкорро интихоб кунед: We ___ meat.","explanation":"Бо I/you/we/they инкор: don't + феъл."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«They» шакли аслии феълро талаб мекунад: live."},
+{"text":"Инкорро интихоб кунед: I ___ breakfast at home.","explanation":"Инкор бо «I» = don't + феъл."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«You» шакли аслии феълро талаб мекунад."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пас аз don't феъл ҳамеша дар шакли аслӣ меояд."}
+],
+[
+{"text":"Саволро интихоб кунед: ___ you like pizza?","explanation":"Саволҳо бо I/you/we/they бо «Do» сохта мешаванд."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Do you speak Russian? — Yes, I ___.","explanation":"Ҷавоби кӯтоҳ феъли ёварро такрор мекунад: Yes, I do."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Калимаи саволӣ + do + мубтадо + феъл."},
+{"text":"Саволро интихоб кунед: ___ we have class today?","explanation":"Бо «we» дар саволҳо «do» истифода мешавад."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Do they live here? — No, they ___.","explanation":"Ҷавоби кӯтоҳи инкорӣ: No, they don't."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Саволҳои Present Simple феъли ёвари «do»-ро талаб мекунанд."}
+],
+[
+{"text":"Шаклро интихоб кунед: She ___ in a hospital.","explanation":"Бо he/she/it феъл -s мегирад: works."},
+{"text":"Шаклро интихоб кунед: He ___ TV in the evening.","explanation":"Феълҳои бо -ch тамомшаванда -es мегиранд: watches."},
+{"text":"Шаклро интихоб кунед: My brother ___ English.","explanation":"Ҳамсадо + y → -ies: studies."},
+{"text":"Инкорро интихоб кунед: She ___ fish.","explanation":"Бо he/she/it: doesn't + феъл бе -s."},
+{"text":"Саволро интихоб кунед: ___ he work in a bank?","explanation":"Саволҳо бо he/she/it бо «Does» сохта мешаванд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«It» шакли бо -s-ро талаб мекунад: rains."}
+],
+[
+{"text":"Тартиби дурустро интихоб кунед.","explanation":"Зарфҳои такрор пеш аз феъли асосӣ меоянд."},
+{"text":"Тартиби дурустро бо «be» интихоб кунед.","explanation":"Бо «be» зарф пас аз феъл меояд: is never."},
+{"text":"Кадом зарф «100% вақт»-ро мефаҳмонад?","explanation":"always = ҳар дафъа."},
+{"text":"Кадом зарф «0% вақт»-ро мефаҳмонад?","explanation":"never = ҳеҷ гоҳ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Usually» пеш аз феъли асосии «gets» меояд."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«How often» + do + мубтадо + феъл — савол дар бораи такрор."}
+],
+[
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Present Simple: калимаи саволӣ + do/does + мубтадо + феъл."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Бо «be» ҷои калимаҳо иваз мешавад: Is + мубтадо."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«The film» = it → does; феъли асосӣ -s-ро гум мекунад."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Дар «at work» феъл нест, бинобар ин «be» меояд: Are they...?"},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Феъли амали «play» «do»-ро талаб мекунад, на «are»."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«Sad» сифат аст, бинобар ин «be»: Why is he...?"}
+],
+[
+{"text":"Амри дурустро интихоб кунед.","explanation":"Амр — шакли аслии феъл бе мубтадо."},
+{"text":"Амри инкориро интихоб кунед.","explanation":"Амри инкорӣ = Don't + феъл."},
+{"text":"Ҷонишинро интихоб кунед: I like Anna. I see ___ every day.","explanation":"Пас аз феъл ҷонишини пуркунанда меояд: her."},
+{"text":"Ҷонишинро интихоб кунед: This is my father. Look at ___.","explanation":"«He» → шакли пуркунанда «him»."},
+{"text":"Ҷонишинро интихоб кунед: We are here! Wait for ___!","explanation":"«We» → шакли пуркунанда «us»."},
+{"text":"Ҷонишинро интихоб кунед: I love this song. Listen to ___!","explanation":"Дар бораи чиз «it» мегӯем."}
+],
+[
+{"text":"Шаклро интихоб кунед: I ___ swim.","explanation":"«Can» тағйир намеёбад ва феълро бе «to» талаб мекунад."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пас аз «can» феъл дар шакли аслӣ; «can» бе -s."},
+{"text":"Инкорро интихоб кунед: We ___ park here.","explanation":"Инкори «can» — «can't» (cannot)."},
+{"text":"Саволро интихоб кунед: ___ you help me, please?","explanation":"Саволҳо бо «can»: Can + мубтадо + феъл."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Can he cook? — Yes, he ___.","explanation":"Ҷавоби кӯтоҳ «can»-ро такрор мекунад: Yes, he can."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"can + феъли аслӣ, бе «to» ва «-ing»."}
+],
+[
+{"text":"Шаклро интихоб кунед: I love ___ to music.","explanation":"Пас аз like/love/hate феъл + -ing меояд."},
+{"text":"Шаклро интихоб кунед: She hates ___ up early.","explanation":"hate + феъл-ing: hates getting."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"like + шакли -ing: like cooking."},
+{"text":"Шакли -ing-и феъли «swim»-ро интихоб кунед.","explanation":"Садоноки кӯтоҳ + ҳамсадо дучанд мешавад: swimming."},
+{"text":"Шакли -ing-и феъли «make»-ро интихоб кунед.","explanation":"Феълҳои бо -e тамомшаванда онро гум мекунанд: making."},
+{"text":"Саволро интихоб кунед: ___ he like playing football?","explanation":"«He» дар саволҳои Present Simple «does»-ро талаб мекунад."}
+],
+[
+{"text":"Шаклро интихоб кунед: I ___ working now.","explanation":"Present Continuous = be + феъл-ing; «I» бо «am»."},
+{"text":"Шаклро интихоб кунед: She ___ reading a book.","explanation":"«She» бо «is»: she is reading."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"are + феъл-ing: are watching."},
+{"text":"Инкорро интихоб кунед: We ___ sleeping.","explanation":"Инкори Present Continuous: aren't + -ing."},
+{"text":"Саволро интихоб кунед: ___ you listening to me?","explanation":"Саволҳо: Are + мубтадо + феъл-ing."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Present Continuous ҳам «be» ва ҳам шакли -ing-ро талаб мекунад."}
+],
+[
+{"text":"Шаклро интихоб кунед: Listen! The baby ___ now.","explanation":"Амал ҳозир рӯй медиҳад → Present Continuous."},
+{"text":"Шаклро интихоб кунед: I usually ___ tea, but today I ___ coffee.","explanation":"Одат → Present Simple; ҳозир → Present Continuous."},
+{"text":"Шаклро интихоб кунед: She ___ to work by bus every day.","explanation":"«Every day» одатро нишон медиҳад → Present Simple."},
+{"text":"Шаклро интихоб кунед: Look! It ___.","explanation":"«Look!» ба «ҳозир» ишора мекунад → Present Continuous."},
+{"text":"Кадом калима одатан бо Present Simple меояд?","explanation":"«Always» одатҳоро тасвир мекунад; «now / at the moment» — амалҳои ҳозира."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Фаъолияти муваққатӣ («this year») → Present Continuous."}
+],
+[
+{"text":"Шаклро интихоб кунед: ___ a big bed in the room.","explanation":"Як чиз → There is (There's)."},
+{"text":"Шаклро интихоб кунед: ___ some chairs in the kitchen.","explanation":"Якчанд чиз → There are."},
+{"text":"Инкорро интихоб кунед: ___ a TV in my room.","explanation":"Инкори танҳо: There isn't a..."},
+{"text":"Саволро интихоб кунед: ___ a lift in the hotel?","explanation":"Савол: Is there + исми танҳо?"},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Исми ҷамъ → There are + some."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Are there any shops near here? — Yes, there ___.","explanation":"Ҷавоби кӯтоҳ «are»-ро такрор мекунад: Yes, there are."}
+],
+[
+{"text":"Шаклро интихоб кунед: I ___ at home yesterday.","explanation":"Гузаштаи «am/is» — was."},
+{"text":"Шаклро интихоб кунед: They ___ at the cinema last night.","explanation":"Гузаштаи «are» — were."},
+{"text":"Инкорро интихоб кунед: She ___ at school on Monday.","explanation":"Инкори танҳо дар гузашта: wasn't."},
+{"text":"Саволро интихоб кунед: ___ you at the party?","explanation":"Бо «you» феъли «were» меояд: Were you...?"},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«We» дар гузашта «were»-ро талаб мекунад."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Was the film good? — Yes, it ___.","explanation":"Ҷавоби кӯтоҳ «was»-ро такрор мекунад: Yes, it was."}
+],
+[
+{"text":"Шакли гузаштаи феъли «work»-ро интихоб кунед.","explanation":"Феълҳои мунтазам -ed мегиранд: worked."},
+{"text":"Шакли гузаштаи феъли «study»-ро интихоб кунед.","explanation":"Ҳамсадо + y → -ied: studied."},
+{"text":"Шакли гузаштаи феъли «stop»-ро интихоб кунед.","explanation":"Садоноки кӯтоҳ + ҳамсадо дучанд мешавад: stopped."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"live → lived; бо Past Simple «am» лозим нест."},
+{"text":"Инкорро интихоб кунед: We ___ TV last night.","explanation":"didn't + феъли аслӣ (бе -ed)."},
+{"text":"Саволро интихоб кунед: ___ you play tennis yesterday?","explanation":"Саволҳои Past Simple бо «Did» + феъли аслӣ сохта мешаванд."}
+],
+[
+{"text":"Шакли гузаштаи феъли «go»-ро интихоб кунед.","explanation":"«Go» феъли номунтазам аст: go → went."},
+{"text":"Шакли гузаштаи феъли «have»-ро интихоб кунед.","explanation":"«Have» феъли номунтазам аст: have → had."},
+{"text":"Шакли гузаштаи феъли «get»-ро интихоб кунед.","explanation":"«Get» феъли номунтазам аст: get → got."},
+{"text":"Шакли гузаштаи феъли «do»-ро интихоб кунед.","explanation":"«Do» феъли номунтазам аст: do → did."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Дар ҷумлаи тасдиқӣ шакли номунтазам меояд: went."},
+{"text":"Инкорро интихоб кунед: I ___ breakfast this morning.","explanation":"Пас аз didn't феъл ба шакли аслӣ бармегардад: have."}
+],
+[
+{"text":"Шакли гузаштаро интихоб кунед: see → ___","explanation":"«See» феъли номунтазам аст: see → saw."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҳарду амал дар гузашта: arrived, missed."},
+{"text":"Саволро интихоб кунед: Where ___ you go last summer?","explanation":"Саволи Past Simple: Where did you go...?"},
+{"text":"Инкорро интихоб кунед: They ___ to the party.","explanation":"didn't + шакли аслӣ: come."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"buy → bought, take → took (феълҳои номунтазам)."},
+{"text":"Ҷавоби кӯтоҳро интихоб кунед: Did you like the film? — Yes, I ___.","explanation":"Ҷавоби кӯтоҳ «did»-ро такрор мекунад: Yes, I did."}
+]
+]

@@ -1,0 +1,1433 @@
+[
+ {
+  "book_unit": "Unit 1",
+  "json_unit_source": 1,
+  "grammar_topic": "Present Simple and Present Continuous; action and state verbs",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "Sunday Lunch",
+  "body": "Every Sunday, my grandmother cooks a huge lunch for the whole family, and everyone always finds an excuse to be there. She believes cooking is the best way to show love, so she never lets anyone leave the table hungry. Right now, she's stirring a pot of soup while my uncle argues loudly with my father about football, as usual. My cousin, who is famously stubborn, insists on helping in the kitchen even though nobody wants his help. 'I know exactly how much salt this needs,' he says confidently, reaching for the salt before my grandmother stops him. She doesn't trust him with seasoning — not since the disastrous rice incident two years ago. My little sister, who is shy around most adults, is completely relaxed here, laughing at my uncle's terrible jokes. Meanwhile, my mother is setting the table, counting plates twice because someone always forgets to mention a last-minute guest. Today, we're expecting my aunt and her new husband, who nobody has properly met yet. My grandmother wants everything perfect, though she'd never admit she's nervous. As the smell of fresh bread fills the kitchen, I realise these loud, chaotic Sundays are exactly what I'll miss most when I eventually move out.",
+  "words": [
+   {
+    "word": "stubborn",
+    "translation_ru": "упрямый",
+    "translation_tg": "якрав",
+    "part_of_speech": "adjective",
+    "context": "My cousin, who is famously stubborn."
+   },
+   {
+    "word": "confidently",
+    "translation_ru": "уверенно",
+    "translation_tg": "боэътимодона",
+    "part_of_speech": "adverb",
+    "context": "He says confidently, reaching for the salt."
+   },
+   {
+    "word": "seasoning",
+    "translation_ru": "приправа",
+    "translation_tg": "ҳанут",
+    "part_of_speech": "noun",
+    "context": "She doesn't trust him with seasoning."
+   },
+   {
+    "word": "disastrous",
+    "translation_ru": "катастрофический",
+    "translation_tg": "фалокатбор",
+    "part_of_speech": "adjective",
+    "context": "The disastrous rice incident two years ago."
+   },
+   {
+    "word": "shy",
+    "translation_ru": "застенчивый",
+    "translation_tg": "хиҷолатталаб",
+    "part_of_speech": "adjective",
+    "context": "My little sister, who is shy around most adults."
+   },
+   {
+    "word": "relaxed",
+    "translation_ru": "расслабленный",
+    "translation_tg": "ором",
+    "part_of_speech": "adjective",
+    "context": "Is completely relaxed here."
+   },
+   {
+    "word": "last-minute",
+    "translation_ru": "в последнюю минуту",
+    "translation_tg": "лаҳзаи охирин",
+    "part_of_speech": "adjective",
+    "context": "Forgets to mention a last-minute guest."
+   },
+   {
+    "word": "nervous",
+    "translation_ru": "нервный",
+    "translation_tg": "асабӣ",
+    "part_of_speech": "adjective",
+    "context": "She'd never admit she's nervous."
+   },
+   {
+    "word": "chaotic",
+    "translation_ru": "хаотичный",
+    "translation_tg": "бесарусомон",
+    "part_of_speech": "adjective",
+    "context": "These loud, chaotic Sundays."
+   },
+   {
+    "word": "realise",
+    "translation_ru": "осознавать",
+    "translation_tg": "дарк кардан",
+    "part_of_speech": "verb",
+    "context": "I realise these loud Sundays."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 1",
+  "json_unit_source": 1,
+  "grammar_topic": "future forms: Present Continuous, be going to, will/won't",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "The Big Family Trip",
+  "body": "Next summer, my parents are finally taking the whole family to the coast, something we've talked about for years. My father has already booked the hotel, so this time it's really going to happen. 'We're leaving on the first of July,' he announced last week, showing everyone the confirmation email. My little brother, who's terrified of long car journeys, immediately asked if we're flying instead. 'No, we're driving,' my mother said, 'it'll be an adventure.' I think he'll complain the whole way, honestly, but nobody's telling him that yet. My sister is going to bring her boyfriend this year, which makes things a little more complicated — where will everyone sleep? My mother's already going to rearrange the whole plan around it. I'll probably spend most of the trip reading on the beach, while my father will insist on visiting every historical site nearby, whether we want to or not. My grandmother, surprisingly, says she'll join us too, despite hating long journeys. 'I won't miss this trip,' she said firmly. Looking at everyone's excitement, I suspect this will be a trip none of us forgets, for better or worse.",
+  "words": [
+   {
+    "word": "coast",
+    "translation_ru": "побережье",
+    "translation_tg": "соҳил",
+    "part_of_speech": "noun",
+    "context": "Taking the whole family to the coast."
+   },
+   {
+    "word": "confirmation",
+    "translation_ru": "подтверждение",
+    "translation_tg": "тасдиқ",
+    "part_of_speech": "noun",
+    "context": "Showing everyone the confirmation email."
+   },
+   {
+    "word": "terrified",
+    "translation_ru": "в ужасе",
+    "translation_tg": "ваҳшатзада",
+    "part_of_speech": "adjective",
+    "context": "Terrified of long car journeys."
+   },
+   {
+    "word": "complain",
+    "translation_ru": "жаловаться",
+    "translation_tg": "шикоят кардан",
+    "part_of_speech": "verb",
+    "context": "He'll complain the whole way."
+   },
+   {
+    "word": "rearrange",
+    "translation_ru": "переставлять, менять план",
+    "translation_tg": "аз нав ба нақша гирифтан",
+    "part_of_speech": "verb",
+    "context": "Going to rearrange the whole plan."
+   },
+   {
+    "word": "insist",
+    "translation_ru": "настаивать",
+    "translation_tg": "исрор кардан",
+    "part_of_speech": "verb",
+    "context": "My father will insist on visiting every site."
+   },
+   {
+    "word": "historical site",
+    "translation_ru": "исторический объект",
+    "translation_tg": "ҷои таърихӣ",
+    "part_of_speech": "phrase",
+    "context": "Visiting every historical site nearby."
+   },
+   {
+    "word": "firmly",
+    "translation_ru": "твёрдо",
+    "translation_tg": "қатъиян",
+    "part_of_speech": "adverb",
+    "context": "She said firmly."
+   },
+   {
+    "word": "suspect",
+    "translation_ru": "подозревать",
+    "translation_tg": "гумон кардан",
+    "part_of_speech": "verb",
+    "context": "I suspect this will be a trip none forgets."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 2",
+  "json_unit_source": 2,
+  "grammar_topic": "Present Perfect and Past Simple",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "The News from Amira",
+  "body": "Amira called me yesterday with news I never expected. She's finished her degree, passed her final exams last month, and already found a job in the city. 'I've never worked so hard in my life,' she told me, laughing with relief. I remember when we studied together years ago; she barely passed her first-year exams and nearly gave up twice. Since then, she's changed enormously. Last year, she moved to a new city alone, which took real courage. She's saved enough money now to rent her own flat, something neither of us imagined back then. 'Have you told your parents yet?' I asked. 'I called them right after the interview,' she said, still sounding amazed at her own luck. We talked about our old university, and she admitted she visited it briefly last spring, just to see how much it had changed. I felt genuinely proud of her, remembering the exhausted, anxious student she used to be. Now she sounded confident, almost unrecognisable. Before hanging up, she promised to visit soon. I've already started planning what to cook, though knowing Amira, she'll probably bring the food herself, just like always.",
+  "words": [
+   {
+    "word": "degree",
+    "translation_ru": "диплом (об образовании)",
+    "translation_tg": "дараҷаи илмӣ",
+    "part_of_speech": "noun",
+    "context": "She's finished her degree."
+   },
+   {
+    "word": "relief",
+    "translation_ru": "облегчение",
+    "translation_tg": "сабукӣ",
+    "part_of_speech": "noun",
+    "context": "Laughing with relief."
+   },
+   {
+    "word": "courage",
+    "translation_ru": "смелость",
+    "translation_tg": "ҷасорат",
+    "part_of_speech": "noun",
+    "context": "Which took real courage."
+   },
+   {
+    "word": "rent",
+    "translation_ru": "снимать (жильё)",
+    "translation_tg": "иҷора кардан",
+    "part_of_speech": "verb",
+    "context": "Enough money to rent her own flat."
+   },
+   {
+    "word": "amazed",
+    "translation_ru": "изумлённый",
+    "translation_tg": "ҳайратзада",
+    "part_of_speech": "adjective",
+    "context": "Still sounding amazed at her own luck."
+   },
+   {
+    "word": "admit",
+    "translation_ru": "признавать(ся)",
+    "translation_tg": "эътироф кардан",
+    "part_of_speech": "verb",
+    "context": "She admitted she visited it briefly."
+   },
+   {
+    "word": "exhausted",
+    "translation_ru": "изнурённый",
+    "translation_tg": "хастаи мондашуда",
+    "part_of_speech": "adjective",
+    "context": "The exhausted, anxious student she used to be."
+   },
+   {
+    "word": "anxious",
+    "translation_ru": "тревожный",
+    "translation_tg": "нигарон",
+    "part_of_speech": "adjective",
+    "context": "The exhausted, anxious student."
+   },
+   {
+    "word": "unrecognisable",
+    "translation_ru": "неузнаваемый",
+    "translation_tg": "нашинохта",
+    "part_of_speech": "adjective",
+    "context": "Confident, almost unrecognisable."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 2",
+  "json_unit_source": 2,
+  "grammar_topic": "Present Perfect + for and since; Present Perfect Continuous",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "Building the House",
+  "body": "My parents have been building their house for almost four years now, and it still isn't finished. They've been saving money since before I was born, buying materials whenever they could afford them. 'We've been doing this room by room,' my father explains, slightly embarrassed, whenever guests ask. He's been working every weekend since spring, laying tiles in the kitchen himself to save money. My mother has been choosing paint colours for months, changing her mind constantly. She's been dreaming of a garden since they bought the land, though right now it's just dirt and a few determined weeds. 'How long have you been living without a proper roof?' my aunt asked recently, only half joking. Actually, the roof has been finished for two years — it's the inside that's still work in progress. I've been helping whenever I visit, mostly painting walls badly while my father laughs at my technique. Despite the mess, there's something exciting about watching a house slowly become a home. My parents have waited so long for this that I think they'll miss the building process itself, once it's finally, truly done.",
+  "words": [
+   {
+    "word": "material",
+    "translation_ru": "материал",
+    "translation_tg": "мавод",
+    "part_of_speech": "noun",
+    "context": "Buying materials whenever they could afford them."
+   },
+   {
+    "word": "embarrassed",
+    "translation_ru": "смущённый",
+    "translation_tg": "хиҷолатзада",
+    "part_of_speech": "adjective",
+    "context": "Slightly embarrassed, whenever guests ask."
+   },
+   {
+    "word": "lay tiles",
+    "translation_ru": "класть плитку",
+    "translation_tg": "кошинкорӣ кардан",
+    "part_of_speech": "phrase",
+    "context": "Laying tiles in the kitchen himself."
+   },
+   {
+    "word": "determined",
+    "translation_ru": "упорный, решительный",
+    "translation_tg": "қатъӣ",
+    "part_of_speech": "adjective",
+    "context": "A few determined weeds."
+   },
+   {
+    "word": "weed",
+    "translation_ru": "сорняк",
+    "translation_tg": "алаф",
+    "part_of_speech": "noun",
+    "context": "Just dirt and a few determined weeds."
+   },
+   {
+    "word": "roof",
+    "translation_ru": "крыша",
+    "translation_tg": "бом",
+    "part_of_speech": "noun",
+    "context": "Living without a proper roof."
+   },
+   {
+    "word": "work in progress",
+    "translation_ru": "незавершённая работа",
+    "translation_tg": "кори нотамом",
+    "part_of_speech": "phrase",
+    "context": "It's the inside that's still work in progress."
+   },
+   {
+    "word": "technique",
+    "translation_ru": "техника, методика",
+    "translation_tg": "усул",
+    "part_of_speech": "noun",
+    "context": "My father laughs at my technique."
+   },
+   {
+    "word": "mess",
+    "translation_ru": "беспорядок",
+    "translation_tg": "бетартибӣ",
+    "part_of_speech": "noun",
+    "context": "Despite the mess."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 3",
+  "json_unit_source": 3,
+  "grammar_topic": "choosing between the comparative and superlative",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "The Fastest Way Home",
+  "body": "Every evening, I face the same decision: which is the quickest way home — the metro, the bus, or a taxi? The metro is usually the most reliable option, though it's also the most crowded during rush hour. The bus is cheaper than the metro, but it's definitely the slowest, especially when traffic is bad. Yesterday, I decided to try the new express bus, which the company claims is faster than the ordinary route. It wasn't much quicker, honestly, though the seats were more comfortable than the old buses. My colleague insists that taxis are the most convenient option, but they're also the most expensive by far, and I can't afford one every day. My neighbour, who's a lot more patient than me, prefers cycling; she says it's healthier and cheaper than any other option. Personally, I think the metro remains the safest choice in bad weather, even if it's not the most pleasant experience during summer heat. Tonight, though, with rain pouring outside, the decision is easy — the metro, however crowded, is clearly the better option compared to waiting for a bus that might never arrive.",
+  "words": [
+   {
+    "word": "reliable",
+    "translation_ru": "надёжный",
+    "translation_tg": "боэътимод",
+    "part_of_speech": "adjective",
+    "context": "The most reliable option."
+   },
+   {
+    "word": "crowded",
+    "translation_ru": "многолюдный",
+    "translation_tg": "серодам",
+    "part_of_speech": "adjective",
+    "context": "The most crowded during rush hour."
+   },
+   {
+    "word": "rush hour",
+    "translation_ru": "час пик",
+    "translation_tg": "соати авҷи серодамӣ",
+    "part_of_speech": "phrase",
+    "context": "During rush hour."
+   },
+   {
+    "word": "express",
+    "translation_ru": "экспресс, скоростной",
+    "translation_tg": "тезгард",
+    "part_of_speech": "adjective",
+    "context": "The new express bus."
+   },
+   {
+    "word": "convenient",
+    "translation_ru": "удобный",
+    "translation_tg": "муносиб",
+    "part_of_speech": "adjective",
+    "context": "Taxis are the most convenient option."
+   },
+   {
+    "word": "afford",
+    "translation_ru": "позволить себе (финансово)",
+    "translation_tg": "тавонистан",
+    "part_of_speech": "verb",
+    "context": "I can't afford one every day."
+   },
+   {
+    "word": "patient",
+    "translation_ru": "терпеливый",
+    "translation_tg": "собир",
+    "part_of_speech": "adjective",
+    "context": "Who's a lot more patient than me."
+   },
+   {
+    "word": "pleasant",
+    "translation_ru": "приятный",
+    "translation_tg": "форам",
+    "part_of_speech": "adjective",
+    "context": "Not the most pleasant experience."
+   },
+   {
+    "word": "pour",
+    "translation_ru": "лить(ся)",
+    "translation_tg": "рехтан",
+    "part_of_speech": "verb",
+    "context": "With rain pouring outside."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 3",
+  "json_unit_source": 3,
+  "grammar_topic": "articles: a/an, the, and zero article",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "A Museum, The Museum",
+  "body": "Yesterday, I visited a museum I'd never been to before, tucked away on a quiet street downtown. The museum was smaller than I expected, but the collection inside was genuinely impressive. At the entrance, a guide handed me a map and explained that the building itself used to be a factory. 'The factory closed in the nineties,' she said, 'and the city later turned it into a cultural centre.' Inside, I saw a painting that immediately caught my attention — the painting showed a busy street scene from a hundred years ago. Nearby, an old photograph showed the same street exactly as it looks today, barely changed at all. I generally prefer modern art, but this particular collection focused mostly on local history, which surprised me pleasantly. A group of schoolchildren moved noisily from room to room, clearly more interested in the gift shop than the exhibits. Near the exit, there was a small café where I had a coffee before leaving. The coffee wasn't especially memorable, but the view of the old courtyard through the window definitely was. I've decided the museum deserves a second, quieter visit sometime soon.",
+  "words": [
+   {
+    "word": "tucked away",
+    "translation_ru": "спрятанный, укромный",
+    "translation_tg": "пинҳоншуда",
+    "part_of_speech": "phrase",
+    "context": "Tucked away on a quiet street."
+   },
+   {
+    "word": "collection",
+    "translation_ru": "коллекция",
+    "translation_tg": "маҷмӯа",
+    "part_of_speech": "noun",
+    "context": "The collection inside was genuinely impressive."
+   },
+   {
+    "word": "factory",
+    "translation_ru": "фабрика",
+    "translation_tg": "фабрика",
+    "part_of_speech": "noun",
+    "context": "The building used to be a factory."
+   },
+   {
+    "word": "cultural centre",
+    "translation_ru": "культурный центр",
+    "translation_tg": "маркази фарҳангӣ",
+    "part_of_speech": "phrase",
+    "context": "Turned it into a cultural centre."
+   },
+   {
+    "word": "catch attention",
+    "translation_ru": "привлечь внимание",
+    "translation_tg": "диққатро ҷалб кардан",
+    "part_of_speech": "phrase",
+    "context": "A painting that immediately caught my attention."
+   },
+   {
+    "word": "exhibit",
+    "translation_ru": "экспонат",
+    "translation_tg": "намоиш",
+    "part_of_speech": "noun",
+    "context": "More interested in the gift shop than the exhibits."
+   },
+   {
+    "word": "courtyard",
+    "translation_ru": "внутренний двор",
+    "translation_tg": "ҳавлӣ",
+    "part_of_speech": "noun",
+    "context": "The view of the old courtyard."
+   },
+   {
+    "word": "memorable",
+    "translation_ru": "запоминающийся",
+    "translation_tg": "фаромӯшнашаванда",
+    "part_of_speech": "adjective",
+    "context": "The coffee wasn't especially memorable."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 4",
+  "json_unit_source": 4,
+  "grammar_topic": "obligation and prohibition: have to, must, should",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "Office Phone Rules",
+  "body": "On my first day at the new office, my manager explained the phone rules carefully. 'You mustn't use personal phones during meetings,' she said, 'but you don't have to switch them off completely.' Employees have to answer client calls within three rings, according to company policy. I must admit, I found this rule stricter than my last job. 'You should always introduce yourself clearly,' she added, 'callers get frustrated when they can't understand who they're speaking to.' We mustn't transfer calls without explaining why, something I learned the hard way during my first confusing week. My colleague, who's worked here for years, told me I don't have to worry too much — most callers are patient if you're polite. Still, I must remember never to eat while on a call; apparently, a client once complained about hearing someone chewing. Employees should also keep calls brief when the office is busy, though nobody enforces this strictly. By the end of my first week, I'd memorised most of the rules, though I still occasionally forget that I mustn't put anyone on hold for more than a minute without checking back.",
+  "words": [
+   {
+    "word": "employee",
+    "translation_ru": "сотрудник",
+    "translation_tg": "корманд",
+    "part_of_speech": "noun",
+    "context": "Employees have to answer client calls."
+   },
+   {
+    "word": "policy",
+    "translation_ru": "политика, правило",
+    "translation_tg": "сиёсат",
+    "part_of_speech": "noun",
+    "context": "According to company policy."
+   },
+   {
+    "word": "strict",
+    "translation_ru": "строгий",
+    "translation_tg": "сахтгир",
+    "part_of_speech": "adjective",
+    "context": "Stricter than my last job."
+   },
+   {
+    "word": "frustrated",
+    "translation_ru": "разочарованный, раздражённый",
+    "translation_tg": "ноумед",
+    "part_of_speech": "adjective",
+    "context": "Callers get frustrated."
+   },
+   {
+    "word": "transfer",
+    "translation_ru": "переводить (звонок)",
+    "translation_tg": "гузаронидан",
+    "part_of_speech": "verb",
+    "context": "We mustn't transfer calls without explaining why."
+   },
+   {
+    "word": "patient",
+    "translation_ru": "терпеливый",
+    "translation_tg": "собир",
+    "part_of_speech": "adjective",
+    "context": "Most callers are patient if you're polite."
+   },
+   {
+    "word": "chewing",
+    "translation_ru": "жевание",
+    "translation_tg": "ҷоидан",
+    "part_of_speech": "noun",
+    "context": "Hearing someone chewing."
+   },
+   {
+    "word": "enforce",
+    "translation_ru": "обеспечивать выполнение",
+    "translation_tg": "татбиқ кардан",
+    "part_of_speech": "verb",
+    "context": "Nobody enforces this strictly."
+   },
+   {
+    "word": "put on hold",
+    "translation_ru": "поставить на удержание",
+    "translation_tg": "дар навбат гузоштан",
+    "part_of_speech": "phrase",
+    "context": "I mustn't put anyone on hold for more than a minute."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 4",
+  "json_unit_source": 4,
+  "grammar_topic": "ability and possibility: can, could, be able to",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "Learning to Fix Phones",
+  "body": "My neighbour can fix almost any broken phone, a skill he taught himself after years of curiosity. When I was younger, he could barely change a lightbulb without help, so his transformation genuinely surprises everyone on our street. 'Anyone can learn this,' he insists, though I'm not convinced I'd ever be able to open a phone without breaking it completely. Last month, despite having no proper tools, he was able to repair my cracked screen in under an hour. He says phones can be surprisingly simple once you understand the basic parts inside. I could probably learn the theory, he thinks, but my hands aren't steady enough for the delicate work. 'You'll be able to do this too, with practice,' he encourages, handing me a tiny screwdriver. I try, nervously, and somehow manage to remove one screw without disaster. Apparently, this counts as progress. He couldn't afford proper training when he started, so he learned everything from online videos instead. Now people from the whole neighbourhood bring him their broken phones, and he can usually fix them for far less than the shop charges. I might not become an expert, but I'm definitely able to appreciate the skill now.",
+  "words": [
+   {
+    "word": "curiosity",
+    "translation_ru": "любопытство",
+    "translation_tg": "кунҷковӣ",
+    "part_of_speech": "noun",
+    "context": "A skill he taught himself after years of curiosity."
+   },
+   {
+    "word": "transformation",
+    "translation_ru": "преображение",
+    "translation_tg": "тағйирот",
+    "part_of_speech": "noun",
+    "context": "His transformation genuinely surprises everyone."
+   },
+   {
+    "word": "convinced",
+    "translation_ru": "убеждённый",
+    "translation_tg": "мутмаин",
+    "part_of_speech": "adjective",
+    "context": "I'm not convinced I'd ever be able to."
+   },
+   {
+    "word": "crack",
+    "translation_ru": "трескаться",
+    "translation_tg": "тарк хӯрдан",
+    "part_of_speech": "verb",
+    "context": "My cracked screen."
+   },
+   {
+    "word": "theory",
+    "translation_ru": "теория",
+    "translation_tg": "назария",
+    "part_of_speech": "noun",
+    "context": "I could probably learn the theory."
+   },
+   {
+    "word": "steady",
+    "translation_ru": "устойчивый, твёрдый",
+    "translation_tg": "устувор",
+    "part_of_speech": "adjective",
+    "context": "My hands aren't steady enough."
+   },
+   {
+    "word": "screwdriver",
+    "translation_ru": "отвёртка",
+    "translation_tg": "печгардон",
+    "part_of_speech": "noun",
+    "context": "Handing me a tiny screwdriver."
+   },
+   {
+    "word": "disaster",
+    "translation_ru": "катастрофа",
+    "translation_tg": "фалокат",
+    "part_of_speech": "noun",
+    "context": "Remove one screw without disaster."
+   },
+   {
+    "word": "appreciate",
+    "translation_ru": "ценить",
+    "translation_tg": "қадр кардан",
+    "part_of_speech": "verb",
+    "context": "I'm definitely able to appreciate the skill now."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 5",
+  "json_unit_source": 5,
+  "grammar_topic": "past tenses: simple, continuous and perfect",
+  "cefr_level": "B2",
+  "genre": "adventure",
+  "title": "The Final Match",
+  "body": "By the time the whistle blew for half-time, our team had already scored twice, though nobody had expected such a strong start. We had been training every day for a month, and it was finally paying off. While the coach was giving instructions during the break, I noticed the opposing captain watching us nervously from across the pitch. They had lost their best player to injury the previous week, which had clearly affected their confidence. As the second half began, I was running down the wing when someone passed me the ball unexpectedly. I hadn't practised that particular move much, but somehow it worked perfectly. The crowd was cheering loudly by the time I scored, and for a moment, everything else disappeared. We had worked so hard for this moment that when the final whistle went, several teammates were crying with relief. Afterwards, our coach admitted she had been secretly worried all week, though she'd hidden it well. As we celebrated, I realised this was the proudest I had felt in years, and probably would for a long time afterwards.",
+  "words": [
+   {
+    "word": "whistle",
+    "translation_ru": "свисток",
+    "translation_tg": "сут",
+    "part_of_speech": "noun",
+    "context": "By the time the whistle blew."
+   },
+   {
+    "word": "opposing",
+    "translation_ru": "противоположный, соперничающий",
+    "translation_tg": "рақиб",
+    "part_of_speech": "adjective",
+    "context": "The opposing captain."
+   },
+   {
+    "word": "pitch",
+    "translation_ru": "поле (футбольное)",
+    "translation_tg": "майдон",
+    "part_of_speech": "noun",
+    "context": "Watching us nervously from across the pitch."
+   },
+   {
+    "word": "injury",
+    "translation_ru": "травма",
+    "translation_tg": "осеб",
+    "part_of_speech": "noun",
+    "context": "Lost their best player to injury."
+   },
+   {
+    "word": "confidence",
+    "translation_ru": "уверенность",
+    "translation_tg": "боварӣ",
+    "part_of_speech": "noun",
+    "context": "Clearly affected their confidence."
+   },
+   {
+    "word": "wing",
+    "translation_ru": "фланг (в спорте)",
+    "translation_tg": "канор",
+    "part_of_speech": "noun",
+    "context": "I was running down the wing."
+   },
+   {
+    "word": "unexpectedly",
+    "translation_ru": "неожиданно",
+    "translation_tg": "ногаҳон",
+    "part_of_speech": "adverb",
+    "context": "Someone passed me the ball unexpectedly."
+   },
+   {
+    "word": "cheer",
+    "translation_ru": "подбадривать (криками)",
+    "translation_tg": "фарёд кашида дастгирӣ кардан",
+    "part_of_speech": "verb",
+    "context": "The crowd was cheering loudly."
+   },
+   {
+    "word": "celebrate",
+    "translation_ru": "праздновать",
+    "translation_tg": "ҷашн гирифтан",
+    "part_of_speech": "verb",
+    "context": "As we celebrated."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 5",
+  "json_unit_source": 5,
+  "grammar_topic": "past and present habits: used to, usually",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "We Used to Argue About Everything",
+  "body": "My brother and I used to argue about absolutely everything when we were teenagers — music, chores, even which channel to watch. These days, we usually agree on most things, though we still disagree loudly about football teams. We used to share a room, which honestly made the arguments worse; now we usually only see each other at family dinners. He used to borrow my clothes without asking, something that used to make me furious. Nowadays, he usually asks first, though he still occasionally forgets. Our relationship used to feel competitive, like we were always comparing grades or achievements. Now we usually support each other instead, especially since he moved to another city for work. I used to think we'd never get along properly as adults, but I was wrong. We usually call each other every weekend now, something neither of us used to bother doing. Our mother, who used to referee our childhood fights constantly, says she's relieved we finally act like friends. Looking back, I think we used to fight simply because we were too similar, and similar people, apparently, usually clash before they eventually understand each other.",
+  "words": [
+   {
+    "word": "argue",
+    "translation_ru": "спорить",
+    "translation_tg": "баҳс кардан",
+    "part_of_speech": "verb",
+    "context": "We used to argue about everything."
+   },
+   {
+    "word": "chores",
+    "translation_ru": "домашние дела",
+    "translation_tg": "корҳои хонагӣ",
+    "part_of_speech": "noun",
+    "context": "Music, chores, even which channel to watch."
+   },
+   {
+    "word": "furious",
+    "translation_ru": "взбешённый",
+    "translation_tg": "хашмгин",
+    "part_of_speech": "adjective",
+    "context": "Something that used to make me furious."
+   },
+   {
+    "word": "competitive",
+    "translation_ru": "соревновательный",
+    "translation_tg": "рақобатпазир",
+    "part_of_speech": "adjective",
+    "context": "Our relationship used to feel competitive."
+   },
+   {
+    "word": "achievement",
+    "translation_ru": "достижение",
+    "translation_tg": "дастовард",
+    "part_of_speech": "noun",
+    "context": "Comparing grades or achievements."
+   },
+   {
+    "word": "referee",
+    "translation_ru": "выступать судьёй, разнимать",
+    "translation_tg": "доварӣ кардан",
+    "part_of_speech": "verb",
+    "context": "Used to referee our childhood fights."
+   },
+   {
+    "word": "relieved",
+    "translation_ru": "испытывающий облегчение",
+    "translation_tg": "сабукшуда",
+    "part_of_speech": "adjective",
+    "context": "She's relieved we finally act like friends."
+   },
+   {
+    "word": "clash",
+    "translation_ru": "сталкиваться, конфликтовать",
+    "translation_tg": "ба муноқиша даромадан",
+    "part_of_speech": "verb",
+    "context": "Similar people usually clash."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 6",
+  "json_unit_source": 6,
+  "grammar_topic": "the passive (all tenses)",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "How the Film Was Made",
+  "body": "The film was shot over eighteen months in three different countries, though most scenes were filmed in an old studio outside the city. The script was written by a first-time director, which surprised many critics once the film was finally released. Every costume was designed by hand, and the main character's coat, in particular, was praised widely by fashion magazines. The soundtrack was composed by a young musician who was discovered almost by accident at a small concert. Several difficult scenes were shot at night to capture the right lighting, which meant the crew was often exhausted by morning. The lead actress was chosen from hundreds of candidates after a long audition process. Interestingly, the film's final scene was completely rewritten just weeks before shooting ended. Once the film was completed, it was shown at several festivals before being officially released worldwide. Reviews were generally positive, though some critics felt the ending was left too open. Millions of tickets have since been sold, and the film is now being studied in several film schools as an example of unusual, effective storytelling.",
+  "words": [
+   {
+    "word": "script",
+    "translation_ru": "сценарий",
+    "translation_tg": "сенария",
+    "part_of_speech": "noun",
+    "context": "The script was written by a first-time director."
+   },
+   {
+    "word": "costume",
+    "translation_ru": "костюм",
+    "translation_tg": "либоси намоишӣ",
+    "part_of_speech": "noun",
+    "context": "Every costume was designed by hand."
+   },
+   {
+    "word": "soundtrack",
+    "translation_ru": "саундтрек",
+    "translation_tg": "мусиқии филм",
+    "part_of_speech": "noun",
+    "context": "The soundtrack was composed by a young musician."
+   },
+   {
+    "word": "audition",
+    "translation_ru": "прослушивание (кастинг)",
+    "translation_tg": "озмоиш",
+    "part_of_speech": "noun",
+    "context": "After a long audition process."
+   },
+   {
+    "word": "crew",
+    "translation_ru": "съёмочная группа",
+    "translation_tg": "гурӯҳи филмбардорӣ",
+    "part_of_speech": "noun",
+    "context": "The crew was often exhausted by morning."
+   },
+   {
+    "word": "lighting",
+    "translation_ru": "освещение",
+    "translation_tg": "равшанӣ",
+    "part_of_speech": "noun",
+    "context": "To capture the right lighting."
+   },
+   {
+    "word": "rewrite",
+    "translation_ru": "переписывать",
+    "translation_tg": "аз нав навиштан",
+    "part_of_speech": "verb",
+    "context": "The final scene was completely rewritten."
+   },
+   {
+    "word": "release",
+    "translation_ru": "выпускать (в прокат)",
+    "translation_tg": "ба намоиш баровардан",
+    "part_of_speech": "verb",
+    "context": "Officially released worldwide."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 6",
+  "json_unit_source": 6,
+  "grammar_topic": "modal verbs of deduction: might, can't, must",
+  "cefr_level": "B2",
+  "genre": "mystery",
+  "title": "Where's Farrukh?",
+  "body": "Farrukh hasn't come to work for three days, and nobody seems to know exactly why. 'He must be sick,' says one colleague, 'he looked pale on Friday.' Someone else disagrees. 'He can't be sick — he posted photos from the mountains yesterday.' His phone might be broken, another suggests, since nobody's calls are going through. His desk still has his coffee cup from Friday, untouched, which seems strange if he'd planned to be away. 'He might have told the manager privately,' someone offers, though the manager looks equally confused when asked. His neighbour mentioned seeing him loading a suitcase into his car early Monday morning — he must have left in a hurry, though nobody knows where. 'He can't have quit without telling anyone,' his closest friend insists, though even she seems uncertain now. The mountain photos could have been posted automatically, someone points out, from an old scheduled post. By Thursday afternoon, everyone has a different theory, each equally uncertain. When Farrukh finally walks in on Friday, tired but smiling, explaining a sudden family emergency, half the office admits they'd already imagined much stranger explanations.",
+  "words": [
+   {
+    "word": "pale",
+    "translation_ru": "бледный",
+    "translation_tg": "рангпарида",
+    "part_of_speech": "adjective",
+    "context": "He looked pale on Friday."
+   },
+   {
+    "word": "colleague",
+    "translation_ru": "коллега",
+    "translation_tg": "ҳамкор",
+    "part_of_speech": "noun",
+    "context": "Says one colleague."
+   },
+   {
+    "word": "untouched",
+    "translation_ru": "нетронутый",
+    "translation_tg": "дастнарас",
+    "part_of_speech": "adjective",
+    "context": "His coffee cup from Friday, untouched."
+   },
+   {
+    "word": "privately",
+    "translation_ru": "лично, конфиденциально",
+    "translation_tg": "хусусан",
+    "part_of_speech": "adverb",
+    "context": "He might have told the manager privately."
+   },
+   {
+    "word": "suitcase",
+    "translation_ru": "чемодан",
+    "translation_tg": "чамадон",
+    "part_of_speech": "noun",
+    "context": "Loading a suitcase into his car."
+   },
+   {
+    "word": "in a hurry",
+    "translation_ru": "в спешке",
+    "translation_tg": "бо шитоб",
+    "part_of_speech": "phrase",
+    "context": "He must have left in a hurry."
+   },
+   {
+    "word": "quit",
+    "translation_ru": "уволиться",
+    "translation_tg": "аз кор рафтан",
+    "part_of_speech": "verb",
+    "context": "He can't have quit without telling anyone."
+   },
+   {
+    "word": "scheduled",
+    "translation_ru": "запланированный",
+    "translation_tg": "ба нақша гирифташуда",
+    "part_of_speech": "adjective",
+    "context": "An old scheduled post."
+   },
+   {
+    "word": "emergency",
+    "translation_ru": "чрезвычайная ситуация",
+    "translation_tg": "ҳолати фавқулодда",
+    "part_of_speech": "noun",
+    "context": "A sudden family emergency."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 7",
+  "json_unit_source": 7,
+  "grammar_topic": "first conditional and future time clauses with when, until",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "After the Exams",
+  "body": "If I pass all my final exams this year, I'll finally apply to study architecture at university. My parents keep asking what I'll do when the results come out, and honestly, I don't fully know yet. If my grades are good enough, I'll move to the capital for my studies, though I'll miss home more than I expect to admit. Until the results arrive next month, I'm trying not to think about it too much, though it's difficult. As soon as I know my results, I'll call my grandmother first — she's the one who always believed I'd get here. If I don't get the grades I need, I'll probably retake one exam in the autumn instead of giving up completely. My best friend says that when we both finish school, we'll travel somewhere together before starting university, if our parents allow it. Until then, we're both studying every evening, quizzing each other on outdated notes. If everything goes well, this time next year I'll be living in a small student flat, surrounded by unfamiliar streets and, hopefully, new friends. Whatever happens, I'll always remember these last uncertain weeks of school.",
+  "words": [
+   {
+    "word": "architecture",
+    "translation_ru": "архитектура",
+    "translation_tg": "меъморӣ",
+    "part_of_speech": "noun",
+    "context": "Apply to study architecture at university."
+   },
+   {
+    "word": "apply",
+    "translation_ru": "подавать заявление",
+    "translation_tg": "муроҷиат кардан",
+    "part_of_speech": "verb",
+    "context": "I'll finally apply to study architecture."
+   },
+   {
+    "word": "grade",
+    "translation_ru": "оценка",
+    "translation_tg": "баҳо",
+    "part_of_speech": "noun",
+    "context": "If my grades are good enough."
+   },
+   {
+    "word": "retake",
+    "translation_ru": "пересдавать",
+    "translation_tg": "аз нав супоридан",
+    "part_of_speech": "verb",
+    "context": "I'll probably retake one exam."
+   },
+   {
+    "word": "outdated",
+    "translation_ru": "устаревший",
+    "translation_tg": "куҳнашуда",
+    "part_of_speech": "adjective",
+    "context": "Quizzing each other on outdated notes."
+   },
+   {
+    "word": "unfamiliar",
+    "translation_ru": "незнакомый",
+    "translation_tg": "ношинос",
+    "part_of_speech": "adjective",
+    "context": "Surrounded by unfamiliar streets."
+   },
+   {
+    "word": "uncertain",
+    "translation_ru": "неопределённый",
+    "translation_tg": "номуайян",
+    "part_of_speech": "adjective",
+    "context": "These last uncertain weeks of school."
+   },
+   {
+    "word": "allow",
+    "translation_ru": "разрешать",
+    "translation_tg": "иҷозат додан",
+    "part_of_speech": "verb",
+    "context": "If our parents allow it."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 7",
+  "json_unit_source": 7,
+  "grammar_topic": "second conditional; choosing between the first and second conditional",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "If We Had a Bigger House",
+  "body": "If we had a bigger house, my mother always says, she'd finally have a proper garden instead of three pots on the balcony. My father disagrees; he thinks if they moved somewhere larger, they'd just fill it with more unnecessary things. If I had my own place, I'd probably paint every wall a different colour, something my mother would never allow here. My sister, more practical than either of us, says if she designed a house from scratch, she'd build it with fewer stairs and more sunlight. We often imagine what we'd do if we won enough money to build our dream home. I'd add a small library, if space weren't an issue, filled with every book I've never had room for. My father, surprisingly sentimental for once, said if he built a new house, he'd keep our old front door — the one with our childhood height marks pencilled on it. My mother would probably cry, if that door somehow survived a house move. Realistically, none of this will happen anytime soon, but on quiet evenings, imagining our impossible dream house feels like its own small kind of comfort.",
+  "words": [
+   {
+    "word": "pot",
+    "translation_ru": "горшок (для растения)",
+    "translation_tg": "гулдон",
+    "part_of_speech": "noun",
+    "context": "Three pots on the balcony."
+   },
+   {
+    "word": "unnecessary",
+    "translation_ru": "ненужный",
+    "translation_tg": "беҳуда",
+    "part_of_speech": "adjective",
+    "context": "Fill it with more unnecessary things."
+   },
+   {
+    "word": "practical",
+    "translation_ru": "практичный",
+    "translation_tg": "амалӣ",
+    "part_of_speech": "adjective",
+    "context": "My sister, more practical than either of us."
+   },
+   {
+    "word": "from scratch",
+    "translation_ru": "с нуля",
+    "translation_tg": "аз сифр",
+    "part_of_speech": "phrase",
+    "context": "If she designed a house from scratch."
+   },
+   {
+    "word": "sunlight",
+    "translation_ru": "солнечный свет",
+    "translation_tg": "нури офтоб",
+    "part_of_speech": "noun",
+    "context": "Fewer stairs and more sunlight."
+   },
+   {
+    "word": "sentimental",
+    "translation_ru": "сентиментальный",
+    "translation_tg": "ҳиссиётӣ",
+    "part_of_speech": "adjective",
+    "context": "Surprisingly sentimental for once."
+   },
+   {
+    "word": "height mark",
+    "translation_ru": "отметка роста",
+    "translation_tg": "нишони қад",
+    "part_of_speech": "phrase",
+    "context": "Our childhood height marks pencilled on it."
+   },
+   {
+    "word": "comfort",
+    "translation_ru": "утешение, комфорт",
+    "translation_tg": "тасаллӣ",
+    "part_of_speech": "noun",
+    "context": "Its own small kind of comfort."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 8",
+  "json_unit_source": 8,
+  "grammar_topic": "choosing between the gerund and the infinitive",
+  "cefr_level": "B2",
+  "genre": "slice of life",
+  "title": "Deciding to Change Careers",
+  "body": "After years of enjoying her stable office job, Malika suddenly decided to quit and open a small bakery instead. Her family avoided discussing it at first, worried she was making a mistake. 'I've finished thinking it over,' she told them firmly, 'I want to try baking professionally.' She admitted risking her savings terrified her, but she refused to keep postponing the decision any longer. Her manager offered to keep her position open for a month, hoping she'd reconsider, but Malika chose to decline politely. She began learning new recipes every evening, practising until midnight some nights. Her brother suggested starting small, selling bread only to neighbours before opening an actual shop. She agreed to try this plan, mostly to avoid disappointing her parents completely. Within weeks, she managed to build a small, loyal group of customers who kept requesting her sourdough specifically. She loves waking up early now, something that used to feel impossible during her office years. Looking back, she remembers hesitating to take the first step for almost a year. Now, kneading dough at dawn, she can't imagine going back to spending sunny afternoons behind a computer screen.",
+  "words": [
+   {
+    "word": "stable",
+    "translation_ru": "стабильный",
+    "translation_tg": "устувор",
+    "part_of_speech": "adjective",
+    "context": "Her stable office job."
+   },
+   {
+    "word": "postpone",
+    "translation_ru": "откладывать",
+    "translation_tg": "ба таъхир андохтан",
+    "part_of_speech": "verb",
+    "context": "Keep postponing the decision any longer."
+   },
+   {
+    "word": "reconsider",
+    "translation_ru": "пересмотреть решение",
+    "translation_tg": "аз нав дида баромадан",
+    "part_of_speech": "verb",
+    "context": "Hoping she'd reconsider."
+   },
+   {
+    "word": "decline",
+    "translation_ru": "отказываться",
+    "translation_tg": "рад кардан",
+    "part_of_speech": "verb",
+    "context": "Malika chose to decline politely."
+   },
+   {
+    "word": "recipe",
+    "translation_ru": "рецепт",
+    "translation_tg": "рецепт",
+    "part_of_speech": "noun",
+    "context": "Learning new recipes every evening."
+   },
+   {
+    "word": "loyal",
+    "translation_ru": "преданный",
+    "translation_tg": "вафодор",
+    "part_of_speech": "adjective",
+    "context": "A small, loyal group of customers."
+   },
+   {
+    "word": "sourdough",
+    "translation_ru": "закваска (хлеб)",
+    "translation_tg": "хамиртуруши нон",
+    "part_of_speech": "noun",
+    "context": "Kept requesting her sourdough specifically."
+   },
+   {
+    "word": "hesitate",
+    "translation_ru": "колебаться",
+    "translation_tg": "дудила шудан",
+    "part_of_speech": "verb",
+    "context": "She remembers hesitating to take the first step."
+   },
+   {
+    "word": "dawn",
+    "translation_ru": "рассвет",
+    "translation_tg": "субҳидам",
+    "part_of_speech": "noun",
+    "context": "Kneading dough at dawn."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 8",
+  "json_unit_source": 8,
+  "grammar_topic": "reported speech: statements and questions",
+  "cefr_level": "B2",
+  "genre": "comedy",
+  "title": "The Argument at the Shop",
+  "body": "The shop assistant told me the jacket couldn't be returned without a receipt, even though I explained I'd lost it somewhere between the till and the bus stop. I said I had bought it only yesterday, and she asked if I remembered the exact time of purchase. I told her I didn't, not precisely, though I insisted the tag was still attached. She said the manager would need to approve any exception personally. When the manager arrived, he asked what the actual problem was, and the assistant explained that I claimed to have lost my receipt. He asked me directly whether I'd paid by card, and I confirmed that I had. He said he could check the payment system instead, which surprised the assistant, who apparently hadn't considered that option. After a brief search, he told her that he'd found my transaction from the previous afternoon. She apologised, saying she hadn't realised there was another way to verify the purchase. The manager reassured me that they'd process the refund immediately. Walking out, I wondered whether shop assistants were ever taught that receipts weren't the only proof that mattered.",
+  "words": [
+   {
+    "word": "receipt",
+    "translation_ru": "чек",
+    "translation_tg": "расид",
+    "part_of_speech": "noun",
+    "context": "The jacket couldn't be returned without a receipt."
+   },
+   {
+    "word": "till",
+    "translation_ru": "касса",
+    "translation_tg": "касса",
+    "part_of_speech": "noun",
+    "context": "Between the till and the bus stop."
+   },
+   {
+    "word": "tag",
+    "translation_ru": "бирка, ярлык",
+    "translation_tg": "барчасб",
+    "part_of_speech": "noun",
+    "context": "The tag was still attached."
+   },
+   {
+    "word": "exception",
+    "translation_ru": "исключение",
+    "translation_tg": "истисно",
+    "part_of_speech": "noun",
+    "context": "Approve any exception personally."
+   },
+   {
+    "word": "claim",
+    "translation_ru": "утверждать",
+    "translation_tg": "иддао кардан",
+    "part_of_speech": "verb",
+    "context": "I claimed to have lost my receipt."
+   },
+   {
+    "word": "transaction",
+    "translation_ru": "транзакция, операция",
+    "translation_tg": "амалиёт",
+    "part_of_speech": "noun",
+    "context": "He'd found my transaction from the previous afternoon."
+   },
+   {
+    "word": "apologise",
+    "translation_ru": "извиняться",
+    "translation_tg": "узр хостан",
+    "part_of_speech": "verb",
+    "context": "She apologised."
+   },
+   {
+    "word": "verify",
+    "translation_ru": "проверять, подтверждать",
+    "translation_tg": "тасдиқ кардан",
+    "part_of_speech": "verb",
+    "context": "Another way to verify the purchase."
+   },
+   {
+    "word": "refund",
+    "translation_ru": "возврат денег",
+    "translation_tg": "баргардонидани пул",
+    "part_of_speech": "noun",
+    "context": "Process the refund immediately."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 9",
+  "json_unit_source": 9,
+  "grammar_topic": "the third conditional",
+  "cefr_level": "B2",
+  "genre": "drama",
+  "title": "If I Had Backed Up My Phone",
+  "body": "If I had backed up my phone before it fell in the river, I wouldn't have lost four years of photographs in a single afternoon. My friends had warned me repeatedly, but I had always assumed disaster would happen to someone else, not me. If I had listened, I would still have pictures from my sister's wedding, from countless ordinary days I'd never bothered to appreciate until they vanished. The technician tried everything possible, but he said if the phone had spent less time underwater, he might have recovered something. If I hadn't panicked and left it in a bag of rice for a week, perhaps that delay wouldn't have made things worse. My mother, gentler than I deserved, reminded me that if the memories mattered so much, I would have printed at least a few photos over the years. She was right, though it didn't comfort me much at the time. If this hadn't happened, I probably would have continued ignoring backups indefinitely, assuming I had more time than I actually did. Now, painfully, everything is backed up in three different places, a habit I would never have developed without this expensive lesson.",
+  "words": [
+   {
+    "word": "back up",
+    "translation_ru": "сохранять резервную копию",
+    "translation_tg": "нусхаи эҳтиётӣ гирифтан",
+    "part_of_speech": "phrase",
+    "context": "If I had backed up my phone."
+   },
+   {
+    "word": "disaster",
+    "translation_ru": "катастрофа",
+    "translation_tg": "фалокат",
+    "part_of_speech": "noun",
+    "context": "Disaster would happen to someone else."
+   },
+   {
+    "word": "vanish",
+    "translation_ru": "исчезать",
+    "translation_tg": "нопадид шудан",
+    "part_of_speech": "verb",
+    "context": "Until they vanished."
+   },
+   {
+    "word": "technician",
+    "translation_ru": "техник",
+    "translation_tg": "техник",
+    "part_of_speech": "noun",
+    "context": "The technician tried everything possible."
+   },
+   {
+    "word": "recover",
+    "translation_ru": "восстанавливать",
+    "translation_tg": "барқарор кардан",
+    "part_of_speech": "verb",
+    "context": "He might have recovered something."
+   },
+   {
+    "word": "panic",
+    "translation_ru": "паниковать",
+    "translation_tg": "ба ваҳм афтодан",
+    "part_of_speech": "verb",
+    "context": "If I hadn't panicked."
+   },
+   {
+    "word": "comfort",
+    "translation_ru": "утешать",
+    "translation_tg": "тасаллӣ додан",
+    "part_of_speech": "verb",
+    "context": "It didn't comfort me much."
+   },
+   {
+    "word": "indefinitely",
+    "translation_ru": "бесконечно долго",
+    "translation_tg": "бемуҳлат",
+    "part_of_speech": "adverb",
+    "context": "Ignoring backups indefinitely."
+   },
+   {
+    "word": "habit",
+    "translation_ru": "привычка",
+    "translation_tg": "одат",
+    "part_of_speech": "noun",
+    "context": "A habit I would never have developed."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 9",
+  "json_unit_source": 9,
+  "grammar_topic": "quantifiers",
+  "cefr_level": "B2",
+  "genre": "comedy",
+  "title": "Too Many Chargers",
+  "body": "Our kitchen drawer contains far too many phone chargers, though barely any of them actually work anymore. There's a little space left for anything else, since old cables have slowly taken over completely. 'How many of these do we actually need?' my husband asks, holding up a tangled handful. Not many, I admit, though somehow we own dozens. A few belong to phones we don't even have anymore, replaced years ago. Little by little, we've collected chargers from every device we've ever owned, unable to throw any away, just in case. There's too much clutter and too little organisation, my husband complains, not entirely unfairly. We spend a little time each weekend meaning to sort it out, though we rarely make much progress. Some chargers fit nothing we currently own; a few might belong to devices that don't even exist anymore. Eventually, we find exactly one charger that works with everything we actually use. The rest, several dozen useless cables, finally go into a bag for recycling. There's much more space in the drawer now, and surprisingly little regret about throwing away years of accumulated, tangled uncertainty.",
+  "words": [
+   {
+    "word": "charger",
+    "translation_ru": "зарядное устройство",
+    "translation_tg": "шарзкунак",
+    "part_of_speech": "noun",
+    "context": "Far too many phone chargers."
+   },
+   {
+    "word": "tangled",
+    "translation_ru": "запутанный",
+    "translation_tg": "гиреҳхӯрда",
+    "part_of_speech": "adjective",
+    "context": "Holding up a tangled handful."
+   },
+   {
+    "word": "clutter",
+    "translation_ru": "беспорядок, хлам",
+    "translation_tg": "бетартибӣ",
+    "part_of_speech": "noun",
+    "context": "Too much clutter."
+   },
+   {
+    "word": "organisation",
+    "translation_ru": "организация, порядок",
+    "translation_tg": "тартибот",
+    "part_of_speech": "noun",
+    "context": "Too little organisation."
+   },
+   {
+    "word": "sort out",
+    "translation_ru": "разобраться",
+    "translation_tg": "тартиб додан",
+    "part_of_speech": "phrase",
+    "context": "Meaning to sort it out."
+   },
+   {
+    "word": "device",
+    "translation_ru": "устройство",
+    "translation_tg": "дастгоҳ",
+    "part_of_speech": "noun",
+    "context": "Every device we've ever owned."
+   },
+   {
+    "word": "recycling",
+    "translation_ru": "переработка",
+    "translation_tg": "бозиофарӣ",
+    "part_of_speech": "noun",
+    "context": "Into a bag for recycling."
+   },
+   {
+    "word": "accumulated",
+    "translation_ru": "накопленный",
+    "translation_tg": "ҷамъшуда",
+    "part_of_speech": "adjective",
+    "context": "Years of accumulated, tangled uncertainty."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 10",
+  "json_unit_source": 10,
+  "grammar_topic": "relative clauses: defining and non-defining",
+  "cefr_level": "B2",
+  "genre": "mystery",
+  "title": "The Case That Puzzled Everyone",
+  "body": "The detective who was assigned to the case had never seen anything quite like it before. The jewellery shop, which had been robbed twice in the same month, had unusually good security cameras that recorded nothing useful either time. The owner, whose insurance claim seemed suspiciously well prepared, became the detective's first real suspect. Neighbours who worked nearby reported seeing nothing unusual on either occasion. The thief, who apparently knew exactly where the cameras' blind spots were, left almost no evidence behind. A young witness, whose statement initially seemed unreliable, eventually provided the crucial detail that broke the case open. She mentioned a delivery van that had parked outside both times, something nobody else had noticed. The van, which belonged to a small local courier company, led detectives straight to a former employee who still had a set of keys. He was someone whose financial troubles, colleagues later admitted, had been obvious for months. The case, which had frustrated the whole department for weeks, was finally solved through one overlooked detail. The owner, who had genuinely been innocent all along, apologised publicly for the unwanted suspicion he'd briefly faced.",
+  "words": [
+   {
+    "word": "detective",
+    "translation_ru": "детектив, следователь",
+    "translation_tg": "муфаттиш",
+    "part_of_speech": "noun",
+    "context": "The detective who was assigned to the case."
+   },
+   {
+    "word": "security camera",
+    "translation_ru": "камера видеонаблюдения",
+    "translation_tg": "камераи назорат",
+    "part_of_speech": "phrase",
+    "context": "Unusually good security cameras."
+   },
+   {
+    "word": "insurance claim",
+    "translation_ru": "страховое требование",
+    "translation_tg": "даъвои суғурта",
+    "part_of_speech": "phrase",
+    "context": "Whose insurance claim seemed suspiciously well prepared."
+   },
+   {
+    "word": "suspect",
+    "translation_ru": "подозреваемый",
+    "translation_tg": "гумонбар",
+    "part_of_speech": "noun",
+    "context": "The detective's first real suspect."
+   },
+   {
+    "word": "witness",
+    "translation_ru": "свидетель",
+    "translation_tg": "шоҳид",
+    "part_of_speech": "noun",
+    "context": "A young witness."
+   },
+   {
+    "word": "crucial",
+    "translation_ru": "решающий, ключевой",
+    "translation_tg": "ҳалкунанда",
+    "part_of_speech": "adjective",
+    "context": "The crucial detail that broke the case open."
+   },
+   {
+    "word": "courier",
+    "translation_ru": "курьер",
+    "translation_tg": "қосид",
+    "part_of_speech": "noun",
+    "context": "A small local courier company."
+   },
+   {
+    "word": "overlooked",
+    "translation_ru": "упущенный, незамеченный",
+    "translation_tg": "нодида гирифташуда",
+    "part_of_speech": "adjective",
+    "context": "Solved through one overlooked detail."
+   }
+  ]
+ },
+ {
+  "book_unit": "Unit 10",
+  "json_unit_source": 10,
+  "grammar_topic": "question tags",
+  "cefr_level": "B2",
+  "genre": "comedy",
+  "title": "You Haven't Met Yet, Have You?",
+  "body": "'You two haven't actually met before, have you?' our host asked, guiding me toward a stranger by the window. 'No, we haven't,' I said, shaking hands with a woman who looked vaguely familiar. 'You work at the university, don't you?' she asked immediately, catching me off guard. 'I do,' I admitted, 'but I don't think we've worked together, have we?' She laughed. 'No, but you gave a lecture I attended once — you don't remember, do you?' I didn't, honestly, though I pretended to for a moment before admitting defeat. 'It wasn't very memorable, was it?' I joked, and she laughed again, more genuinely this time. We talked for a while about mutual acquaintances. 'You know Farrukh, don't you?' she asked. 'Everyone knows Farrukh,' I replied, 'he's impossible to avoid at these parties, isn't he?' By the end of the evening, we'd exchanged numbers, promising to have coffee sometime. 'You will actually call, won't you?' she asked as I left. 'I will,' I said, and surprisingly, for once, I actually meant it. Small parties like this aren't usually my thing, are they, my friends would say — yet somehow, this one turned out rather well.",
+  "words": [
+   {
+    "word": "host",
+    "translation_ru": "хозяин мероприятия",
+    "translation_tg": "соҳиби зиёфат",
+    "part_of_speech": "noun",
+    "context": "Our host asked."
+   },
+   {
+    "word": "vaguely",
+    "translation_ru": "смутно",
+    "translation_tg": "норавшан",
+    "part_of_speech": "adverb",
+    "context": "Looked vaguely familiar."
+   },
+   {
+    "word": "catch off guard",
+    "translation_ru": "застать врасплох",
+    "translation_tg": "ғофилгир кардан",
+    "part_of_speech": "phrase",
+    "context": "Catching me off guard."
+   },
+   {
+    "word": "lecture",
+    "translation_ru": "лекция",
+    "translation_tg": "лексия",
+    "part_of_speech": "noun",
+    "context": "You gave a lecture I attended once."
+   },
+   {
+    "word": "memorable",
+    "translation_ru": "запоминающийся",
+    "translation_tg": "фаромӯшнашаванда",
+    "part_of_speech": "adjective",
+    "context": "It wasn't very memorable."
+   },
+   {
+    "word": "mutual",
+    "translation_ru": "взаимный, общий",
+    "translation_tg": "муштарак",
+    "part_of_speech": "adjective",
+    "context": "Mutual acquaintances."
+   },
+   {
+    "word": "acquaintance",
+    "translation_ru": "знакомый (человек)",
+    "translation_tg": "шинос",
+    "part_of_speech": "noun",
+    "context": "Mutual acquaintances."
+   },
+   {
+    "word": "exchange",
+    "translation_ru": "обмениваться",
+    "translation_tg": "мубодила кардан",
+    "part_of_speech": "verb",
+    "context": "We'd exchanged numbers."
+   }
+  ]
+ }
+]

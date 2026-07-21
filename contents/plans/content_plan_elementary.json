@@ -1,0 +1,74 @@
+{
+  "level": "Elementary",
+  "cefr": "A2",
+  "source_structure": "English File 4th ed. Elementary (только структура: юниты/уроки/грамматика/лексические темы)",
+  "locales": ["en", "ru", "tg"],
+  "volume_per_unit": {
+    "grammar_lessons": "по одному на урок (A/B/C)",
+    "grammar_lesson_contents": "объяснение, 4-5 примеров с переводом, 6 тестовых вопросов",
+    "stories": "2 на юнит, 120-180 слов, 8-12 ключевых слов с переводами",
+    "vocabulary": "~25 слов на юнит"
+  },
+  "units": [
+    {"unit": 1, "lessons": [
+      {"code": "1A", "theme": "Первый день в классе", "grammar": "verb be (+), личные местоимения I/you/he...", "vocabulary_topics": ["дни недели", "числа 0-20"]},
+      {"code": "1B", "theme": "Один мир, разные страны", "grammar": "verb be (-) и (?)", "vocabulary_topics": ["страны", "числа 21-100"]},
+      {"code": "1C", "theme": "Электронная почта и контакты", "grammar": "притяжательные прилагательные my/your/his...", "vocabulary_topics": ["язык класса/аудитории"]}
+    ], "practical_english": "заселение в отель"},
+    {"unit": 2, "lessons": [
+      {"code": "2A", "theme": "Порядок и беспорядок дома", "grammar": "существительные ед./мн. число", "vocabulary_topics": ["вещи", "предлоги in/on/under"]},
+      {"code": "2B", "theme": "Вещи и откуда они", "grammar": "прилагательные (позиция, употребление)", "vocabulary_topics": ["цвета", "прилагательные", "усилители very/really/quite"]},
+      {"code": "2C", "theme": "Спокойнее!", "grammar": "императивы, let's", "vocabulary_topics": ["чувства и эмоции"]}
+    ]},
+    {"unit": 3, "lessons": [
+      {"code": "3A", "theme": "Хорошее и плохое в стране", "grammar": "Present Simple (+) и (-)", "vocabulary_topics": ["глагольные фразы: cook dinner и т.п."]},
+      {"code": "3B", "theme": "Работа с 9 до 5", "grammar": "Present Simple (?)", "vocabulary_topics": ["профессии"]},
+      {"code": "3C", "theme": "Люди и питомцы", "grammar": "порядок слов в вопросах", "vocabulary_topics": ["вопросительные слова"]}
+    ], "practical_english": "покупка кофе, время"},
+    {"unit": 4, "lessons": [
+      {"code": "4A", "theme": "Семейные фото", "grammar": "possessive 's, Whose...?", "vocabulary_topics": ["семья"]},
+      {"code": "4B", "theme": "С утра до ночи", "grammar": "предлоги времени (at/in/on) и места (at/in/to)", "vocabulary_topics": ["распорядок дня"]},
+      {"code": "4C", "theme": "Долгожители", "grammar": "позиция наречий, выражения частотности", "vocabulary_topics": ["месяцы", "наречия частотности"]}
+    ]},
+    {"unit": 5, "lessons": [
+      {"code": "5A", "theme": "Выборы и обещания", "grammar": "can / can't", "vocabulary_topics": ["глагольные фразы: buy a newspaper и т.п."]},
+      {"code": "5B", "theme": "Тихая жизнь?", "grammar": "Present Continuous", "vocabulary_topics": ["шум: глаголы и фразы"]},
+      {"code": "5C", "theme": "Город в любое время года", "grammar": "Present Simple или Present Continuous?", "vocabulary_topics": ["погода и времена года"]}
+    ], "practical_english": "покупка одежды"},
+    {"unit": 6, "lessons": [
+      {"code": "6A", "theme": "Североафриканская история", "grammar": "объектные местоимения me/you/him...", "vocabulary_topics": ["слова из рассказа"]},
+      {"code": "6B", "theme": "Особенная дата", "grammar": "like + (verb + -ing)", "vocabulary_topics": ["даты", "порядковые числительные"]},
+      {"code": "6C", "theme": "Создавая музыку", "grammar": "повторение: be или do?", "vocabulary_topics": ["музыка"]}
+    ]},
+    {"unit": 7, "lessons": [
+      {"code": "7A", "theme": "Селфи и фотографии", "grammar": "Past Simple глагола be: was / were", "vocabulary_topics": ["словообразование: write → writer"]},
+      {"code": "7B", "theme": "Не то имя, не то место", "grammar": "Past Simple: правильные глаголы", "vocabulary_topics": ["выражения прошедшего времени"]},
+      {"code": "7C", "theme": "Новый год", "grammar": "Past Simple: неправильные глаголы", "vocabulary_topics": ["go, have, get"]}
+    ], "practical_english": "как пройти"},
+    {"unit": 8, "lessons": [
+      {"code": "8A", "theme": "Детективная загадка", "grammar": "Past Simple: правильные и неправильные глаголы", "vocabulary_topics": ["неправильные глаголы"]},
+      {"code": "8B", "theme": "Дом с историей", "grammar": "there is / there are, some / any", "vocabulary_topics": ["дом и комнаты"]},
+      {"code": "8C", "theme": "Комната 333", "grammar": "there was / there were", "vocabulary_topics": ["предлоги места и движения"]}
+    ]},
+    {"unit": 9, "lessons": [
+      {"code": "9A", "theme": "Ужин вчера вечером", "grammar": "исчисляемые/неисчисляемые, a/an, some/any", "vocabulary_topics": ["еда и напитки"]},
+      {"code": "9B", "theme": "Белое золото (сахар)", "grammar": "квантификаторы: how much / how many, a lot of...", "vocabulary_topics": ["упаковки еды"]},
+      {"code": "9C", "theme": "Факты и цифры", "grammar": "сравнительная степень прилагательных", "vocabulary_topics": ["большие числа"]}
+    ], "practical_english": "заказ еды в ресторане"},
+    {"unit": 10, "lessons": [
+      {"code": "10A", "theme": "Самое опасное место", "grammar": "превосходная степень прилагательных", "vocabulary_topics": ["места и здания"]},
+      {"code": "10B", "theme": "Пять континентов за день", "grammar": "be going to (планы), выражения будущего времени", "vocabulary_topics": ["городской отдых"]},
+      {"code": "10C", "theme": "Предсказатель", "grammar": "be going to (предсказания)", "vocabulary_topics": ["глагольные фразы"]}
+    ]},
+    {"unit": 11, "lessons": [
+      {"code": "11A", "theme": "Культурный шок", "grammar": "наречия (образа действия и усилители)", "vocabulary_topics": ["частые наречия"]},
+      {"code": "11B", "theme": "Впечатления или вещи?", "grammar": "verb + to + infinitive", "vocabulary_topics": ["глаголы с инфинитивом"]},
+      {"code": "11C", "theme": "Насколько умён твой телефон?", "grammar": "определённый артикль the или без артикля", "vocabulary_topics": ["телефоны и интернет"]}
+    ], "practical_english": "дорога в аэропорт, транспорт"},
+    {"unit": 12, "lessons": [
+      {"code": "12A", "theme": "Я видел это десять раз!", "grammar": "Present Perfect", "vocabulary_topics": ["неправильные причастия"]},
+      {"code": "12B", "theme": "Он объездил весь мир", "grammar": "Present Perfect или Past Simple?", "vocabulary_topics": ["изучение неправильных глаголов"]},
+      {"code": "12C", "theme": "Большое интервью", "grammar": "повторение: построение вопросов", "vocabulary_topics": ["повторение"]}
+    ]}
+  ]
+}

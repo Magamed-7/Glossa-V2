@@ -1,0 +1,146 @@
+[
+{"unit":7,"lesson":"7A","topic":"употребление инфинитива с to","rule_en":"После многих глаголов идёт to + инфинитив: decide, hope, plan, promise, learn, try, forget, want, need, would like, manage, afford. Также to + инфинитив после прилагательных (happy to help) и для выражения цели (I called to ask about the job).","structure":"глагол/прилагательное + to + базовый глагол; цель: to + базовый глагол","examples_en":["Я пытаюсь скопить денег на новый ноутбук.","Ей удалось закончить отчёт вовремя.","Мы рады ответить на любые вопросы.","Я пошёл в магазин, чтобы купить хлеба."],"tip":"«To» + инфинитив после «in order» тоже показывает цель: in order to save time.","questions":[
+{"text":"Выберите форму: I can't afford ___ a new car this year.","explanation":"afford + to + инфинитив."},
+{"text":"Выберите форму: She's learning ___ a musical instrument.","explanation":"learn + to + инфинитив."},
+{"text":"Выберите правильное предложение.","explanation":"forget + to + инфинитив."},
+{"text":"Выберите правильное предложение.","explanation":"to + инфинитив выражает цель."},
+{"text":"Выберите правильное предложение.","explanation":"прилагательное + to + инфинитив."},
+{"text":"Выберите форму: They plan ___ their business next year.","explanation":"plan + to + инфинитив."}
+]},
+{"unit":7,"lesson":"7B","topic":"употребление герундия (глагол + -ing)","rule_en":"После некоторых глаголов идёт герундий (глагол + -ing): enjoy, mind, finish, avoid, suggest, imagine, practise, keep, give up. Герундий также используется после предлогов и как подлежащее предложения: Smoking is bad for you.","structure":"глагол + -ing; предлог + -ing; -ing как подлежащее","examples_en":["Мне нравится знакомиться с новыми людьми на работе.","Она думает о смене работы.","Не возражаете открыть окно?","Изучение языка требует времени и терпения."],"tip":"После предлога всегда используется -ing, никогда инфинитив: «good at cooking», а не «good at to cook».","questions":[
+{"text":"Выберите форму: He suggested ___ a taxi instead of walking.","explanation":"suggest + -ing."},
+{"text":"Выберите форму: I'm interested ___ history.","explanation":"предлог «in» + -ing."},
+{"text":"Выберите правильное предложение.","explanation":"avoid + -ing."},
+{"text":"Выберите правильное предложение.","explanation":"-ing как подлежащее предложения."},
+{"text":"Выберите форму: We finally gave up ___ for a parking space.","explanation":"give up + -ing."},
+{"text":"Выберите форму: Would you mind ___ the music down?","explanation":"mind + -ing."}
+]},
+{"unit":7,"lesson":"7C","topic":"have to, don't have to, must, mustn't","rule_en":"Have to / must выражают обязанность (must часто личное, have to часто внешнее правило). Don't have to значит, что это необязательно — есть выбор. Mustn't значит, что это запрещено — не делайте этого.","structure":"have to / must + базовый глагол; don't have to (нет обязанности); mustn't (запрет)","examples_en":["На работе я должен носить форму.","Здесь нельзя парковаться — это незаконно.","Тебе не нужно ничего приносить; у нас всё есть.","Я должен позвонить родителям сегодня вечером — я обещал."],"tip":"don't have to ≠ mustn't: «don't have to» = необязательно, «mustn't» = запрещено.","questions":[
+{"text":"Выберите форму: Passengers ___ wear seatbelts by law.","explanation":"Внешнее правило/обязанность → have to."},
+{"text":"Выберите форму: You ___ smoke in here — it's a hospital.","explanation":"Запрет → mustn't."},
+{"text":"Выберите форму: You ___ pay now — you can pay later.","explanation":"Необязательно → don't have to."},
+{"text":"Выберите правильное предложение.","explanation":"must + базовый глагол, без «to»."},
+{"text":"Выберите форму: She ___ get up early tomorrow — it's a holiday.","explanation":"«She» → doesn't have to (нет обязанности)."},
+{"text":"Выберите правильное предложение.","explanation":"Запрет → mustn't."}
+]},
+{"unit":8,"lesson":"8A","topic":"should","rule_en":"Should/shouldn't + базовый глагол используется для советов и мнений о том, что правильно или неправильно: You should see a doctor. You shouldn't work so much. I think/don't think you should... смягчает совет.","structure":"подлежащее + should/shouldn't + базовый глагол","examples_en":["Тебе стоит поговорить с ним об этой проблеме.","Не думаю, что тебе стоит ему доверять.","Нам стоит выехать пораньше, чтобы избежать пробок.","Мне стоит перед ней извиниться?"],"tip":"«Should» слабее, чем «must» — это совет, а не обязанность.","questions":[
+{"text":"Выберите форму: You ___ drink so much coffee — it's bad for you.","explanation":"should + not = shouldn't."},
+{"text":"Выберите вопрос: ___ I tell her the truth?","explanation":"should + подлежащее + глагол в вопросах."},
+{"text":"Выберите правильное предложение.","explanation":"should + базовый глагол, без «to»."},
+{"text":"Выберите правильное предложение.","explanation":"«Should» никогда не получает -s или «to»."},
+{"text":"Выберите совет: You look tired. You ___ go to bed earlier.","explanation":"Дружеский совет → should."},
+{"text":"Выберите правильное предложение.","explanation":"shouldn't + базовый глагол."}
+]},
+{"unit":8,"lesson":"8B","topic":"if + present, will + infinitive (первый кондиционал)","rule_en":"Первый кондиционал используется для реальных, возможных будущих ситуаций: придаточное if в Present Simple, главное предложение с will/won't + базовый глагол. Порядок можно поменять: If it rains, we'll stay in. / We'll stay in if it rains.","structure":"If + Present Simple, ... will + базовый глагол","examples_en":["Если ты будешь усердно заниматься, ты сдашь экзамен.","Мы не поедем на пляж, если будет холодно.","Если она позвонит, я расскажу ей о встрече.","Тебе станет лучше, если ты поспишь."],"tip":"Без запятой, если «if» в середине: «We'll stay in if it rains».","questions":[
+{"text":"Выберите форму: If it ___ tomorrow, we'll cancel the picnic.","explanation":"придаточное if использует Present Simple."},
+{"text":"Выберите форму: If you ___ me, I'll explain everything.","explanation":"Реальное будущее условие → Present Simple после if."},
+{"text":"Выберите правильное предложение.","explanation":"Только один «will» — в главном предложении."},
+{"text":"Выберите правильное предложение.","explanation":"«She» → doesn't в придаточном if."},
+{"text":"Выберите правильное предложение.","explanation":"главное предложение: won't; придаточное if: don't."},
+{"text":"Выберите правильное предложение.","explanation":"Present Simple «are» после if."}
+]},
+{"unit":8,"lesson":"8C","topic":"притяжательные местоимения","rule_en":"Притяжательные местоимения (mine, yours, his, hers, its, ours, theirs) заменяют притяжательное прилагательное + существительное, чтобы избежать повтора: This is my book. This book is mine. Не путайте с притяжательными прилагательными, после которых нужно существительное.","structure":"притяжательное местоимение (стоит отдельно, без существительного после)","examples_en":["Эта сумка твоя или её?","Наш дом больше, чем их.","Это не мой телефон — мой чёрный.","Это была не моя ошибка, а его."],"tip":"У «its» нет местоименной формы, так как вещи обычно не «владеют» в разговоре так же.","questions":[
+{"text":"Выберите местоимение: This coat isn't mine, it's ___.","explanation":"Притяжательное местоимение после «is» → hers."},
+{"text":"Выберите местоимение: Our car is old, but ___ is new.","explanation":"«Their» + существительное повторило бы «car» — используем «theirs»."},
+{"text":"Выберите правильное предложение.","explanation":"Притяжательное местоимение стоит отдельно: mine."},
+{"text":"Выберите местоимение: These are your keys, not ___.","explanation":"«Our» нужно существительное; отдельно → ours."},
+{"text":"Выберите правильное предложение.","explanation":"Притяжательное местоимение после «is»."},
+{"text":"Выберите местоимение: I forgot my umbrella, so she lent me ___.","explanation":"Дополнение «lent» — притяжательное местоимение: hers."}
+]},
+{"unit":9,"lesson":"9A","topic":"if + past, would + infinitive (второй кондиционал)","rule_en":"Второй кондиционал используется для нереальных, воображаемых или маловероятных ситуаций: придаточное if в Past Simple, главное предложение с would + базовый глагол. Используйте «were» для всех лиц в формальном стиле: If I were you...","structure":"If + Past Simple, ... would + базовый глагол","examples_en":["Если бы я выиграл в лотерею, я бы путешествовал по миру.","Если бы у неё было больше времени, она бы выучила новый язык.","Что бы ты сделал, если бы увидел змею?","На твоём месте я бы извинился."],"tip":"Второй кондиционал воображаемый; первый — реалистичный.","questions":[
+{"text":"Выберите форму: If I ___ a million dollars, I'd buy a house.","explanation":"придаточное if берёт Past Simple во втором кондиционале."},
+{"text":"Выберите форму: She ___ happier if she changed her job.","explanation":"главное предложение: would + базовый глагол."},
+{"text":"Выберите правильное предложение.","explanation":"«Were» со всеми лицами в этом устойчивом выражении."},
+{"text":"Выберите правильный вопрос.","explanation":"Второй кондиционал: Past Simple + would."},
+{"text":"Выберите правильное предложение.","explanation":"Обе части должны соответствовать формам второго кондиционала."},
+{"text":"Выберите правильное предложение.","explanation":"would + not для воображаемого результата."}
+]},
+{"unit":9,"lesson":"9B","topic":"Present Perfect + for и since","rule_en":"Present Perfect используется с for + период времени (for two years, for a long time) и since + момент времени (since 2019, since Monday), чтобы говорить о ситуации, начавшейся в прошлом и продолжающейся сейчас.","structure":"Present Perfect + for/since","examples_en":["Я знаю её десять лет.","Мы живём в этом городе с 2015 года.","Он работает здесь с тех пор, как закончил университет.","Они не разговаривали долгое время."],"tip":"for = продолжительность, since = точка начала.","questions":[
+{"text":"Выберите слово: I've had this car ___ three years.","explanation":"Продолжительность → for."},
+{"text":"Выберите слово: She's been afraid of dogs ___ she was a child.","explanation":"Точка начала → since."},
+{"text":"Выберите правильное предложение.","explanation":"Present Perfect + since + момент времени."},
+{"text":"Выберите правильное предложение.","explanation":"Продолжительность → for + Present Perfect."},
+{"text":"Выберите слово: He's had that job ___ 2020.","explanation":"Конкретный год начала → since."},
+{"text":"Выберите правильное предложение.","explanation":"«A long time» — это продолжительность → for."}
+]},
+{"unit":9,"lesson":"9C","topic":"Present Perfect или Past Simple? (2)","rule_en":"Сравните незаконченное время (Present Perfect: today, this week, so far) с законченным (Past Simple: yesterday, last week). Одно и то же слово может брать разное время в зависимости от того, закончился период или нет: I've seen her twice this week (не закончилось) vs I saw her twice last week (закончилось).","structure":"незаконченный период → Present Perfect; законченный период → Past Simple","examples_en":["Сегодня я выпил три чашки кофе.","Вчера я выпил две чашки кофе.","В этом месяце мы не были в кино.","В прошлом месяце мы не ходили в кино."],"tip":"Спросите себя: период времени закончился или ещё длится? Это решает время глагола.","questions":[
+{"text":"Выберите форму: I ___ two emails so far today.","explanation":"«So far today» — незаконченный период → Present Perfect."},
+{"text":"Выберите форму: I ___ three emails yesterday.","explanation":"«Yesterday» — законченный период → Past Simple."},
+{"text":"Выберите форму: We ___ any tourists this week.","explanation":"«This week» незакончено → Present Perfect."},
+{"text":"Выберите форму: We ___ any tourists last week.","explanation":"«Last week» закончено → Past Simple."},
+{"text":"Выберите правильное предложение.","explanation":"«This morning» может быть незакончено → Present Perfect."},
+{"text":"Выберите правильное предложение.","explanation":"«Yesterday» закончено → Past Simple."}
+]},
+{"unit":10,"lesson":"10A","topic":"выражение движения (предлоги и глаголы)","rule_en":"Глаголы движения используются с предлогами для описания действия: run into, walk across, jump over, climb up, swim through, go past. Предлог показывает направление или путь движения.","structure":"глагол движения + предлог + место","examples_en":["Игроки выбежали на поле.","Она переплыла озеро за двадцать минут.","Мы прошли через старый город.","Мяч перелетел через забор."],"tip":"Учите пары «глагол + предлог» вместе, как лексические блоки.","questions":[
+{"text":"Выберите предлог: He jumped ___ the fence to get the ball.","explanation":"«Over» показывает движение поверх и через."},
+{"text":"Выберите предлог: The children ran ___ the park, laughing.","explanation":"Движение внутри/через территорию → through."},
+{"text":"Выберите предлог: The cat climbed ___ the tree.","explanation":"Вертикальное движение → up."},
+{"text":"Выберите правильное предложение.","explanation":"«Past» = вдоль/мимо места."},
+{"text":"Выберите предлог: The swimmer dived ___ the pool.","explanation":"Движение в воду → into."},
+{"text":"Выберите правильное предложение.","explanation":"«Into» + пункт назначения."}
+]},
+{"unit":10,"lesson":"10B","topic":"порядок слов во фразовых глаголах","rule_en":"Разделяемые фразовые глаголы (turn off, pick up, give back) можно разделить дополнением-существительным, но местоимение-дополнение должно стоять между глаголом и частицей: Turn off the light. / Turn it off (не Turn off it). Неразделяемые фразовые глаголы (look after, get on) никогда не разделяются.","structure":"глагол + сущ. + частица / глагол + частица + сущ.; глагол + местоимение + частица","examples_en":["Можешь выключить телевизор? / Можешь его выключить?","Она подняла трубку. / Она её подняла.","Он присматривает за младшей сестрой.","Пожалуйста, заполните эту форму."],"tip":"С местоимениями частица всегда идёт после: «switch it on», никогда «switch on it».","questions":[
+{"text":"Выберите правильное предложение.","explanation":"Местоимение-дополнение должно стоять перед частицей."},
+{"text":"Выберите правильное предложение.","explanation":"С существительным-дополнением возможны оба порядка."},
+{"text":"Выберите правильное предложение.","explanation":"«Look after» неразделяемый."},
+{"text":"Выберите правильное предложение.","explanation":"«Fill in» разделяемый с существительным-дополнением."},
+{"text":"Выберите правильное предложение.","explanation":"Местоимение перед частицей."},
+{"text":"Выберите правильное предложение.","explanation":"«Sort out» разделяемый с существительным-дополнением."}
+]},
+{"unit":10,"lesson":"10C","topic":"пассивный залог","rule_en":"Пассив образуется с be + причастие прошедшего времени: is made, was built, has been designed. Используется, когда действие важнее того, кто его совершил, или исполнитель неизвестен/очевиден: This phone was made in China. By + исполнитель необязателен.","structure":"подлежащее + be + причастие (+ by + исполнитель)","examples_en":["Этот мост был построен в 1930 году.","На английском говорят во многих странах.","Письмо ещё не отправлено.","«Мону Лизу» написал Леонардо да Винчи."],"tip":"Меняйте время «be» в зависимости от нужного времени: is/was/has been + причастие.","questions":[
+{"text":"Выберите форму: This car ___ in Germany.","explanation":"be + причастие."},
+{"text":"Выберите форму: Rice ___ in many Asian countries.","explanation":"Настоящий пассив: is + причастие."},
+{"text":"Выберите правильное предложение.","explanation":"has/have + been + причастие."},
+{"text":"Выберите правильное предложение.","explanation":"was + причастие + by + исполнитель."},
+{"text":"Выберите форму: These shoes ___ by hand.","explanation":"Present Simple пассив: are + причастие."},
+{"text":"Выберите правильное предложение.","explanation":"was + причастие (close → closed)."}
+]},
+{"unit":11,"lesson":"11A","topic":"used to","rule_en":"Used to + базовый глагол используется для прошлых привычек и состояний, которые сейчас закончились: I used to play the piano (но сейчас нет). Отрицание: didn't use to. Вопросы: Did you use to...? Не путайте с «be used to» (привыкнуть к чему-то).","structure":"used to / didn't use to / Did ... use to + базовый глагол","examples_en":["Мы раньше жили в маленькой деревне.","В детстве она не любила овощи.","Ты раньше ходил в школу пешком?","Он раньше курил, но бросил два года назад."],"tip":"У used to нет формы настоящего времени — для настоящих привычек просто используйте Present Simple.","questions":[
+{"text":"Выберите форму: I ___ play football every weekend when I was younger.","explanation":"Прошлая привычка → used to."},
+{"text":"Выберите отрицание: She ___ eat meat, but now she does.","explanation":"После «didn't» базовая форма — «use to» (без -d)."},
+{"text":"Выберите правильный вопрос.","explanation":"Did + подлежащее + use to (базовая форма)."},
+{"text":"Выберите правильное предложение.","explanation":"Утверждение о прошлой привычке: used to."},
+{"text":"Выберите правильное предложение.","explanation":"used to + be для прошлого состояния."},
+{"text":"Выберите правильное предложение.","explanation":"didn't + use to (без -d после didn't)."}
+]},
+{"unit":11,"lesson":"11B","topic":"might","rule_en":"Might + базовый глагол используется для возможности, особенно о будущем — менее уверенно, чем will: I might go to the party, I'm not sure yet. Отрицание: might not (без сокращения). Might одинаков для всех лиц и никогда не получает -s или «to».","structure":"подлежащее + might (not) + базовый глагол","examples_en":["Возможно, я навещу родителей в эти выходные.","Возможно, она не придёт — она очень занята.","Возможно, мы поедем в Бухару в следующем году.","Возможно, позже пойдёт дождь, так что возьми зонт."],"tip":"might = maybe + will; показывает, что вы не уверены.","questions":[
+{"text":"Выберите форму: I'm not sure, but I ___ go to the concert.","explanation":"might + базовый глагол, без -s или -to."},
+{"text":"Выберите отрицание: She ___ come to the party — she has an exam.","explanation":"Отрицание: might not (без сокращения)."},
+{"text":"Выберите правильное предложение.","explanation":"might + базовый глагол, неизменен для всех подлежащих."},
+{"text":"Выберите правильное предложение.","explanation":"might + базовый глагол."},
+{"text":"Выберите правильное предложение.","explanation":"might not + базовый глагол."},
+{"text":"Выберите правильное значение «I might go»:","explanation":"«Might» выражает неуверенность о будущем."}
+]},
+{"unit":11,"lesson":"11C","topic":"so, neither + вспомогательные глаголы","rule_en":"So + вспомогательный глагол + подлежащее используется для согласия с утвердительным высказыванием: I like tea. — So do I. Neither/Nor + вспомогательный глагол + подлежащее — для согласия с отрицательным высказыванием: I don't like coffee. — Neither do I. Вспомогательный глагол должен соответствовать времени исходного глагола.","structure":"So + вспом. + подлежащее (согласие с утверждением); Neither/Nor + вспом. + подлежащее (согласие с отрицанием)","examples_en":["Я обожаю путешествовать. — Я тоже.","Она из Ташкента. — Мой друг тоже.","Я не был в Японии. — Я тоже.","Он не умеет плавать. — Она тоже."],"tip":"Соответствие вспомогательного глагола времени: is→so is, do→so do, can→so can, have→so have.","questions":[
+{"text":"Выберите правильный ответ: I like spicy food. — ___","explanation":"Утверждение с «like» (do) → So do I."},
+{"text":"Выберите правильный ответ: I can't drive. — ___","explanation":"Отрицание + «can» → Neither can I."},
+{"text":"Выберите правильный ответ: She's tired. — ___","explanation":"Утверждение + «is/am» → So am I."},
+{"text":"Выберите правильный ответ: We haven't finished yet. — ___","explanation":"Отрицание + «have» → Neither have we."},
+{"text":"Выберите правильный ответ: I went to the concert. — ___","explanation":"Утвердительное прошедшее → So did I."},
+{"text":"Выберите правильный ответ: He doesn't eat meat. — ___","explanation":"Отрицание + «does» → Neither does she."}
+]},
+{"unit":12,"lesson":"12A","topic":"Past Perfect","rule_en":"Past Perfect (had + причастие) используется для действия, произошедшего до другого действия в прошлом: When I arrived, the train had already left. Показывает более раннее из двух прошедших событий.","structure":"подлежащее + had + причастие","examples_en":["К тому времени, как мы пришли в кино, фильм уже начался.","Она никогда не видела снега, пока не переехала в Россию.","Я понял, что забыл ключи.","Они уже поели, когда мы пришли."],"tip":"Два прошедших события: у БОЛЕЕ РАННЕГО — «had + причастие».","questions":[
+{"text":"Выберите форму: When we arrived, the meeting ___.","explanation":"Более раннее прошедшее событие → Past Perfect."},
+{"text":"Выберите форму: She ___ never ___ sushi before that trip.","explanation":"До точки отсчёта в прошлом → Past Perfect."},
+{"text":"Выберите правильное предложение.","explanation":"Потеря телефона произошла раньше, чем невозможность позвонить."},
+{"text":"Выберите правильное предложение.","explanation":"Past Perfect для продолжительности до момента в прошлом."},
+{"text":"Выберите форму: The house was empty because the family ___ moved out.","explanation":"had + причастие."},
+{"text":"Выберите правильное предложение.","explanation":"Ошибка произошла раньше, чем её осознание."}
+]},
+{"unit":12,"lesson":"12B","topic":"косвенная речь (reported speech)","rule_en":"Когда мы передаём чужие слова, времена обычно сдвигаются на шаг назад: Present Simple→Past Simple, Present Continuous→Past Continuous, Present Perfect→Past Perfect, will→would, can→could. Местоимения и указатели времени тоже меняются: «I» → «he/she», «tomorrow» → «the next day».","structure":"said (that) + подлежащее + прошедшее время","examples_en":["«Я устала», — сказала она. → Она сказала, что устала.","«Я тебе позвоню», — сказал он. → Он сказал, что позвонит мне.","«Я закончил», — сказали они. → Они сказали, что закончили.","«Я могу помочь», — сказала она. → Она сказала, что может помочь."],"tip":"«Say» не требует дополнения (say something); «tell» требует лицо (tell someone something).","questions":[
+{"text":"Выберите форму: 'I'm happy,' she said. → She said she ___ happy.","explanation":"Present Simple → Past Simple."},
+{"text":"Выберите форму: 'I'll come tomorrow,' he said. → He said he ___ the next day.","explanation":"will → would в косвенной речи."},
+{"text":"Выберите форму: 'I've lost my keys,' she said. → She said she ___ her keys.","explanation":"Present Perfect → Past Perfect."},
+{"text":"Выберите правильный глагол: He ___ me that he was busy.","explanation":"«Tell» требует дополнение (me)."},
+{"text":"Выберите правильный глагол: She ___ that she was tired.","explanation":"«Say» не берёт личное дополнение."},
+{"text":"Выберите форму: 'I can swim,' he said. → He said he ___ swim.","explanation":"can → could в косвенной речи."}
+]},
+{"unit":12,"lesson":"12C","topic":"вопросы без вспомогательных глаголов","rule_en":"Когда вопросительное слово (who, what, which) является ПОДЛЕЖАЩИМ предложения, не используйте do/does/did — сохраняйте обычный порядок слов: Who called you? (не Who did call you?) Сравните с вопросами о дополнении, где нужен вспомогательный глагол: Who did you call?","structure":"Вопрос о подлежащем: ВС + глагол (без вспом.); вопрос о дополнении: ВС + вспом. + подлежащее + глагол","examples_en":["Кто разбил окно?","Что случилось на встрече?","Какая команда выиграла матч?","С кем ты встретился на вечеринке?"],"tip":"Спросите: вопросительное слово — подлежащее (совершает действие) или дополнение (получает его)? Подлежащее → без вспомогательного.","questions":[
+{"text":"Выберите правильный вопрос (who = подлежащее).","explanation":"«Who» — подлежащее — вспомогательный не нужен."},
+{"text":"Выберите правильный вопрос (who = дополнение).","explanation":"«Who» здесь дополнение — нужен вспомогательный «did»."},
+{"text":"Выберите правильный вопрос.","explanation":"«What» — подлежащее — без вспомогательного."},
+{"text":"Выберите правильный вопрос.","explanation":"«Which company» — подлежащее — без вспомогательного."},
+{"text":"Выберите правильный вопрос.","explanation":"Вопрос о подлежащем — без вспомогательного, глагол в прошедшем времени."},
+{"text":"Выберите правильный вопрос.","explanation":"«The shop» — подлежащее, но «what time» — нет, это обычный вопрос, требующий «does»."}
+]}
+]

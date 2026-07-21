@@ -1,0 +1,186 @@
+[
+[
+{"text":"Выберите правильную форму: I ___ a student.","explanation":"С «I» всегда используется «am»."},
+{"text":"Выберите правильную форму: You ___ my friend.","explanation":"С «you» всегда используется «are»."},
+{"text":"Выберите сокращение: «I am» = ___","explanation":"«I am» сокращается до «I'm» в речи и неформальном письме."},
+{"text":"Выберите отрицание: I ___ a teacher.","explanation":"Отрицание «I am» — «I am not» (I'm not)."},
+{"text":"Выберите вопрос: ___ you in room 3?","explanation":"В вопросах с «you» глагол «are» ставится первым: Are you...?"},
+{"text":"Выберите правильный ответ: Am I in class 2? — Yes, you ___.","explanation":"На вопрос про «I» отвечаем «you are»."}
+],
+[
+{"text":"Выберите правильную форму: He ___ from Brazil.","explanation":"С «he», «she» и «it» используется «is»."},
+{"text":"Выберите правильную форму: She ___ a doctor.","explanation":"С «she» используется «is»."},
+{"text":"Выберите сокращение: «It is cold» = ___","explanation":"«It is» сокращается до «It's» с апострофом."},
+{"text":"Выберите отрицание: He ___ my brother.","explanation":"Отрицание «he is» — «he isn't» (is not)."},
+{"text":"Выберите вопрос: ___ she your teacher?","explanation":"Вопросы с «she» начинаются с «Is»: Is she...?"},
+{"text":"Выберите правильное предложение.","explanation":"С «it» используется «is»."}
+],
+[
+{"text":"Выберите правильную форму: We ___ students.","explanation":"С «we», «you» и «they» используется «are»."},
+{"text":"Выберите правильную форму: They ___ from Italy.","explanation":"«They» требует «are»."},
+{"text":"Выберите сокращение: «We are» = ___","explanation":"«We are» сокращается до «We're». «Were» без апострофа — другое слово."},
+{"text":"Выберите отрицание: They ___ at home.","explanation":"Отрицание «they are» — «they aren't»."},
+{"text":"Выберите вопрос: ___ you and Tom in the same class?","explanation":"«You and Tom» — это множественное «you», поэтому «Are»."},
+{"text":"Выберите правильное предложение.","explanation":"«We» всегда идёт с «are»."}
+],
+[
+{"text":"Выберите вопросительное слово: ___ are you from? — Mexico.","explanation":"«Where» спрашивает о месте."},
+{"text":"Выберите вопросительное слово: ___ is your name? — Anna.","explanation":"«What» спрашивает о предмете или имени."},
+{"text":"Выберите вопросительное слово: ___ old are you? — I'm twenty.","explanation":"«How old» спрашивает о возрасте."},
+{"text":"Выберите вопросительное слово: ___ is that man? — He's my father.","explanation":"«Who» спрашивает о человеке."},
+{"text":"Выберите правильный порядок слов.","explanation":"Вопросительное слово + be + подлежащее."},
+{"text":"Выберите вопрос: ___ your phone number? — It's 555-0134.","explanation":"О номере телефона спрашивают: What's your phone number?"}
+],
+[
+{"text":"Выберите правильный артикль: ___ apple","explanation":"Перед гласным звуком используется «an»: an apple."},
+{"text":"Выберите правильный артикль: ___ book","explanation":"Перед согласным звуком используется «a»: a book."},
+{"text":"Выберите множественное число слова «watch».","explanation":"Существительные на -ch получают -es: watches."},
+{"text":"Выберите множественное число слова «country».","explanation":"Согласная + y меняется на -ies: countries."},
+{"text":"Выберите множественное число слова «man».","explanation":"У «man» неправильное множественное число: men."},
+{"text":"Выберите правильное предложение.","explanation":"После числа больше одного существительное во множественном числе; «a» — только для единственного."}
+],
+[
+{"text":"Выберите слово для одного предмета рядом: ___ is my phone.","explanation":"«This» — один предмет рядом с говорящим."},
+{"text":"Выберите слово для одного предмета вдали: ___ is my car.","explanation":"«That» — один предмет далеко от говорящего."},
+{"text":"Выберите слово: ___ are my keys, here in my hand.","explanation":"«These» — несколько предметов рядом."},
+{"text":"Выберите слово: ___ are your books, over there.","explanation":"«Those» — несколько предметов вдали."},
+{"text":"Выберите правильное предложение.","explanation":"«This» с существительным в единственном числе и глаголом «is»."},
+{"text":"Выберите правильный вопрос о далёких предметах.","explanation":"«Those» — множественное число, далеко; требует «are»."}
+],
+[
+{"text":"Выберите слово: ___ name is Marta. (I)","explanation":"«I» → «my»: my name."},
+{"text":"Выберите слово: This is my brother. ___ name is Aziz.","explanation":"О мужчине или мальчике — «his»."},
+{"text":"Выберите слово: This is my sister. ___ name is Layla.","explanation":"О женщине или девочке — «her»."},
+{"text":"Выберите форму: This is ___ car. (Tom)","explanation":"Притяжательное 's показывает принадлежность: Tom's car."},
+{"text":"Выберите слово: We love ___ parents.","explanation":"«We» → «our»: our parents."},
+{"text":"Выберите правильное предложение.","explanation":"Ставим 's после владельца: my mother's sister."}
+],
+[
+{"text":"Выберите правильный порядок.","explanation":"Прилагательное стоит перед существительным: a red car."},
+{"text":"Выберите правильное предложение.","explanation":"Прилагательные в английском не получают -s во множественном числе."},
+{"text":"Выберите антоним слова «big».","explanation":"big ↔ small."},
+{"text":"Выберите антоним слова «expensive».","explanation":"expensive ↔ cheap."},
+{"text":"Выберите правильное предложение.","explanation":"После «be» прилагательное стоит одно: is fast."},
+{"text":"Выберите правильный вопрос.","explanation":"Вопросительная фраза + be + подлежащее."}
+],
+[
+{"text":"Выберите форму: I ___ coffee every morning.","explanation":"С I/you/we/they глагол в Present Simple без окончания."},
+{"text":"Выберите отрицание: We ___ meat.","explanation":"С I/you/we/they отрицание: don't + глагол."},
+{"text":"Выберите правильное предложение.","explanation":"«They» требует базовой формы: live."},
+{"text":"Выберите отрицание: I ___ breakfast at home.","explanation":"Отрицание с «I» = don't + глагол."},
+{"text":"Выберите правильное предложение.","explanation":"«You» требует базовой формы глагола."},
+{"text":"Выберите правильное предложение.","explanation":"После don't глагол всегда в базовой форме."}
+],
+[
+{"text":"Выберите вопрос: ___ you like pizza?","explanation":"Вопросы с I/you/we/they строятся с «Do»."},
+{"text":"Выберите краткий ответ: Do you speak Russian? — Yes, I ___.","explanation":"Краткий ответ повторяет вспомогательный глагол: Yes, I do."},
+{"text":"Выберите правильный вопрос.","explanation":"Вопросительное слово + do + подлежащее + глагол."},
+{"text":"Выберите вопрос: ___ we have class today?","explanation":"С «we» в вопросах используется «do»."},
+{"text":"Выберите краткий ответ: Do they live here? — No, they ___.","explanation":"Отрицательный краткий ответ: No, they don't."},
+{"text":"Выберите правильный вопрос.","explanation":"Вопросы в Present Simple требуют вспомогательного «do»."}
+],
+[
+{"text":"Выберите форму: She ___ in a hospital.","explanation":"С he/she/it глагол получает -s: works."},
+{"text":"Выберите форму: He ___ TV in the evening.","explanation":"Глаголы на -ch получают -es: watches."},
+{"text":"Выберите форму: My brother ___ English.","explanation":"Согласная + y → -ies: studies."},
+{"text":"Выберите отрицание: She ___ fish.","explanation":"С he/she/it: doesn't + глагол без -s."},
+{"text":"Выберите вопрос: ___ he work in a bank?","explanation":"Вопросы с he/she/it строятся с «Does»."},
+{"text":"Выберите правильное предложение.","explanation":"«It» требует форму с -s: rains."}
+],
+[
+{"text":"Выберите правильный порядок.","explanation":"Наречия частотности стоят перед основным глаголом."},
+{"text":"Выберите правильный порядок с «be».","explanation":"С «be» наречие идёт после глагола: is never."},
+{"text":"Какое наречие означает «100% времени»?","explanation":"always = каждый раз."},
+{"text":"Какое наречие означает «0% времени»?","explanation":"never = никогда."},
+{"text":"Выберите правильное предложение.","explanation":"«Usually» стоит перед основным глаголом «gets»."},
+{"text":"Выберите правильный вопрос.","explanation":"«How often» + do + подлежащее + глагол — вопрос о частоте."}
+],
+[
+{"text":"Выберите правильный вопрос.","explanation":"Present Simple: вопросительное слово + do/does + подлежащее + глагол."},
+{"text":"Выберите правильный вопрос.","explanation":"С «be» используется инверсия: Is + подлежащее."},
+{"text":"Выберите правильный вопрос.","explanation":"«The film» = it → does; основной глагол теряет -s."},
+{"text":"Выберите правильный вопрос.","explanation":"В «at work» нет глагола, поэтому используем «be»: Are they...?"},
+{"text":"Выберите правильный вопрос.","explanation":"Глагол действия «play» требует «do», а не «are»."},
+{"text":"Выберите правильный вопрос.","explanation":"«Sad» — прилагательное, поэтому «be»: Why is he...?"}
+],
+[
+{"text":"Выберите правильный императив.","explanation":"Императив — базовая форма глагола без подлежащего."},
+{"text":"Выберите отрицательный императив.","explanation":"Отрицательный императив = Don't + глагол."},
+{"text":"Выберите местоимение: I like Anna. I see ___ every day.","explanation":"После глагола — объектное местоимение: her."},
+{"text":"Выберите местоимение: This is my father. Look at ___.","explanation":"«He» → объектная форма «him»."},
+{"text":"Выберите местоимение: We are here! Wait for ___!","explanation":"«We» → объектная форма «us»."},
+{"text":"Выберите местоимение: I love this song. Listen to ___!","explanation":"О предмете говорим «it»."}
+],
+[
+{"text":"Выберите форму: I ___ swim.","explanation":"«Can» не изменяется и требует глагол без «to»."},
+{"text":"Выберите правильное предложение.","explanation":"После «can» глагол в базовой форме; «can» без -s."},
+{"text":"Выберите отрицание: We ___ park here.","explanation":"Отрицание «can» — «can't» (cannot)."},
+{"text":"Выберите вопрос: ___ you help me, please?","explanation":"Вопросы с «can»: Can + подлежащее + глагол."},
+{"text":"Выберите краткий ответ: Can he cook? — Yes, he ___.","explanation":"Краткий ответ повторяет «can»: Yes, he can."},
+{"text":"Выберите правильное предложение.","explanation":"can + базовый глагол, без «to» и «-ing»."}
+],
+[
+{"text":"Выберите форму: I love ___ to music.","explanation":"После like/love/hate используется глагол + -ing."},
+{"text":"Выберите форму: She hates ___ up early.","explanation":"hate + глагол-ing: hates getting."},
+{"text":"Выберите правильное предложение.","explanation":"like + форма -ing: like cooking."},
+{"text":"Выберите -ing форму глагола «swim».","explanation":"Краткий гласный + согласная удваивается: swimming."},
+{"text":"Выберите -ing форму глагола «make».","explanation":"Глаголы на -e теряют её: making."},
+{"text":"Выберите вопрос: ___ he like playing football?","explanation":"«He» требует «does» в вопросах Present Simple."}
+],
+[
+{"text":"Выберите форму: I ___ working now.","explanation":"Present Continuous = be + глагол-ing; «I» требует «am»."},
+{"text":"Выберите форму: She ___ reading a book.","explanation":"«She» требует «is»: she is reading."},
+{"text":"Выберите правильное предложение.","explanation":"are + глагол-ing: are watching."},
+{"text":"Выберите отрицание: We ___ sleeping.","explanation":"Отрицание Present Continuous: aren't + -ing."},
+{"text":"Выберите вопрос: ___ you listening to me?","explanation":"Вопросы: Are + подлежащее + глагол-ing."},
+{"text":"Выберите правильное предложение.","explanation":"Present Continuous требует и «be», и форму -ing."}
+],
+[
+{"text":"Выберите форму: Listen! The baby ___ now.","explanation":"Действие происходит сейчас → Present Continuous."},
+{"text":"Выберите форму: I usually ___ tea, but today I ___ coffee.","explanation":"Привычка → Present Simple; сейчас → Present Continuous."},
+{"text":"Выберите форму: She ___ to work by bus every day.","explanation":"«Every day» — это привычка → Present Simple."},
+{"text":"Выберите форму: Look! It ___.","explanation":"«Look!» указывает на «прямо сейчас» → Present Continuous."},
+{"text":"Какое слово обычно сочетается с Present Simple?","explanation":"«Always» описывает привычки; «now / at the moment» — текущие действия."},
+{"text":"Выберите правильное предложение.","explanation":"Временная активность («this year») → Present Continuous."}
+],
+[
+{"text":"Выберите форму: ___ a big bed in the room.","explanation":"Один предмет → There is (There's)."},
+{"text":"Выберите форму: ___ some chairs in the kitchen.","explanation":"Несколько предметов → There are."},
+{"text":"Выберите отрицание: ___ a TV in my room.","explanation":"Отрицание в единственном числе: There isn't a..."},
+{"text":"Выберите вопрос: ___ a lift in the hotel?","explanation":"Вопрос: Is there + существительное в единственном числе?"},
+{"text":"Выберите правильное предложение.","explanation":"Множественное число → There are + some."},
+{"text":"Выберите краткий ответ: Are there any shops near here? — Yes, there ___.","explanation":"Краткий ответ повторяет «are»: Yes, there are."}
+],
+[
+{"text":"Выберите форму: I ___ at home yesterday.","explanation":"Прошедшее от «am/is» — was."},
+{"text":"Выберите форму: They ___ at the cinema last night.","explanation":"Прошедшее от «are» — were."},
+{"text":"Выберите отрицание: She ___ at school on Monday.","explanation":"Отрицание в единственном числе: wasn't."},
+{"text":"Выберите вопрос: ___ you at the party?","explanation":"С «you» используется «were»: Were you...?"},
+{"text":"Выберите правильное предложение.","explanation":"«We» в прошедшем требует «were»."},
+{"text":"Выберите краткий ответ: Was the film good? — Yes, it ___.","explanation":"Краткий ответ повторяет «was»: Yes, it was."}
+],
+[
+{"text":"Выберите прошедшую форму глагола «work».","explanation":"Правильные глаголы получают -ed: worked."},
+{"text":"Выберите прошедшую форму глагола «study».","explanation":"Согласная + y → -ied: studied."},
+{"text":"Выберите прошедшую форму глагола «stop».","explanation":"Краткий гласный + согласная удваивается: stopped."},
+{"text":"Выберите правильное предложение.","explanation":"live → lived; с Past Simple не нужен «am»."},
+{"text":"Выберите отрицание: We ___ TV last night.","explanation":"didn't + базовый глагол (без -ed)."},
+{"text":"Выберите вопрос: ___ you play tennis yesterday?","explanation":"Вопросы Past Simple строятся с «Did» + базовый глагол."}
+],
+[
+{"text":"Выберите прошедшую форму глагола «go».","explanation":"«Go» — неправильный глагол: go → went."},
+{"text":"Выберите прошедшую форму глагола «have».","explanation":"«Have» — неправильный глагол: have → had."},
+{"text":"Выберите прошедшую форму глагола «get».","explanation":"«Get» — неправильный глагол: get → got."},
+{"text":"Выберите прошедшую форму глагола «do».","explanation":"«Do» — неправильный глагол: do → did."},
+{"text":"Выберите правильное предложение.","explanation":"В утверждении используется неправильная форма: went."},
+{"text":"Выберите отрицание: I ___ breakfast this morning.","explanation":"После didn't глагол возвращается к базовой форме: have."}
+],
+[
+{"text":"Выберите прошедшую форму: see → ___","explanation":"«See» — неправильный глагол: see → saw."},
+{"text":"Выберите правильное предложение.","explanation":"Оба действия в прошлом: arrived, missed."},
+{"text":"Выберите вопрос: Where ___ you go last summer?","explanation":"Вопрос Past Simple: Where did you go...?"},
+{"text":"Выберите отрицание: They ___ to the party.","explanation":"didn't + базовая форма: come."},
+{"text":"Выберите правильное предложение.","explanation":"buy → bought, take → took (неправильные глаголы)."},
+{"text":"Выберите краткий ответ: Did you like the film? — Yes, I ___.","explanation":"Краткий ответ повторяет «did»: Yes, I did."}
+]
+]

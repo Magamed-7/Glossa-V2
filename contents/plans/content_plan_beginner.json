@@ -1,0 +1,225 @@
+{
+  "level": "Beginner",
+  "cefr": "A1",
+  "source_structure": "English File 4th ed. Beginner (структура: юниты/уроки/грамматика/лексические темы — только факты)",
+  "locales": ["en", "ru", "tg"],
+  "status_note": "Контент Beginner уже существует в contents/ (23 grammar topics × 3 locale, 60 stories × 3 locale, 523 vocab words) — оригинальный, регенерация не требуется. План приведён как образец формата для остальных уровней.",
+  "volume_per_unit": {
+    "grammar_lessons": "по одному на урок (A/B)",
+    "grammar_lesson_contents": "объяснение (8-12 предложений), 4-6 примеров с переводом, 6-8 тестовых вопросов (multiple_choice / fill_blank / true_false)",
+    "stories": "2 на юнит, 90-150 слов (A1), 8-12 ключевых слов с переводами",
+    "vocabulary": "20-40 слов на юнит по лексическим темам юнита"
+  },
+  "units": [
+    {
+      "unit": 1,
+      "lessons": [
+        {
+          "code": "1A",
+          "theme": "Знакомство, приветствие",
+          "grammar": "verb be (singular): I and you — am/are, сокращения, отрицание, вопрос",
+          "vocabulary_topics": ["числа 0-10", "дни недели", "прощание"]
+        },
+        {
+          "code": "1B",
+          "theme": "Люди и музыка мира",
+          "grammar": "verb be (singular): he, she, it",
+          "vocabulary_topics": ["страны"]
+        }
+      ],
+      "practical_english": "регистрация в отеле, бронирование столика (лексика: класс/аудитория)"
+    },
+    {
+      "unit": 2,
+      "lessons": [
+        {
+          "code": "2A",
+          "theme": "Отдых и путешествия",
+          "grammar": "verb be (plural): we, you, they",
+          "vocabulary_topics": ["национальности"]
+        },
+        {
+          "code": "2B",
+          "theme": "Городской транспорт",
+          "grammar": "Wh- и How вопросы с be",
+          "vocabulary_topics": ["номера телефонов", "числа 11-100"]
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "lessons": [
+        {
+          "code": "3A",
+          "theme": "Вещи вокруг нас",
+          "grammar": "существительные ед./мн. число, артикли a/an",
+          "vocabulary_topics": ["мелкие предметы"]
+        },
+        {
+          "code": "3B",
+          "theme": "Сувениры",
+          "grammar": "this / that / these / those",
+          "vocabulary_topics": ["сувениры"]
+        }
+      ],
+      "practical_english": "цены, покупка обеда"
+    },
+    {
+      "unit": 4,
+      "lessons": [
+        {
+          "code": "4A",
+          "theme": "Семья",
+          "grammar": "притяжательные прилагательные (my, your...), possessive 's",
+          "vocabulary_topics": ["люди и семья"]
+        },
+        {
+          "code": "4B",
+          "theme": "Идеальная машина",
+          "grammar": "прилагательные (позиция и употребление)",
+          "vocabulary_topics": ["цвета", "базовые прилагательные"]
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "lessons": [
+        {
+          "code": "5A",
+          "theme": "Еда и завтрак",
+          "grammar": "Present Simple (+/-): I, you, we, they",
+          "vocabulary_topics": ["еда и напитки"]
+        },
+        {
+          "code": "5B",
+          "theme": "Долгий перелёт",
+          "grammar": "Present Simple (?): I, you, we, they",
+          "vocabulary_topics": ["базовые глагольные фразы 1"]
+        }
+      ],
+      "practical_english": "который час, самочувствие"
+    },
+    {
+      "unit": 6,
+      "lessons": [
+        {
+          "code": "6A",
+          "theme": "Работа и профессии",
+          "grammar": "Present Simple: he, she, it (третье лицо)",
+          "vocabulary_topics": ["профессии", "места работы"]
+        },
+        {
+          "code": "6B",
+          "theme": "Распорядок дня",
+          "grammar": "наречия частотности (always, usually, never...)",
+          "vocabulary_topics": ["типичный день"]
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "lessons": [
+        {
+          "code": "7A",
+          "theme": "Свободное время и выходные",
+          "grammar": "порядок слов в вопросах: be и Present Simple",
+          "vocabulary_topics": ["глагольные фразы 2: свободное время"]
+        },
+        {
+          "code": "7B",
+          "theme": "Кино",
+          "grammar": "императивы; объектные местоимения (me, him, us...)",
+          "vocabulary_topics": ["жанры фильмов"]
+        }
+      ],
+      "practical_english": "дата, разговор по телефону (месяцы, порядковые числительные)"
+    },
+    {
+      "unit": 8,
+      "lessons": [
+        {
+          "code": "8A",
+          "theme": "Парковка и правила",
+          "grammar": "can / can't (возможность, разрешение)",
+          "vocabulary_topics": ["ещё глагольные фразы"]
+        },
+        {
+          "code": "8B",
+          "theme": "Хобби и готовка",
+          "grammar": "like / love / hate + verb + -ing",
+          "vocabulary_topics": ["занятия и хобби"]
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "lessons": [
+        {
+          "code": "9A",
+          "theme": "Всё в порядке! (в поездке)",
+          "grammar": "Present Continuous",
+          "vocabulary_topics": ["глагольные фразы: путешествия"]
+        },
+        {
+          "code": "9B",
+          "theme": "Работа под прикрытием",
+          "grammar": "Present Continuous или Present Simple?",
+          "vocabulary_topics": ["одежда"]
+        }
+      ],
+      "practical_english": "приглашение и предложение"
+    },
+    {
+      "unit": 10,
+      "lessons": [
+        {
+          "code": "10A",
+          "theme": "Отель с видом",
+          "grammar": "there's a... / there are some...",
+          "vocabulary_topics": ["отель", "предлоги in, on, under"]
+        },
+        {
+          "code": "10B",
+          "theme": "Где ты был вчера?",
+          "grammar": "Past Simple глагола be (was/were)",
+          "vocabulary_topics": ["предлоги in, on, at"]
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "lessons": [
+        {
+          "code": "11A",
+          "theme": "Новая жизнь в другой стране",
+          "grammar": "Past Simple: правильные глаголы",
+          "vocabulary_topics": ["правильные глаголы"]
+        },
+        {
+          "code": "11B",
+          "theme": "Как прошёл день",
+          "grammar": "Past Simple: неправильные глаголы get, go, have, do",
+          "vocabulary_topics": ["фразы с get, go, have, do"]
+        }
+      ],
+      "practical_english": "как пройти (направления, предлоги места)"
+    },
+    {
+      "unit": 12,
+      "lessons": [
+        {
+          "code": "12A",
+          "theme": "Попутчики в поезде",
+          "grammar": "Past Simple: правильные и неправильные глаголы",
+          "vocabulary_topics": ["правильные и неправильные глаголы"]
+        },
+        {
+          "code": "12B",
+          "theme": "Повторение прошедшего времени",
+          "grammar": "Past Simple: общее повторение",
+          "vocabulary_topics": ["повторение форм прошедшего времени"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "level": "Upper-Intermediate",
+  "cefr": "C1",
+  "source_structure": "English File 4th ed. Upper-Intermediate (только структура)",
+  "locales": ["en", "ru", "tg"],
+  "volume_per_unit": {
+    "grammar_lessons": "по одному на урок (A/B)",
+    "grammar_lesson_contents": "объяснение, 4-5 примеров с переводом, 6 тестовых вопросов",
+    "stories": "2 на юнит, 220-300 слов, 8-12 ключевых слов с переводами",
+    "vocabulary": "~25 слов на юнит"
+  },
+  "units": [
+    {"unit": 1, "lessons": [
+      {"code": "1A", "theme": "Вопросы и ответы", "grammar": "построение вопросов (включая косвенные и вопросы к подлежащему)", "vocabulary_topics": ["понимание значения из контекста"]},
+      {"code": "1B", "theme": "Это загадка", "grammar": "вспомогательные глаголы; the... the... + сравнительные", "vocabulary_topics": ["сложные прилагательные", "модификаторы"]}
+    ], "colloquial_english": "устройство на работу"},
+    {"unit": 2, "lessons": [
+      {"code": "2A", "theme": "Доктор, доктор!", "grammar": "Present Perfect Simple и Continuous", "vocabulary_topics": ["болезни и травмы"]},
+      {"code": "2B", "theme": "Веди себя по возрасту", "grammar": "прилагательные как существительные; порядок прилагательных", "vocabulary_topics": ["одежда и мода"]}
+    ]},
+    {"unit": 3, "lessons": [
+      {"code": "3A", "theme": "Пристегните ремни", "grammar": "повествовательные времена, Past Perfect Continuous; so/such...that", "vocabulary_topics": ["авиаперелёты"]},
+      {"code": "3B", "theme": "Действительно хорошая концовка", "grammar": "позиция наречий и наречных фраз", "vocabulary_topics": ["наречия и наречные фразы"]}
+    ], "colloquial_english": "книги"},
+    {"unit": 4, "lessons": [
+      {"code": "4A", "theme": "Штормовая погода", "grammar": "Future Perfect и Future Continuous", "vocabulary_topics": ["окружающая среда", "погода"]},
+      {"code": "4B", "theme": "Рискованное дело", "grammar": "нулевой и первый кондиционалы, придаточные будущего времени", "vocabulary_topics": ["выражения с take"]}
+    ]},
+    {"unit": 5, "lessons": [
+      {"code": "5A", "theme": "Я выживший", "grammar": "нереальные кондиционалы", "vocabulary_topics": ["чувства"]},
+      {"code": "5B", "theme": "Жаль, что тебя здесь нет", "grammar": "wish для настоящего/будущего; wish о сожалениях", "vocabulary_topics": ["выражение чувств: -ed/-ing прилагательные"]}
+    ], "colloquial_english": "отходы и экология"},
+    {"unit": 6, "lessons": [
+      {"code": "6A", "theme": "Спокойной ночи", "grammar": "used to, be used to, get used to", "vocabulary_topics": ["сон"]},
+      {"code": "6B", "theme": "Музыка для моих ушей", "grammar": "герундии и инфинитивы", "vocabulary_topics": ["музыка"]}
+    ]},
+    {"unit": 7, "lessons": [
+      {"code": "7A", "theme": "Давай не будем спорить", "grammar": "прошедшие модальные: must have...; would rather", "vocabulary_topics": ["глаголы, которые путают"]},
+      {"code": "7B", "theme": "Всё это игра", "grammar": "глаголы чувственного восприятия", "vocabulary_topics": ["тело человека"]}
+    ], "colloquial_english": "выступления"},
+    {"unit": 8, "lessons": [
+      {"code": "8A", "theme": "Снижая преступность", "grammar": "пассив (все формы); have something done; it is said that...", "vocabulary_topics": ["преступление и наказание"]},
+      {"code": "8B", "theme": "Фейковые новости", "grammar": "глаголы передачи речи (reporting verbs)", "vocabulary_topics": ["СМИ"]}
+    ]},
+    {"unit": 9, "lessons": [
+      {"code": "9A", "theme": "Хороший бизнес?", "grammar": "придаточные уступки и цели", "vocabulary_topics": ["реклама", "бизнес"]},
+      {"code": "9B", "theme": "Супергорода", "grammar": "неисчисляемые и множественные существительные", "vocabulary_topics": ["словообразование: приставки и суффиксы"]}
+    ], "colloquial_english": "реклама"},
+    {"unit": 10, "lessons": [
+      {"code": "10A", "theme": "Наука и фантастика", "grammar": "квантификаторы: all, every, both...", "vocabulary_topics": ["наука"]},
+      {"code": "10B", "theme": "Свобода слова", "grammar": "артикли (продвинутый уровень)", "vocabulary_topics": ["коллокации: пары слов"]}
+    ]}
+  ]
+}

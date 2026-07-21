@@ -1,0 +1,146 @@
+[
+{"unit":7,"lesson":"7A","topic":"истифодаи масдар бо to","rule_en":"Пас аз бисёр феълҳо to + масдар меояд: decide, hope, plan, promise, learn, try, forget, want, need, would like, manage, afford. Инчунин to + масдар пас аз сифатҳо (happy to help) ва барои ифодаи мақсад (I called to ask about the job).","structure":"феъл/сифат + to + феъли аслӣ; мақсад: to + феъли аслӣ","examples_en":["Ман кӯшиш мекунам, ки барои лэптопи нав пул ҷамъ кунам.","Вай ба вақт ҳисоботро тамом кард.","Мо хушҳолем, ки ба ҳар савол ҷавоб диҳем.","Ман ба мағоза рафтам, то нон харам."],"tip":"«To» + масдар пас аз «in order» ҳам мақсадро нишон медиҳад: in order to save time.","questions":[
+{"text":"Шаклро интихоб кунед: I can't afford ___ a new car this year.","explanation":"afford + to + масдар."},
+{"text":"Шаклро интихоб кунед: She's learning ___ a musical instrument.","explanation":"learn + to + масдар."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"forget + to + масдар."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"to + масдар мақсадро ифода мекунад."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"сифат + to + масдар."},
+{"text":"Шаклро интихоб кунед: They plan ___ their business next year.","explanation":"plan + to + масдар."}
+]},
+{"unit":7,"lesson":"7B","topic":"истифодаи герундий (феъл + -ing)","rule_en":"Пас аз баъзе феълҳо герундий меояд (феъл + -ing): enjoy, mind, finish, avoid, suggest, imagine, practise, keep, give up. Герундий инчунин пас аз пешояндҳо ва ҳамчун мубтадои ҷумла истифода мешавад: Smoking is bad for you.","structure":"феъл + -ing; пешоянд + -ing; -ing ҳамчун мубтадо","examples_en":["Ман шинос шудан бо одамони нав дар кор дӯст медорам.","Вай дар бораи иваз кардани кораш фикр мекунад.","Мумкин тирезаро кушоӣ?","Омӯхтани забон вақту сабрро талаб мекунад."],"tip":"Пас аз пешоянд ҳамеша -ing, ҳеҷ гоҳ масдар: «good at cooking», на «good at to cook».","questions":[
+{"text":"Шаклро интихоб кунед: He suggested ___ a taxi instead of walking.","explanation":"suggest + -ing."},
+{"text":"Шаклро интихоб кунед: I'm interested ___ history.","explanation":"пешоянди «in» + -ing."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"avoid + -ing."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"-ing ҳамчун мубтадои ҷумла."},
+{"text":"Шаклро интихоб кунед: We finally gave up ___ for a parking space.","explanation":"give up + -ing."},
+{"text":"Шаклро интихоб кунед: Would you mind ___ the music down?","explanation":"mind + -ing."}
+]},
+{"unit":7,"lesson":"7C","topic":"have to, don't have to, must, mustn't","rule_en":"Have to / must ӯҳдадориро ифода мекунанд (must бештар шахсӣ, have to бештар қоидаи берунӣ). Don't have to маънои онро дорад, ки лозим нест — интихоб ҳаст. Mustn't маънои манъро дорад — ин корро накун.","structure":"have to / must + феъли аслӣ; don't have to (ӯҳдадорӣ нест); mustn't (манъ)","examples_en":["Дар кор ман бояд либоси расмӣ пӯшам.","Ин ҷо мошин мондан манъ аст — ғайриқонунист.","Лозим нест чизе биёрӣ; ҳама чиз доштем.","Ман имшаб бояд ба волидонам занг занам — ваъда додам."],"tip":"don't have to ≠ mustn't: «don't have to» = ихтиёрӣ, «mustn't» = манъшуда.","questions":[
+{"text":"Шаклро интихоб кунед: Passengers ___ wear seatbelts by law.","explanation":"Қоидаи берунӣ/ӯҳдадорӣ → have to."},
+{"text":"Шаклро интихоб кунед: You ___ smoke in here — it's a hospital.","explanation":"Манъ → mustn't."},
+{"text":"Шаклро интихоб кунед: You ___ pay now — you can pay later.","explanation":"Ихтиёрӣ → don't have to."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"must + феъли аслӣ, бе «to»."},
+{"text":"Шаклро интихоб кунед: She ___ get up early tomorrow — it's a holiday.","explanation":"«She» → doesn't have to (ӯҳдадорӣ нест)."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Манъ → mustn't."}
+]},
+{"unit":8,"lesson":"8A","topic":"should","rule_en":"Should/shouldn't + феъли аслӣ барои маслиҳату ақидаҳо дар бораи он чи дуруст ё нодуруст аст истифода мешавад: You should see a doctor. You shouldn't work so much. I think/don't think you should... маслиҳатро мулоим мекунад.","structure":"мубтадо + should/shouldn't + феъли аслӣ","examples_en":["Ба ту лозим бо ӯ дар бораи мушкилот гап занӣ.","Фикр намекунам, ки ба ту лозим ба вай бовар кунӣ.","Ба мо лозим барвақт баромада, аз тирбандӣ канорагирӣ кунем.","Ба вай узр пурсам?"],"tip":"«Should» аз «must» сустар аст — ин маслиҳат аст, на ӯҳдадорӣ.","questions":[
+{"text":"Шаклро интихоб кунед: You ___ drink so much coffee — it's bad for you.","explanation":"should + not = shouldn't."},
+{"text":"Саволро интихоб кунед: ___ I tell her the truth?","explanation":"should + мубтадо + феъл дар саволҳо."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"should + феъли аслӣ, бе «to»."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Should» ҳеҷ гоҳ -s ё «to» намегирад."},
+{"text":"Маслиҳатро интихоб кунед: You look tired. You ___ go to bed earlier.","explanation":"Маслиҳати дӯстона → should."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"shouldn't + феъли аслӣ."}
+]},
+{"unit":8,"lesson":"8B","topic":"if + present, will + infinitive (кондитсионали якум)","rule_en":"Кондитсионали якум барои вазъиятҳои воқеӣ ва имконпазири оянда истифода мешавад: ҷумлаи пайрав бо if дар Present Simple, ҷумлаи асосӣ бо will/won't + феъли аслӣ. Тартибро иваз кардан мумкин: If it rains, we'll stay in. / We'll stay in if it rains.","structure":"If + Present Simple, ... will + феъли аслӣ","examples_en":["Агар сахт кӯшиш кунӣ, имтиҳонро месупорӣ.","Агар сард шавад, мо ба соҳил намеравем.","Агар вай занг занад, ман дар бораи вохӯрӣ ба вай мегӯям.","Агар хоб кунӣ, беҳтар ҳис мекунӣ."],"tip":"Вергул нест, агар «if» дар миён бошад: «We'll stay in if it rains».","questions":[
+{"text":"Шаклро интихоб кунед: If it ___ tomorrow, we'll cancel the picnic.","explanation":"ҷумлаи пайрав бо if Present Simple мегирад."},
+{"text":"Шаклро интихоб кунед: If you ___ me, I'll explain everything.","explanation":"Шарти воқеии оянда → Present Simple пас аз if."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Танҳо як «will» — дар ҷумлаи асосӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«She» → doesn't дар ҷумлаи пайрави if."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"ҷумлаи асосӣ: won't; ҷумлаи пайрав: don't."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Present Simple «are» пас аз if."}
+]},
+{"unit":8,"lesson":"8C","topic":"ҷонишинҳои соҳибӣ","rule_en":"Ҷонишинҳои соҳибӣ (mine, yours, his, hers, its, ours, theirs) сифати соҳибӣ + исмро иваз мекунанд, то такрор нашавад: This is my book. This book is mine. Онҳоро бо сифатҳои соҳибӣ, ки пас аз онҳо исм лозим аст, омехта накунед.","structure":"ҷонишини соҳибӣ (танҳо меистад, бе исм пас аз он)","examples_en":["Ин сумка аз они туст ё вайст?","Хонаи мо аз хонаи онҳо калонтар аст.","Ин телефони ман нест — аз они ман сиёҳ аст.","Хато аз они ман набуд; аз они вай буд."],"tip":"«Its» шакли ҷонишинӣ надорад, зеро чизҳо одатан дар гуфтугӯ ин тавр «соҳибӣ» намекунанд.","questions":[
+{"text":"Ҷонишинро интихоб кунед: This coat isn't mine, it's ___.","explanation":"Ҷонишини соҳибӣ пас аз «is» → hers."},
+{"text":"Ҷонишинро интихоб кунед: Our car is old, but ___ is new.","explanation":"«Their» + исм «car»-ро такрор мекард — «theirs» истифода мекунем."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҷонишини соҳибӣ танҳо меистад: mine."},
+{"text":"Ҷонишинро интихоб кунед: These are your keys, not ___.","explanation":"«Our» исм мехоҳад; танҳо → ours."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҷонишини соҳибӣ пас аз «is»."},
+{"text":"Ҷонишинро интихоб кунед: I forgot my umbrella, so she lent me ___.","explanation":"Пуркунандаи «lent» — ҷонишини соҳибӣ: hers."}
+]},
+{"unit":9,"lesson":"9A","topic":"if + past, would + infinitive (кондитсионали дуюм)","rule_en":"Кондитсионали дуюм барои вазъиятҳои ғайривоқеӣ, хаёлӣ ё имконнопазир истифода мешавад: ҷумлаи пайрав бо if дар Past Simple, ҷумлаи асосӣ бо would + феъли аслӣ. Дар услуби расмӣ барои ҳама шахсҳо «were» истифода мешавад: If I were you...","structure":"If + Past Simple, ... would + феъли аслӣ","examples_en":["Агар лотерея бурда бошам, ҷаҳонро сайр мекардам.","Агар вақти бештар медошт, забони наверо меомӯхт.","Агар мор мебинӣ, чӣ мекардӣ?","Дар ҷои ту узр мепурсидам."],"tip":"Кондитсионали дуюм хаёлист; кондитсионали якум воқеист.","questions":[
+{"text":"Шаклро интихоб кунед: If I ___ a million dollars, I'd buy a house.","explanation":"ҷумлаи пайрав бо if дар кондитсионали дуюм Past Simple мегирад."},
+{"text":"Шаклро интихоб кунед: She ___ happier if she changed her job.","explanation":"ҷумлаи асосӣ: would + феъли аслӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Were» бо ҳама шахсҳо дар ин ибораи устувор."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Кондитсионали дуюм: Past Simple + would."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҳарду қисм бояд ба шаклҳои кондитсионали дуюм мувофиқат кунанд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"would + not барои натиҷаи хаёлӣ."}
+]},
+{"unit":9,"lesson":"9B","topic":"Present Perfect + for ва since","rule_en":"Present Perfect бо for + давраи вақт (for two years, for a long time) ва since + нуқтаи вақт (since 2019, since Monday) истифода мешавад, то дар бораи вазъияте гап занем, ки дар гузашта сар шуда, то ҳол давом дорад.","structure":"Present Perfect + for/since","examples_en":["Ман ӯро даҳ сол мешиносам.","Мо аз соли 2015 дар ин шаҳр зиндагӣ мекунем.","Вай аз вақте ки донишгоҳро тамом кард, дар ин ҷо кор мекунад.","Онҳо муддати дароз гап назаданд."],"tip":"for = давомнокӣ, since = нуқтаи оғоз.","questions":[
+{"text":"Калимаро интихоб кунед: I've had this car ___ three years.","explanation":"Давомнокӣ → for."},
+{"text":"Калимаро интихоб кунед: She's been afraid of dogs ___ she was a child.","explanation":"Нуқтаи оғоз → since."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Present Perfect + since + нуқтаи вақт."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Давомнокӣ → for + Present Perfect."},
+{"text":"Калимаро интихоб кунед: He's had that job ___ 2020.","explanation":"Соли муайяни оғоз → since."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«A long time» давомнокист → for."}
+]},
+{"unit":9,"lesson":"9C","topic":"Present Perfect ё Past Simple? (2)","rule_en":"Давраи тамомнашуда (Present Perfect: today, this week, so far)-ро бо давраи тамомшуда (Past Simple: yesterday, last week) муқоиса кунед. Як калима метавонад замони гуногун гирад, вобаста ба он ки давра тамом шудааст ё не: I've seen her twice this week (тамом нашуда) vs I saw her twice last week (тамом шуда).","structure":"давраи тамомнашуда → Present Perfect; давраи тамомшуда → Past Simple","examples_en":["Имрӯз ман се пиёла қаҳва нӯшидам.","Дирӯз ман ду пиёла қаҳва нӯшидам.","Ин моҳ мо сайёҳ надидем.","Моҳи гузашта мо сайёҳ надидем."],"tip":"Бипурсед: давраи вақт тамом шудааст ё ҳанӯз давом дорад? Ин замонро муайян мекунад.","questions":[
+{"text":"Шаклро интихоб кунед: I ___ two emails so far today.","explanation":"«So far today» — давраи тамомнашуда → Present Perfect."},
+{"text":"Шаклро интихоб кунед: I ___ three emails yesterday.","explanation":"«Yesterday» — давраи тамомшуда → Past Simple."},
+{"text":"Шаклро интихоб кунед: We ___ any tourists this week.","explanation":"«This week» тамом нашудааст → Present Perfect."},
+{"text":"Шаклро интихоб кунед: We ___ any tourists last week.","explanation":"«Last week» тамом шудааст → Past Simple."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«This morning» метавонад тамом нашуда бошад → Present Perfect."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Yesterday» тамом шудааст → Past Simple."}
+]},
+{"unit":10,"lesson":"10A","topic":"ифодаи ҳаракат (пешояндҳо ва феълҳо)","rule_en":"Феълҳои ҳаракат бо пешояндҳо барои тасвири амал истифода мешаванд: run into, walk across, jump over, climb up, swim through, go past. Пешоянд самт ё роҳи ҳаракатро нишон медиҳад.","structure":"феъли ҳаракат + пешоянд + ҷой","examples_en":["Бозингарон ба майдон давиданд.","Вай кӯлро дар бист дақиқа шино кард.","Мо аз шаҳраки кӯҳна гузаштем.","Тӯб аз болои девор парид."],"tip":"Ҷуфтҳои «феъл + пешоянд»-ро якҷоя ёд гиред, мисли пораҳои луғавӣ.","questions":[
+{"text":"Пешояндро интихоб кунед: He jumped ___ the fence to get the ball.","explanation":"«Over» ҳаракати аз болои чизе ва гузаштанро нишон медиҳад."},
+{"text":"Пешояндро интихоб кунед: The children ran ___ the park, laughing.","explanation":"Ҳаракат дар дохил/аз болои масоҳат → through."},
+{"text":"Пешояндро интихоб кунед: The cat climbed ___ the tree.","explanation":"Ҳаракати амудӣ → up."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Past» = дар паҳлӯи/аз пеши ҷое."},
+{"text":"Пешояндро интихоб кунед: The swimmer dived ___ the pool.","explanation":"Ҳаракат ба дохили об → into."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Into» + мақсад."}
+]},
+{"unit":10,"lesson":"10B","topic":"тартиби калимаҳо дар феълҳои ибора","rule_en":"Феълҳои ибораи ҷудошаванда (turn off, pick up, give back)-ро бо пуркунандаи исмӣ ҷудо кардан мумкин, вале пуркунандаи ҷонишинӣ бояд байни феъл ва зарра биёяд: Turn off the light. / Turn it off (на Turn off it). Феълҳои ибораи ҷудонашаванда (look after, get on) ҳеҷ гоҳ ҷудо намешаванд.","structure":"феъл + исм + зарра / феъл + зарра + исм; феъл + ҷонишин + зарра","examples_en":["Метавонӣ телевизорро хомӯш кунӣ? / Метавонӣ онро хомӯш кунӣ?","Вай гӯшакро бардошт. / Вай онро бардошт.","Вай ба хоҳари хурдиаш нигоҳубин мекунад.","Лутфан, ин формаро пур кунед."],"tip":"Бо ҷонишинҳо зарра ҳамеша пас меояд: «switch it on», ҳеҷ гоҳ «switch on it».","questions":[
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Пуркунандаи ҷонишинӣ бояд пеш аз зарра биёяд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Бо пуркунандаи исмӣ ҳарду тартиб имконпазир аст."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Look after» ҷудонашаванда."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Fill in» бо пуркунандаи исмӣ ҷудошаванда."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Ҷонишин пеш аз зарра."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"«Sort out» бо пуркунандаи исмӣ ҷудошаванда."}
+]},
+{"unit":10,"lesson":"10C","topic":"тарзи мафъул","rule_en":"Тарзи мафъул бо be + сифати феълии гузашта сохта мешавад: is made, was built, has been designed. Вақте истифода мешавад, ки амал муҳимтар аст аз он ки кӣ онро кардааст, ё иҷрокунанда номаълум/равшан аст: This phone was made in China. By + иҷрокунанда ихтиёрист.","structure":"мубтадо + be + сифати феълӣ (+ by + иҷрокунанда)","examples_en":["Ин пул соли 1930 сохта шудааст.","Ба забони англисӣ дар бисёр кишварҳо гап мезананд.","Мактуб то ҳол фиристода нашудааст.","«Мона Лиза»-ро Леонардо да Винчи кашидааст."],"tip":"Замони «be»-ро мувофиқи замони лозима иваз кунед: is/was/has been + сифати феълӣ.","questions":[
+{"text":"Шаклро интихоб кунед: This car ___ in Germany.","explanation":"be + сифати феълӣ."},
+{"text":"Шаклро интихоб кунед: Rice ___ in many Asian countries.","explanation":"Мафъули ҳозира: is + сифати феълӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"has/have + been + сифати феълӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"was + сифати феълӣ + by + иҷрокунанда."},
+{"text":"Шаклро интихоб кунед: These shoes ___ by hand.","explanation":"Мафъули Present Simple: are + сифати феълӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"was + сифати феълӣ (close → closed)."}
+]},
+{"unit":11,"lesson":"11A","topic":"used to","rule_en":"Used to + феъли аслӣ барои одатҳо ва ҳолатҳои гузаштае, ки акнун тамом шудаанд, истифода мешавад: I used to play the piano (вале акнун не). Инкор: didn't use to. Саволҳо: Did you use to...? Бо «be used to» (одат кардан ба чизе) омехта накунед.","structure":"used to / didn't use to / Did ... use to + феъли аслӣ","examples_en":["Мо пештар дар деҳаи хурде зиндагӣ мекардем.","Дар хурдсолӣ вай сабзавотро дӯст намедошт.","Ту пештар пиёда ба мактаб мерафтӣ?","Вай пештар тамоку мекашид, вале ду сол пеш тарк кард."],"tip":"used to шакли ҳозира надорад — барои одатҳои ҳозира танҳо Present Simple истифода баред.","questions":[
+{"text":"Шаклро интихоб кунед: I ___ play football every weekend when I was younger.","explanation":"Одати гузашта → used to."},
+{"text":"Инкорро интихоб кунед: She ___ eat meat, but now she does.","explanation":"Пас аз «didn't» шакли аслӣ «use to» аст (бе -d)."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Did + мубтадо + use to (шакли аслӣ)."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Изҳороти одати гузашта: used to."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"used to + be барои ҳолати гузашта."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"didn't + use to (бе -d пас аз didn't)."}
+]},
+{"unit":11,"lesson":"11B","topic":"might","rule_en":"Might + феъли аслӣ барои имконият, махсусан дар бораи оянда — камтар боварибахш аз will: I might go to the party, I'm not sure yet. Инкор: might not (бе кӯтоҳкунӣ). Might барои ҳама шахсҳо якхела ва ҳеҷ гоҳ -s ё «to» намегирад.","structure":"мубтадо + might (not) + феъли аслӣ","examples_en":["Шояд ин ҳафтаи охир волидонамро зиёрат кунам.","Шояд вай наояд — хеле банд аст.","Шояд соли оянда ба Бухоро сафар кунем.","Шояд баъдтар борон борад, бинобар ин чатр гир."],"tip":"might = maybe + will; нишон медиҳад, ки шумо мутмаин нестед.","questions":[
+{"text":"Шаклро интихоб кунед: I'm not sure, but I ___ go to the concert.","explanation":"might + феъли аслӣ, бе -s ё -to."},
+{"text":"Инкорро интихоб кунед: She ___ come to the party — she has an exam.","explanation":"Инкор: might not (бе кӯтоҳкунӣ)."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"might + феъли аслӣ, барои ҳама мубтадоҳо якхела."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"might + феъли аслӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"might not + феъли аслӣ."},
+{"text":"Маънои дурусти «I might go»-ро интихоб кунед:","explanation":"«Might» номуайянӣ дар бораи ояндаро ифода мекунад."}
+]},
+{"unit":11,"lesson":"11C","topic":"so, neither + феълҳои ёвар","rule_en":"So + феъли ёвар + мубтадо барои розигӣ бо изҳороти мусбат истифода мешавад: I like tea. — So do I. Neither/Nor + феъли ёвар + мубтадо — барои розигӣ бо изҳороти инкорӣ: I don't like coffee. — Neither do I. Феъли ёвар бояд ба замони феъли аслӣ мувофиқат кунад.","structure":"So + ёвар + мубтадо (розигӣ бо мусбат); Neither/Nor + ёвар + мубтадо (розигӣ бо инкорӣ)","examples_en":["Ман сафарро дӯст медорам. — Ман ҳам.","Вай аз Тошканд аст. — Дӯсти ман ҳам.","Ман дар Ҷопон набудаам. — Ман ҳам.","Вай шино карда наметавонад. — Вай (духтар) ҳам."],"tip":"Феъли ёварро ба замон мувофиқ кунед: is→so is, do→so do, can→so can, have→so have.","questions":[
+{"text":"Ҷавоби дурустро интихоб кунед: I like spicy food. — ___","explanation":"Изҳороти мусбат бо «like» (do) → So do I."},
+{"text":"Ҷавоби дурустро интихоб кунед: I can't drive. — ___","explanation":"Инкор + «can» → Neither can I."},
+{"text":"Ҷавоби дурустро интихоб кунед: She's tired. — ___","explanation":"Мусбат + «is/am» → So am I."},
+{"text":"Ҷавоби дурустро интихоб кунед: We haven't finished yet. — ___","explanation":"Инкор + «have» → Neither have we."},
+{"text":"Ҷавоби дурустро интихоб кунед: I went to the concert. — ___","explanation":"Гузаштаи мусбат → So did I."},
+{"text":"Ҷавоби дурустро интихоб кунед: He doesn't eat meat. — ___","explanation":"Инкор + «does» → Neither does she."}
+]},
+{"unit":12,"lesson":"12A","topic":"Past Perfect","rule_en":"Past Perfect (had + сифати феълӣ) барои амале, ки пеш аз амали дигар дар гузашта рӯй додааст, истифода мешавад: When I arrived, the train had already left. Он воқеаи пештарини аз ду воқеаи гузаштаро нишон медиҳад.","structure":"мубтадо + had + сифати феълӣ","examples_en":["То расидани мо ба синамо, филм аллакай сар шуда буд.","Вай то кӯчиданаш ба Русия ҳеҷ гоҳ барф надида буд.","Ман фаҳмидам, ки калидҳоямро фаромӯш кардаам.","Онҳо то расидани мо аллакай хӯрок хӯрда буданд."],"tip":"Ду воқеаи гузашта: ба ПЕШТАРИНАШ «had + сифати феълӣ» медиҳем.","questions":[
+{"text":"Шаклро интихоб кунед: When we arrived, the meeting ___.","explanation":"Воқеаи пештарини гузашта → Past Perfect."},
+{"text":"Шаклро интихоб кунед: She ___ never ___ sushi before that trip.","explanation":"Пеш аз нуқтаи истинод дар гузашта → Past Perfect."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Гум кардани телефон пеш аз натавонистани занг задан рӯй дода буд."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Past Perfect барои давомнокӣ пеш аз нуқтаи гузашта."},
+{"text":"Шаклро интихоб кунед: The house was empty because the family ___ moved out.","explanation":"had + сифати феълӣ."},
+{"text":"Ҷумлаи дурустро интихоб кунед.","explanation":"Хато пеш аз дарк кардани он рӯй дода буд."}
+]},
+{"unit":12,"lesson":"12B","topic":"нутқи ғайримустақим (reported speech)","rule_en":"Вақте суханони каси дигарро мегузаронем, замонҳо одатан як қадам ба ақиб мераванд: Present Simple→Past Simple, Present Continuous→Past Continuous, Present Perfect→Past Perfect, will→would, can→could. Ҷонишинҳо ва нишондиҳандаҳои вақт ҳам иваз мешаванд: «I» → «he/she», «tomorrow» → «the next day».","structure":"said (that) + мубтадо + замони гузашта","examples_en":["«Ман хастаам», — гуфт вай. → Вай гуфт, ки хаста аст.","«Ман ба ту занг мезанам», — гуфт вай. → Вай гуфт, ки ба ман занг мезанад.","«Ман тамом кардам», — гуфтанд онҳо. → Онҳо гуфтанд, ки тамом кардаанд.","«Ман кӯмак карда метавонам», — гуфт вай. → Вай гуфт, ки кӯмак карда метавонад."],"tip":"«Say» пуркунанда намехоҳад (say something); «tell» шахс мехоҳад (tell someone something).","questions":[
+{"text":"Шаклро интихоб кунед: 'I'm happy,' she said. → She said she ___ happy.","explanation":"Present Simple → Past Simple."},
+{"text":"Шаклро интихоб кунед: 'I'll come tomorrow,' he said. → He said he ___ the next day.","explanation":"will → would дар нутқи ғайримустақим."},
+{"text":"Шаклро интихоб кунед: 'I've lost my keys,' she said. → She said she ___ her keys.","explanation":"Present Perfect → Past Perfect."},
+{"text":"Феъли дурустро интихоб кунед: He ___ me that he was busy.","explanation":"«Tell» пуркунанда мехоҳад (me)."},
+{"text":"Феъли дурустро интихоб кунед: She ___ that she was tired.","explanation":"«Say» пуркунандаи шахсиро намегирад."},
+{"text":"Шаклро интихоб кунед: 'I can swim,' he said. → He said he ___ swim.","explanation":"can → could дар нутқи ғайримустақим."}
+]},
+{"unit":12,"lesson":"12C","topic":"саволҳо бе феъли ёвар","rule_en":"Вақте калимаи саволӣ (who, what, which) МУБТАДОИ ҷумла аст, do/does/did истифода набаред — тартиби муқаррарии калимаҳоро нигоҳ доред: Who called you? (на Who did call you?) Бо саволҳои дар бораи пуркунанда муқоиса кунед, ки феъли ёварро мехоҳанд: Who did you call?","structure":"Саволи мубтадо: КС + феъл (бе ёвар); саволи пуркунанда: КС + ёвар + мубтадо + феъл","examples_en":["Тирезаро кӣ шикаст?","Дар вохӯрӣ чӣ рӯй дод?","Кадом даста бозиро бурд?","Дар базм ту бо кӣ вохӯрдӣ?"],"tip":"Бипурсед: калимаи саволӣ мубтадост (амалро иҷро мекунад) ё пуркунанда (қабулкунанда)? Мубтадо → бе феъли ёвар.","questions":[
+{"text":"Саволи дурустро интихоб кунед (who = мубтадо).","explanation":"«Who» мубтадост — феъли ёвар лозим нест."},
+{"text":"Саволи дурустро интихоб кунед (who = пуркунанда).","explanation":"«Who» дар ин ҷо пуркунанда аст — феъли ёвари «did» лозим."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«What» мубтадост — бе феъли ёвар."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«Which company» мубтадост — бе феъли ёвар."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"Саволи мубтадо — бе феъли ёвар, феъл дар замони гузашта."},
+{"text":"Саволи дурустро интихоб кунед.","explanation":"«The shop» мубтадост, вале «what time» не — ин саволи оддии услуби пуркунанда аст, ки «does»-ро металабад."}
+]}
+]
