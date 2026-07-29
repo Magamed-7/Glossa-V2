@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_achievement import Achievements, UserAchievements, UserStreaks
 from app.models.model_card import Cards, ReviewLogs
+from app.models.model_user_story import StoryPurchases, StoryReviews, UserStories
 from app.services import crud_social
 
 
@@ -22,14 +23,32 @@ async def get_metrics(user_id: int, db: AsyncSession):
 
     friends = await crud_social.get_friends(user_id, db)
 
+    stories_written = await db.scalar(
+        select(func.count()).select_from(UserStories).where(
+            UserStories.author_id == user_id, UserStories.status == 'published'
+        )
+    )
+
+    stories_sold = await db.scalar(
+        select(func.count()).select_from(StoryPurchases).join(
+            UserStories, UserStories.id == StoryPurchases.story_id
+        ).where(UserStories.author_id == user_id)
+    )
+
+    reviews_received = await db.scalar(
+        select(func.count()).select_from(StoryReviews).join(
+            UserStories, UserStories.id == StoryReviews.story_id
+        ).where(UserStories.author_id == user_id)
+    )
+
     return {
         'words': words_learned or 0,
         'streak': streak.current_streak if streak else 0,
         'friends': len(friends),
         'reviews': reviews_done or 0,
-        'stories_written': 0,
-        'stories_sold': 0,
-        'reviews_received': 0,
+        'stories_written': stories_written or 0,
+        'stories_sold': stories_sold or 0,
+        'reviews_received': reviews_received or 0,
     }
 
 

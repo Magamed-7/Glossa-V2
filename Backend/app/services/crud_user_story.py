@@ -13,7 +13,7 @@ from app.models.model_user_story import (
     UserStories,
 )
 from app.schemas.schema_user_story import ExerciseCreate, ReviewCreate, UserStoryCreate, UserStoryUpdate
-from app.services import crud_subscription, purchase_service, ratings
+from app.services import achievements, crud_subscription, purchase_service, ratings
 
 SELLER_SHARE = Decimal('0.7')
 
@@ -100,10 +100,16 @@ async def publish_user_story(story_id: int, author_id: int, db: AsyncSession):
             status_code=400,
         )
 
+    was_already_published = story.status == 'published'
     story.status = 'published'
 
     await db.commit()
     await db.refresh(story)
+
+    if not was_already_published:
+        await ratings.award_xp(author_id, 'story_written', db)
+        await achievements.check_achievements(author_id, db)
+
     return story
 
 
@@ -203,7 +209,7 @@ async def buy_story(story_id: int, buyer_id: int, db: AsyncSession):
     async def create_entity(db: AsyncSession):
         db.add(StoryPurchases(story_id=story.id, buyer_id=buyer_id))
 
-    return await purchase_service.purchase(
+    result = await purchase_service.purchase(
         buyer_id,
         story.price,
         'user_story',
@@ -213,6 +219,10 @@ async def buy_story(story_id: int, buyer_id: int, db: AsyncSession):
         seller_share=SELLER_SHARE,
         create_entity=create_entity,
     )
+
+    await achievements.check_achievements(story.author_id, db)
+
+    return result
 
 
 async def create_story_exercise(story_id: int, author_id: int, data: ExerciseCreate, db: AsyncSession):
