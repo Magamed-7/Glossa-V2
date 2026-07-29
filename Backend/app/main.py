@@ -23,6 +23,7 @@ from app.models import (  # noqa: F401
     model_social,
     model_subscription,
     model_user,
+    model_user_story,
 )
 
 app = FastAPI(title='Glossa 🌍 — Language Learning API')

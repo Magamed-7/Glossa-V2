@@ -24,6 +24,7 @@ from app.models import (  # noqa: E402, F401
     model_social,
     model_subscription,
     model_user,
+    model_user_story,
 )
 
 config = context.config

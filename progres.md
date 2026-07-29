@@ -457,3 +457,10 @@
 - Проверено вживую на реальном пользователе: `topup(300)` → `POST /subscriptions/subscribe premium` (спишет `250`) → `GET /payments/history` вернул 2 записи в правильном порядке (сначала подписка, затем топ-ап — сортировка по убыванию времени верна): `{item_type:'subscription', item_id:2, amount:250.00}` и `{item_type:'topup', item_id:null, amount:300.00}` — история отражает и пополнения, и покупки в хронологии, как того требует DoD. Тестовые данные подчищены.
 
 **Фаза 9 закрыта**: кошелёк, Stripe (checkout + webhook, подпись проверена по-настоящему через локальный HMAC без реального Stripe API), транзакционный сервис покупок с гарантией «списали и создали одновременно, либо ничего», оплата подписки балансом, история платежей — все шаги проверены на реальных HTTP-запросах и реальных данных.
+
+## Фаза 10 — Пользовательские истории и упражнения
+
+### 10.1. Модели пользовательских историй
+- `Backend/app/models/model_user_story.py` — новый файл (не `model_content.py`, где живут **системные** `Stories` — у UGC-историй принципиально другая природа: автор, цена, статус модерации): `UserStories` (`author_id`, `title`, `body`, `description` nullable, `cefr_level`, `genre`, `price` nullable — `null`=бесплатная, `image_url`, `status` default `'draft'`, `views_count` default `0`), `StoryPurchases` (`story_id`, `buyer_id`, `UniqueConstraint` на пару).
+- Миграция `alembic/versions/67c51516ffa5_add_user_story_models.py` — без ENUM, цикл `upgrade → downgrade -1 → upgrade` прошёл чисто.
+- Проверено вживую: создал реальную `UserStories`, затем `StoryPurchases` на пару `(story_id, buyer_id)` — первая вставка прошла, повторная **та же пара** → `IntegrityError` на уровне Postgres (`uq_story_purchases_pair` реально защищает от задвоения покупки, не только на уровне будущей бизнес-логики). Тестовые данные подчищены.
