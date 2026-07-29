@@ -61,3 +61,29 @@ async def check_achievements(user_id: int, db: AsyncSession):
         await db.commit()
 
     return newly_awarded
+
+
+async def get_all_achievements(db: AsyncSession):
+    result = await db.execute(select(Achievements))
+    return result.scalars().all()
+
+
+async def get_my_achievements(user_id: int, db: AsyncSession):
+    result = await db.execute(
+        select(Achievements, UserAchievements.earned_at)
+        .join(UserAchievements, UserAchievements.achievement_id == Achievements.id)
+        .where(UserAchievements.user_id == user_id)
+    )
+
+    return [
+        {
+            'id': achievement.id,
+            'code': achievement.code,
+            'title': achievement.title,
+            'description': achievement.description,
+            'category': achievement.category,
+            'icon': achievement.icon,
+            'earned_at': earned_at,
+        }
+        for achievement, earned_at in result.all()
+    ]

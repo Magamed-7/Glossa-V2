@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.router_achievement import router_achievement
 from app.api.router_content import router_grammar, router_vocabulary
 from app.api.router_deck import router_deck, router_learning, router_reviews
 from app.api.router_profile import router_profile
@@ -38,6 +39,7 @@ app.include_router(router_vocabulary)
 app.include_router(router_grammar)
 app.include_router(router_stories)
 app.include_router(router_social)
+app.include_router(router_achievement)
 
 
 @app.get('/health')
