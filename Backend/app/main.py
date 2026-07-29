@@ -14,6 +14,7 @@ from app.models import (  # noqa: F401
     model_card,
     model_content,
     model_profile,
+    model_rating,
     model_settings,
     model_social,
     model_user,
