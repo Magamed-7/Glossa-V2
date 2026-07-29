@@ -128,3 +128,8 @@
 ### 3.4. CRUD профиля
 - `Backend/app/services/crud_profile.py` — `get_profile` (автосоздание, если записи ещё нет), `update_profile` (паттерн `or`), `increment_profile_views`, `add_language`, `get_user_languages`.
 - Проверено вживую на реальном пользователе (`crudtest`, id=9, потом удалён): автосоздание профиля → `update_profile(bio=...)` → `add_language('English', 'B2')` → `get_user_languages` вернул её → `increment_profile_views` довёл `profile_views` до 1.
+
+### 3.5. Роуты профиля
+- `Backend/app/api/router_profile.py` — `router_profile` (`prefix='/profile'`), `GET/PATCH /profile/me`, `POST /profile/languages`; подключён в `app/main.py`.
+- Проверено вживую через `uvicorn` + реальный Django-токен: `GET /profile/me` автосоздаёт профиль (200), `PATCH /profile/me` обновляет bio/interests, `POST /profile/languages` добавляет язык — первый рабочий домен FastAPI поверх django-аутентификации.
+- Попутный урок про окружение: зависший процесс от предыдущего теста Phase 1 (порт 8010, не убитый `kill %1` из другого вызова Bash — фоновые джобы не всегда переживают между вызовами тула) отдавал старый `/health`-only роутер и маскировал 404 — нашёл через `netstat`/`taskkill`, держу в уме на будущее.

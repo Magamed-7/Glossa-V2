@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.router_profile import router_profile
 from app.core.errors import register_exception_handlers
 from app.models import model_profile, model_user  # noqa: F401
 
@@ -15,6 +16,7 @@ app.add_middleware(
 )
 
 register_exception_handlers(app)
+app.include_router(router_profile)
 
 
 @app.get('/health')
