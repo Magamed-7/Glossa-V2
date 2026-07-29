@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.errors import AppError
 from app.models.model_card import Cards, ReviewLogs
 from app.schemas.schema_learning import CardCreate, CardStatusUpdate
+from app.services import ratings
 
 
 async def create_card(data: CardCreate, user_id: int, db: AsyncSession, source_story_id=None):
@@ -56,10 +57,15 @@ async def update_card_status(card_id: int, data: CardStatusUpdate, db: AsyncSess
     if card is None:
         return None
 
+    became_learned = data.status == 'learned' and card.status != 'learned'
     card.status = data.status
 
     await db.commit()
     await db.refresh(card)
+
+    if became_learned:
+        await ratings.award_xp(card.user_id, 'word_learned', db)
+
     return card
 
 

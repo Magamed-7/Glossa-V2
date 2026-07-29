@@ -8,6 +8,7 @@ from app.models.model_content import (
     GrammarQuestions,
     VocabEntries,
 )
+from app.services import ratings
 from app.services.localization import pick_locale
 
 
@@ -149,6 +150,9 @@ async def submit_grammar_answers(lesson_id: int, user_id: int, answers, locale: 
         results.append(question_to_result_response(question, locale))
 
     await db.commit()
+
+    for _ in range(correct):
+        await ratings.award_xp(user_id, 'review_passed', db)
 
     return {
         'total': len(answers),

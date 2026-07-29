@@ -4,7 +4,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_card import Cards, ReviewLogs
-from app.services import sm2, streaks
+from app.services import ratings, sm2, streaks
 from app.services.crud_card import get_card
 
 
@@ -41,4 +41,8 @@ async def submit_review(card_id: int, quality: int, db: AsyncSession):
     await db.refresh(card)
 
     await streaks.touch_streak(card.user_id, db)
+
+    if quality >= 3:
+        await ratings.award_xp(card.user_id, 'review_passed', db)
+
     return card
