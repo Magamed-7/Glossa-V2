@@ -94,3 +94,8 @@
 - `Backend/app/api/permissions.py` — `require_roles(roles)`.
 - Заодно (нужно было для 401-ответов вместо `HTTPException`, которого CONVENTIONS.md запрещает): `Backend/app/core/errors.py` — `AppError` + `register_exception_handlers`, подключено в `app/main.py`.
 - Проверено вживую (временный роут вне репозитория, `$CLAUDE_JOB_DIR/tmp/tmp_auth_app.py`, не коммитился): без токена → 401 `NOT_AUTHENTICATED`; с реальным access-токеном, выданным Django, → пользователь из общей `users` таблицы; с мусорным токеном → 401 `INVALID_TOKEN`.
+
+### 2.10. Исключение django-таблиц из Alembic
+- `Backend/alembic/env.py` — импортирует `app.models.model_user` (чтобы `users` реально попала в `target_metadata`, иначе тест ничего не проверял бы), `include_object` фильтрует `type_=='table'` с именем `users` или префиксом `users_`/`django_`/`auth_`/`token_blacklist_`.
+- `docs/CONVENTIONS.md` — раздел «границы владения таблицами» дополнен списком реальных префиксов.
+- Проверено вживую (и это поймало реальный баг в первой версии фильтра!): без префикса `users_` autogenerate предлагал **дропнуть** `users_groups`/`users_user_permissions` — m2m-таблицы Django для кастомной модели называются по `app_label` (`users`), а не по `db_table` (`users` уже занято самой моделью), так что `users_groups` ≠ `db_table='users'`. После добавления префикса `alembic revision --autogenerate` на БД с django-таблицами и мапленной `Users` даёт пустую миграцию; `alembic upgrade head` проходит.

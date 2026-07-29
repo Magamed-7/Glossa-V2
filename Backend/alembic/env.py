@@ -13,6 +13,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app.core.config import settings  # noqa: E402
 from app.db.database import Base  # noqa: E402
+from app.models import model_user  # noqa: E402, F401
 
 config = context.config
 config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
@@ -22,6 +23,16 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+DJANGO_OWNED_TABLES = ('users',)
+DJANGO_OWNED_PREFIXES = ('users_', 'django_', 'auth_', 'token_blacklist_')
+
+
+def include_object(object, name, type_, reflected, compare_to):
+    if type_ == 'table' and (name in DJANGO_OWNED_TABLES or name.startswith(DJANGO_OWNED_PREFIXES)):
+        return False
+
+    return True
+
 
 def run_migrations_offline():
     url = config.get_main_option('sqlalchemy.url')
@@ -30,6 +41,7 @@ def run_migrations_offline():
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={'paramstyle': 'named'},
+        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -37,7 +49,9 @@ def run_migrations_offline():
 
 
 def do_run_migrations(connection: Connection):
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(
+        connection=connection, target_metadata=target_metadata, include_object=include_object
+    )
 
     with context.begin_transaction():
         context.run_migrations()
