@@ -11,3 +11,12 @@ class BalanceResponse(BaseModel):
 
 class TopupRequest(BaseModel):
     amount: Decimal
+
+
+class CheckoutSessionRequest(BaseModel):
+    amount: Decimal
+    currency: str = 'usd'
+
+
+class CheckoutSessionResponse(BaseModel):
+    url: str
