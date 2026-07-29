@@ -269,3 +269,9 @@
 - `Backend/app/schemas/schema_content.py` — `StoryWordResponse` пересмотрен: вместо одной локаль-зависимой `translation` — **обе** `translation_ru`/`translation_tg` сразу (DoD прямо требует «words с переводами ru/tg» — во множественном числе, это подсказки-глоссарий, а не locale-gated поле).
 - `Backend/app/api/router_story.py` — `router_stories`: `GET /stories` (список), `GET /stories/{id}?locale=` (деталь).
 - Проверено вживую на реальной истории (`title_en`/`body_en` + `title_ru`/`body_ru` заполнены, слово `nervous` с обоими переводами, один вопрос на понимание): **и** `locale=en`, **и** `locale=ru` отдают одно и то же `body` (английское) — перевод виден только в отдельном `body_translated`/`title_translated`. Это прямая проверка того, что баг V1 не воспроизведён.
+
+### 5.9. Прогресс чтения
+- `Backend/app/models/model_content.py` — `ReadingProgress` (`user_id`, `story_id`, `is_completed`, `last_position`, `updated_at` с `onupdate=func.now()`, `UniqueConstraint(user_id, story_id)`). Миграция `alembic/versions/ab2d193bd6e5_add_reading_progress_tracking.py`.
+- `crud_story.py` — `upsert_reading_progress` (найти-или-создать + `is not None` на оба Boolean/Integer поля), `get_my_reading_progress`.
+- `router_story.py` — `GET /stories/my-progress` объявлен **до** `GET /stories/{id}` (тот же порядок роутов, что и в 5.7), `POST /stories/{id}/progress`.
+- Проверено вживую: первый `POST` создаёт запись (`is_completed=false`, `last_position=50`), второй `POST` **апсертит** ту же запись (`is_completed=true`, `last_position=100` — не дублирует строку благодаря уникальному индексу и поиску перед вставкой), `GET /stories/my-progress` отражает финальное состояние.

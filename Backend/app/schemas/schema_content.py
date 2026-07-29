@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict
 
 
 class VocabResponse(BaseModel):
@@ -97,6 +99,20 @@ class StoryDetailResponse(StoryResponse):
     body_translated: str | None
     words: list[StoryWordResponse]
     questions: list[StoryQuestionResponse]
+
+
+class ReadingProgressUpdate(BaseModel):
+    is_completed: bool | None = None
+    last_position: int | None = None
+
+
+class ReadingProgressResponse(BaseModel):
+    story_id: int
+    is_completed: bool
+    last_position: int
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class StoryQuestionAnswer(BaseModel):

@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.model_content import Stories, StoryQuestions, StoryWords
+from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
 
 
 def story_to_response(story: Stories):
@@ -83,3 +83,34 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
         ],
         'questions': [{'id': q.id, 'text': q.text, 'options': q.options} for q in questions],
     }
+
+
+async def get_reading_progress(user_id: int, story_id: int, db: AsyncSession):
+    result = await db.execute(
+        select(ReadingProgress).where(
+            ReadingProgress.user_id == user_id, ReadingProgress.story_id == story_id
+        )
+    )
+    return result.scalar_one_or_none()
+
+
+async def upsert_reading_progress(user_id: int, story_id: int, data, db: AsyncSession):
+    progress = await get_reading_progress(user_id, story_id, db)
+
+    if progress is None:
+        progress = ReadingProgress(user_id=user_id, story_id=story_id)
+        db.add(progress)
+
+    if data.is_completed is not None:
+        progress.is_completed = data.is_completed
+    if data.last_position is not None:
+        progress.last_position = data.last_position
+
+    await db.commit()
+    await db.refresh(progress)
+    return progress
+
+
+async def get_my_reading_progress(user_id: int, db: AsyncSession):
+    result = await db.execute(select(ReadingProgress).where(ReadingProgress.user_id == user_id))
+    return result.scalars().all()

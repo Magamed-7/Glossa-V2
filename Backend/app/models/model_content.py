@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -118,3 +118,17 @@ class StoryQuestions(Base):
     text: Mapped[str] = mapped_column(String, nullable=False)
     options: Mapped[list | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
     answer: Mapped[str] = mapped_column(String, nullable=False)
+
+
+class ReadingProgress(Base):
+    __tablename__ = 'reading_progress'
+    __table_args__ = (UniqueConstraint('user_id', 'story_id', name='uq_reading_progress_user_story'),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    story_id: Mapped[int] = mapped_column(ForeignKey('stories.id'), nullable=False, index=True)
+    is_completed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    last_position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
