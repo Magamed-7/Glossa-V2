@@ -193,3 +193,7 @@
 ### 4.4. Схемы learning
 - `Backend/app/schemas/schema_learning.py` — `CardCreate`, `CardStatusUpdate` (`Literal` статусов), `CardResponse`, `ReviewSubmit` (`quality: int = Field(ge=0, le=5)`), `ReviewResponse`, `LearningStats`.
 - Проверено вживую: `quality=7` → `ValidationError`; `quality=5` проходит.
+
+### 4.5. CRUD колоды
+- `Backend/app/services/crud_card.py` — `create_card` (проверка дубликата слова у пользователя → `AppError CARD_ALREADY_EXISTS` 400), `get_cards` (kwargs-фильтры: `status`, `search` через `ilike`, пагинация), `get_card`, `update_card_status`, `delete_card`.
+- Проверено вживую на реальном пользователе (`cardtest`, id=18): создал `hello`/`world`, повторный `hello` → 400 `CARD_ALREADY_EXISTS`, `search='hel'` нашёл только `hello`, `update_card_status` → `learned`, `delete_card` убрал `world` из списка.
