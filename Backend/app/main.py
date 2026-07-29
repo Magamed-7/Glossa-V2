@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.router_profile import router_profile
 from app.api.router_settings import router_settings
 from app.core.errors import register_exception_handlers
-from app.models import model_profile, model_settings, model_user  # noqa: F401
+from app.models import model_card, model_profile, model_settings, model_user  # noqa: F401
 
 app = FastAPI(title='Glossa 🌍 — Language Learning API')
 
