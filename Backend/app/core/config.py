@@ -16,6 +16,11 @@ class Settings:
 
     REDIS_URL: str = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
+    MINIO_ROOT_USER: str = os.getenv('MINIO_ROOT_USER', 'glossa')
+    MINIO_ROOT_PASSWORD: str = os.getenv('MINIO_ROOT_PASSWORD', '')
+    MINIO_ENDPOINT: str = os.getenv('MINIO_ENDPOINT', 'http://localhost:9000')
+    MINIO_PUBLIC_ENDPOINT: str = os.getenv('MINIO_PUBLIC_ENDPOINT', 'http://localhost:9000')
+
     BASE_URL: str = os.getenv('BASE_URL', 'http://127.0.0.1:8000')
     CORS_ORIGINS: list[str] = os.getenv('CORS_ORIGINS', 'http://localhost:5173').split(',')
 

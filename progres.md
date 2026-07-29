@@ -133,3 +133,10 @@
 - `Backend/app/api/router_profile.py` — `router_profile` (`prefix='/profile'`), `GET/PATCH /profile/me`, `POST /profile/languages`; подключён в `app/main.py`.
 - Проверено вживую через `uvicorn` + реальный Django-токен: `GET /profile/me` автосоздаёт профиль (200), `PATCH /profile/me` обновляет bio/interests, `POST /profile/languages` добавляет язык — первый рабочий домен FastAPI поверх django-аутентификации.
 - Попутный урок про окружение: зависший процесс от предыдущего теста Phase 1 (порт 8010, не убитый `kill %1` из другого вызова Bash — фоновые джобы не всегда переживают между вызовами тула) отдавал старый `/health`-only роутер и маскировал 404 — нашёл через `netstat`/`taskkill`, держу в уме на будущее.
+
+### 3.6. MinIO и storage-клиент
+- `docker-compose.yml` — сервис `minio` (консоль на 9001, API на 9000, healthcheck `mc ready`) + одноразовый `minio_init` (`minio/mc`), который создаёт бакеты `avatars`/`story-images`/`pronunciations` и включает на них публичное скачивание (`mc anonymous set download`) — фото/аудио должны открываться по прямой ссылке без подписи.
+- `.env`/`.env.example` — `MINIO_ROOT_USER`/`MINIO_ROOT_PASSWORD`/`MINIO_ENDPOINT`/`MINIO_PUBLIC_ENDPOINT`; `config.py` их читает.
+- `Backend/app/core/storage.py` — `boto3` S3-клиент на `MINIO_ENDPOINT`, `upload_file(bucket, bytes, filename, content_type)` (ключ = `uuid_имя`, чтобы не было коллизий), `get_file_url`.
+- `requirements.txt` пополнен `boto3`.
+- Проверено вживую: `docker compose up -d minio minio_init` — бакеты созданы (лог `minio_init` подтверждает все три + права на скачивание); `upload_file('avatars', ...)` вернул URL, `curl` по нему отдал загруженное содержимое (200).
