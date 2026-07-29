@@ -4,11 +4,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.auth import get_current_user
 from app.core.errors import AppError
 from app.db.database import get_db
-from app.schemas.schema_learning import CardCreate, CardResponse, CardStatusUpdate, ReviewResponse, ReviewSubmit
+from app.schemas.schema_learning import (
+    CardCreate,
+    CardResponse,
+    CardStatusUpdate,
+    LearningStats,
+    ReviewResponse,
+    ReviewSubmit,
+)
 from app.services import crud_card, review
 
 router_deck = APIRouter(prefix='/deck', tags=['Deck'])
 router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])
+router_learning = APIRouter(prefix='/learning', tags=['Learning'])
 
 
 @router_deck.post('/', response_model=CardResponse)
@@ -98,3 +106,11 @@ async def submit_review(
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
 
     return card
+
+
+@router_learning.get('/stats', response_model=LearningStats)
+async def get_learning_stats(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_card.get_learning_stats(current_user.id, db)

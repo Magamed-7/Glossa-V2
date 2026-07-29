@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.router_deck import router_deck, router_reviews
+from app.api.router_deck import router_deck, router_learning, router_reviews
 from app.api.router_profile import router_profile
 from app.api.router_settings import router_settings
 from app.core.errors import register_exception_handlers
@@ -20,6 +20,7 @@ app.add_middleware(
 register_exception_handlers(app)
 app.include_router(router_deck)
 app.include_router(router_reviews)
+app.include_router(router_learning)
 app.include_router(router_profile)
 app.include_router(router_settings)
 

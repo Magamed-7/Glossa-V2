@@ -1,8 +1,10 @@
-from sqlalchemy import select
+from datetime import datetime, timezone
+
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
-from app.models.model_card import Cards
+from app.models.model_card import Cards, ReviewLogs
 from app.schemas.schema_learning import CardCreate, CardStatusUpdate
 
 
@@ -69,3 +71,42 @@ async def delete_card(card_id: int, db: AsyncSession):
     await db.delete(card)
     await db.commit()
     return card
+
+
+async def get_learning_stats(user_id: int, db: AsyncSession):
+    now = datetime.now(timezone.utc)
+
+    cards_total = await db.scalar(
+        select(func.count()).select_from(Cards).where(Cards.user_id == user_id)
+    )
+
+    due_today = await db.scalar(
+        select(func.count()).select_from(Cards).where(
+            Cards.user_id == user_id,
+            or_(Cards.next_review_date.is_(None), Cards.next_review_date <= now),
+        )
+    )
+
+    learned_count = await db.scalar(
+        select(func.count()).select_from(Cards).where(
+            Cards.user_id == user_id, Cards.status == 'learned'
+        )
+    )
+
+    reviews_query = select(ReviewLogs).join(Cards, Cards.id == ReviewLogs.card_id).where(
+        Cards.user_id == user_id
+    )
+    reviews = (await db.execute(reviews_query)).scalars().all()
+
+    reviews_total = len(reviews)
+    forgotten_count = sum(1 for r in reviews if r.quality < 3)
+    remembered_count = reviews_total - forgotten_count
+    retention_rate = (remembered_count / reviews_total * 100) if reviews_total > 0 else 0.0
+
+    return {
+        'cards_total': cards_total,
+        'due_today': due_today,
+        'learned_count': learned_count,
+        'forgotten_count': forgotten_count,
+        'retention_rate': round(retention_rate, 2),
+    }

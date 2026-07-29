@@ -212,3 +212,8 @@
 - `Backend/app/api/router_deck.py` — добавлен второй роутер в том же файле, `router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])` (в одном файле с `router_deck` — так же, как план держит колоду и ревью в одном `routes.py`; домен один — «обучение»): `GET /reviews/today`, `POST /reviews/{card_id}` (`ReviewSubmit`). Подключён в `main.py`.
 - Проверено вживую: карточка видна в `/reviews/today`; `POST /reviews/{id}` с `quality=4` двигает `next_review_date`; карточка **пропадает** из `/reviews/today` — DoD выполнен буквально.
 - Попутный урок: чистка тестовых данных должна идти в порядке FK — сперва `review_logs`/`cards` (владеет FastAPI/Alembic), потом django-пользователь, иначе `IntegrityError` (`cards_user_id_fkey`) — обратный порядок один раз словил на этом шаге.
+
+### 4.9. Статистика обучения
+- `crud_card.py` — `get_learning_stats(user_id, db)`: `cards_total`/`due_today` через `func.count()`, `learned_count` по статусу, `forgotten_count`/`retention_rate` по `ReviewLogs` (join на `Cards` через `card_id`, `quality < 3` — забыто, `retention_rate = remembered/total*100`, 0 при отсутствии ревью).
+- `router_deck.py` — третий роутер в файле, `router_learning = APIRouter(prefix='/learning', ...)`, `GET /learning/stats`.
+- Проверено вживую на сценарии: 3 карточки (`apple`/`banana`/`cherry`), ревью `apple` q=5 (в будущее), `banana` q=1 (забыто), `apple` вручную помечена `learned`, `cherry` не трогали → `GET /learning/stats` = `cards_total=3, due_today=1 (только cherry — никогда не ревьюилась), learned_count=1, forgotten_count=1, retention_rate=50.0` — числа сошлись один в один со сценарием.
