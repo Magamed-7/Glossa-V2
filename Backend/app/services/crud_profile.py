@@ -29,6 +29,15 @@ async def update_profile(user_id: int, data: ProfileUpdate, db: AsyncSession):
     return profile
 
 
+async def update_photo(user_id: int, photo_url: str, db: AsyncSession):
+    profile = await get_profile(user_id, db)
+    profile.photo_url = photo_url
+
+    await db.commit()
+    await db.refresh(profile)
+    return profile
+
+
 async def increment_profile_views(user_id: int, db: AsyncSession):
     profile = await get_profile(user_id, db)
     profile.profile_views += 1

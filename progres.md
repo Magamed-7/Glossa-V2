@@ -140,3 +140,9 @@
 - `Backend/app/core/storage.py` — `boto3` S3-клиент на `MINIO_ENDPOINT`, `upload_file(bucket, bytes, filename, content_type)` (ключ = `uuid_имя`, чтобы не было коллизий), `get_file_url`.
 - `requirements.txt` пополнен `boto3`.
 - Проверено вживую: `docker compose up -d minio minio_init` — бакеты созданы (лог `minio_init` подтверждает все три + права на скачивание); `upload_file('avatars', ...)` вернул URL, `curl` по нему отдал загруженное содержимое (200).
+
+### 3.7. Загрузка фото профиля
+- `router_profile.py` — `POST /profile/me/photo` (`UploadFile` → `storage.upload_file('avatars', ...)` → `crud_profile.update_photo`), объявлен **до** `/profile/languages` и на будущее — до параметризованного `/profile/{user_id}` из 3.9 (правило CONVENTIONS §7 про порядок роутов).
+- `crud_profile.py` — `update_photo`.
+- Проверено вживую: `POST /profile/me/photo` (multipart) с реальным Django-токеном — файл лёг в бакет `avatars`, `photo_url` сохранён в профиле, по этому URL файл открывается напрямую (200).
+- Попутный урок про инструменты: у здешнего `curl` при `-F file=@путь` POSIX-путь `/tmp/...` не резолвится (`curl: (26) Failed to open/read local data`) — с Windows-путём (`C:\Users\...`) работает; держу это в уме для файловых загрузок дальше по плану (аудио произношения, аватары историй).
