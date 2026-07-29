@@ -15,6 +15,7 @@ from app.models import (  # noqa: F401
     model_achievement,
     model_card,
     model_content,
+    model_payment,
     model_profile,
     model_rating,
     model_settings,

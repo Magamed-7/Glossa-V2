@@ -17,6 +17,7 @@ from app.models import (  # noqa: E402, F401
     model_achievement,
     model_card,
     model_content,
+    model_payment,
     model_profile,
     model_rating,
     model_settings,
