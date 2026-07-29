@@ -1,0 +1,43 @@
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.model_settings import UserSettings
+from app.schemas.schema_settings import SettingsUpdate
+
+
+async def get_settings(user_id: int, db: AsyncSession):
+    result = await db.execute(select(UserSettings).where(UserSettings.user_id == user_id))
+    settings = result.scalar_one_or_none()
+
+    if settings is None:
+        settings = UserSettings(user_id=user_id)
+        db.add(settings)
+        await db.commit()
+        await db.refresh(settings)
+
+    return settings
+
+
+async def update_settings(user_id: int, data: SettingsUpdate, db: AsyncSession):
+    settings = await get_settings(user_id, db)
+
+    settings.target_language = data.target_language or settings.target_language
+    settings.daily_goal = data.daily_goal or settings.daily_goal
+    settings.study_time = data.study_time or settings.study_time
+    settings.difficulty = data.difficulty or settings.difficulty
+    settings.reminder_time = data.reminder_time or settings.reminder_time
+
+    if data.email_enabled is not None:
+        settings.email_enabled = data.email_enabled
+    if data.push_enabled is not None:
+        settings.push_enabled = data.push_enabled
+    if data.telegram_enabled is not None:
+        settings.telegram_enabled = data.telegram_enabled
+    if data.ratings_enabled is not None:
+        settings.ratings_enabled = data.ratings_enabled
+    if data.profile_visible is not None:
+        settings.profile_visible = data.profile_visible
+
+    await db.commit()
+    await db.refresh(settings)
+    return settings

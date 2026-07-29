@@ -166,3 +166,11 @@
 - `Backend/app/models/model_settings.py` — `UserSettings` (`user_id` уникальный FK): обучение (`target_language`, `daily_goal` default 10, `study_time`, `difficulty` default `'medium'`), уведомления (`email_enabled`/`push_enabled` default True, `telegram_enabled` default **False** — привязки телеграма ещё нет, появится в фазе 12, `reminder_time`), соц. (`ratings_enabled` default True, `profile_visible` default True).
 - Миграция `alembic/versions/7bd514e8c553_add_user_settings_model.py`, импорт в `main.py`/`alembic/env.py`.
 - Проверено вживую: `upgrade head` создал `user_settings` с дефолтами.
+
+### 3.11. Эндпоинты настроек
+- `Backend/app/schemas/schema_settings.py` — `SettingsUpdate` (всё Optional), `SettingsResponse`.
+- `Backend/app/services/crud_settings.py` — `get_settings` (автосоздание), `update_settings` (`or` для строк/чисел, `is not None` для Boolean-тумблеров — та же логика, что в приватности).
+- `Backend/app/api/router_settings.py` — `GET/PATCH /settings/me`, подключено в `main.py`.
+- Проверено вживую: `GET /settings/me` на новом пользователе — автосоздание с дефолтами (`daily_goal=10`, `difficulty='medium'`, `telegram_enabled=false`, остальные тумблеры `true`); `PATCH {"daily_goal":25,"telegram_enabled":true}` — только эти два поля изменились, остальные не тронуты.
+
+**Фаза 3 закрыта**: профиль, языки, гранулярная приватность с публичным профилем (поля реально отсутствуют, а не `null`), фото через MinIO, настройки — всё поверх django-аутентификации, всё проверено вживую через реальные HTTP-запросы к `uvicorn`.
