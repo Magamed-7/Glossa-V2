@@ -7,7 +7,14 @@ from app.api.router_profile import router_profile
 from app.api.router_settings import router_settings
 from app.api.router_story import router_stories
 from app.core.errors import register_exception_handlers
-from app.models import model_card, model_content, model_profile, model_settings, model_user  # noqa: F401
+from app.models import (  # noqa: F401
+    model_card,
+    model_content,
+    model_profile,
+    model_settings,
+    model_social,
+    model_user,
+)
 
 app = FastAPI(title='Glossa 🌍 — Language Learning API')
 

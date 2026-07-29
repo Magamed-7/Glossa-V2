@@ -288,3 +288,10 @@
 - Проверено вживую на реальной истории с двумя вопросами: 1 из 2 правильных → `completed:false`, и `my-progress` **пуст** (запись не создаётся зря); оба правильных → `completed:true`, `my-progress` показывает `is_completed:true`.
 
 **Фаза 5 закрыта**: словарь/грамматика/истории с полноценной локализацией — и, что важнее всего, без повторения корневого архитектурного бага V1 (тело истории для чтения никогда не подменяется локалью, переводы — отдельные явные поля). Все 11 шагов проверены вживую на реальных данных через `uvicorn`.
+
+## Фаза 6 — Социальные функции
+
+### 6.1. Модель подписок
+- `Backend/app/models/model_social.py` — `Follows` (`follower_id`, `following_id`, `UniqueConstraint` на пару, `CheckConstraint('follower_id != following_id')`).
+- Миграция `alembic/versions/6ad60e167533_add_follow_model.py`.
+- Проверено вживую на реальных пользователях (на уровне БД, не ORM-валидации): `Follows(follower=28, following=28)` → `IntegrityError` (`ck_follows_no_self_follow`); повторная пара `(28,29)` → `IntegrityError` (`uq_follows_pair`). Оба constraint'а реально защищают на уровне Postgres, а не только в Python-коде.
