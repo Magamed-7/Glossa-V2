@@ -1,7 +1,13 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.model_content import GrammarExamples, GrammarLessons, GrammarQuestions, VocabEntries
+from app.models.model_content import (
+    GrammarAttempts,
+    GrammarExamples,
+    GrammarLessons,
+    GrammarQuestions,
+    VocabEntries,
+)
 from app.services.localization import pick_locale
 
 
@@ -119,3 +125,67 @@ async def get_lesson_detail(lesson_id: int, locale: str, db: AsyncSession):
         'examples': [{'id': e.id, 'text': e.text, 'order': e.order} for e in examples],
         'questions': [question_to_response(q, locale) for q in questions],
     }
+
+
+async def submit_grammar_answers(lesson_id: int, user_id: int, answers, locale: str, db: AsyncSession):
+    questions = await get_lesson_questions(lesson_id, db)
+    questions_by_id = {q.id: q for q in questions}
+
+    correct = 0
+    results = []
+
+    for answer in answers:
+        question = questions_by_id.get(answer.question_id)
+
+        if question is None:
+            continue
+
+        is_correct = answer.answer.strip().lower() == question.answer.strip().lower()
+
+        if is_correct:
+            correct += 1
+
+        db.add(GrammarAttempts(user_id=user_id, question_id=question.id, is_correct=is_correct))
+        results.append(question_to_result_response(question, locale))
+
+    await db.commit()
+
+    return {
+        'total': len(answers),
+        'correct': correct,
+        'results': results,
+    }
+
+
+async def get_weak_topics(user_id: int, db: AsyncSession):
+    query = (
+        select(GrammarLessons.topic, GrammarAttempts.is_correct)
+        .select_from(GrammarAttempts)
+        .join(GrammarQuestions, GrammarQuestions.id == GrammarAttempts.question_id)
+        .join(GrammarLessons, GrammarLessons.id == GrammarQuestions.lesson_id)
+        .where(GrammarAttempts.user_id == user_id)
+    )
+
+    rows = (await db.execute(query)).all()
+
+    stats_by_topic = {}
+
+    for topic, is_correct in rows:
+        stats = stats_by_topic.setdefault(topic, {'attempts': 0, 'incorrect': 0})
+        stats['attempts'] += 1
+        if not is_correct:
+            stats['incorrect'] += 1
+
+    topics = []
+
+    for topic, stats in stats_by_topic.items():
+        error_rate = stats['incorrect'] / stats['attempts'] * 100
+        topics.append({
+            'topic': topic,
+            'attempts': stats['attempts'],
+            'incorrect': stats['incorrect'],
+            'error_rate': round(error_rate, 2),
+        })
+
+    topics.sort(key=lambda t: t['error_rate'], reverse=True)
+    return topics

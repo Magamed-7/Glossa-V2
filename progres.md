@@ -257,3 +257,9 @@
 - `crud_content.py` — `lesson_to_response`, `question_to_response`/`question_to_result_response` (через `pick_locale` — здесь он честно подходит, `text_en`/`explanation_en` реально существуют), `get_grammar_lessons` (фильтры level/unit), `get_grammar_lesson`, `get_lesson_examples`, `get_lesson_questions`, `get_lesson_detail` (правило + примеры + вопросы одним вызовом).
 - `router_content.py` — `router_grammar`: `GET /grammar` (список), `GET /grammar/{id}?locale=` (деталь).
 - Проверено вживую на реальном уроке (`rule_en` заполнен, `rule_tg` заполнен, `rule_ru` пуст): `locale=en` → английское правило; `locale=tg` → таджикское; `locale=ru` (пусто в БД) → фолбэк на английское — `pick_locale` отрабатывает все три ветки на реальных данных, не только в юнит-тесте.
+
+### 5.7. Сдача упражнений и слабые темы
+- `Backend/app/models/model_content.py` — `GrammarAttempts` (`user_id`, `question_id`, `is_correct`, `created_at`), миграция `alembic/versions/c59b7aee38a3_add_grammar_attempts_table.py`.
+- `crud_content.py` — `submit_grammar_answers` (сравнение `answer` без учёта регистра/пробелов, пишет попытку на каждый вопрос, считает `correct`), `get_weak_topics` (агрегация в Python — join `GrammarAttempts→GrammarQuestions→GrammarLessons`, группировка по `topic`, `error_rate = incorrect/attempts*100`, сортировка по убыванию).
+- `router_content.py` — `GET /grammar/weak-topics` объявлен **до** `GET /grammar/{lesson_id}` (иначе `weak-topics` пыталась бы распарситься как `int` и давала 422 вместо честного 200 — правило CONVENTIONS §7 про порядок роутов тут поймало бы реальный баг), `POST /grammar/{lesson_id}/submit`.
+- Проверено вживую на сценарии с двумя темами: `verb be` (1 правильный/1 неправильный из 2) и `plurals` (0 из 1) → `weak-topics` вернул `[{'plurals', error_rate:100.0}, {'verb be', error_rate:50.0}]` — отсортировано по убыванию ошибок, как требует DoD.

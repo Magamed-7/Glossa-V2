@@ -66,6 +66,18 @@ class GrammarQuestions(Base):
     explanation_tg: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
+class GrammarAttempts(Base):
+    __tablename__ = 'grammar_attempts'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    question_id: Mapped[int] = mapped_column(ForeignKey('grammar_questions.id'), nullable=False, index=True)
+    is_correct: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
 class Stories(Base):
     __tablename__ = 'stories'
 

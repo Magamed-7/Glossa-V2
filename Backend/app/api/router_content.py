@@ -1,9 +1,17 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.auth import get_current_user
 from app.core.errors import AppError
 from app.db.database import get_db
-from app.schemas.schema_content import GrammarLessonDetailResponse, GrammarLessonResponse, VocabResponse
+from app.schemas.schema_content import (
+    GrammarLessonDetailResponse,
+    GrammarLessonResponse,
+    GrammarSubmitResult,
+    QuestionSubmit,
+    VocabResponse,
+    WeakTopicResponse,
+)
 from app.services import crud_content
 
 router_vocabulary = APIRouter(prefix='/vocabulary', tags=['Vocabulary'])
@@ -52,6 +60,14 @@ async def get_grammar_lessons(
     return [crud_content.lesson_to_response(lesson) for lesson in lessons]
 
 
+@router_grammar.get('/weak-topics', response_model=list[WeakTopicResponse])
+async def get_weak_topics(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_content.get_weak_topics(current_user.id, db)
+
+
 @router_grammar.get('/{lesson_id}', response_model=GrammarLessonDetailResponse)
 async def get_grammar_lesson(
     lesson_id: int,
@@ -64,3 +80,14 @@ async def get_grammar_lesson(
         raise AppError(code='LESSON_NOT_FOUND', message='Grammar lesson not found', status_code=404)
 
     return detail
+
+
+@router_grammar.post('/{lesson_id}/submit', response_model=GrammarSubmitResult)
+async def submit_grammar_lesson(
+    lesson_id: int,
+    data: QuestionSubmit,
+    locale: str = 'en',
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_content.submit_grammar_answers(lesson_id, current_user.id, data.answers, locale, db)
