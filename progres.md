@@ -300,3 +300,9 @@
 - `Backend/app/schemas/schema_social.py` — `FollowUserResponse`.
 - `Backend/app/services/crud_social.py` — `follow_user` (400 `CANNOT_FOLLOW_SELF`/`ALREADY_FOLLOWING` — уровень API дублирует DB constraints понятными кодами, а не отдаёт голый `IntegrityError`), `unfollow_user`, `get_followers`/`get_following` (join на `Users`), `get_friends` (пересечение по `id`), `is_mutual`.
 - Проверено вживую на трёх пользователях (A/B/C): A↔B взаимно, A→C односторонне → `get_friends(A)` = `[B]` (не включает C); `is_mutual(A,B)=True`, `is_mutual(A,C)=False`; повторная подписка и подписка на себя правильно отклоняются кодами `ALREADY_FOLLOWING`/`CANNOT_FOLLOW_SELF`.
+
+### 6.3. Роуты подписок
+- `Backend/app/api/router_social.py` — `router_social` (`prefix='/social'`): `GET /followers`/`/following`/`/friends`, `POST/DELETE /follow/{user_id}`. `follow_user` роут дозагружает целевого `Users` через `crud_user.get_by_id`, чтобы отдать реальный `username`, а не пустышку.
+- `schema_social.py` — `FollowUserResponse` получил `ConfigDict(from_attributes=True)` (нужен для сериализации ORM-объекта `Users`).
+- Подключено в `main.py`.
+- Проверено вживую на двух реальных пользователях (сценарий из DoD): A подписывается на B → 200 с данными B; B подписывается на A → 200 с данными A; `GET /social/friends` у обоих показывает друг друга; `DELETE /follow/{id}` отписывает, после чего `friends` снова пуст. Мелкий урок теста: перепутал порядок переменных при первой попытке (id первой печатается для A, но я расставил их наоборот) — не баг кода, ошибка в самом тестовом скрипте, переделал.
