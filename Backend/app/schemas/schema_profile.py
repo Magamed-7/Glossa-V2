@@ -20,7 +20,7 @@ class LanguageAdd(BaseModel):
 class LanguageResponse(BaseModel):
     id: int
     language: str
-    level: str
+    level: str | None = None
     is_target: bool
 
     model_config = ConfigDict(from_attributes=True)

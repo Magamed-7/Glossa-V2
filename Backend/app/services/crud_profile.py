@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_profile import ProfilePrivacy, UserLanguages, UserProfiles
+from app.models.model_user import Users
 from app.schemas.schema_profile import LanguageAdd, PrivacyUpdate, ProfileUpdate
 
 
@@ -100,3 +101,40 @@ async def update_privacy(user_id: int, data: PrivacyUpdate, db: AsyncSession):
     await db.commit()
     await db.refresh(privacy)
     return privacy
+
+
+async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
+    result = await db.execute(select(Users).where(Users.id == user_id))
+    target_user = result.scalar_one_or_none()
+
+    if target_user is None:
+        return None
+
+    profile = await get_profile(user_id, db)
+    privacy = await get_privacy(user_id, db)
+
+    if viewer_id != user_id:
+        profile = await increment_profile_views(user_id, db)
+
+    data = {
+        'user_id': target_user.id,
+        'username': target_user.username,
+        'bio': profile.bio,
+        'interests': profile.interests,
+        'photo_url': profile.photo_url,
+        'profile_views': profile.profile_views,
+    }
+
+    if privacy.show_languages:
+        languages = await get_user_languages(user_id, db)
+        data['languages'] = [
+            {
+                'id': language.id,
+                'language': language.language,
+                'level': language.level if privacy.show_language_levels else None,
+                'is_target': language.is_target,
+            }
+            for language in languages
+        ]
+
+    return data

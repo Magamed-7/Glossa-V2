@@ -154,3 +154,10 @@
 - `router_profile.py` — `GET/PATCH /profile/me/privacy`.
 - Миграция `alembic/versions/5ff1cd938342_add_granular_profile_privacy_settings.py`.
 - Проверено вживую: `GET` на новом пользователе — все 7 тумблеров `true` (автосоздание с дефолтами); `PATCH {"show_achievements": false, "show_followers": false}` — только эти два стали `false`, остальные пять остались `true`.
+
+### 3.9. Публичный профиль с фильтром приватности
+- `schema_profile.py` — `LanguageResponse.level` стал `str | None = None` (нужно, чтобы можно было выдать язык без уровня, когда `show_language_levels=False`).
+- `crud_profile.py` — `get_public_profile(user_id, viewer_id, db)`: собирает `username` из `Users` + профиль + приватность; если смотрящий ≠ владелец — инкремент `profile_views`; собирает **обычный dict**, а не строгую pydantic-модель — так поля реально отсутствуют, а не `null` (`languages` добавляется в dict только если `show_languages`; внутри каждого языка `level` — `None`, если `show_language_levels` выключен).
+- `router_profile.py` — `GET /profile/{user_id}` (параметризованный, объявлен **последним** — после `/me`, `/me/photo`, `/me/privacy`, `/languages`, как требует CONVENTIONS §7), `response_model=PublicProfileResponse, response_model_exclude_none=True` — вот этот флаг и превращает `None` в реально отсутствующий ключ JSON; 404 `USER_NOT_FOUND`, если id не существует.
+- **Отступление от буквы плана** (см. заметку в 3.3): тумблеры `show_stories_count/achievements/current_streak/best_streak/followers` в БД есть и читаются/переключаются, но в `get_public_profile` пока нечего под них подставлять — этих данных ещё нет в системе (появятся в фазах 4/6/7). Функция готова принять эти поля без изменения контракта, когда они появятся.
+- Проверено вживую (два реальных пользователя, `pubtarget`/`pubviewer`): viewer посмотрел профиль target → `profile_views: 0→1`, отдал `bio`, но **без** `level` у языка (спрятан тумблером) и без `interests`/`photo_url` (просто нет ключей, они `None`); target посмотрел свой же профиль через тот же паблик-эндпоинт → `profile_views` не увеличился (просмотр себя не считается); несуществующий `user_id` → 404 `USER_NOT_FOUND`.
