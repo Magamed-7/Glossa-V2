@@ -295,3 +295,8 @@
 - `Backend/app/models/model_social.py` — `Follows` (`follower_id`, `following_id`, `UniqueConstraint` на пару, `CheckConstraint('follower_id != following_id')`).
 - Миграция `alembic/versions/6ad60e167533_add_follow_model.py`.
 - Проверено вживую на реальных пользователях (на уровне БД, не ORM-валидации): `Follows(follower=28, following=28)` → `IntegrityError` (`ck_follows_no_self_follow`); повторная пара `(28,29)` → `IntegrityError` (`uq_follows_pair`). Оба constraint'а реально защищают на уровне Postgres, а не только в Python-коде.
+
+### 6.2. Схемы и crud подписок
+- `Backend/app/schemas/schema_social.py` — `FollowUserResponse`.
+- `Backend/app/services/crud_social.py` — `follow_user` (400 `CANNOT_FOLLOW_SELF`/`ALREADY_FOLLOWING` — уровень API дублирует DB constraints понятными кодами, а не отдаёт голый `IntegrityError`), `unfollow_user`, `get_followers`/`get_following` (join на `Users`), `get_friends` (пересечение по `id`), `is_mutual`.
+- Проверено вживую на трёх пользователях (A/B/C): A↔B взаимно, A→C односторонне → `get_friends(A)` = `[B]` (не включает C); `is_mutual(A,B)=True`, `is_mutual(A,C)=False`; повторная подписка и подписка на себя правильно отклоняются кодами `ALREADY_FOLLOWING`/`CANNOT_FOLLOW_SELF`.
