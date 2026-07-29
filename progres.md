@@ -330,3 +330,8 @@
 - `Backend/app/services/streaks.py` — `touch_streak(user_id, db)`: сегодня уже был → no-op, вчера → `+1`, разрыв (включая `None`) → сброс в 1; `best_streak = max(best, current)`.
 - Подключено в `review.submit_review` (4.7, через `card.user_id`) и `crud_story.submit_story_questions` (5.11, только при `completed=True`).
 - Проверено вживую на реальном пользователе прямыми вызовами `touch_streak` с подставленными датами: сегодня дважды → `1,1` (no-op); дата вчера → `2,2`; дата 3 дня назад (разрыв) → `1` (best остался `2`) — все три ветки DoD подтверждены. Отдельно проверил реальный путь через `crud_card.create_card` + `review.submit_review` — стрик действительно трогается (`current_streak=1`), а не только в юнит-тесте функции.
+
+### 7.4. Сервис проверки ачивок
+- `Backend/app/services/achievements.py` — `get_metrics` (карточки `learned`, `reviews` через join `ReviewLogs→Cards`, `streak.current_streak`, `friends` через `crud_social.get_friends`); `stories_written`/`stories_sold`/`reviews_received` пока жёстко `0` — **честное ограничение**: пользовательские истории и их продажи/отзывы появятся только в фазе 10, до тех пор эти категории физически не могут сработать (не баг, а отсутствие данных — как и в 3.9/5.9).
+- `check_achievements(user_id, db)`: метрика определяется по коду через `code.rsplit('_', 1)[0]` (`'words_10'→'words'`, `'reviews_received_10'→'reviews_received'`, `'reviews_5'→'reviews'` — разные ключи, коллизии префиксов нет), пропускает уже выданные, выдаёт новые одним batch-коммитом.
+- Проверено вживую: пользователю с ровно 10 `learned`-карточками выдался **только** `words_10` (не `words_50`); повторный вызов `check_achievements` не выдал дубликат — соответствует DoD дословно.
