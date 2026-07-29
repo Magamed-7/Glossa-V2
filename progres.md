@@ -114,3 +114,8 @@
 - `Backend/app/models/model_profile.py` — `UserProfiles` (`user_id` уникальный FK на `users.id`, `bio`, `interests` JSON/JSONB, `photo_url`, `profile_views` default 0), `UserLanguages` (`user_id` FK, `language`, `level` дефолт `'A1'`, `is_target` default True). Оба в одном файле — связанные, как разрешает CONVENTIONS §1.
 - `app/main.py` — `from app.models import model_profile, model_user` (регистрирует таблицы в `Base.metadata` по факту импорта).
 - Проверено вживую: `Base.metadata.tables` видит `user_profiles`, `user_languages`, `users`.
+
+### 3.2. Миграция профиля
+- `Backend/alembic/versions/25fbdf417bc9_create_user_profiles_tables.py` — `user_languages` + `user_profiles` (уникальный индекс на `user_profiles.user_id`).
+- `alembic/env.py` пополнен импортом `model_profile`.
+- Проверено вживую: `upgrade head` создал обе таблицы; `downgrade -1` откатил; `upgrade head` снова накатил без ошибок.
