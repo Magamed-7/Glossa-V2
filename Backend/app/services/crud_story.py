@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
 from app.schemas.schema_learning import CardCreate
-from app.services import crud_card
+from app.services import crud_card, streaks
 
 
 def story_to_response(story: Stories):
@@ -154,6 +154,8 @@ async def submit_story_questions(story_id: int, user_id: int, answers, db: Async
 
         progress.is_completed = True
         await db.commit()
+
+        await streaks.touch_streak(user_id, db)
 
     return {
         'total': total,

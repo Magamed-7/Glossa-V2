@@ -324,3 +324,9 @@
 ### 7.2. Сид ачивок
 - `Backend/seeds/seed_achievements.py` — 17 определений по категориям (`words_10/50/100/500` — grinder, `streak_7/30/100` — learner, `stories_written_1/5/20`/`stories_sold_1/10`/`reviews_received_10` — teacher, `friends_5/20` — social, `reviews_5/25` — grinder), идемпотентно (проверка по `code` перед вставкой), отчёт `created`/`skipped` в stdout.
 - Проверено вживую: первый запуск — `created: 17, skipped: 0`; повторный — `created: 0, skipped: 17` — точно повторяет требование памяти [[glossa-achievements-seed]] про грабли старого проекта (без сида ачивки молча не находятся).
+
+### 7.3. Стрики
+- `model_achievement.py` — `UserStreaks` (`user_id` уникальный, `current_streak`, `best_streak`, `last_activity_date` — `Date`, не `DateTime`). Миграция `alembic/versions/f7571dd3c842_add_streak_tracking.py`.
+- `Backend/app/services/streaks.py` — `touch_streak(user_id, db)`: сегодня уже был → no-op, вчера → `+1`, разрыв (включая `None`) → сброс в 1; `best_streak = max(best, current)`.
+- Подключено в `review.submit_review` (4.7, через `card.user_id`) и `crud_story.submit_story_questions` (5.11, только при `completed=True`).
+- Проверено вживую на реальном пользователе прямыми вызовами `touch_streak` с подставленными датами: сегодня дважды → `1,1` (no-op); дата вчера → `2,2`; дата 3 дня назад (разрыв) → `1` (best остался `2`) — все три ветки DoD подтверждены. Отдельно проверил реальный путь через `crud_card.create_card` + `review.submit_review` — стрик действительно трогается (`current_streak=1`), а не только в юнит-тесте функции.

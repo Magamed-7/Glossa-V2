@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import date, datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.database import Base
@@ -30,3 +30,13 @@ class UserAchievements(Base):
     earned_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
+class UserStreaks(Base):
+    __tablename__ = 'user_streaks'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, unique=True, index=True)
+    current_streak: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    best_streak: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    last_activity_date: Mapped[date | None] = mapped_column(Date, nullable=True)
