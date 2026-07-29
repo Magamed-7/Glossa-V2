@@ -17,6 +17,8 @@ celery_app.conf.task_routes = {
     'app.tasks.payments.*': {'queue': 'payments_queue'},
 }
 
+celery_app.conf.imports = ('app.tasks.ai', 'app.tasks.analytics', 'app.tasks.payments')
+
 
 @celery_app.task(name='app.tasks.priority.ping')
 def ping():
