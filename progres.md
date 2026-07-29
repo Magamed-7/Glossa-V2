@@ -99,3 +99,11 @@
 - `Backend/alembic/env.py` — импортирует `app.models.model_user` (чтобы `users` реально попала в `target_metadata`, иначе тест ничего не проверял бы), `include_object` фильтрует `type_=='table'` с именем `users` или префиксом `users_`/`django_`/`auth_`/`token_blacklist_`.
 - `docs/CONVENTIONS.md` — раздел «границы владения таблицами» дополнен списком реальных префиксов.
 - Проверено вживую (и это поймало реальный баг в первой версии фильтра!): без префикса `users_` autogenerate предлагал **дропнуть** `users_groups`/`users_user_permissions` — m2m-таблицы Django для кастомной модели называются по `app_label` (`users`), а не по `db_table` (`users` уже занято самой моделью), так что `users_groups` ≠ `db_table='users'`. После добавления префикса `alembic revision --autogenerate` на БД с django-таблицами и мапленной `Users` даёт пустую миграцию; `alembic upgrade head` проходит.
+
+### 2.11. Django в docker-compose
+- `Backend/docker/Dockerfile.django` — `python:3.12-slim`, ставит `requirements.txt`, рабочая директория для CMD — `auth_service/`, `manage.py runserver 0.0.0.0:8001`.
+- `Backend/docker-compose.yml` — сервис `django_app`: `env_file: .env`, **но** `DB_HOST=host.docker.internal`/`DB_PORT=5432` переопределены в environment — контейнер должен достучаться до **нативного** postgres на хосте (не до докеровского на 5433, у которого нет реальных данных), отсюда `extra_hosts: host.docker.internal:host-gateway`. `depends_on: postgres` (докеровский, healthcheck) оставлен как в плане — для сценария полного докер-стека без нативного postgres (фаза 16).
+- `Backend/.dockerignore` — добавлен (не было в плане явно, но без него `COPY . .` затащил бы `.env` с секретами в образ); по образцу `Bon Appetit/user-services/.dockerignore`.
+- Проверено вживую: `docker compose build django_app` + `up -d` — контейнер поднялся; `POST /api/auth/register` и `/api/auth/login` **через контейнер на 8001** отработали и записали пользователя в ту же нативную `GlossaV2`.
+
+**Фаза 2 закрыта**: Django auth-сервис — регистрация/логин/refresh/me/admin — работает и нативно, и в докере, JWT читается FastAPI из общей `users` таблицы, Alembic таблицы Django не трогает.
