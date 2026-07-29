@@ -57,3 +57,17 @@ class StoryExerciseAttempts(Base):
     exercise_id: Mapped[int] = mapped_column(ForeignKey('story_exercises.id'), nullable=False, index=True)
     is_correct: Mapped[bool] = mapped_column(Boolean, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class StoryReviews(Base):
+    __tablename__ = 'story_reviews'
+    __table_args__ = (
+        UniqueConstraint('story_id', 'user_id', name='uq_story_reviews_pair'),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    story_id: Mapped[int] = mapped_column(ForeignKey('user_stories.id'), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    rating: Mapped[int] = mapped_column(Integer, nullable=False)
+    text: Mapped[str | None] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

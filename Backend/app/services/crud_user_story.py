@@ -1,11 +1,17 @@
 from decimal import Decimal
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
-from app.models.model_user_story import StoryExerciseAttempts, StoryExercises, StoryPurchases, UserStories
-from app.schemas.schema_user_story import ExerciseCreate, UserStoryCreate, UserStoryUpdate
+from app.models.model_user_story import (
+    StoryExerciseAttempts,
+    StoryExercises,
+    StoryPurchases,
+    StoryReviews,
+    UserStories,
+)
+from app.schemas.schema_user_story import ExerciseCreate, ReviewCreate, UserStoryCreate, UserStoryUpdate
 from app.services import crud_subscription, purchase_service, ratings
 
 SELLER_SHARE = Decimal('0.7')
@@ -116,7 +122,18 @@ async def get_user_stories(
 
     query = query.order_by(UserStories.id.desc()).limit(limit).offset(offset)
     result = await db.execute(query)
-    return result.scalars().all()
+    stories = result.scalars().all()
+
+    return [
+        {**user_story_to_response(story), 'average_rating': await get_average_rating(story.id, db)}
+        for story in stories
+    ]
+
+
+async def get_average_rating(story_id: int, db: AsyncSession):
+    result = await db.execute(select(func.avg(StoryReviews.rating)).where(StoryReviews.story_id == story_id))
+    average = result.scalar_one_or_none()
+    return round(float(average), 2) if average is not None else None
 
 
 async def has_story_access(story: UserStories, user_id: int, db: AsyncSession):
@@ -264,3 +281,34 @@ async def submit_story_exercises(story_id: int, user_id: int, answers, db: Async
         'total': len(answers),
         'correct': correct,
     }
+
+
+async def create_story_review(story_id: int, user_id: int, data: ReviewCreate, db: AsyncSession):
+    story = await get_user_story(story_id, db)
+
+    if story is None:
+        raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    if not await has_story_access(story, user_id, db):
+        raise AppError(code='ACCESS_DENIED', message='You do not have access to this story', status_code=403)
+
+    existing = await db.execute(
+        select(StoryReviews).where(StoryReviews.story_id == story_id, StoryReviews.user_id == user_id)
+    )
+
+    if existing.scalar_one_or_none() is not None:
+        raise AppError(code='ALREADY_REVIEWED', message='You already reviewed this story', status_code=400)
+
+    review = StoryReviews(story_id=story_id, user_id=user_id, rating=data.rating, text=data.text)
+    db.add(review)
+    await db.commit()
+    await db.refresh(review)
+
+    await ratings.award_xp(story.author_id, 'review_received', db)
+
+    return review
+
+
+async def get_story_reviews(story_id: int, db: AsyncSession):
+    result = await db.execute(select(StoryReviews).where(StoryReviews.story_id == story_id))
+    return result.scalars().all()

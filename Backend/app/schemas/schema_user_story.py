@@ -36,6 +36,7 @@ class UserStoryResponse(BaseModel):
     status: str
     views_count: int
     created_at: datetime
+    average_rating: float | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

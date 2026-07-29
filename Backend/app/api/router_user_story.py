@@ -12,6 +12,8 @@ from app.schemas.schema_user_story import (
     ExerciseResponse,
     ExerciseSubmit,
     ExerciseSubmitResult,
+    ReviewCreate,
+    ReviewResponse,
     UserStoryCreate,
     UserStoryDetailResponse,
     UserStoryResponse,
@@ -133,6 +135,24 @@ async def submit_exercises(
     current_user=Depends(get_current_user),
 ):
     return await crud_user_story.submit_story_exercises(story_id, current_user.id, data.answers, db)
+
+
+@router_user_story.post('/{story_id}/reviews', response_model=ReviewResponse)
+async def create_review(
+    story_id: int,
+    data: ReviewCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_user_story.create_story_review(story_id, current_user.id, data, db)
+
+
+@router_user_story.get('/{story_id}/reviews', response_model=list[ReviewResponse])
+async def get_reviews(
+    story_id: int,
+    db: AsyncSession = Depends(get_db),
+):
+    return await crud_user_story.get_story_reviews(story_id, db)
 
 
 @router_user_story.post('/{story_id}/cover', response_model=UserStoryResponse)
