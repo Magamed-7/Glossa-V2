@@ -237,3 +237,7 @@
 - `Stories` (`title_en/ru/tg`, `body_en/ru/tg`, `cefr_level`, `genre`, `grammar_topic`, `image_url`, `is_system`), `StoryWords` (`story_id`, `word`, `translation_ru/tg`, `part_of_speech`, `context`), `StoryQuestions` (`story_id`, `text`, `options` JSON, `answer`).
 - Сверено с реальным контентом (`contents/Elementary/Stories/parts/en_1.json` **и** `ru_1.json`): `ru_1.json` — это **полный параллельный перевод** тех же историй (тот же порядок, те же `book_unit`/`grammar_topic`), а не отдельная озвучка на другом языке. Это ровно та форма контента, что породила баг V1 — значит `body_ru`/`body_tg` в API **не должны** тихо подменять тело истории по `?locale=`. План решения (зафиксирован в шапке фазы 5): английские `title_en`/`body_en` — всегда основной текст для чтения; `_ru`/`_tg` версии выдаются только как отдельное, явно запрошенное поле-подсказка (перевод), реализация — в 5.4/5.8.
 - Проверено вживую: `Base.metadata.tables` видит `stories`, `story_words`, `story_questions`.
+
+### 5.3. Миграция контента
+- `Backend/alembic/versions/5b55682f0883_create_content_tables.py` — все 7 таблиц разом.
+- Проверено вживую: `upgrade head` / `downgrade -1` / `upgrade head` — чисто.
