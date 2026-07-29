@@ -77,3 +77,7 @@
 ### 2.6. Логин и refresh
 - `users/urls.py` — `POST login` → `TokenObtainPairView` (стандартный SimpleJWT, поле логина — `username`), `POST refresh` → `TokenRefreshView`.
 - Проверено вживую: логин по username+password → `{access, refresh}`; `refresh` с валидным refresh-токеном → новый `access` (200); неверный пароль → 401 `"No active account found with the given credentials"`.
+
+### 2.7. Эндпоинт me
+- `users/views.py` (`MeView`, `RetrieveAPIView`, `IsAuthenticated`, `get_object` возвращает `request.user`), `GET me` в `users/urls.py`.
+- Проверено вживую: с access-токеном → `id/username/email/role/is_verified/created_at`; без токена → 401.
