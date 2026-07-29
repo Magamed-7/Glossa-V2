@@ -1,9 +1,14 @@
+from decimal import Decimal
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
 from app.models.model_user_story import StoryPurchases, UserStories
 from app.schemas.schema_user_story import UserStoryCreate, UserStoryUpdate
+from app.services import crud_subscription, purchase_service
+
+SELLER_SHARE = Decimal('0.7')
 
 
 async def create_user_story(data: UserStoryCreate, author_id: int, db: AsyncSession):
@@ -156,3 +161,37 @@ async def get_user_story_detail(story_id: int, user_id: int, db: AsyncSession):
         response['body'] = story.body
 
     return response
+
+
+async def buy_story(story_id: int, buyer_id: int, db: AsyncSession):
+    story = await get_user_story(story_id, db)
+
+    if story is None or story.price is None:
+        raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    if story.author_id == buyer_id:
+        raise AppError(code='CANNOT_BUY_OWN_STORY', message='You cannot buy your own story', status_code=400)
+
+    if await has_story_access(story, buyer_id, db):
+        raise AppError(code='ALREADY_PURCHASED', message='You already own this story', status_code=400)
+
+    subscription = await crud_subscription.get_active_subscription(buyer_id, db)
+
+    if not subscription['plan'].can_buy_stories:
+        raise AppError(
+            code='CANNOT_BUY_STORIES', message='Your plan does not allow buying stories', status_code=403
+        )
+
+    async def create_entity(db: AsyncSession):
+        db.add(StoryPurchases(story_id=story.id, buyer_id=buyer_id))
+
+    return await purchase_service.purchase(
+        buyer_id,
+        story.price,
+        'user_story',
+        db,
+        item_id=story.id,
+        seller_id=story.author_id,
+        seller_share=SELLER_SHARE,
+        create_entity=create_entity,
+    )

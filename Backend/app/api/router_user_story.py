@@ -101,6 +101,16 @@ async def publish_story(
     return story
 
 
+@router_user_story.post('/{story_id}/buy')
+async def buy_story(
+    story_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    await crud_user_story.buy_story(story_id, current_user.id, db)
+    return {'status': 'purchased'}
+
+
 @router_user_story.post('/{story_id}/cover', response_model=UserStoryResponse)
 async def upload_story_cover(
     story_id: int,
