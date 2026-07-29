@@ -197,3 +197,7 @@
 ### 4.5. CRUD колоды
 - `Backend/app/services/crud_card.py` — `create_card` (проверка дубликата слова у пользователя → `AppError CARD_ALREADY_EXISTS` 400), `get_cards` (kwargs-фильтры: `status`, `search` через `ilike`, пагинация), `get_card`, `update_card_status`, `delete_card`.
 - Проверено вживую на реальном пользователе (`cardtest`, id=18): создал `hello`/`world`, повторный `hello` → 400 `CARD_ALREADY_EXISTS`, `search='hel'` нашёл только `hello`, `update_card_status` → `learned`, `delete_card` убрал `world` из списка.
+
+### 4.6. Роуты колоды
+- `Backend/app/api/router_deck.py` — `router_deck` (`prefix='/deck'`, `tags=['Deck']` — буквально по образцу из CONVENTIONS §7): `POST/GET /deck`, `GET /deck/{card_id}`, `PATCH /deck/{card_id}/status`, `DELETE /deck/{card_id}`. Подключён в `main.py`.
+- Проверено вживую полным циклом через `uvicorn`: create → list → get → update status → delete → get после удаления → 404 `CARD_NOT_FOUND`.
