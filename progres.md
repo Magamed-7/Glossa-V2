@@ -320,3 +320,7 @@
 - `Backend/app/models/model_achievement.py` — `Achievements` (`code` unique, `title`, `description`, `category`, `threshold`, `icon`), `UserAchievements` (`user_id`, `achievement_id`, `earned_at`, `UniqueConstraint` на пару).
 - Миграция `alembic/versions/ed880055ea02_add_achievement_models.py`.
 - Проверено вживую на реальном пользователе: выдача ачивки прошла, повторная выдача той же пары → `IntegrityError` (`uq_user_achievements_pair`) — уникальность реально защищает на уровне Postgres.
+
+### 7.2. Сид ачивок
+- `Backend/seeds/seed_achievements.py` — 17 определений по категориям (`words_10/50/100/500` — grinder, `streak_7/30/100` — learner, `stories_written_1/5/20`/`stories_sold_1/10`/`reviews_received_10` — teacher, `friends_5/20` — social, `reviews_5/25` — grinder), идемпотентно (проверка по `code` перед вставкой), отчёт `created`/`skipped` в stdout.
+- Проверено вживую: первый запуск — `created: 17, skipped: 0`; повторный — `created: 0, skipped: 17` — точно повторяет требование памяти [[glossa-achievements-seed]] про грабли старого проекта (без сида ачивки молча не находятся).
