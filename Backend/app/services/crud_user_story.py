@@ -4,6 +4,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
+from app.core.event_bus import publish_event
 from app.models.model_payment import Purchases
 from app.models.model_user_story import (
     StoryExerciseAttempts,
@@ -13,7 +14,8 @@ from app.models.model_user_story import (
     UserStories,
 )
 from app.schemas.schema_user_story import ExerciseCreate, ReviewCreate, UserStoryCreate, UserStoryUpdate
-from app.services import achievements, crud_subscription, purchase_service, ratings
+from app.services import crud_subscription, purchase_service, ratings
+from app.tasks.analytics import process_analytics_event
 
 SELLER_SHARE = Decimal('0.7')
 
@@ -108,7 +110,11 @@ async def publish_user_story(story_id: int, author_id: int, db: AsyncSession):
 
     if not was_already_published:
         await ratings.award_xp(author_id, 'story_written', db)
-        await achievements.check_achievements(author_id, db)
+        await publish_event(
+            'analytics_events',
+            {'action': 'check_achievements', 'user_id': author_id},
+            fallback_task=process_analytics_event,
+        )
 
     return story
 
@@ -220,7 +226,11 @@ async def buy_story(story_id: int, buyer_id: int, db: AsyncSession):
         create_entity=create_entity,
     )
 
-    await achievements.check_achievements(story.author_id, db)
+    await publish_event(
+        'analytics_events',
+        {'action': 'check_achievements', 'user_id': story.author_id},
+        fallback_task=process_analytics_event,
+    )
 
     return result
 
