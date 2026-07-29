@@ -21,6 +21,7 @@ from app.models import (  # noqa: E402, F401
     model_rating,
     model_settings,
     model_social,
+    model_subscription,
     model_user,
 )
 
