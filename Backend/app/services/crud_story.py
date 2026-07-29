@@ -128,3 +128,35 @@ async def add_story_word_to_deck(word_id: int, user_id: int, locale: str, db: As
 
     data = CardCreate(word=word.word, translation=translation, example=word.context)
     return await crud_card.create_card(data, user_id, db, source_story_id=word.story_id)
+
+
+async def submit_story_questions(story_id: int, user_id: int, answers, db: AsyncSession):
+    questions = await get_story_questions(story_id, db)
+    questions_by_id = {q.id: q for q in questions}
+
+    correct = 0
+
+    for answer in answers:
+        question = questions_by_id.get(answer.question_id)
+
+        if question is not None and answer.answer.strip().lower() == question.answer.strip().lower():
+            correct += 1
+
+    total = len(answers)
+    completed = total > 0 and correct == total
+
+    if completed:
+        progress = await get_reading_progress(user_id, story_id, db)
+
+        if progress is None:
+            progress = ReadingProgress(user_id=user_id, story_id=story_id)
+            db.add(progress)
+
+        progress.is_completed = True
+        await db.commit()
+
+    return {
+        'total': total,
+        'correct': correct,
+        'completed': completed,
+    }

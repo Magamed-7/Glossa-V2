@@ -8,6 +8,8 @@ from app.schemas.schema_content import (
     ReadingProgressResponse,
     ReadingProgressUpdate,
     StoryDetailResponse,
+    StoryQuestionsResult,
+    StoryQuestionsSubmit,
     StoryResponse,
 )
 from app.schemas.schema_learning import CardResponse
@@ -74,3 +76,13 @@ async def add_story_word_to_deck(
         raise AppError(code='STORY_WORD_NOT_FOUND', message='Story word not found', status_code=404)
 
     return card
+
+
+@router_stories.post('/{story_id}/questions/submit', response_model=StoryQuestionsResult)
+async def submit_story_questions(
+    story_id: int,
+    data: StoryQuestionsSubmit,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_story.submit_story_questions(story_id, current_user.id, data.answers, db)
