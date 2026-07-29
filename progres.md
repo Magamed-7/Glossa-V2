@@ -313,3 +313,10 @@
 - Проверено вживую на трёх пользователях (A↔B взаимно, C→A односторонне): публичный профиль A с `show_followers=True` → `followers_count=2, following_count=1, friends_count=1` (числа сходятся со схемой подписок); после `PATCH show_followers=false` — все три поля пропадают из ответа целиком (не `null`).
 
 **Фаза 6 закрыта**: подписки, взаимные друзья, счётчики в профиле с уважением приватности — 4 шага, все проверены вживую на реальных пользователях и реальных HTTP-запросах.
+
+## Фаза 7 — Ачивки и рейтинги
+
+### 7.1. Модели ачивок
+- `Backend/app/models/model_achievement.py` — `Achievements` (`code` unique, `title`, `description`, `category`, `threshold`, `icon`), `UserAchievements` (`user_id`, `achievement_id`, `earned_at`, `UniqueConstraint` на пару).
+- Миграция `alembic/versions/ed880055ea02_add_achievement_models.py`.
+- Проверено вживую на реальном пользователе: выдача ачивки прошла, повторная выдача той же пары → `IntegrityError` (`uq_user_achievements_pair`) — уникальность реально защищает на уровне Postgres.

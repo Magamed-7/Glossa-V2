@@ -9,6 +9,7 @@ from app.api.router_social import router_social
 from app.api.router_story import router_stories
 from app.core.errors import register_exception_handlers
 from app.models import (  # noqa: F401
+    model_achievement,
     model_card,
     model_content,
     model_profile,
