@@ -119,3 +119,8 @@
 - `Backend/alembic/versions/25fbdf417bc9_create_user_profiles_tables.py` — `user_languages` + `user_profiles` (уникальный индекс на `user_profiles.user_id`).
 - `alembic/env.py` пополнен импортом `model_profile`.
 - Проверено вживую: `upgrade head` создал обе таблицы; `downgrade -1` откатил; `upgrade head` снова накатил без ошибок.
+
+### 3.3. Схемы профиля
+- `Backend/app/schemas/schema_profile.py` — `ProfileUpdate` (всё Optional), `LanguageAdd`/`LanguageResponse`, `ProfileResponse`, `PublicProfileResponse`.
+- **Отступление от буквы плана**: `PublicProfileResponse` пока **без** `current_streak`/`best_streak`/`followers_count` — этих данных ещё физически нет (стрики и подписчики появятся в фазах 6/7). Тумблеры `ProfilePrivacy` под них всё равно будут созданы в 3.8 один в один по плану (готовим API заранее), а сами поля в паблик-профиль допишу, когда появятся модели. `profile_views` не гейтится тумблером — его нет в списке приватности плана, значит поле безусловное.
+- Проверено вживую: `ProfileUpdate()` — все None; `LanguageAdd(language='English')` — дефолт `level='A1'`; `level='Z9'` — `ValidationError` (не входит в `CEFR_LEVELS`).
