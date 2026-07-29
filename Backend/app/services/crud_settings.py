@@ -33,6 +33,8 @@ async def update_settings(user_id: int, data: SettingsUpdate, db: AsyncSession):
         settings.push_enabled = data.push_enabled
     if data.telegram_enabled is not None:
         settings.telegram_enabled = data.telegram_enabled
+    ratings_disabled_now = data.ratings_enabled is False and settings.ratings_enabled
+
     if data.ratings_enabled is not None:
         settings.ratings_enabled = data.ratings_enabled
     if data.profile_visible is not None:
@@ -40,4 +42,9 @@ async def update_settings(user_id: int, data: SettingsUpdate, db: AsyncSession):
 
     await db.commit()
     await db.refresh(settings)
+
+    if ratings_disabled_now:
+        from app.services import ratings
+        await ratings.remove_from_leaderboards(user_id)
+
     return settings
