@@ -9,6 +9,7 @@ from app.api.router_rating import router_rating
 from app.api.router_settings import router_settings
 from app.api.router_social import router_social
 from app.api.router_story import router_stories
+from app.api.router_subscription import router_subscription
 from app.core.errors import register_exception_handlers
 from app.models import (  # noqa: F401
     model_achievement,
@@ -44,6 +45,7 @@ app.include_router(router_stories)
 app.include_router(router_social)
 app.include_router(router_achievement)
 app.include_router(router_rating)
+app.include_router(router_subscription)
 
 
 @app.get('/health')
