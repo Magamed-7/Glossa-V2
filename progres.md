@@ -107,3 +107,10 @@
 - Проверено вживую: `docker compose build django_app` + `up -d` — контейнер поднялся; `POST /api/auth/register` и `/api/auth/login` **через контейнер на 8001** отработали и записали пользователя в ту же нативную `GlossaV2`.
 
 **Фаза 2 закрыта**: Django auth-сервис — регистрация/логин/refresh/me/admin — работает и нативно, и в докере, JWT читается FastAPI из общей `users` таблицы, Alembic таблицы Django не трогает.
+
+## Фаза 3 — Пользователи, профили, приватность, настройки
+
+### 3.1. Модель профиля
+- `Backend/app/models/model_profile.py` — `UserProfiles` (`user_id` уникальный FK на `users.id`, `bio`, `interests` JSON/JSONB, `photo_url`, `profile_views` default 0), `UserLanguages` (`user_id` FK, `language`, `level` дефолт `'A1'`, `is_target` default True). Оба в одном файле — связанные, как разрешает CONVENTIONS §1.
+- `app/main.py` — `from app.models import model_profile, model_user` (регистрирует таблицы в `Base.metadata` по факту импорта).
+- Проверено вживую: `Base.metadata.tables` видит `user_profiles`, `user_languages`, `users`.
