@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
 from app.core.errors import AppError
+from app.core.limits import enforce_deck_word_limit, enforce_story_limit
 from app.db.database import get_db
 from app.schemas.schema_content import (
     ReadingProgressResponse,
@@ -43,6 +44,7 @@ async def get_story(
     story_id: int,
     locale: str = 'en',
     db: AsyncSession = Depends(get_db),
+    current_user=Depends(enforce_story_limit),
 ):
     detail = await crud_story.get_story_detail(story_id, locale, db)
 
@@ -68,7 +70,7 @@ async def add_story_word_to_deck(
     word_id: int,
     locale: str = 'ru',
     db: AsyncSession = Depends(get_db),
-    current_user=Depends(get_current_user),
+    current_user=Depends(enforce_deck_word_limit),
 ):
     card = await crud_story.add_story_word_to_deck(word_id, current_user.id, locale, db)
 

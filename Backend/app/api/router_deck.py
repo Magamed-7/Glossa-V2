@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
 from app.core.errors import AppError
+from app.core.limits import enforce_deck_word_limit
 from app.core.storage import upload_file
 from app.db.database import get_db
 from app.schemas.schema_learning import (
@@ -24,7 +25,7 @@ router_learning = APIRouter(prefix='/learning', tags=['Learning'])
 async def create_card(
     data: CardCreate,
     db: AsyncSession = Depends(get_db),
-    current_user=Depends(get_current_user),
+    current_user=Depends(enforce_deck_word_limit),
 ):
     return await crud_card.create_card(data, current_user.id, db)
 

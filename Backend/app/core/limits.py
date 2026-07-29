@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta, timezone
 
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.auth import get_current_user
+from app.core.errors import AppError
 from app.core.redis_client import redis_client
+from app.db.database import get_db
 
 DAILY_LIMIT_FIELDS = {'stories_per_day', 'deck_words_per_day'}
 WEEKLY_LIMIT_FIELDS = {'own_stories_per_week'}
@@ -72,3 +76,36 @@ async def check_limit(user_id: int, name: str, db: AsyncSession):
 
     current = await get_daily(user_id, name) if name in DAILY_LIMIT_FIELDS else await get_weekly(user_id, name)
     return current < limit
+
+
+async def enforce_story_limit(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    if not await check_limit(current_user.id, 'stories_per_day', db):
+        raise AppError(code='LIMIT_REACHED', message='Daily limit reached, upgrade your plan', status_code=403)
+
+    await incr_daily(current_user.id, 'stories_per_day')
+    return current_user
+
+
+async def enforce_deck_word_limit(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    if not await check_limit(current_user.id, 'deck_words_per_day', db):
+        raise AppError(code='LIMIT_REACHED', message='Daily limit reached, upgrade your plan', status_code=403)
+
+    await incr_daily(current_user.id, 'deck_words_per_day')
+    return current_user
+
+
+async def enforce_own_story_limit(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    if not await check_limit(current_user.id, 'own_stories_per_week', db):
+        raise AppError(code='LIMIT_REACHED', message='Daily limit reached, upgrade your plan', status_code=403)
+
+    await incr_weekly(current_user.id, 'own_stories_per_week')
+    return current_user
