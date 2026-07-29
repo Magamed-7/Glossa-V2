@@ -81,3 +81,8 @@
 ### 2.7. Эндпоинт me
 - `users/views.py` (`MeView`, `RetrieveAPIView`, `IsAuthenticated`, `get_object` возвращает `request.user`), `GET me` в `users/urls.py`.
 - Проверено вживую: с access-токеном → `id/username/email/role/is_verified/created_at`; без токена → 401.
+
+### 2.8. Админка
+- `users/admin.py` — `GlossaUserAdmin(UserAdmin)`: список с `role`/`is_verified`/`is_staff`, фильтры, доп. fieldset `Glossa` поверх стандартных полей `UserAdmin`.
+- `auth_service/README.md` — инструкция `python manage.py createsuperuser`.
+- Проверено вживую: суперюзер создан, логин в `/admin/` проходит, `/admin/users/user/` (список пользователей) отдаёт 200.
