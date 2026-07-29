@@ -247,3 +247,8 @@
 - Для `VocabEntries.translation_*` и `Stories.title_*/body_*` фолбэк через `pick_locale` **не подходит** (нет `translation_en`/у сторис перевод — не по правилу, а исключение из общего правила и должен явно НЕ подменять `body`) — там локаль выбирается прямой веткой в `crud_content.py` (следующие шаги), а не общим хелпером.
 - `Backend/app/schemas/schema_content.py` — `VocabResponse`, `GrammarLessonResponse`(+`Detail` с `examples`/`questions`), `GrammarQuestionResponse`(+`Result` с `explanation`), `QuestionSubmit`/`GrammarSubmitResult`, `WeakTopicResponse`, `StoryResponse`(+`Detail`: `body` — всегда английский, `title_translated`/`body_translated` — отдельные поля для перевода, не подменяют основные), `StoryWordResponse`, `StoryQuestionsSubmit`/`Result`.
 - Проверено вживую: `pick_locale` — реальное значение по локали, пустое значение по локали → фолбэк на `_en`, невалидная локаль → тоже `_en`; `VocabResponse` собирается.
+
+### 5.5. Словарь: crud + роуты
+- `Backend/app/services/crud_content.py` — `vocab_translation` (ru/tg → колонка, en → `None`, без общего `pick_locale`, см. заметку в 5.4), `vocab_to_response`, `get_vocab_entries` (фильтры `level`/`unit`/`search`, пагинация), `get_vocab_entry`.
+- `Backend/app/api/router_content.py` — `router_vocabulary` (без авторизации — системный контент публичный на чтение, в отличие от личных сущностей типа колоды/профиля): `GET /vocabulary` (+`?locale=`), `GET /vocabulary/{id}`.
+- Проверено вживую на двух реальных записях (`dog`/`cat`): фильтр `level=A1` вернул обе; `locale=ru` — `sobaka`/`kot`; `locale=tg` на одной записи — `saг`; `search=do` нашёл только `dog`; без локали (`en`) — `translation: null` (по дизайну — слово уже английское).
