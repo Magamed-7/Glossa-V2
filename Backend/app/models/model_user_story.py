@@ -1,7 +1,8 @@
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, String, UniqueConstraint, func
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, Numeric, String, UniqueConstraint, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.database import Base
@@ -33,4 +34,26 @@ class StoryPurchases(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     story_id: Mapped[int] = mapped_column(ForeignKey('user_stories.id'), nullable=False, index=True)
     buyer_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class StoryExercises(Base):
+    __tablename__ = 'story_exercises'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    story_id: Mapped[int] = mapped_column(ForeignKey('user_stories.id'), nullable=False, index=True)
+    type: Mapped[str] = mapped_column(String, nullable=False)
+    question: Mapped[str] = mapped_column(String, nullable=False)
+    options: Mapped[list | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
+    answer: Mapped[str] = mapped_column(String, nullable=False)
+    explanation: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class StoryExerciseAttempts(Base):
+    __tablename__ = 'story_exercise_attempts'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    exercise_id: Mapped[int] = mapped_column(ForeignKey('story_exercises.id'), nullable=False, index=True)
+    is_correct: Mapped[bool] = mapped_column(Boolean, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

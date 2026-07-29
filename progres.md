@@ -464,3 +464,8 @@
 - `Backend/app/models/model_user_story.py` — новый файл (не `model_content.py`, где живут **системные** `Stories` — у UGC-историй принципиально другая природа: автор, цена, статус модерации): `UserStories` (`author_id`, `title`, `body`, `description` nullable, `cefr_level`, `genre`, `price` nullable — `null`=бесплатная, `image_url`, `status` default `'draft'`, `views_count` default `0`), `StoryPurchases` (`story_id`, `buyer_id`, `UniqueConstraint` на пару).
 - Миграция `alembic/versions/67c51516ffa5_add_user_story_models.py` — без ENUM, цикл `upgrade → downgrade -1 → upgrade` прошёл чисто.
 - Проверено вживую: создал реальную `UserStories`, затем `StoryPurchases` на пару `(story_id, buyer_id)` — первая вставка прошла, повторная **та же пара** → `IntegrityError` на уровне Postgres (`uq_story_purchases_pair` реально защищает от задвоения покупки, не только на уровне будущей бизнес-логики). Тестовые данные подчищены.
+
+### 10.2. Модели упражнений к историям
+- `Backend/app/models/model_user_story.py` пополнен: `StoryExercises` (`story_id`, `type` — vocab/grammar/comprehension/custom, `question`, `options` JSON/JSONB — тот же паттерн, что в `GrammarQuestions`, `answer`, `explanation` nullable), `StoryExerciseAttempts` (`user_id`, `exercise_id`, `is_correct`, `created_at`).
+- Миграция `alembic/versions/0347c6bf9b67_add_story_exercise_models.py`, цикл `upgrade → downgrade -1 → upgrade` чист.
+- Проверено вживую: создал реальную `UserStories` → `StoryExercises` с `story_id` этой истории → `StoryExerciseAttempts` с `user_id` реального пользователя — оба FK встали, упражнение привязано к истории, попытка — к пользователю, ровно как того требует DoD. Тестовые данные подчищены.
