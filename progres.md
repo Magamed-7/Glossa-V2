@@ -217,3 +217,9 @@
 - `crud_card.py` — `get_learning_stats(user_id, db)`: `cards_total`/`due_today` через `func.count()`, `learned_count` по статусу, `forgotten_count`/`retention_rate` по `ReviewLogs` (join на `Cards` через `card_id`, `quality < 3` — забыто, `retention_rate = remembered/total*100`, 0 при отсутствии ревью).
 - `router_deck.py` — третий роутер в файле, `router_learning = APIRouter(prefix='/learning', ...)`, `GET /learning/stats`.
 - Проверено вживую на сценарии: 3 карточки (`apple`/`banana`/`cherry`), ревью `apple` q=5 (в будущее), `banana` q=1 (забыто), `apple` вручную помечена `learned`, `cherry` не трогали → `GET /learning/stats` = `cards_total=3, due_today=1 (только cherry — никогда не ревьюилась), learned_count=1, forgotten_count=1, retention_rate=50.0` — числа сошлись один в один со сценарием.
+
+### 4.10. Аудио произношения
+- `crud_card.py` — `update_audio`. `router_deck.py` — `POST /deck/{card_id}/audio` (`UploadFile` → `storage.upload_file('pronunciations', ...)`).
+- Проверено вживую: файл лёг в бакет `pronunciations`, `audio_url` сохранён в карточке и открывается напрямую (200).
+
+**Фаза 4 закрыта**: SM-2 (каноническая формула, проверена табличкой), полный CRUD колоды, цикл ревью с логом, статистика со сходящимися числами, аудио произношения — всё поверх реальной БД и MinIO, всё проверено живыми HTTP-запросами.

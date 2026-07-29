@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
 from app.core.errors import AppError
+from app.core.storage import upload_file
 from app.db.database import get_db
 from app.schemas.schema_learning import (
     CardCreate,
@@ -78,6 +79,23 @@ async def delete_card(
     current_user=Depends(get_current_user),
 ):
     card = await crud_card.delete_card(card_id, db)
+
+    if card is None:
+        raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
+
+    return card
+
+
+@router_deck.post('/{card_id}/audio', response_model=CardResponse)
+async def upload_card_audio(
+    card_id: int,
+    file: UploadFile,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    file_bytes = await file.read()
+    audio_url = upload_file('pronunciations', file_bytes, file.filename, file.content_type)
+    card = await crud_card.update_audio(card_id, audio_url, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)

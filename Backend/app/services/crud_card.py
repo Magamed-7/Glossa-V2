@@ -73,6 +73,19 @@ async def delete_card(card_id: int, db: AsyncSession):
     return card
 
 
+async def update_audio(card_id: int, audio_url: str, db: AsyncSession):
+    card = await get_card(card_id, db)
+
+    if card is None:
+        return None
+
+    card.audio_url = audio_url
+
+    await db.commit()
+    await db.refresh(card)
+    return card
+
+
 async def get_learning_stats(user_id: int, db: AsyncSession):
     now = datetime.now(timezone.utc)
 
