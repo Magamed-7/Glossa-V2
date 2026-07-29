@@ -86,3 +86,11 @@
 - `users/admin.py` — `GlossaUserAdmin(UserAdmin)`: список с `role`/`is_verified`/`is_staff`, фильтры, доп. fieldset `Glossa` поверх стандартных полей `UserAdmin`.
 - `auth_service/README.md` — инструкция `python manage.py createsuperuser`.
 - Проверено вживую: суперюзер создан, логин в `/admin/` проходит, `/admin/users/user/` (список пользователей) отдаёт 200.
+
+### 2.9. Users-модель и get_current_user в FastAPI
+- `Backend/app/models/model_user.py` — `Users`, `__tablename__='users'`, read-only маппинг на django-таблицу (только нужные колонки: id/username/email/role/is_verified/is_active/created_at — таблица шире, лишние колонки Django не мапятся, и это не проблема, т.к. Alembic ею не владеет).
+- `Backend/app/services/crud_user.py` — `get_by_id`.
+- `Backend/app/api/auth.py` — `get_current_user`: `oauth2_scheme` → `decode_access_token` → **`payload['user_id']`** (не `sub` — это claim, который реально кладёт наш `SIMPLE_JWT.USER_ID_CLAIM` из шага 2.4) → `crud_user.get_by_id`.
+- `Backend/app/api/permissions.py` — `require_roles(roles)`.
+- Заодно (нужно было для 401-ответов вместо `HTTPException`, которого CONVENTIONS.md запрещает): `Backend/app/core/errors.py` — `AppError` + `register_exception_handlers`, подключено в `app/main.py`.
+- Проверено вживую (временный роут вне репозитория, `$CLAUDE_JOB_DIR/tmp/tmp_auth_app.py`, не коммитился): без токена → 401 `NOT_AUTHENTICATED`; с реальным access-токеном, выданным Django, → пользователь из общей `users` таблицы; с мусорным токеном → 401 `INVALID_TOKEN`.

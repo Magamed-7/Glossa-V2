@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.errors import register_exception_handlers
+
 app = FastAPI(title='Glossa 🌍 — Language Learning API')
 
 app.add_middleware(
@@ -10,6 +12,8 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
+
+register_exception_handlers(app)
 
 
 @app.get('/health')
