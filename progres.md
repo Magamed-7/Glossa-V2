@@ -124,3 +124,7 @@
 - `Backend/app/schemas/schema_profile.py` — `ProfileUpdate` (всё Optional), `LanguageAdd`/`LanguageResponse`, `ProfileResponse`, `PublicProfileResponse`.
 - **Отступление от буквы плана**: `PublicProfileResponse` пока **без** `current_streak`/`best_streak`/`followers_count` — этих данных ещё физически нет (стрики и подписчики появятся в фазах 6/7). Тумблеры `ProfilePrivacy` под них всё равно будут созданы в 3.8 один в один по плану (готовим API заранее), а сами поля в паблик-профиль допишу, когда появятся модели. `profile_views` не гейтится тумблером — его нет в списке приватности плана, значит поле безусловное.
 - Проверено вживую: `ProfileUpdate()` — все None; `LanguageAdd(language='English')` — дефолт `level='A1'`; `level='Z9'` — `ValidationError` (не входит в `CEFR_LEVELS`).
+
+### 3.4. CRUD профиля
+- `Backend/app/services/crud_profile.py` — `get_profile` (автосоздание, если записи ещё нет), `update_profile` (паттерн `or`), `increment_profile_views`, `add_language`, `get_user_languages`.
+- Проверено вживую на реальном пользователе (`crudtest`, id=9, потом удалён): автосоздание профиля → `update_profile(bio=...)` → `add_language('English', 'B2')` → `get_user_languages` вернул её → `increment_profile_views` довёл `profile_views` до 1.
