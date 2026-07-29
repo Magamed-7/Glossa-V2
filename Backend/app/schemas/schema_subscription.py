@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
@@ -23,3 +24,8 @@ class MySubscriptionResponse(BaseModel):
     period: str | None
     expires_at: datetime | None
     is_active: bool
+
+
+class SubscribeRequest(BaseModel):
+    plan_code: str
+    period: Literal['monthly', 'yearly']

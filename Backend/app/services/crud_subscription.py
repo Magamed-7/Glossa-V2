@@ -1,9 +1,11 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.errors import AppError
 from app.models.model_subscription import Plans, UserSubscriptions
+from app.services import purchase_service
 
 
 async def get_plans(db: AsyncSession):
@@ -44,3 +46,32 @@ async def get_active_subscription(user_id: int, db: AsyncSession):
         'expires_at': None,
         'is_active': True,
     }
+
+
+async def subscribe_to_plan(user_id: int, plan_code: str, period: str, db: AsyncSession):
+    plan = await get_plan_by_code(plan_code, db)
+
+    if plan is None:
+        raise AppError(code='PLAN_NOT_FOUND', message='Plan not found', status_code=404)
+
+    price = plan.price_monthly if period == 'monthly' else plan.price_yearly
+    duration = timedelta(days=30) if period == 'monthly' else timedelta(days=365)
+    expires_at = datetime.now(timezone.utc) + duration
+
+    async def create_entity(db: AsyncSession):
+        await db.execute(
+            update(UserSubscriptions)
+            .where(UserSubscriptions.user_id == user_id, UserSubscriptions.is_active.is_(True))
+            .values(is_active=False)
+        )
+        db.add(
+            UserSubscriptions(
+                user_id=user_id, plan_id=plan.id, period=period, expires_at=expires_at, is_active=True
+            )
+        )
+
+    await purchase_service.purchase(
+        user_id, price, 'subscription', db, item_id=plan.id, create_entity=create_entity
+    )
+
+    return await get_active_subscription(user_id, db)
