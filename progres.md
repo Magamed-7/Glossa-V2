@@ -68,3 +68,8 @@
 ### 2.4. DRF + SimpleJWT
 - `settings.py`: `rest_framework`/`rest_framework_simplejwt` в `INSTALLED_APPS`, `REST_FRAMEWORK.DEFAULT_AUTHENTICATION_CLASSES = JWTAuthentication`, `SIMPLE_JWT` — `HS256`, `SIGNING_KEY=JWT_SECRET_KEY` из env (тот же секрет, что декодирует FastAPI, см. 1.9), `USER_ID_CLAIM='user_id'`, access 30 мин / refresh 7 дней из env.
 - Проверено вживую (через `manage.py shell`, ещё без урлов — те появятся в 2.5/2.6): `RefreshToken.for_user()` выдал access-токен, вручную декодированный тем же `SIGNING_KEY` — в payload есть `user_id`.
+
+### 2.5. Регистрация
+- `auth_service/users/serializers.py` — `RegisterSerializer`: `username`/`email` объявлены явно с `validators=[]` (иначе DRF's `UniqueValidator` перехватывает раньше моих `validate_*` и даёт родовой текст), свои `validate_email`/`validate_username` с текстами **один в один как Green Shop** (`'Email already exists'`, `'Username already exists'`), `create()` зовёт `User.objects.create_user(...)` — пароль хешируется штатным Django-механизмом.
+- `users/views.py` (`RegisterView`, `CreateAPIView`, `AllowAny`), `users/urls.py` (`POST register`), подключено в `auth_service/urls.py` под `api/auth/`.
+- Проверено вживую: `POST /api/auth/register` создаёт пользователя (пароль в БД — хеш, не plain text), повторный email/username → 400 с текстами выше.
