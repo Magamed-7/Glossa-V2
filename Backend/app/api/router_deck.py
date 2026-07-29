@@ -4,10 +4,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.auth import get_current_user
 from app.core.errors import AppError
 from app.db.database import get_db
-from app.schemas.schema_learning import CardCreate, CardResponse, CardStatusUpdate
-from app.services import crud_card
+from app.schemas.schema_learning import CardCreate, CardResponse, CardStatusUpdate, ReviewResponse, ReviewSubmit
+from app.services import crud_card, review
 
 router_deck = APIRouter(prefix='/deck', tags=['Deck'])
+router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])
 
 
 @router_deck.post('/', response_model=CardResponse)
@@ -69,6 +70,29 @@ async def delete_card(
     current_user=Depends(get_current_user),
 ):
     card = await crud_card.delete_card(card_id, db)
+
+    if card is None:
+        raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
+
+    return card
+
+
+@router_reviews.get('/today', response_model=list[CardResponse])
+async def get_reviews_today(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await review.get_due_cards(current_user.id, db)
+
+
+@router_reviews.post('/{card_id}', response_model=ReviewResponse)
+async def submit_review(
+    card_id: int,
+    data: ReviewSubmit,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    card = await review.submit_review(card_id, data.quality, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)

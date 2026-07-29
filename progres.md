@@ -207,3 +207,8 @@
 - `Backend/app/services/review.py` — `get_due_cards(user_id, db)` (новые карточки `next_review_date IS NULL` **или** просроченные `<= now()`), `submit_review(card_id, quality, db)` (гоняет `sm2.apply_sm2`, обновляет карточку, пишет `ReviewLogs`).
 - Миграция `alembic/versions/5d59f9cf8c02_add_review_logs_table.py`.
 - Проверено вживую: новая карточка сразу видна в `get_due_cards`; после `submit_review(quality=5)` — `interval=1, repetitions=1`, `next_review_date` ушёл в завтра, `last_quality=5`, и карточка **пропала** из `get_due_cards` (следующая дата в будущем); в `review_logs` появилась строка `(card_id, quality=5)`.
+
+### 4.8. Роуты ревью
+- `Backend/app/api/router_deck.py` — добавлен второй роутер в том же файле, `router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])` (в одном файле с `router_deck` — так же, как план держит колоду и ревью в одном `routes.py`; домен один — «обучение»): `GET /reviews/today`, `POST /reviews/{card_id}` (`ReviewSubmit`). Подключён в `main.py`.
+- Проверено вживую: карточка видна в `/reviews/today`; `POST /reviews/{id}` с `quality=4` двигает `next_review_date`; карточка **пропадает** из `/reviews/today` — DoD выполнен буквально.
+- Попутный урок: чистка тестовых данных должна идти в порядке FK — сперва `review_logs`/`cards` (владеет FastAPI/Alembic), потом django-пользователь, иначе `IntegrityError` (`cards_user_id_fkey`) — обратный порядок один раз словил на этом шаге.
