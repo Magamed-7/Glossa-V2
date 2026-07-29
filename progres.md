@@ -252,3 +252,8 @@
 - `Backend/app/services/crud_content.py` — `vocab_translation` (ru/tg → колонка, en → `None`, без общего `pick_locale`, см. заметку в 5.4), `vocab_to_response`, `get_vocab_entries` (фильтры `level`/`unit`/`search`, пагинация), `get_vocab_entry`.
 - `Backend/app/api/router_content.py` — `router_vocabulary` (без авторизации — системный контент публичный на чтение, в отличие от личных сущностей типа колоды/профиля): `GET /vocabulary` (+`?locale=`), `GET /vocabulary/{id}`.
 - Проверено вживую на двух реальных записях (`dog`/`cat`): фильтр `level=A1` вернул обе; `locale=ru` — `sobaka`/`kot`; `locale=tg` на одной записи — `saг`; `search=do` нашёл только `dog`; без локали (`en`) — `translation: null` (по дизайну — слово уже английское).
+
+### 5.6. Грамматика: список и детали
+- `crud_content.py` — `lesson_to_response`, `question_to_response`/`question_to_result_response` (через `pick_locale` — здесь он честно подходит, `text_en`/`explanation_en` реально существуют), `get_grammar_lessons` (фильтры level/unit), `get_grammar_lesson`, `get_lesson_examples`, `get_lesson_questions`, `get_lesson_detail` (правило + примеры + вопросы одним вызовом).
+- `router_content.py` — `router_grammar`: `GET /grammar` (список), `GET /grammar/{id}?locale=` (деталь).
+- Проверено вживую на реальном уроке (`rule_en` заполнен, `rule_tg` заполнен, `rule_ru` пуст): `locale=en` → английское правило; `locale=tg` → таджикское; `locale=ru` (пусто в БД) → фолбэк на английское — `pick_locale` отрабатывает все три ветки на реальных данных, не только в юнит-тесте.
