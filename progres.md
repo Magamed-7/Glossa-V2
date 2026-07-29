@@ -181,3 +181,7 @@
 - `Backend/app/models/model_card.py` — `Cards`: `word`/`translation`/`example`/`audio_url`, `status` default `'learning'`, `source_story_id` (nullable, для будущей привязки к пользовательским историям фазы 10), поля SM-2 — `ease_factor` default 2.5, `interval`/`repetitions` default 0, `next_review_date` nullable (новая карточка ещё не проходила ревью), `last_quality` nullable.
 - `ReviewLogs` **не** создаю сейчас — по плану она появляется вместе с сервисом ревью в 4.7, хотя они и «связанные» (не стал заранее тащить в этот файл, чтобы не размывать границу шага).
 - Проверено вживую: `Base.metadata.tables['cards']` содержит все перечисленные в плане поля.
+
+### 4.2. Миграция карточек
+- `Backend/alembic/versions/85c2ff7004b2_create_cards_table.py`.
+- Проверено вживую: `upgrade head` создал таблицу, `downgrade -1` откатил, `upgrade head` снова накатил.
