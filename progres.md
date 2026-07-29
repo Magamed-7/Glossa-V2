@@ -41,3 +41,9 @@
 ### 1.8. Redis-клиент
 - `Backend/app/core/redis_client.py` — `redis.asyncio.from_url(settings.REDIS_URL, decode_responses=True)`, синглтон `redis_client`, `get_redis()` для Depends.
 - Проверено вживую: `ping()` к докеровскому redis (6379) → True.
+
+### 1.9. JWT-хелперы FastAPI
+- `Backend/app/core/security.py` — `oauth2_scheme` (`OAuth2PasswordBearer`, `auto_error=False`), `decode_access_token()` через `python-jose` с `settings.JWT_SECRET_KEY`/`JWT_ALGORITHM`. FastAPI здесь **только валидирует** — выдачей токенов занимается Django (фаза 2), поэтому в отличие от `Bon Appetit/security.py` тут нет `hash_password`/`create_access_token`.
+- Проверено вживую: токен, подписанный тем же `JWT_SECRET_KEY`, декодируется; просроченный и мусорный токен → `None`.
+
+**Фаза 1 закрыта**: `uvicorn app.main:app`, `/health`, `/docs`, postgres+redis (докер на 5433/6379 + нативный postgres на 5432 с уже готовой `GlossaV2`), alembic, redis-клиент и JWT-валидация — всё проверено вживую.
