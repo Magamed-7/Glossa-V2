@@ -4,7 +4,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
+from app.core.event_bus import publish_event
 from app.models.model_payment import Purchases, UserBalances
+from app.tasks.payments import process_payment_event
 
 
 async def _get_locked_balance(user_id: int, db: AsyncSession):
@@ -58,6 +60,20 @@ async def purchase(
             await create_entity(db)
 
         await db.commit()
+
+        await publish_event(
+            'payment_events',
+            {
+                'buyer_id': buyer_id,
+                'item_type': item_type,
+                'item_id': item_id,
+                'amount': str(total_price),
+                'seller_id': seller_id,
+                'seller_income': str(seller_income) if seller_income is not None else None,
+            },
+            fallback_task=process_payment_event,
+        )
+
         return purchase_record
     except Exception:
         await db.rollback()
