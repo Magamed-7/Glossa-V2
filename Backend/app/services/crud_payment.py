@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
-from app.models.model_payment import UserBalances
+from app.models.model_payment import Purchases, UserBalances
 
 
 async def get_or_create_balance(user_id: int, db: AsyncSession):
@@ -26,7 +26,19 @@ async def topup_balance(user_id: int, amount: Decimal, db: AsyncSession):
 
     balance = await get_or_create_balance(user_id, db)
     balance.balance += amount
+    db.add(Purchases(buyer_id=user_id, item_type='topup', amount=amount))
 
     await db.commit()
     await db.refresh(balance)
     return balance
+
+
+async def get_payment_history(user_id: int, db: AsyncSession, limit: int = 20, offset: int = 0):
+    result = await db.execute(
+        select(Purchases)
+        .where(Purchases.buyer_id == user_id)
+        .order_by(Purchases.created_at.desc())
+        .limit(limit)
+        .offset(offset)
+    )
+    return result.scalars().all()

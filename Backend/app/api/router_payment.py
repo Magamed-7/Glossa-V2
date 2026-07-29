@@ -9,12 +9,14 @@ from app.schemas.schema_payment import (
     BalanceResponse,
     CheckoutSessionRequest,
     CheckoutSessionResponse,
+    PaymentHistoryEntry,
     TopupRequest,
 )
 from app.services import crud_payment, stripe_service
 
 router_payment = APIRouter(prefix='/balance', tags=['Payments'])
 router_stripe = APIRouter(prefix='/stripe', tags=['Stripe'])
+router_payments_history = APIRouter(prefix='/payments', tags=['Payments'])
 
 
 @router_payment.get('', response_model=BalanceResponse)
@@ -59,3 +61,13 @@ async def stripe_webhook(
         await crud_payment.topup_balance(user_id, amount, db)
 
     return {'status': 'ok'}
+
+
+@router_payments_history.get('/history', response_model=list[PaymentHistoryEntry])
+async def get_payment_history(
+    limit: int = 20,
+    offset: int = 0,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_payment.get_payment_history(current_user.id, db, limit=limit, offset=offset)
