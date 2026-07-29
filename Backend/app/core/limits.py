@@ -109,3 +109,45 @@ async def enforce_own_story_limit(
 
     await incr_weekly(current_user.id, 'own_stories_per_week')
     return current_user
+
+
+def ai_seconds_key(user_id: int):
+    today = datetime.now(timezone.utc).date().isoformat()
+    return f'ai:seconds:{user_id}:{today}'
+
+
+async def get_ai_seconds_used(user_id: int):
+    value = await redis_client.get(ai_seconds_key(user_id))
+    return int(value) if value else 0
+
+
+async def add_ai_seconds(user_id: int, seconds: int):
+    key = ai_seconds_key(user_id)
+    value = await redis_client.incrby(key, seconds)
+
+    if value == seconds:
+        await redis_client.expire(key, _seconds_until_midnight_utc())
+
+    return value
+
+
+async def require_ai_access(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    from app.services import crud_subscription
+
+    subscription = await crud_subscription.get_active_subscription(current_user.id, db)
+    limit = subscription['plan'].ai_seconds_per_day
+
+    if limit == 0:
+        raise AppError(
+            code='AI_ACCESS_DENIED', message='AI chat is available for premium plans', status_code=403
+        )
+
+    if limit is not None and await get_ai_seconds_used(current_user.id) >= limit:
+        raise AppError(
+            code='AI_LIMIT_REACHED', message='Daily AI time limit reached, upgrade your plan', status_code=403
+        )
+
+    return current_user
