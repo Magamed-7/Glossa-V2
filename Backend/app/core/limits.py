@@ -105,7 +105,7 @@ async def enforce_own_story_limit(
     db: AsyncSession = Depends(get_db),
 ):
     if not await check_limit(current_user.id, 'own_stories_per_week', db):
-        raise AppError(code='LIMIT_REACHED', message='Daily limit reached, upgrade your plan', status_code=403)
+        raise AppError(code='LIMIT_REACHED', message='Weekly limit reached, upgrade your plan', status_code=403)
 
     await incr_weekly(current_user.id, 'own_stories_per_week')
     return current_user
