@@ -84,6 +84,11 @@ class ExerciseSubmit(BaseModel):
     answers: list[ExerciseSubmitAnswer]
 
 
+class ExerciseSubmitResult(BaseModel):
+    total: int
+    correct: int
+
+
 class ReviewCreate(BaseModel):
     rating: int = Field(ge=1, le=5)
     text: str | None = None

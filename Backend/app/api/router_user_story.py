@@ -8,6 +8,10 @@ from app.core.limits import enforce_own_story_limit
 from app.core.storage import upload_file
 from app.db.database import get_db
 from app.schemas.schema_user_story import (
+    ExerciseCreate,
+    ExerciseResponse,
+    ExerciseSubmit,
+    ExerciseSubmitResult,
     UserStoryCreate,
     UserStoryDetailResponse,
     UserStoryResponse,
@@ -109,6 +113,26 @@ async def buy_story(
 ):
     await crud_user_story.buy_story(story_id, current_user.id, db)
     return {'status': 'purchased'}
+
+
+@router_user_story.post('/{story_id}/exercises', response_model=ExerciseResponse)
+async def create_exercise(
+    story_id: int,
+    data: ExerciseCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_user_story.create_story_exercise(story_id, current_user.id, data, db)
+
+
+@router_user_story.post('/{story_id}/exercises/submit', response_model=ExerciseSubmitResult)
+async def submit_exercises(
+    story_id: int,
+    data: ExerciseSubmit,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_user_story.submit_story_exercises(story_id, current_user.id, data.answers, db)
 
 
 @router_user_story.post('/{story_id}/cover', response_model=UserStoryResponse)

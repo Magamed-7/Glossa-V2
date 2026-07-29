@@ -4,9 +4,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
-from app.models.model_user_story import StoryPurchases, UserStories
-from app.schemas.schema_user_story import UserStoryCreate, UserStoryUpdate
-from app.services import crud_subscription, purchase_service
+from app.models.model_user_story import StoryExerciseAttempts, StoryExercises, StoryPurchases, UserStories
+from app.schemas.schema_user_story import ExerciseCreate, UserStoryCreate, UserStoryUpdate
+from app.services import crud_subscription, purchase_service, ratings
 
 SELLER_SHARE = Decimal('0.7')
 
@@ -195,3 +195,72 @@ async def buy_story(story_id: int, buyer_id: int, db: AsyncSession):
         seller_share=SELLER_SHARE,
         create_entity=create_entity,
     )
+
+
+async def create_story_exercise(story_id: int, author_id: int, data: ExerciseCreate, db: AsyncSession):
+    story = await get_user_story(story_id, db)
+
+    if story is None:
+        raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    if story.author_id != author_id:
+        raise AppError(
+            code='NOT_STORY_AUTHOR', message='Only the author can add exercises', status_code=403
+        )
+
+    exercise = StoryExercises(
+        story_id=story_id,
+        type=data.type,
+        question=data.question,
+        options=data.options,
+        answer=data.answer,
+        explanation=data.explanation,
+    )
+
+    db.add(exercise)
+    await db.commit()
+    await db.refresh(exercise)
+    return exercise
+
+
+async def get_story_exercises(story_id: int, db: AsyncSession):
+    result = await db.execute(select(StoryExercises).where(StoryExercises.story_id == story_id))
+    return result.scalars().all()
+
+
+async def submit_story_exercises(story_id: int, user_id: int, answers, db: AsyncSession):
+    story = await get_user_story(story_id, db)
+
+    if story is None:
+        raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    if not await has_story_access(story, user_id, db):
+        raise AppError(code='ACCESS_DENIED', message='You do not have access to this story', status_code=403)
+
+    exercises = await get_story_exercises(story_id, db)
+    exercises_by_id = {exercise.id: exercise for exercise in exercises}
+
+    correct = 0
+
+    for answer in answers:
+        exercise = exercises_by_id.get(answer.exercise_id)
+
+        if exercise is None:
+            continue
+
+        is_correct = answer.answer.strip().lower() == exercise.answer.strip().lower()
+
+        if is_correct:
+            correct += 1
+
+        db.add(StoryExerciseAttempts(user_id=user_id, exercise_id=exercise.id, is_correct=is_correct))
+
+    await db.commit()
+
+    for _ in range(correct):
+        await ratings.award_xp(user_id, 'review_passed', db)
+
+    return {
+        'total': len(answers),
+        'correct': correct,
+    }
