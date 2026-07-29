@@ -1,0 +1,74 @@
+from datetime import datetime, timedelta, timezone
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.redis_client import redis_client
+
+DAILY_LIMIT_FIELDS = {'stories_per_day', 'deck_words_per_day'}
+WEEKLY_LIMIT_FIELDS = {'own_stories_per_week'}
+
+
+def _seconds_until_midnight_utc():
+    now = datetime.now(timezone.utc)
+    tomorrow = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    return int((tomorrow - now).total_seconds())
+
+
+def _seconds_until_next_iso_week():
+    now = datetime.now(timezone.utc)
+    days_until_monday = (7 - now.weekday()) % 7 or 7
+    next_monday = (now + timedelta(days=days_until_monday)).replace(hour=0, minute=0, second=0, microsecond=0)
+    return int((next_monday - now).total_seconds())
+
+
+def daily_key(user_id: int, name: str):
+    today = datetime.now(timezone.utc).date().isoformat()
+    return f'limit:daily:{name}:{user_id}:{today}'
+
+
+def weekly_key(user_id: int, name: str):
+    year, week, _ = datetime.now(timezone.utc).isocalendar()
+    return f'limit:weekly:{name}:{user_id}:{year}-W{week:02d}'
+
+
+async def incr_daily(user_id: int, name: str):
+    key = daily_key(user_id, name)
+    value = await redis_client.incr(key)
+
+    if value == 1:
+        await redis_client.expire(key, _seconds_until_midnight_utc())
+
+    return value
+
+
+async def incr_weekly(user_id: int, name: str):
+    key = weekly_key(user_id, name)
+    value = await redis_client.incr(key)
+
+    if value == 1:
+        await redis_client.expire(key, _seconds_until_next_iso_week())
+
+    return value
+
+
+async def get_daily(user_id: int, name: str):
+    value = await redis_client.get(daily_key(user_id, name))
+    return int(value) if value else 0
+
+
+async def get_weekly(user_id: int, name: str):
+    value = await redis_client.get(weekly_key(user_id, name))
+    return int(value) if value else 0
+
+
+async def check_limit(user_id: int, name: str, db: AsyncSession):
+    from app.services import crud_subscription
+
+    subscription = await crud_subscription.get_active_subscription(user_id, db)
+    limit = getattr(subscription['plan'], name)
+
+    if limit is None:
+        return True
+
+    current = await get_daily(user_id, name) if name in DAILY_LIMIT_FIELDS else await get_weekly(user_id, name)
+    return current < limit
