@@ -47,3 +47,11 @@
 - Проверено вживую: токен, подписанный тем же `JWT_SECRET_KEY`, декодируется; просроченный и мусорный токен → `None`.
 
 **Фаза 1 закрыта**: `uvicorn app.main:app`, `/health`, `/docs`, postgres+redis (докер на 5433/6379 + нативный postgres на 5432 с уже готовой `GlossaV2`), alembic, redis-клиент и JWT-валидация — всё проверено вживую.
+
+## Фаза 2 — Django auth-сервис
+
+### 2.1. Скелет Django-проекта
+- `Backend/auth_service/manage.py`, `auth_service/auth_service/{settings.py,urls.py,wsgi.py,asgi.py}` — стандартный `django-admin startproject`.
+- `settings.py`: `SECRET_KEY` = `JWT_SECRET_KEY` из общего `.env` (тот же секрет, которым FastAPI validates JWT), `DATABASES` — postgres через `psycopg2`, читает `POSTGRES_DB/USER/PASSWORD` + новые `DB_HOST=localhost`/`DB_PORT=5432` (специально отдельно от `POSTGRES_PORT=5433`, который остаётся портом **докеровского** postgres из шага 1.6 — Django и FastAPI оба смотрят на нативный инстанс на 5432, где уже лежит `GlossaV2`).
+- `Backend/requirements.txt` пополнен: `django`, `djangorestframework`, `djangorestframework-simplejwt`, `psycopg2-binary`.
+- Проверено вживую: `manage.py check` — чисто; `manage.py runserver 8011` (мой тестовый порт) — `/admin/login/` отдаёт 200.
