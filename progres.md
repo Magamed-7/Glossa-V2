@@ -405,3 +405,8 @@
 - `Backend/app/models/model_payment.py` — `UserBalances` (`user_id` unique, `balance` — `Numeric(10,2)` default `0`, `created_at`/`updated_at` с `onupdate=func.now()` — единственная модель в проекте, где понадобился `onupdate`, т.к. баланс меняется многократно после создания записи, в отличие от, например, `Cards`, где обновления идут через явные поля без отдельного `updated_at`).
 - Миграция `alembic/versions/cbc6941af241_add_user_balance_model.py` — без ENUM, цикл `upgrade → downgrade -1 → upgrade` прошёл чисто с первого раза.
 - Проверено вживую: таблица `user_balances` создана, `user_id` уникален на уровне индекса, `balance` — Decimal с 2 знаками после запятой.
+
+### 9.2. CRUD баланса
+- `Backend/app/services/crud_payment.py` — `get_or_create_balance(user_id, db)` (автосоздание записи с `balance=0` при первом обращении, тот же паттерн, что в `crud_settings`/`streaks`), `topup_balance(user_id, amount, db)` (`amount <= 0` → `AppError('INVALID_AMOUNT', 'Amount must be positive', 400)`, иначе прибавляет к текущему балансу).
+- `Backend/app/schemas/schema_payment.py` — `BalanceResponse` (`Decimal`, `from_attributes=True`), `TopupRequest` (`amount: Decimal`).
+- Проверено вживую на реальном пользователе: первый `get_or_create_balance` → `0.00`, второй вызов сразу следом → тоже `0.00` и прямым `COUNT` по таблице подтвердил, что строка ровно одна (не задвоилась); `topup_balance(100)` → `100.00`; `topup_balance(-5)` → `AppError INVALID_AMOUNT` — оба пункта DoD подтверждены. Тестовые данные подчищены.
