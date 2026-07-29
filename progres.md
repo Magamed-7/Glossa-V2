@@ -189,3 +189,7 @@
 ### 4.3. Алгоритм SM-2
 - `Backend/app/services/sm2.py` — `apply_sm2(ease_factor, interval, repetitions, quality)`, чистая функция без БД, каноническая формула SM-2 (без префикса `crud_`, как алгоритмы в CONVENTIONS §1).
 - Проверено вживую табличкой из плана: `q=5` три раза подряд от `ease=2.5,interval=0,repetitions=0` → интервалы `1 → 6 → 16` (третий — `round(6*2.7)`, «EF*»), EF растёт `2.5→2.6→2.7→2.8`; `q=2` после серии успешных — `repetitions` сбрасывается в 0, `interval=1`; повторные `q=0` от `ease=1.3` — EF не проваливается ниже 1.3 (пол работает).
+
+### 4.4. Схемы learning
+- `Backend/app/schemas/schema_learning.py` — `CardCreate`, `CardStatusUpdate` (`Literal` статусов), `CardResponse`, `ReviewSubmit` (`quality: int = Field(ge=0, le=5)`), `ReviewResponse`, `LearningStats`.
+- Проверено вживую: `quality=7` → `ValidationError`; `quality=5` проходит.
