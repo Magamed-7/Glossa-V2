@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from decimal import Decimal
+
+from fastapi import APIRouter, Depends, Header, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
@@ -39,3 +41,21 @@ async def create_checkout_session(
 ):
     url = stripe_service.create_checkout_session(current_user.id, data.amount, data.currency)
     return {'url': url}
+
+
+@router_stripe.post('/webhook')
+async def stripe_webhook(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    stripe_signature: str | None = Header(default=None),
+):
+    payload = await request.body()
+    event = stripe_service.construct_webhook_event(payload, stripe_signature)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        user_id = int(session['metadata']['user_id'])
+        amount = Decimal(session['amount_total']) / 100
+        await crud_payment.topup_balance(user_id, amount, db)
+
+    return {'status': 'ok'}

@@ -35,3 +35,15 @@ def create_checkout_session(user_id: int, amount: Decimal, currency: str = 'usd'
     )
 
     return session.url
+
+
+def construct_webhook_event(payload: bytes, signature: str | None):
+    require_stripe_configured()
+
+    if not settings.STRIPE_WEBHOOK_SECRET:
+        raise AppError(code='STRIPE_NOT_CONFIGURED', message='Stripe is not configured', status_code=400)
+
+    try:
+        return stripe.Webhook.construct_event(payload, signature, settings.STRIPE_WEBHOOK_SECRET)
+    except (ValueError, stripe.error.SignatureVerificationError):
+        raise AppError(code='INVALID_STRIPE_SIGNATURE', message='Invalid Stripe signature', status_code=400)
