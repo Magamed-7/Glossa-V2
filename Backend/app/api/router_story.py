@@ -10,6 +10,7 @@ from app.schemas.schema_content import (
     StoryDetailResponse,
     StoryResponse,
 )
+from app.schemas.schema_learning import CardResponse
 from app.services import crud_story
 
 router_stories = APIRouter(prefix='/stories', tags=['Stories'])
@@ -57,3 +58,19 @@ async def update_story_progress(
     current_user=Depends(get_current_user),
 ):
     return await crud_story.upsert_reading_progress(current_user.id, story_id, data, db)
+
+
+@router_stories.post('/{story_id}/words/{word_id}/add-to-deck', response_model=CardResponse)
+async def add_story_word_to_deck(
+    story_id: int,
+    word_id: int,
+    locale: str = 'ru',
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    card = await crud_story.add_story_word_to_deck(word_id, current_user.id, locale, db)
+
+    if card is None:
+        raise AppError(code='STORY_WORD_NOT_FOUND', message='Story word not found', status_code=404)
+
+    return card

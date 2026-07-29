@@ -275,3 +275,9 @@
 - `crud_story.py` — `upsert_reading_progress` (найти-или-создать + `is not None` на оба Boolean/Integer поля), `get_my_reading_progress`.
 - `router_story.py` — `GET /stories/my-progress` объявлен **до** `GET /stories/{id}` (тот же порядок роутов, что и в 5.7), `POST /stories/{id}/progress`.
 - Проверено вживую: первый `POST` создаёт запись (`is_completed=false`, `last_position=50`), второй `POST` **апсертит** ту же запись (`is_completed=true`, `last_position=100` — не дублирует строку благодаря уникальному индексу и поиску перед вставкой), `GET /stories/my-progress` отражает финальное состояние.
+
+### 5.10. Слово из истории — в колоду
+- `crud_card.create_card` получил необязательный `source_story_id=None` (без ломки существующих вызовов из `router_deck.py`).
+- `crud_story.py` — `add_story_word_to_deck(word_id, user_id, locale, db)`: берёт `StoryWords`, переводом карточки становится `translation_tg` при `locale='tg'`, иначе `translation_ru`; зовёт `crud_card.create_card` напрямую (без дублирования проверки дубликата — она уже в `create_card`), контекст слова уходит в `example`.
+- `router_story.py` — `POST /stories/{story_id}/words/{word_id}/add-to-deck`.
+- Проверено вживую: слово `nervous` (с контекстом и обоими переводами) добавилось в колоду с `translation`/`example`/`source_story_id=3`; повторный вызов → 400 `CARD_ALREADY_EXISTS` (переиспользуется проверка из 4.5, не задвоена).

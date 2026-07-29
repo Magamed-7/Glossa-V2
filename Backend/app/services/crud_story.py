@@ -2,6 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
+from app.schemas.schema_learning import CardCreate
+from app.services import crud_card
 
 
 def story_to_response(story: Stories):
@@ -114,3 +116,15 @@ async def upsert_reading_progress(user_id: int, story_id: int, data, db: AsyncSe
 async def get_my_reading_progress(user_id: int, db: AsyncSession):
     result = await db.execute(select(ReadingProgress).where(ReadingProgress.user_id == user_id))
     return result.scalars().all()
+
+
+async def add_story_word_to_deck(word_id: int, user_id: int, locale: str, db: AsyncSession):
+    word = await get_story_word(word_id, db)
+
+    if word is None:
+        return None
+
+    translation = word.translation_tg if locale == 'tg' else word.translation_ru
+
+    data = CardCreate(word=word.word, translation=translation, example=word.context)
+    return await crud_card.create_card(data, user_id, db, source_story_id=word.story_id)

@@ -8,7 +8,7 @@ from app.models.model_card import Cards, ReviewLogs
 from app.schemas.schema_learning import CardCreate, CardStatusUpdate
 
 
-async def create_card(data: CardCreate, user_id: int, db: AsyncSession):
+async def create_card(data: CardCreate, user_id: int, db: AsyncSession, source_story_id=None):
     existing = await db.execute(
         select(Cards).where(Cards.user_id == user_id, Cards.word == data.word)
     )
@@ -21,6 +21,7 @@ async def create_card(data: CardCreate, user_id: int, db: AsyncSession):
         word=data.word,
         translation=data.translation,
         example=data.example,
+        source_story_id=source_story_id,
     )
 
     db.add(card)
