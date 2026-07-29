@@ -414,3 +414,9 @@
 ### 9.3. Эндпоинты баланса
 - `Backend/app/api/router_payment.py` — `router_payment` (`prefix='/balance'`): `GET /balance` (авто-создание при первом обращении через `get_or_create_balance`), `POST /balance/topup` (тестовое пополнение — реальная оплата придёт через Stripe в 9.4-9.6). Подключено в `main.py`.
 - Проверено вживую на реальном пользователе: `GET /balance` → `{"balance":"0.00"}`; `POST /balance/topup {"amount":100}` → `{"balance":"100.00"}` — ровно 100.00, как того требует DoD; `POST /balance/topup {"amount":-5}` → `400`. Тестовые данные подчищены.
+
+### 9.4. Конфиг Stripe
+- `Backend/app/core/config.py` — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` (пустая строка по умолчанию, а не `None` — чтобы `if not settings.STRIPE_SECRET_KEY` работало без доп. проверки на `None`), `STRIPE_SUCCESS_URL`/`STRIPE_CANCEL_URL` (дефолт на фронтовые `/payment/success`/`/payment/cancel`).
+- `.env.example` пополнен теми же 4 переменными; `requirements.txt` — добавлен `stripe==15.3.1` (и его собственные новые транзитивные зависимости `certifi`/`charset-normalizer`/`requests`, которых раньше в проекте не было — до этого никто не делал реальных HTTP-запросов наружу).
+- DoD этого шага ("пустые ключи → stripe-роуты отвечают 400") **физически не может быть проверен прямо сейчас** — самих stripe-роутов ещё нет, они появятся в 9.5/9.6. Это отложенная проверка, аналогично 8.6 (зависимость создана, подключение и тест — позже); реально протестирую это как часть DoD шага 9.5.
+- Проверено вживую: `settings.STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` при пустом `.env` → `''` (не падает, не `None`), URL'ы — дефолтные значения подставились.

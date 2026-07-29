@@ -26,6 +26,11 @@ class Settings:
 
     TG_BOT: str = os.getenv('TG_BOT', '')
 
+    STRIPE_SECRET_KEY: str = os.getenv('STRIPE_SECRET_KEY', '')
+    STRIPE_WEBHOOK_SECRET: str = os.getenv('STRIPE_WEBHOOK_SECRET', '')
+    STRIPE_SUCCESS_URL: str = os.getenv('STRIPE_SUCCESS_URL', 'http://localhost:5173/payment/success')
+    STRIPE_CANCEL_URL: str = os.getenv('STRIPE_CANCEL_URL', 'http://localhost:5173/payment/cancel')
+
     EMAIL_HOST: str = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_PORT: int = int(os.getenv('EMAIL_PORT', '587'))
     EMAIL_USE_TLS: bool = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
