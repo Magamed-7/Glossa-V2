@@ -410,3 +410,7 @@
 - `Backend/app/services/crud_payment.py` — `get_or_create_balance(user_id, db)` (автосоздание записи с `balance=0` при первом обращении, тот же паттерн, что в `crud_settings`/`streaks`), `topup_balance(user_id, amount, db)` (`amount <= 0` → `AppError('INVALID_AMOUNT', 'Amount must be positive', 400)`, иначе прибавляет к текущему балансу).
 - `Backend/app/schemas/schema_payment.py` — `BalanceResponse` (`Decimal`, `from_attributes=True`), `TopupRequest` (`amount: Decimal`).
 - Проверено вживую на реальном пользователе: первый `get_or_create_balance` → `0.00`, второй вызов сразу следом → тоже `0.00` и прямым `COUNT` по таблице подтвердил, что строка ровно одна (не задвоилась); `topup_balance(100)` → `100.00`; `topup_balance(-5)` → `AppError INVALID_AMOUNT` — оба пункта DoD подтверждены. Тестовые данные подчищены.
+
+### 9.3. Эндпоинты баланса
+- `Backend/app/api/router_payment.py` — `router_payment` (`prefix='/balance'`): `GET /balance` (авто-создание при первом обращении через `get_or_create_balance`), `POST /balance/topup` (тестовое пополнение — реальная оплата придёт через Stripe в 9.4-9.6). Подключено в `main.py`.
+- Проверено вживую на реальном пользователе: `GET /balance` → `{"balance":"0.00"}`; `POST /balance/topup {"amount":100}` → `{"balance":"100.00"}` — ровно 100.00, как того требует DoD; `POST /balance/topup {"amount":-5}` → `400`. Тестовые данные подчищены.

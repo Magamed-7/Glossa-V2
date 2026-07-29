@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.router_achievement import router_achievement
 from app.api.router_content import router_grammar, router_vocabulary
 from app.api.router_deck import router_deck, router_learning, router_reviews
+from app.api.router_payment import router_payment
 from app.api.router_profile import router_profile
 from app.api.router_rating import router_rating
 from app.api.router_settings import router_settings
@@ -47,6 +48,7 @@ app.include_router(router_social)
 app.include_router(router_achievement)
 app.include_router(router_rating)
 app.include_router(router_subscription)
+app.include_router(router_payment)
 
 
 @app.get('/health')
