@@ -70,7 +70,8 @@ class WeakTopicResponse(BaseModel):
 class StoryWordResponse(BaseModel):
     id: int
     word: str
-    translation: str | None
+    translation_ru: str | None
+    translation_tg: str | None
     part_of_speech: str | None
     context: str | None
 

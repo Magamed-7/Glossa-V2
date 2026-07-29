@@ -1,0 +1,85 @@
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.model_content import Stories, StoryQuestions, StoryWords
+
+
+def story_to_response(story: Stories):
+    return {
+        'id': story.id,
+        'title': story.title_en,
+        'cefr_level': story.cefr_level,
+        'genre': story.genre,
+        'grammar_topic': story.grammar_topic,
+        'image_url': story.image_url,
+    }
+
+
+def story_translation(story: Stories, locale: str, field_prefix: str):
+    if locale == 'ru':
+        return getattr(story, f'{field_prefix}_ru')
+    if locale == 'tg':
+        return getattr(story, f'{field_prefix}_tg')
+    return None
+
+
+async def get_stories(db: AsyncSession, level=None, genre=None, limit=20, offset=0):
+    query = select(Stories)
+
+    if level:
+        query = query.where(Stories.cefr_level == level)
+    if genre:
+        query = query.where(Stories.genre == genre)
+
+    query = query.order_by(Stories.id).limit(limit).offset(offset)
+    result = await db.execute(query)
+    return result.scalars().all()
+
+
+async def get_story(story_id: int, db: AsyncSession):
+    result = await db.execute(select(Stories).where(Stories.id == story_id))
+    return result.scalar_one_or_none()
+
+
+async def get_story_words(story_id: int, db: AsyncSession):
+    result = await db.execute(select(StoryWords).where(StoryWords.story_id == story_id))
+    return result.scalars().all()
+
+
+async def get_story_word(word_id: int, db: AsyncSession):
+    result = await db.execute(select(StoryWords).where(StoryWords.id == word_id))
+    return result.scalar_one_or_none()
+
+
+async def get_story_questions(story_id: int, db: AsyncSession):
+    result = await db.execute(select(StoryQuestions).where(StoryQuestions.story_id == story_id))
+    return result.scalars().all()
+
+
+async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
+    story = await get_story(story_id, db)
+
+    if story is None:
+        return None
+
+    words = await get_story_words(story_id, db)
+    questions = await get_story_questions(story_id, db)
+
+    return {
+        **story_to_response(story),
+        'body': story.body_en,
+        'title_translated': story_translation(story, locale, 'title'),
+        'body_translated': story_translation(story, locale, 'body'),
+        'words': [
+            {
+                'id': w.id,
+                'word': w.word,
+                'translation_ru': w.translation_ru,
+                'translation_tg': w.translation_tg,
+                'part_of_speech': w.part_of_speech,
+                'context': w.context,
+            }
+            for w in words
+        ],
+        'questions': [{'id': q.id, 'text': q.text, 'options': q.options} for q in questions],
+    }
