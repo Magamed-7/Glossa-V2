@@ -7,10 +7,31 @@ from app.core.errors import AppError
 from app.core.limits import enforce_own_story_limit
 from app.core.storage import upload_file
 from app.db.database import get_db
-from app.schemas.schema_user_story import UserStoryCreate, UserStoryResponse, UserStoryUpdate
+from app.schemas.schema_user_story import (
+    UserStoryCreate,
+    UserStoryDetailResponse,
+    UserStoryResponse,
+    UserStoryUpdate,
+)
 from app.services import crud_user_story
 
 router_user_story = APIRouter(prefix='/user-stories', tags=['User Stories'])
+
+
+@router_user_story.get('', response_model=list[UserStoryResponse])
+async def get_stories(
+    level: str | None = None,
+    genre: str | None = None,
+    is_free: bool | None = None,
+    author_id: int | None = None,
+    limit: int = 20,
+    offset: int = 0,
+    db: AsyncSession = Depends(get_db),
+):
+    stories = await crud_user_story.get_user_stories(
+        db, level=level, genre=genre, is_free=is_free, author_id=author_id, limit=limit, offset=offset
+    )
+    return stories
 
 
 @router_user_story.post('', response_model=UserStoryResponse)
@@ -21,6 +42,20 @@ async def create_story(
     _limit_ok=Depends(enforce_own_story_limit),
 ):
     return await crud_user_story.create_user_story(data, current_user.id, db)
+
+
+@router_user_story.get('/{story_id}', response_model=UserStoryDetailResponse, response_model_exclude_none=True)
+async def get_story_detail(
+    story_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    detail = await crud_user_story.get_user_story_detail(story_id, current_user.id, db)
+
+    if detail is None:
+        raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    return detail
 
 
 @router_user_story.patch('/{story_id}', response_model=UserStoryResponse)
