@@ -306,3 +306,10 @@
 - `schema_social.py` — `FollowUserResponse` получил `ConfigDict(from_attributes=True)` (нужен для сериализации ORM-объекта `Users`).
 - Подключено в `main.py`.
 - Проверено вживую на двух реальных пользователях (сценарий из DoD): A подписывается на B → 200 с данными B; B подписывается на A → 200 с данными A; `GET /social/friends` у обоих показывает друг друга; `DELETE /follow/{id}` отписывает, после чего `friends` снова пуст. Мелкий урок теста: перепутал порядок переменных при первой попытке (id первой печатается для A, но я расставил их наоборот) — не баг кода, ошибка в самом тестовом скрипте, переделал.
+
+### 6.4. Счётчики в профиле
+- `schema_profile.py` — `PublicProfileResponse` пополнен `followers_count`/`following_count`/`friends_count` (все Optional, гейтятся `show_followers`, как и остальные приватные поля).
+- `crud_profile.py` — `get_public_profile` зовёт `crud_social.get_followers`/`get_following` напрямую (кросс-модульный вызов crud, как в 5.10) и считает `friends_count` пересечением, но только если `privacy.show_followers`.
+- Проверено вживую на трёх пользователях (A↔B взаимно, C→A односторонне): публичный профиль A с `show_followers=True` → `followers_count=2, following_count=1, friends_count=1` (числа сходятся со схемой подписок); после `PATCH show_followers=false` — все три поля пропадают из ответа целиком (не `null`).
+
+**Фаза 6 закрыта**: подписки, взаимные друзья, счётчики в профиле с уважением приватности — 4 шага, все проверены вживую на реальных пользователях и реальных HTTP-запросах.

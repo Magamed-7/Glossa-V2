@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.model_profile import ProfilePrivacy, UserLanguages, UserProfiles
 from app.models.model_user import Users
 from app.schemas.schema_profile import LanguageAdd, PrivacyUpdate, ProfileUpdate
+from app.services import crud_social
 
 
 async def get_profile(user_id: int, db: AsyncSession):
@@ -136,5 +137,14 @@ async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
             }
             for language in languages
         ]
+
+    if privacy.show_followers:
+        followers = await crud_social.get_followers(user_id, db)
+        following = await crud_social.get_following(user_id, db)
+        following_ids = {u.id for u in following}
+
+        data['followers_count'] = len(followers)
+        data['following_count'] = len(following)
+        data['friends_count'] = len([u for u in followers if u.id in following_ids])
 
     return data

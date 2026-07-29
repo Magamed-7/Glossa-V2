@@ -68,5 +68,8 @@ class PublicProfileResponse(BaseModel):
     photo_url: str | None = None
     profile_views: int
     languages: list[LanguageResponse] | None = None
+    followers_count: int | None = None
+    following_count: int | None = None
+    friends_count: int | None = None
 
     model_config = ConfigDict(from_attributes=True)
