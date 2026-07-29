@@ -60,3 +60,7 @@
 - `auth_service/users/models.py` — `User(AbstractUser)`: `email` уникальный, `role` (`student`/`author`/`admin`, дефолт `student`), `is_verified`, `created_at`; `Meta.db_table = 'users'` — под именем таблицы, которое позже read-only мапит FastAPI (шаг 2.9).
 - `settings.py`: `'users'` в `INSTALLED_APPS`, `AUTH_USER_MODEL = 'users.User'`.
 - Проверено вживую: `manage.py makemigrations users` сгенерировал `0001_initial.py` без ошибок (сам файл коммитится отдельно в 2.3).
+
+### 2.3. Миграции пользователей
+- `auth_service/users/migrations/0001_initial.py` + стандартные django-миграции (contenttypes/auth/admin/sessions).
+- Проверено вживую: `manage.py migrate` на нативной `GlossaV2` — применились все 19 миграций; таблица `users` создана с колонками `id/password/.../role/is_verified/created_at`. Побочный эффект: `alembic_version` и наша `users` теперь соседствуют в той же БД с django-таблицами (`auth_*`, `django_*`) — это и есть общая БД из A.5.1, границы владения зафиксируются в 2.10.
