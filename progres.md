@@ -201,3 +201,9 @@
 ### 4.6. Роуты колоды
 - `Backend/app/api/router_deck.py` — `router_deck` (`prefix='/deck'`, `tags=['Deck']` — буквально по образцу из CONVENTIONS §7): `POST/GET /deck`, `GET /deck/{card_id}`, `PATCH /deck/{card_id}/status`, `DELETE /deck/{card_id}`. Подключён в `main.py`.
 - Проверено вживую полным циклом через `uvicorn`: create → list → get → update status → delete → get после удаления → 404 `CARD_NOT_FOUND`.
+
+### 4.7. Сервис ревью
+- `Backend/app/models/model_card.py` — добавлена `ReviewLogs` (`card_id`, `quality`, `reviewed_at`) — как и планировал в заметке к 4.1, тащу её сюда вместе с сервисом, который её пишет.
+- `Backend/app/services/review.py` — `get_due_cards(user_id, db)` (новые карточки `next_review_date IS NULL` **или** просроченные `<= now()`), `submit_review(card_id, quality, db)` (гоняет `sm2.apply_sm2`, обновляет карточку, пишет `ReviewLogs`).
+- Миграция `alembic/versions/5d59f9cf8c02_add_review_logs_table.py`.
+- Проверено вживую: новая карточка сразу видна в `get_due_cards`; после `submit_review(quality=5)` — `interval=1, repetitions=1`, `next_review_date` ушёл в завтра, `last_quality=5`, и карточка **пропала** из `get_due_cards` (следующая дата в будущем); в `review_logs` появилась строка `(card_id, quality=5)`.
