@@ -8,6 +8,7 @@ from app.core.limits import enforce_own_story_limit
 from app.core.storage import upload_file
 from app.db.database import get_db
 from app.schemas.schema_user_story import (
+    AuthorStatsResponse,
     ExerciseCreate,
     ExerciseResponse,
     ExerciseSubmit,
@@ -48,6 +49,14 @@ async def create_story(
     _limit_ok=Depends(enforce_own_story_limit),
 ):
     return await crud_user_story.create_user_story(data, current_user.id, db)
+
+
+@router_user_story.get('/my/stats', response_model=AuthorStatsResponse)
+async def get_my_author_stats(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_user_story.get_author_stats(current_user.id, db)
 
 
 @router_user_story.get('/{story_id}', response_model=UserStoryDetailResponse, response_model_exclude_none=True)

@@ -112,3 +112,10 @@ class AuthorStats(BaseModel):
     purchases_count: int
     income: Decimal
     average_rating: float | None
+
+
+class AuthorStatsResponse(BaseModel):
+    stories: list[AuthorStats]
+    total_views: int
+    total_purchases: int
+    total_income: Decimal

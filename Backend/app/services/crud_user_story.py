@@ -4,6 +4,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
+from app.models.model_payment import Purchases
 from app.models.model_user_story import (
     StoryExerciseAttempts,
     StoryExercises,
@@ -312,3 +313,47 @@ async def create_story_review(story_id: int, user_id: int, data: ReviewCreate, d
 async def get_story_reviews(story_id: int, db: AsyncSession):
     result = await db.execute(select(StoryReviews).where(StoryReviews.story_id == story_id))
     return result.scalars().all()
+
+
+async def get_author_stats(author_id: int, db: AsyncSession):
+    stories = (
+        await db.execute(select(UserStories).where(UserStories.author_id == author_id))
+    ).scalars().all()
+
+    per_story = []
+    total_views = 0
+    total_purchases = 0
+    total_income = Decimal('0')
+
+    for story in stories:
+        purchases_count = await db.scalar(
+            select(func.count()).select_from(StoryPurchases).where(StoryPurchases.story_id == story.id)
+        )
+        income = await db.scalar(
+            select(func.coalesce(func.sum(Purchases.seller_income), 0)).where(
+                Purchases.item_type == 'user_story',
+                Purchases.item_id == story.id,
+                Purchases.seller_id == author_id,
+            )
+        )
+        average_rating = await get_average_rating(story.id, db)
+
+        per_story.append({
+            'story_id': story.id,
+            'title': story.title,
+            'views_count': story.views_count,
+            'purchases_count': purchases_count or 0,
+            'income': income or Decimal('0'),
+            'average_rating': average_rating,
+        })
+
+        total_views += story.views_count
+        total_purchases += purchases_count or 0
+        total_income += income or Decimal('0')
+
+    return {
+        'stories': per_story,
+        'total_views': total_views,
+        'total_purchases': total_purchases,
+        'total_income': total_income,
+    }
