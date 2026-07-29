@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -64,3 +64,45 @@ class GrammarQuestions(Base):
     explanation_en: Mapped[str | None] = mapped_column(String, nullable=True)
     explanation_ru: Mapped[str | None] = mapped_column(String, nullable=True)
     explanation_tg: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class Stories(Base):
+    __tablename__ = 'stories'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    title_en: Mapped[str] = mapped_column(String, nullable=False)
+    title_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    title_tg: Mapped[str | None] = mapped_column(String, nullable=True)
+    body_en: Mapped[str] = mapped_column(String, nullable=False)
+    body_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    body_tg: Mapped[str | None] = mapped_column(String, nullable=True)
+    cefr_level: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    genre: Mapped[str | None] = mapped_column(String, nullable=True)
+    grammar_topic: Mapped[str | None] = mapped_column(String, nullable=True)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    is_system: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
+class StoryWords(Base):
+    __tablename__ = 'story_words'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    story_id: Mapped[int] = mapped_column(ForeignKey('stories.id'), nullable=False, index=True)
+    word: Mapped[str] = mapped_column(String, nullable=False)
+    translation_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    translation_tg: Mapped[str | None] = mapped_column(String, nullable=True)
+    part_of_speech: Mapped[str | None] = mapped_column(String, nullable=True)
+    context: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class StoryQuestions(Base):
+    __tablename__ = 'story_questions'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    story_id: Mapped[int] = mapped_column(ForeignKey('stories.id'), nullable=False, index=True)
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    options: Mapped[list | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
+    answer: Mapped[str] = mapped_column(String, nullable=False)
