@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.model_profile import UserLanguages, UserProfiles
-from app.schemas.schema_profile import LanguageAdd, ProfileUpdate
+from app.models.model_profile import ProfilePrivacy, UserLanguages, UserProfiles
+from app.schemas.schema_profile import LanguageAdd, PrivacyUpdate, ProfileUpdate
 
 
 async def get_profile(user_id: int, db: AsyncSession):
@@ -64,3 +64,39 @@ async def add_language(user_id: int, data: LanguageAdd, db: AsyncSession):
 async def get_user_languages(user_id: int, db: AsyncSession):
     result = await db.execute(select(UserLanguages).where(UserLanguages.user_id == user_id))
     return result.scalars().all()
+
+
+async def get_privacy(user_id: int, db: AsyncSession):
+    result = await db.execute(select(ProfilePrivacy).where(ProfilePrivacy.user_id == user_id))
+    privacy = result.scalar_one_or_none()
+
+    if privacy is None:
+        privacy = ProfilePrivacy(user_id=user_id)
+        db.add(privacy)
+        await db.commit()
+        await db.refresh(privacy)
+
+    return privacy
+
+
+async def update_privacy(user_id: int, data: PrivacyUpdate, db: AsyncSession):
+    privacy = await get_privacy(user_id, db)
+
+    if data.show_stories_count is not None:
+        privacy.show_stories_count = data.show_stories_count
+    if data.show_achievements is not None:
+        privacy.show_achievements = data.show_achievements
+    if data.show_current_streak is not None:
+        privacy.show_current_streak = data.show_current_streak
+    if data.show_best_streak is not None:
+        privacy.show_best_streak = data.show_best_streak
+    if data.show_languages is not None:
+        privacy.show_languages = data.show_languages
+    if data.show_language_levels is not None:
+        privacy.show_language_levels = data.show_language_levels
+    if data.show_followers is not None:
+        privacy.show_followers = data.show_followers
+
+    await db.commit()
+    await db.refresh(privacy)
+    return privacy

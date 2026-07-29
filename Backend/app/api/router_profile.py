@@ -4,7 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.auth import get_current_user
 from app.core.storage import upload_file
 from app.db.database import get_db
-from app.schemas.schema_profile import LanguageAdd, LanguageResponse, ProfileResponse, ProfileUpdate
+from app.schemas.schema_profile import (
+    LanguageAdd,
+    LanguageResponse,
+    PrivacyResponse,
+    PrivacyUpdate,
+    ProfileResponse,
+    ProfileUpdate,
+)
 from app.services import crud_profile
 
 router_profile = APIRouter(prefix='/profile', tags=['Profile'])
@@ -36,6 +43,23 @@ async def upload_my_photo(
     file_bytes = await file.read()
     photo_url = upload_file('avatars', file_bytes, file.filename, file.content_type)
     return await crud_profile.update_photo(current_user.id, photo_url, db)
+
+
+@router_profile.get('/me/privacy', response_model=PrivacyResponse)
+async def get_my_privacy(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_profile.get_privacy(current_user.id, db)
+
+
+@router_profile.patch('/me/privacy', response_model=PrivacyResponse)
+async def update_my_privacy(
+    data: PrivacyUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_profile.update_privacy(current_user.id, data, db)
 
 
 @router_profile.post('/languages', response_model=LanguageResponse)

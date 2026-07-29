@@ -34,3 +34,17 @@ class UserLanguages(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
+class ProfilePrivacy(Base):
+    __tablename__ = 'profile_privacy'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, unique=True, index=True)
+    show_stories_count: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_achievements: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_current_streak: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_best_streak: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_languages: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_language_levels: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_followers: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)

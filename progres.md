@@ -146,3 +146,11 @@
 - `crud_profile.py` — `update_photo`.
 - Проверено вживую: `POST /profile/me/photo` (multipart) с реальным Django-токеном — файл лёг в бакет `avatars`, `photo_url` сохранён в профиле, по этому URL файл открывается напрямую (200).
 - Попутный урок про инструменты: у здешнего `curl` при `-F file=@путь` POSIX-путь `/tmp/...` не резолвится (`curl: (26) Failed to open/read local data`) — с Windows-путём (`C:\Users\...`) работает; держу это в уме для файловых загрузок дальше по плану (аудио произношения, аватары историй).
+
+### 3.8. Гранулярная приватность
+- `app/models/model_profile.py` — `ProfilePrivacy` (`user_id` уникальный FK, 7 Boolean-тумблеров, все default True): `show_stories_count/achievements/current_streak/best_streak/languages/language_levels/followers`.
+- `schema_profile.py` — `PrivacyUpdate` (всё Optional), `PrivacyResponse`.
+- `crud_profile.py` — `get_privacy` (автосоздание), `update_privacy` — **не** паттерн `or`, а `if data.field is not None` на каждый тумблер (CONVENTIONS §5: `False` — валидное значение, `or` бы его затирал).
+- `router_profile.py` — `GET/PATCH /profile/me/privacy`.
+- Миграция `alembic/versions/5ff1cd938342_add_granular_profile_privacy_settings.py`.
+- Проверено вживую: `GET` на новом пользователе — все 7 тумблеров `true` (автосоздание с дефолтами); `PATCH {"show_achievements": false, "show_followers": false}` — только эти два стали `false`, остальные пять остались `true`.

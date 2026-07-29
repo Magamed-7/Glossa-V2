@@ -38,6 +38,28 @@ class ProfileResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class PrivacyUpdate(BaseModel):
+    show_stories_count: bool | None = None
+    show_achievements: bool | None = None
+    show_current_streak: bool | None = None
+    show_best_streak: bool | None = None
+    show_languages: bool | None = None
+    show_language_levels: bool | None = None
+    show_followers: bool | None = None
+
+
+class PrivacyResponse(BaseModel):
+    show_stories_count: bool
+    show_achievements: bool
+    show_current_streak: bool
+    show_best_streak: bool
+    show_languages: bool
+    show_language_levels: bool
+    show_followers: bool
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class PublicProfileResponse(BaseModel):
     user_id: int
     username: str
