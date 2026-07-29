@@ -73,3 +73,7 @@
 - `auth_service/users/serializers.py` — `RegisterSerializer`: `username`/`email` объявлены явно с `validators=[]` (иначе DRF's `UniqueValidator` перехватывает раньше моих `validate_*` и даёт родовой текст), свои `validate_email`/`validate_username` с текстами **один в один как Green Shop** (`'Email already exists'`, `'Username already exists'`), `create()` зовёт `User.objects.create_user(...)` — пароль хешируется штатным Django-механизмом.
 - `users/views.py` (`RegisterView`, `CreateAPIView`, `AllowAny`), `users/urls.py` (`POST register`), подключено в `auth_service/urls.py` под `api/auth/`.
 - Проверено вживую: `POST /api/auth/register` создаёт пользователя (пароль в БД — хеш, не plain text), повторный email/username → 400 с текстами выше.
+
+### 2.6. Логин и refresh
+- `users/urls.py` — `POST login` → `TokenObtainPairView` (стандартный SimpleJWT, поле логина — `username`), `POST refresh` → `TokenRefreshView`.
+- Проверено вживую: логин по username+password → `{access, refresh}`; `refresh` с валидным refresh-токеном → новый `access` (200); неверный пароль → 401 `"No active account found with the given credentials"`.
