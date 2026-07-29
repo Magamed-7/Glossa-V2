@@ -241,3 +241,9 @@
 ### 5.3. Миграция контента
 - `Backend/alembic/versions/5b55682f0883_create_content_tables.py` — все 7 таблиц разом.
 - Проверено вживую: `upgrade head` / `downgrade -1` / `upgrade head` — чисто.
+
+### 5.4. Схемы контента
+- `Backend/app/services/localization.py` — `pick_locale(obj, field_prefix, locale)`: невалидная локаль → `en`; если `{prefix}_{locale}` пусто/`None` → фолбэк на `{prefix}_en`. Годится для `rule_*` (грамматика), `text_*`/`explanation_*` (вопросы по грамматике) — везде, где реально есть `_en`-вариант.
+- Для `VocabEntries.translation_*` и `Stories.title_*/body_*` фолбэк через `pick_locale` **не подходит** (нет `translation_en`/у сторис перевод — не по правилу, а исключение из общего правила и должен явно НЕ подменять `body`) — там локаль выбирается прямой веткой в `crud_content.py` (следующие шаги), а не общим хелпером.
+- `Backend/app/schemas/schema_content.py` — `VocabResponse`, `GrammarLessonResponse`(+`Detail` с `examples`/`questions`), `GrammarQuestionResponse`(+`Result` с `explanation`), `QuestionSubmit`/`GrammarSubmitResult`, `WeakTopicResponse`, `StoryResponse`(+`Detail`: `body` — всегда английский, `title_translated`/`body_translated` — отдельные поля для перевода, не подменяют основные), `StoryWordResponse`, `StoryQuestionsSubmit`/`Result`.
+- Проверено вживую: `pick_locale` — реальное значение по локали, пустое значение по локали → фолбэк на `_en`, невалидная локаль → тоже `_en`; `VocabResponse` собирается.
