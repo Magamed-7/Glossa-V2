@@ -40,6 +40,11 @@ async def resolve_link_code(code: str):
     return int(user_id)
 
 
+async def get_user_id_by_chat_id(chat_id: str, db: AsyncSession):
+    result = await db.execute(select(UserProfiles.user_id).where(UserProfiles.telegram_chat_id == chat_id))
+    return result.scalar_one_or_none()
+
+
 async def save_chat_id(user_id: int, chat_id: str, db: AsyncSession):
     result = await db.execute(select(UserProfiles).where(UserProfiles.user_id == user_id))
     profile = result.scalar_one_or_none()
