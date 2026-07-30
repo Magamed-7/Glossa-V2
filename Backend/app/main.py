@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.router_achievement import router_achievement
 from app.api.router_content import router_grammar, router_vocabulary
 from app.api.router_deck import router_deck, router_learning, router_reviews
+from app.api.router_notification import router_notification
 from app.api.router_payment import router_payment, router_payments_history, router_stripe
 from app.api.router_profile import router_profile
 from app.api.router_rating import router_rating
@@ -17,6 +18,7 @@ from app.models import (  # noqa: F401
     model_achievement,
     model_card,
     model_content,
+    model_notification,
     model_payment,
     model_profile,
     model_rating,
@@ -54,6 +56,7 @@ app.include_router(router_payment)
 app.include_router(router_stripe)
 app.include_router(router_payments_history)
 app.include_router(router_user_story)
+app.include_router(router_notification)
 
 
 @app.get('/health')
