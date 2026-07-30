@@ -23,7 +23,7 @@ celery_app.conf.imports = ('app.tasks.ai', 'app.tasks.analytics', 'app.tasks.pay
 celery_app.conf.beat_schedule = {
     'daily-review-reminders': {
         'task': 'app.tasks.notifications.daily_review_reminders',
-        'schedule': crontab(hour=9, minute=0),
+        'schedule': crontab(minute=0),
     },
     'hourly-leaderboard-rebuild': {
         'task': 'app.tasks.analytics.rebuild_leaderboards',

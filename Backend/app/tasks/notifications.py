@@ -1,19 +1,59 @@
 import asyncio
 import logging
 import smtplib
+from datetime import datetime, timezone
 from email.message import EmailMessage
 
 from aiogram import Bot
+from sqlalchemy import select
 
 from app.celery_app import celery_app
 from app.core.config import settings
+from app.db.database import AsyncSessionLocal
+from app.models.model_settings import UserSettings
 
 logger = logging.getLogger('notifications')
 
 
 @celery_app.task(name='app.tasks.notifications.daily_review_reminders')
 def daily_review_reminders(**kwargs):
-    return kwargs
+    from app.services import crud_content, notify_service, review, streaks
+
+    async def run():
+        current_hour = datetime.now(timezone.utc).strftime('%H:00')
+
+        async with AsyncSessionLocal() as db:
+            result = await db.execute(select(UserSettings).where(UserSettings.reminder_time == current_hour))
+            due_settings = result.scalars().all()
+
+            sent = 0
+
+            for user_settings in due_settings:
+                if not (user_settings.push_enabled or user_settings.telegram_enabled or user_settings.email_enabled):
+                    continue
+
+                user_id = user_settings.user_id
+                due_cards = await review.get_due_cards(user_id, db)
+
+                if not due_cards:
+                    continue
+
+                weak_topics = await crud_content.get_weak_topics(user_id, db)
+                streak = await streaks.get_streak(user_id, db)
+
+                weak_topic_names = ', '.join(t['topic'] for t in weak_topics[:3]) if weak_topics else 'none'
+                body = (
+                    f'You have {len(due_cards)} words to review today.\n'
+                    f'Weak topics: {weak_topic_names}\n'
+                    f'Current streak: {streak.current_streak} days'
+                )
+
+                await notify_service.notify(user_id, 'review_reminder', 'Time to study!', body, db)
+                sent += 1
+
+            return sent
+
+    return asyncio.run(run())
 
 
 @celery_app.task(name='app.tasks.priority.send_email')
