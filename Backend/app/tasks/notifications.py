@@ -1,6 +1,9 @@
+import asyncio
 import logging
 import smtplib
 from email.message import EmailMessage
+
+from aiogram import Bot
 
 from app.celery_app import celery_app
 from app.core.config import settings
@@ -38,5 +41,15 @@ def send_push_task(user_id: int, title: str, body: str):
 
 @celery_app.task(name='app.tasks.notifications.send_telegram')
 def send_telegram_task(chat_id: str, title: str, body: str):
-    logger.info('telegram to chat %s: %s - %s', chat_id, title, body)
-    return 'logged'
+    async def run():
+        bot = Bot(token=settings.TG_BOT)
+        text = f'{title}\n\n{body}' if body else title
+
+        try:
+            await bot.send_message(chat_id=chat_id, text=text)
+        finally:
+            await bot.session.close()
+
+        return 'sent'
+
+    return asyncio.run(run())

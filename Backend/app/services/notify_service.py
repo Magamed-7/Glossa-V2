@@ -1,11 +1,14 @@
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.model_profile import UserProfiles
 from app.services import crud_notification, crud_settings, crud_user
 from app.tasks.notifications import send_email_task, send_push_task, send_telegram_task
 
 
 async def get_telegram_chat_id(user_id: int, db: AsyncSession):
-    return None
+    result = await db.execute(select(UserProfiles.telegram_chat_id).where(UserProfiles.user_id == user_id))
+    return result.scalar_one_or_none()
 
 
 async def notify(user_id: int, type: str, title: str, body: str, db: AsyncSession):
