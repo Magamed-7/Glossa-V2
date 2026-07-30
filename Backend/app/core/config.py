@@ -25,6 +25,7 @@ class Settings:
     CORS_ORIGINS: list[str] = os.getenv('CORS_ORIGINS', 'http://localhost:5173').split(',')
 
     TG_BOT: str = os.getenv('TG_BOT', '')
+    TELEGRAM_BOT_USERNAME: str = os.getenv('TELEGRAM_BOT_USERNAME', 'Glossahelperbot')
 
     CELERY_BROKER_URL: str = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/1')
     CELERY_RESULT_BACKEND: str = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/1')

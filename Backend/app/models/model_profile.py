@@ -18,6 +18,7 @@ class UserProfiles(Base):
     )
     photo_url: Mapped[str | None] = mapped_column(String, nullable=True)
     profile_views: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    telegram_chat_id: Mapped[str | None] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

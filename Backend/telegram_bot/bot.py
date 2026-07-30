@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 
 from app.core.config import settings
+from app.models import model_profile, model_user  # noqa: F401
 from telegram_bot.handlers import router
 
 

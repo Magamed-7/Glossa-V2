@@ -12,6 +12,7 @@ from app.api.router_settings import router_settings
 from app.api.router_social import router_social
 from app.api.router_story import router_stories
 from app.api.router_subscription import router_subscription
+from app.api.router_telegram import router_telegram
 from app.api.router_user_story import router_user_story
 from app.core.errors import register_exception_handlers
 from app.models import (  # noqa: F401
@@ -57,6 +58,7 @@ app.include_router(router_stripe)
 app.include_router(router_payments_history)
 app.include_router(router_user_story)
 app.include_router(router_notification)
+app.include_router(router_telegram)
 
 
 @app.get('/health')
