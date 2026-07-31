@@ -5,10 +5,12 @@ import MobileBottomNav from "./MobileBottomNav.jsx";
 import Fab from "./Fab.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useAppData } from "../../lib/AppDataContext.jsx";
+import { useNotificationPolling } from "../../lib/useNotificationPolling.js";
 
 export default function AppLayout({ fab }) {
   const { user: authUser, profile } = useAuth();
   const { streak } = useAppData();
+  const hasUnread = useNotificationPolling();
 
   const topBarUser =
     authUser && profile ? { username: authUser.username, photo_url: profile.photo_url } : undefined;
@@ -17,7 +19,7 @@ export default function AppLayout({ fab }) {
     <>
       <SideNavBar />
       <main className="md:ml-64 min-h-screen relative overflow-hidden">
-        <TopAppBar streak={streak?.current_streak} user={topBarUser} />
+        <TopAppBar streak={streak?.current_streak} user={topBarUser} hasUnread={hasUnread} />
         <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-12 pb-24 md:pb-12">
           <Outlet />
         </div>
