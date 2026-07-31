@@ -118,8 +118,19 @@
   --radius-xl: 0.75rem;
 }
 
-/* --- Тёмная тема: инверсия поверхностей/текста/обводок, акцент не меняется --- */
+/* --- Тёмная тема: инверсия поверхностей/текста/обводок --- */
 .dark {
+  /* --color-secondary как ФОН (кнопки, бейджи) самодостаточен со своим on-secondary
+     и в переопределении не нуждался бы, но text-secondary используется ещё и как
+     цвет текста прямо на поверхности (цены, значения гейджей, активные пункты меню) —
+     #b90538 на тёмной поверхности #1c1c1a даёт всего 2.55:1 (провал WCAG AA даже для
+     крупного текста). Поднимаем яркость акцента и переворачиваем on-secondary вместе
+     с ним, иначе белый текст на посветлевшей кнопке перестанет читаться.
+     secondary-container (#dc2c4f) не трогаем — он всегда самодостаточная пара с
+     on-secondary-container и как текст поверх surface нигде не используется. */
+  --color-secondary: #ff5c7f;
+  --color-on-secondary: #1c1c1a;
+
   --color-surface: #1c1c1a;
   --color-surface-bright: #31302f;
   --color-surface-dim: #141413;
@@ -147,6 +158,26 @@
 
   --color-outline: #8f8d89;
   --color-outline-variant: #45443f;
+}
+
+/* --- Видимый фокус везде, включая поля с outline-none (утилита не убирает :focus-visible,
+   т.к. это правило идёт позже в каскаде и имеет ту же специфичность) --- */
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.skip-link:focus {
+  top: 1rem;
 }
 
 body {

@@ -35,6 +35,7 @@ export const en = {
     changeLanguage: "Change language",
     primaryNav: "Primary",
     changeTheme: "Change theme",
+    skipToContent: "Skip to main content",
     themeLight: "Light",
     themeDark: "Dark",
     themeSystem: "System",

@@ -18,10 +18,10 @@ export default function EmptyDashboard() {
     <div>
       <div className="mb-section-gap max-w-2xl">
         <p className="font-label text-label-md uppercase tracking-widest text-secondary mb-4">{t("dashboard.empty.eyebrow")}</p>
-        <h1 className="font-display text-display-lg-mobile md:text-display-lg mb-4 leading-tight">
+        <h2 className="font-display text-display-lg-mobile md:text-display-lg mb-4 leading-tight">
           {t("dashboard.empty.titleLead")}
           <span className="italic text-secondary">{t("dashboard.empty.titleAccent")}</span>.
-        </h1>
+        </h2>
         <p className="font-body text-body-lg text-on-surface-variant">{t("dashboard.empty.description")}</p>
       </div>
 

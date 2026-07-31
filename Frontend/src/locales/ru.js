@@ -35,6 +35,7 @@ export const ru = {
     changeLanguage: "Сменить язык",
     primaryNav: "Основная",
     changeTheme: "Сменить тему",
+    skipToContent: "Перейти к основному содержимому",
     themeLight: "Светлая",
     themeDark: "Тёмная",
     themeSystem: "Системная",

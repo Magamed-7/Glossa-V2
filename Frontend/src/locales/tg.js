@@ -35,6 +35,7 @@ export const tg = {
     changeLanguage: "Тағйири забон",
     primaryNav: "Асосӣ",
     changeTheme: "Тағйири мавзӯъ",
+    skipToContent: "Гузариш ба мазмуни асосӣ",
     themeLight: "Равшан",
     themeDark: "Торик",
     themeSystem: "Системавӣ",
