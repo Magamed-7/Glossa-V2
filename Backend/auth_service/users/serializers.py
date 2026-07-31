@@ -15,17 +15,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'password', 'role']
         read_only_fields = ['id', 'role']
 
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError('Email already exists')
+    def validate(self, attrs):
+        if User.objects.filter(email=attrs['email']).exists() or User.objects.filter(username=attrs['username']).exists():
+            raise serializers.ValidationError('Registration failed, check your details')
 
-        return value
-
-    def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError('Username already exists')
-
-        return value
+        return attrs
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
