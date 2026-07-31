@@ -2,6 +2,7 @@ import PageHeader from "../components/layout/PageHeader.jsx";
 import DecorativeBackground from "../components/ui/DecorativeBackground.jsx";
 import FeaturedLesson from "../components/grammar/FeaturedLesson.jsx";
 import GrammarRoadmap from "../components/grammar/GrammarRoadmap.jsx";
+import WeakTopics from "../components/grammar/WeakTopics.jsx";
 
 export default function GrammarHub() {
   return (
@@ -15,7 +16,7 @@ export default function GrammarHub() {
       />
       <FeaturedLesson />
       <GrammarRoadmap />
-      <div>{/* Weak topics go here */}</div>
+      <WeakTopics />
     </div>
   );
 }
