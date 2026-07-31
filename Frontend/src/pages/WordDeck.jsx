@@ -1,24 +1,65 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import WordCard from "../components/deck/WordCard.jsx";
 import AddWordModal from "../components/deck/AddWordModal.jsx";
+import Modal from "../components/ui/Modal.jsx";
+import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import { useApi } from "../lib/useApi.js";
-import { getCards } from "../lib/api/deck.js";
+import { useToast } from "../lib/toast.jsx";
+import { errorText } from "../lib/api/errorText.js";
+import { deleteCard, getCards, setCardStatus } from "../lib/api/deck.js";
+
+const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 
 export default function WordDeck() {
-  const { data: cards, loading, error, reload } = useApi(() => getCards({ limit: 24 }), []);
+  const { data: fetched, loading, error, reload } = useApi(() => getCards({ limit: 24 }), []);
+  const [items, setItems] = useState([]);
+  const [pendingDelete, setPendingDelete] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [modalOpen, setModalOpen] = useState(searchParams.get("new") === "1");
+  const toast = useToast();
+
+  useEffect(() => {
+    if (fetched) setItems(fetched);
+  }, [fetched]);
 
   function closeModal() {
     setModalOpen(false);
     if (searchParams.get("new")) {
       searchParams.delete("new");
       setSearchParams(searchParams, { replace: true });
+    }
+  }
+
+  async function onStatusChange(card) {
+    const nextStatus = STATUS_CYCLE[(STATUS_CYCLE.indexOf(card.status) + 1) % STATUS_CYCLE.length];
+    const previous = items;
+    setItems((current) => current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c)));
+
+    try {
+      const updated = await setCardStatus(card.id, nextStatus);
+      setItems((current) => current.map((c) => (c.id === card.id ? updated : c)));
+    } catch (err) {
+      setItems(previous);
+      toast.error(errorText(err));
+    }
+  }
+
+  async function confirmDelete() {
+    const card = pendingDelete;
+    setPendingDelete(null);
+    const previous = items;
+    setItems((current) => current.filter((c) => c.id !== card.id));
+
+    try {
+      await deleteCard(card.id);
+    } catch (err) {
+      setItems(previous);
+      toast.error(errorText(err));
     }
   }
 
@@ -47,12 +88,12 @@ export default function WordDeck() {
           {loading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="min-h-[180px]" />)}
 
           {!loading &&
-            cards?.map((card) => (
+            items.map((card) => (
               <WordCard
                 key={card.id}
                 card={card}
-                onStatusChange={() => {}}
-                onDelete={() => {}}
+                onStatusChange={onStatusChange}
+                onDelete={setPendingDelete}
                 onPlayAudio={() => {}}
               />
             ))}
@@ -60,6 +101,18 @@ export default function WordDeck() {
       )}
 
       <AddWordModal open={modalOpen} onClose={closeModal} onCreated={reload} />
+
+      <Modal open={!!pendingDelete} onClose={() => setPendingDelete(null)} title="Remove Word">
+        <p className="font-body text-body-md mb-6">
+          Remove &ldquo;{pendingDelete?.word}&rdquo; from your deck? This can&apos;t be undone.
+        </p>
+        <div className="flex gap-4">
+          <NeoButton variant="ghost" onClick={() => setPendingDelete(null)}>
+            Cancel
+          </NeoButton>
+          <NeoButton onClick={confirmDelete}>Remove</NeoButton>
+        </div>
+      </Modal>
     </div>
   );
 }
