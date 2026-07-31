@@ -2,6 +2,7 @@ import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import ProfileEditor from "../components/profile/ProfileEditor.jsx";
 import PhotoUpload from "../components/profile/PhotoUpload.jsx";
+import PrivacySettings from "../components/profile/PrivacySettings.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import * as authApi from "../lib/api/auth.js";
@@ -23,6 +24,9 @@ export default function MyProfile() {
         </div>
       </div>
       {profile && <ProfileEditor profile={profile} onUpdated={refreshUser} />}
+      <div className="mt-6">
+        <PrivacySettings />
+      </div>
     </div>
   );
 }
