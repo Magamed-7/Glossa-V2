@@ -1,6 +1,7 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicImgDir = path.join(__dirname, "..", "public", "img");
@@ -66,6 +67,11 @@ function placeholderSvg({ width, height, category, name }) {
 `;
 }
 
+async function writeWebp({ width, height, category, name, filePath }) {
+  const svg = placeholderSvg({ width, height, category, name });
+  await sharp(Buffer.from(svg)).webp({ quality: 82 }).toFile(filePath);
+}
+
 async function main() {
   for (const [category, names] of Object.entries(MANIFEST)) {
     const [width, height] = SIZES[category];
@@ -73,12 +79,16 @@ async function main() {
     await mkdir(dir, { recursive: true });
 
     for (const name of names) {
-      const svg = placeholderSvg({ width, height, category, name });
-      await writeFile(path.join(dir, `${name}.webp`), svg, "utf8");
+      await writeWebp({ width, height, category, name, filePath: path.join(dir, `${name}.webp`) });
 
       if (category !== "avatars") {
-        const svg2x = placeholderSvg({ width: width * 2, height: height * 2, category, name });
-        await writeFile(path.join(dir, `${name}@2x.webp`), svg2x, "utf8");
+        await writeWebp({
+          width: width * 2,
+          height: height * 2,
+          category,
+          name,
+          filePath: path.join(dir, `${name}@2x.webp`),
+        });
       }
     }
     console.log(`${category}: ${names.length} placeholder(s) written to ${dir}`);
