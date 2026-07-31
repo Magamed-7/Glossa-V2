@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import Icon from "../ui/Icon.jsx";
 import { generateAudio } from "../../lib/api/deck.js";
 
-export default function AudioButton({ card, onAudioGenerated }) {
+const AudioButton = forwardRef(function AudioButton({ card, onAudioGenerated }, ref) {
   const [state, setState] = useState("idle");
   const audioRef = useRef(null);
 
@@ -35,6 +35,7 @@ export default function AudioButton({ card, onAudioGenerated }) {
 
   return (
     <button
+      ref={ref}
       type="button"
       className={`text-tertiary hover:text-secondary transition-colors ${state === "playing" ? "text-secondary" : ""}`}
       onClick={play}
@@ -44,4 +45,6 @@ export default function AudioButton({ card, onAudioGenerated }) {
       <Icon name={icon} className="text-3xl" />
     </button>
   );
-}
+});
+
+export default AudioButton;

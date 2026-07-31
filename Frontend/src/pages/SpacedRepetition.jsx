@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import Flashcard from "../components/review/Flashcard.jsx";
@@ -28,9 +28,32 @@ export default function SpacedRepetition() {
   const [completed, setCompleted] = useState(0);
   const [againCount, setAgainCount] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const audioButtonRef = useRef(null);
 
   const card = currentCard ?? queue?.[index] ?? null;
   const remaining = queue ? queue.length - index : 0;
+
+  useEffect(() => {
+    function onKeyDown(e) {
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement?.isContentEditable) return;
+      if (!card) return;
+
+      if (e.key === " ") {
+        e.preventDefault();
+        setFlipped((f) => !f);
+      } else if (e.key === "s" || e.key === "S") {
+        audioButtonRef.current?.click();
+      } else if (flipped && ["1", "2", "3", "4"].includes(e.key)) {
+        const quality = { 1: 0, 2: 3, 3: 4, 4: 5 }[e.key];
+        onAnswer(quality);
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [card, flipped, submitting]);
 
   async function onAnswer(quality) {
     if (!card || submitting) return;
@@ -117,9 +140,12 @@ export default function SpacedRepetition() {
         <div className="order-1 lg:order-2 space-y-6">
           <Flashcard card={card} flipped={flipped} onFlip={() => setFlipped((f) => !f)} />
           <div className="flex justify-center">
-            <AudioButton card={card} />
+            <AudioButton ref={audioButtonRef} card={card} />
           </div>
           <QualityButtons disabled={!flipped || submitting} onAnswer={onAnswer} />
+          <p className="text-center font-label text-label-md uppercase text-on-surface-variant opacity-60">
+            Space to flip · 1–4 to answer · S to listen
+          </p>
         </div>
 
         <div className="order-3">
