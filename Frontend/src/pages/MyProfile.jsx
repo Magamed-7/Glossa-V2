@@ -4,6 +4,7 @@ import ProfileEditor from "../components/profile/ProfileEditor.jsx";
 import PhotoUpload from "../components/profile/PhotoUpload.jsx";
 import PrivacySettings from "../components/profile/PrivacySettings.jsx";
 import LanguagesSection from "../components/profile/LanguagesSection.jsx";
+import ConnectionLists from "../components/profile/ConnectionLists.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import * as authApi from "../lib/api/auth.js";
@@ -30,6 +31,9 @@ export default function MyProfile() {
       </div>
       <div className="mt-6">
         <PrivacySettings />
+      </div>
+      <div className="mt-6">
+        <ConnectionLists />
       </div>
     </div>
   );
