@@ -5,9 +5,21 @@ function escapeRegex(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+// Некоторые записи в words — не одно слово, а целая фраза с пунктуацией на конце
+// ("What's your name?", "Sorry!"). Требовать \b с обеих сторон нельзя: между двумя
+// non-word символами (например "?" и следующей кавычкой) границы слова не бывает,
+// и такая фраза никогда бы не совпала. Добавляем \b только с той стороны, где
+// символ фразы действительно словообразующий.
 function buildWordsRegex(words) {
-  const escaped = words.map((w) => escapeRegex(w.word)).sort((a, b) => b.length - a.length);
-  return new RegExp(`\\b(${escaped.join("|")})\\b`, "gi");
+  const alternatives = words
+    .map((w) => w.word)
+    .sort((a, b) => b.length - a.length)
+    .map((word) => {
+      const startBoundary = /\w/.test(word[0]) ? "\\b" : "";
+      const endBoundary = /\w/.test(word[word.length - 1]) ? "\\b" : "";
+      return `${startBoundary}${escapeRegex(word)}${endBoundary}`;
+    });
+  return new RegExp(`(${alternatives.join("|")})`, "gi");
 }
 
 export default function StoryBody({ body, words, storyId, onWordAdded }) {
