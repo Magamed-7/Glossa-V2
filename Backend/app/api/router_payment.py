@@ -54,11 +54,13 @@ async def stripe_webhook(
     payload = await request.body()
     event = stripe_service.construct_webhook_event(payload, stripe_signature)
 
-    if event['type'] == 'checkout.session.completed':
+    if event['type'] == 'checkout.session.completed' and not await crud_payment.stripe_event_already_processed(
+        event['id'], db
+    ):
         session = event['data']['object']
         user_id = int(session['metadata']['user_id'])
         amount = Decimal(session['amount_total']) / 100
-        await crud_payment.topup_balance(user_id, amount, db)
+        await crud_payment.topup_balance(user_id, amount, db, stripe_event_id=event['id'])
 
     return {'status': 'ok'}
 
