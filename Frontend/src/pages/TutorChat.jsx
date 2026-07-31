@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import MessageList from "../components/tutor/MessageList.jsx";
 import ChatInput from "../components/tutor/ChatInput.jsx";
+import ChatSidebar from "../components/tutor/ChatSidebar.jsx";
 import { useAiChatSocket } from "../lib/useAiChatSocket.js";
 
 export default function TutorChat() {
@@ -9,7 +10,7 @@ export default function TutorChat() {
   const scenario = searchParams.get("scenario") || "casual";
   const language = searchParams.get("language") || "English";
 
-  const { status, messages, sendMessage } = useAiChatSocket({ scenario, language });
+  const { status, messages, sessionId, sendMessage } = useAiChatSocket({ scenario, language });
   const waitingForReply = messages.length > 0 && messages[messages.length - 1].role === "user";
 
   return (
@@ -25,7 +26,7 @@ export default function TutorChat() {
             <ChatInput disabled={status !== "open" || waitingForReply} onSend={sendMessage} />
           </div>
         </div>
-        <div>{/* Sidebar stats */}</div>
+        <ChatSidebar messages={messages} scenario={scenario} language={language} sessionId={sessionId} />
       </div>
     </div>
   );
