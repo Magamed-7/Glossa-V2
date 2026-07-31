@@ -35,7 +35,7 @@ export default function TopAppBar({ streak, hasUnread, user }) {
           {user === undefined ? (
             <Skeleton className="w-10 h-10 rounded-full" />
           ) : (
-            <Avatar photoUrl={user?.photo_url} name={user?.username} size="md" />
+            <Avatar photoUrl={user?.photo_url} name={user?.username} size="md" eager />
           )}
         </Link>
       </div>

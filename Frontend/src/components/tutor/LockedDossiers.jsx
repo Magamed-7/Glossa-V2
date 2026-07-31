@@ -15,7 +15,15 @@ export default function LockedDossiers() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {SCENARIOS.map((scenario) => (
           <div key={scenario.code} className="relative border-2 border-tertiary aspect-[4/3] overflow-hidden">
-            <img className="w-full h-full object-cover grayscale opacity-50" src={scenario.image} alt="" aria-hidden="true" />
+            <img
+              className="w-full h-full object-cover grayscale opacity-50"
+              src={scenario.image}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              width={800}
+              height={600}
+            />
             <div className="absolute inset-0 flex items-center justify-center bg-tertiary/50">
               <Icon name="lock" className="text-surface text-3xl" />
             </div>

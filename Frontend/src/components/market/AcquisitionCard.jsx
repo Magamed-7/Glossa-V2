@@ -32,6 +32,8 @@ export default function AcquisitionCard({ story }) {
           alt=""
           aria-hidden="true"
           loading="lazy"
+          width={480}
+          height={600}
         />
       </div>
       <div className="p-5">

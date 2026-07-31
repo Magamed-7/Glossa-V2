@@ -44,7 +44,7 @@ export default function PhotoUpload({ photoUrl, name, onUploaded }) {
     <div className="flex items-center gap-4">
       {preview ? (
         <div className="w-24 h-24 border-2 border-tertiary rounded-full overflow-hidden">
-          <img src={preview} alt="" className="w-full h-full object-cover" />
+          <img src={preview} alt="" className="w-full h-full object-cover" loading="eager" width={96} height={96} />
         </div>
       ) : (
         <Avatar photoUrl={photoUrl} name={name} size="xl" />

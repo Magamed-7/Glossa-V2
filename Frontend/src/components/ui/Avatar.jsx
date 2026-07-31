@@ -5,6 +5,8 @@ const SIZE_CLASSES = {
   xl: "w-24 h-24 text-3xl",
 };
 
+const SIZE_PX = { sm: 32, md: 40, lg: 64, xl: 96 };
+
 const DEFAULT_AVATAR = "/img/avatars/user-default.webp";
 
 function initialFor(name, userId) {
@@ -13,8 +15,9 @@ function initialFor(name, userId) {
   return "?";
 }
 
-export default function Avatar({ photoUrl, name, userId, size = "md", className = "" }) {
+export default function Avatar({ photoUrl, name, userId, size = "md", className = "", eager = false }) {
   const sizeClass = SIZE_CLASSES[size];
+  const px = SIZE_PX[size];
 
   if (photoUrl || !name) {
     return (
@@ -24,7 +27,9 @@ export default function Avatar({ photoUrl, name, userId, size = "md", className 
           src={photoUrl || DEFAULT_AVATAR}
           alt={name ? `${name}'s avatar` : ""}
           aria-hidden={name ? undefined : "true"}
-          loading="lazy"
+          loading={eager ? "eager" : "lazy"}
+          width={px}
+          height={px}
         />
       </div>
     );

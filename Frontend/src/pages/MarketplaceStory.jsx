@@ -51,7 +51,15 @@ export default function MarketplaceStory() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="aspect-[16/9] w-full overflow-hidden border-2 border-tertiary mb-8">
-        <img className="w-full h-full object-cover" src={cover} alt="" aria-hidden="true" />
+        <img
+          className="w-full h-full object-cover"
+          src={cover}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          width={640}
+          height={800}
+        />
       </div>
 
       <div className="flex items-center gap-3 mb-4">

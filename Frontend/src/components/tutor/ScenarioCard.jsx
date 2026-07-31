@@ -17,6 +17,8 @@ export default function ScenarioCard({ scenario, featured, locked, onSelect }) {
           alt=""
           aria-hidden="true"
           loading="lazy"
+          width={800}
+          height={600}
         />
         {locked && (
           <div className="absolute inset-0 bg-tertiary/60 flex items-center justify-center">

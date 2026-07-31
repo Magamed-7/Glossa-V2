@@ -28,6 +28,8 @@ export default function CommunityGrid({ stories }) {
                 alt=""
                 aria-hidden="true"
                 loading="lazy"
+                width={320}
+                height={400}
               />
             </div>
             <div className="p-3">

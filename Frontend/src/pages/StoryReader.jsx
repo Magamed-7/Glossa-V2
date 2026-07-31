@@ -92,7 +92,15 @@ export default function StoryReader() {
   return (
     <div className={`mx-auto pb-16 ${showTranslation && hasTranslation ? "max-w-5xl" : "max-w-2xl"}`}>
       <div className="aspect-[16/9] w-full overflow-hidden border-2 border-tertiary mb-8">
-        <img className="w-full h-full object-cover" src={cover} alt="" aria-hidden="true" />
+        <img
+          className="w-full h-full object-cover"
+          src={cover}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          width={640}
+          height={800}
+        />
       </div>
       <div className="flex items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
