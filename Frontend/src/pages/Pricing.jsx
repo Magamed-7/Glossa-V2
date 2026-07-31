@@ -3,12 +3,14 @@ import PageHeader from "../components/layout/PageHeader.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import PlanComparison from "../components/pricing/PlanComparison.jsx";
+import SubscribeButton from "../components/pricing/SubscribeButton.jsx";
 import { useApi } from "../lib/useApi.js";
-import { getPlans } from "../lib/api/subscriptions.js";
+import { getPlans, getMySubscription } from "../lib/api/subscriptions.js";
 import { formatMoney } from "../lib/format.js";
 
 export default function Pricing() {
   const { data: plans, loading, error, reload } = useApi(() => getPlans(), []);
+  const { data: mySubscription, reload: reloadMySubscription } = useApi(() => getMySubscription(), []);
   const [period, setPeriod] = useState("monthly");
 
   return (
@@ -55,6 +57,7 @@ export default function Pricing() {
               plan.price_monthly > 0
                 ? Math.round((1 - plan.price_yearly / 12 / plan.price_monthly) * 100)
                 : 0;
+            const isCurrent = mySubscription?.plan.code === plan.code && mySubscription?.is_active;
 
             return (
               <div
@@ -78,6 +81,14 @@ export default function Pricing() {
                     {formatMoney(price)} billed yearly · save {savingsPercent}%
                   </p>
                 )}
+                <div className="mt-auto pt-4">
+                  <SubscribeButton
+                    plan={plan}
+                    period={period}
+                    isCurrent={isCurrent}
+                    onSubscribed={reloadMySubscription}
+                  />
+                </div>
               </div>
             );
           })}
