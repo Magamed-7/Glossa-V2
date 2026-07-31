@@ -1,3 +1,5 @@
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
 from users.models import User
@@ -33,3 +35,65 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'role', 'is_verified', 'created_at']
+
+
+class UpdateMeSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=False, validators=[])
+    email = serializers.EmailField(required=False, validators=[])
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exclude(id=self.instance.id).exists():
+            raise serializers.ValidationError('Email already exists')
+
+        return value
+
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exclude(id=self.instance.id).exists():
+            raise serializers.ValidationError('Username already exists')
+
+        return value
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    code = serializers.CharField(min_length=6, max_length=6)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+
+        if not user.check_password(value):
+            raise serializers.ValidationError('Old password is incorrect')
+
+        return value
+
+    def validate_new_password(self, value):
+        try:
+            validate_password(value, user=self.context['request'].user)
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError(list(exc.messages))
+
+        return value
+
+
+class PasswordConfirmSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
+
+    def validate_password(self, value):
+        user = self.context['request'].user
+
+        if not user.check_password(value):
+            raise serializers.ValidationError('Password is incorrect')
+
+        return value
+
+
+class TwoFactorCodeSerializer(serializers.Serializer):
+    code = serializers.CharField(min_length=6, max_length=8)

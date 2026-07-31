@@ -14,5 +14,9 @@ class User(AbstractUser):
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    is_2fa_enabled = models.BooleanField(default=False)
+    totp_secret = models.CharField(max_length=64, null=True, blank=True)
+    backup_codes = models.JSONField(null=True, blank=True)
+
     class Meta:
         db_table = 'users'

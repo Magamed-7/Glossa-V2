@@ -29,4 +29,7 @@ async def get_current_user(
     if user is None:
         raise AppError(code='USER_NOT_FOUND', message='User not found', status_code=401)
 
+    if not user.is_active:
+        raise AppError(code='ACCOUNT_DEACTIVATED', message='This account has been deactivated', status_code=401)
+
     return user
