@@ -29,39 +29,44 @@ import UiKit from "./pages/UiKit.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import WordDeck from "./pages/WordDeck.jsx";
+import AppLayout from "./components/layout/AppLayout.jsx";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/password-reset" element={<PasswordReset />} />
-      <Route path="/deck" element={<WordDeck />} />
-      <Route path="/review" element={<SpacedRepetition />} />
-      <Route path="/stories" element={<StoriesCatalog />} />
-      <Route path="/stories/:id" element={<StoryReader />} />
-      <Route path="/grammar" element={<GrammarHub />} />
-      <Route path="/grammar/:id" element={<GrammarLesson />} />
-      <Route path="/tutor" element={<TutorScenarios />} />
-      <Route path="/tutor/chat" element={<TutorChat />} />
-      <Route path="/leaderboard" element={<Leaderboard />} />
-      <Route path="/marketplace" element={<Marketplace />} />
-      <Route path="/marketplace/:id" element={<MarketplaceStory />} />
-      <Route path="/studio" element={<AuthorStudio />} />
-      <Route path="/studio/new" element={<StoryEditor />} />
-      <Route path="/studio/:id/edit" element={<StoryEditor />} />
-      <Route path="/profile" element={<MyProfile />} />
-      <Route path="/profile/:userId" element={<PublicProfile />} />
-      <Route path="/achievements" element={<Achievements />} />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/wallet" element={<Wallet />} />
-      <Route path="/wallet/return" element={<StripeReturn />} />
-      <Route path="/notifications" element={<Notifications />} />
-      <Route path="/settings" element={<Settings />} />
-      <Route path="/search" element={<SearchResults />} />
+      <Route path="/onboarding" element={<Onboarding />} />
+
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/deck" element={<WordDeck />} />
+        <Route path="/review" element={<SpacedRepetition />} />
+        <Route path="/stories" element={<StoriesCatalog />} />
+        <Route path="/stories/:id" element={<StoryReader />} />
+        <Route path="/grammar" element={<GrammarHub />} />
+        <Route path="/grammar/:id" element={<GrammarLesson />} />
+        <Route path="/tutor" element={<TutorScenarios />} />
+        <Route path="/tutor/chat" element={<TutorChat />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/marketplace/:id" element={<MarketplaceStory />} />
+        <Route path="/studio" element={<AuthorStudio />} />
+        <Route path="/studio/new" element={<StoryEditor />} />
+        <Route path="/studio/:id/edit" element={<StoryEditor />} />
+        <Route path="/profile" element={<MyProfile />} />
+        <Route path="/profile/:userId" element={<PublicProfile />} />
+        <Route path="/achievements" element={<Achievements />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/wallet" element={<Wallet />} />
+        <Route path="/wallet/return" element={<StripeReturn />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/search" element={<SearchResults />} />
+      </Route>
+
       <Route path="/ui-kit" element={<UiKit />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
