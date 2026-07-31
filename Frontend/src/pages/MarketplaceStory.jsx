@@ -5,6 +5,7 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import Badge from "../components/ui/Badge.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import BuyButton from "../components/market/BuyButton.jsx";
+import Reviews from "../components/market/Reviews.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getUserStory } from "../lib/api/userStories.js";
 import { resolveUser } from "../lib/api/_pending/userLookup.js";
@@ -93,7 +94,7 @@ export default function MarketplaceStory() {
         <div className="font-body text-body-lg leading-relaxed whitespace-pre-line mb-8">{story.body}</div>
       )}
 
-      <div>{/* Reviews go here */}</div>
+      <Reviews storyId={story.id} canReview={owned && !isMine} />
     </div>
   );
 }
