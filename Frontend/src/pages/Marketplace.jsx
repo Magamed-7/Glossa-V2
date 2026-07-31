@@ -1,19 +1,30 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import AcquisitionCard from "../components/market/AcquisitionCard.jsx";
 import CommunityGrid from "../components/market/CommunityGrid.jsx";
+import FilterPanel from "../components/market/FilterPanel.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getBalance } from "../lib/api/payments.js";
 import { getUserStories } from "../lib/api/userStories.js";
 import { formatMoney } from "../lib/format.js";
 
 export default function Marketplace() {
+  const [filters, setFilters] = useState({ level: "", price: "" });
   const { data: balance } = useApi(() => getBalance(), []);
-  const { data: stories, loading } = useApi(() => getUserStories({ limit: 20 }), []);
+  const { data: stories, loading } = useApi(
+    () => getUserStories({ level: filters.level || undefined, limit: 20 }),
+    [filters.level]
+  );
 
-  const sorted = stories ? [...stories].sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0)) : [];
+  const priceFiltered = (stories || []).filter((s) => {
+    if (filters.price === "free") return !s.price;
+    if (filters.price === "paid") return !!s.price;
+    return true;
+  });
+  const sorted = [...priceFiltered].sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
   const topPicks = sorted.slice(0, 3);
   const rest = sorted.slice(3);
 
@@ -52,6 +63,8 @@ export default function Marketplace() {
       )}
 
       {!loading && <CommunityGrid stories={rest} />}
+
+      <FilterPanel filters={filters} onChange={setFilters} />
     </div>
   );
 }
