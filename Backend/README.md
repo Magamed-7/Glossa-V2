@@ -108,7 +108,7 @@ python -m telegram_bot.bot                                     # optional: Teleg
 | `MINIO_ROOT_USER/PASSWORD`, `MINIO_ENDPOINT`, `MINIO_PUBLIC_ENDPOINT` | FastAPI, minio_init | Object storage credentials; `_PUBLIC_ENDPOINT` is what gets embedded in URLs returned to clients |
 | `TG_BOT`, `TELEGRAM_BOT_USERNAME` | telegram_bot, FastAPI (link flow) | Bot token and @username for the account-linking deep link |
 | `BASE_URL` | Django | Used to build absolute links in verification emails |
-| `CORS_ORIGINS` | FastAPI | Comma-separated allowed origins — currently wide open (`*`) in `app/main.py` for development; **narrow before production** |
+| `CORS_ORIGINS` | FastAPI, Django | Comma-separated allowed origins for browser requests. FastAPI (`app/main.py`) is currently wide open (`*`) for development — **narrow before production**. Django (`auth_service`, via `django-cors-headers`) enforces this list strictly (defaults to `http://localhost:5173` if unset) — without it, or without the frontend's real origin included, browsers block every login/register/refresh call with a CORS error, not just a wrong port |
 | `EMAIL_HOST*`, `DEFAULT_FROM_EMAIL` | Django | SMTP for email verification |
 | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_SUCCESS_URL`, `STRIPE_CANCEL_URL` | FastAPI | Card top-ups via Stripe Checkout |
 | `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL` | FastAPI, telegram_bot | OpenAI-compatible endpoint for the AI conversation partner (Groq by default) |

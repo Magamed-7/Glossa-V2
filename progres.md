@@ -1070,3 +1070,37 @@ rate-limiting на login/2FA; все 6 Dockerfile'ов бэкенда запус
 `Backend/README.md`, раздел «Known limitations» — обновлён: убрана устаревшая запись про баг с event loop
 (уже решён и задокументирован выше), добавлены пункты про открытые Redis/Elasticsearch, root-контейнеры и
 ссылка на новые находки в `Plan/bugs.md`.
+
+## Django CORS — блокировал реальные браузерные логины с фронтенда
+
+Найдено и задокументировано параллельной фронтенд-сессией (`Frontend/Plan/MISSING_API.md`, пункт 12, с
+шагами воспроизведения) — не пробел API, а реальный баг: у `auth_service` (Django) не было **вообще никакой**
+CORS-конфигурации (ни `corsheaders` в `INSTALLED_APPS`, ни middleware), в отличие от FastAPI-стороны
+(`app/main.py`, `CORSMiddleware` уже был). Любой браузерный запрос с фронтенда на `/api/auth/*` (регистрация,
+логин, refresh — вообще всё, через что проходит аутентификация) браузер блокировал ещё до того, как запрос
+уходил на сервер — не «неправильный порт», а полное отсутствие заголовков `Access-Control-Allow-*` в ответе.
+
+**Решение.** Установлен `django-cors-headers==4.9.0` (добавлен в `requirements.txt`). В
+`auth_service/settings.py`: `corsheaders` в `INSTALLED_APPS`, `corsheaders.middleware.CorsMiddleware` в
+`MIDDLEWARE` (сразу после `SecurityMiddleware`, до `CommonMiddleware` — обязательное для этого пакета
+расположение), `CORS_ALLOWED_ORIGINS` читается из **того же** `CORS_ORIGINS`, что уже использовала FastAPI-
+сторона (`os.getenv('CORS_ORIGINS', 'http://localhost:5173')`) — не завёл отдельную переменную, единый список
+разрешённых origin'ов на оба сервиса. `allow_credentials`/`CORS_ALLOW_CREDENTIALS` не включал — аутентификация
+через Bearer-токен в заголовке, не через cookie, credentials-режим CORS не нужен (тот же принцип, что уже
+на FastAPI-стороне: `allow_credentials=False`).
+
+**Живая проверка** — не просто «код не падает»: `python manage.py check` чисто; через
+`rest_framework.test.APIClient` (полный HTTP-стек с middleware, не прямой вызов view) — preflight `OPTIONS
+/api/auth/login` с `Origin: http://localhost:5173` → `200`, `Access-Control-Allow-Origin: http://localhost:5173`,
+`Access-Control-Allow-Methods` включает `POST`/`GET`/`PATCH`/`DELETE`, `Access-Control-Allow-Headers` включает
+`authorization`/`content-type`; реальный `POST /api/auth/login` с тем же origin — заголовок
+`Access-Control-Allow-Origin` присутствует и на настоящем ответе (`401`, не только на preflight — иначе
+браузер всё равно не отдал бы тело ответа скрипту); тот же запрос с `Origin: http://evil.example.com` —
+заголовок отсутствует, посторонний origin по-прежнему заблокирован. Кэш throttling очищен после прогона
+(`cache.clear()`), полный `pytest tests/` — **44 passed**, без регрессий.
+
+`Backend/README.md` (таблица env-переменных) и `docs/FRONTEND_CONTRACT.md` (раздел «CORS») обновлены —
+явно разведено поведение FastAPI (`*`, открыто) и Django (строгий allowlist по `CORS_ORIGINS`), с явным
+предупреждением, что несовпадающий origin фронтенда даёт CORS-ошибку в браузере, а не 4xx от API. Не трогал
+`Frontend/Plan/MISSING_API.md` — это трекинг-файл параллельной фронтенд-сессии, закрывать пункт там должны
+они сами после повторной проверки со своей стороны.
