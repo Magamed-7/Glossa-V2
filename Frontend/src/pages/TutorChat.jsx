@@ -33,6 +33,11 @@ export default function TutorChat() {
             </div>
           )}
           {(status === "open" || status === "closed") && <MessageList messages={messages} />}
+          {status === "closed" && (
+            <p className="px-6 py-3 font-label text-label-md uppercase text-error border-t-2 border-tertiary">
+              Connection closed — the tutor is unavailable right now.
+            </p>
+          )}
           <div className="border-t-2 border-tertiary p-4">
             <ChatInput disabled={status !== "open" || waitingForReply} onSend={sendMessage} />
           </div>
