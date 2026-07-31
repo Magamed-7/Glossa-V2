@@ -4,9 +4,11 @@ import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Badge from "../components/ui/Badge.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import BuyButton from "../components/market/BuyButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getUserStory } from "../lib/api/userStories.js";
 import { resolveUser } from "../lib/api/_pending/userLookup.js";
+import { readUserId } from "../lib/auth/tokens.js";
 import { formatMoney } from "../lib/format.js";
 
 const FALLBACK_COVERS = [
@@ -43,6 +45,7 @@ export default function MarketplaceStory() {
 
   const cover = story.image_url || FALLBACK_COVERS[story.id % FALLBACK_COVERS.length];
   const owned = story.body !== null && story.body !== undefined;
+  const isMine = Number(readUserId()) === story.author_id;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -78,10 +81,11 @@ export default function MarketplaceStory() {
             <Icon name="lock" className="text-tertiary text-2xl" />
             <p className="font-headline text-headline-md">Available after purchase</p>
           </div>
-          <p className="font-body text-body-md text-on-surface-variant">
+          <p className="font-body text-body-md text-on-surface-variant mb-6">
             Buy this story for {story.price ? formatMoney(story.price) : "free"} to read the full text and
             take its exercises.
           </p>
+          {!isMine && <BuyButton story={story} onPurchased={reload} />}
         </div>
       )}
 
@@ -89,7 +93,7 @@ export default function MarketplaceStory() {
         <div className="font-body text-body-lg leading-relaxed whitespace-pre-line mb-8">{story.body}</div>
       )}
 
-      <div>{/* Purchase button / reviews go here */}</div>
+      <div>{/* Reviews go here */}</div>
     </div>
   );
 }
