@@ -1,4 +1,5 @@
 import json
+import re
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,9 +25,15 @@ RESPONSE_INSTRUCTIONS = (
 )
 
 
+def _sanitize_language(language: str):
+    cleaned = re.sub(r'[^A-Za-z\s-]', '', language or '').strip()[:30]
+    return cleaned or 'English'
+
+
 def _system_prompt(scenario: str, language: str):
     scenario_text = SCENARIO_PROMPTS.get(scenario, SCENARIO_PROMPTS['casual'])
-    return f'{scenario_text} {RESPONSE_INSTRUCTIONS.format(language=language)}'
+    safe_language = _sanitize_language(language)
+    return f'{scenario_text} {RESPONSE_INSTRUCTIONS.format(language=safe_language)}'
 
 
 def _parse_llm_response(raw_text: str):

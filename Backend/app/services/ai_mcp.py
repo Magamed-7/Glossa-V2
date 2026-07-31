@@ -33,5 +33,5 @@ async def get_tool_schemas():
     return await get_client().list_openai_tools()
 
 
-async def call_tool(name: str, arguments: dict):
-    return await get_client().call_tool(name, arguments)
+async def call_tool(name: str, arguments: dict, user_id: int | None = None):
+    return await get_client().call_tool(name, arguments, user_id=user_id)

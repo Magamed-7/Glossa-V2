@@ -39,7 +39,10 @@ class MCPToolClient:
         result = await self.session.list_tools()
         return [tool_to_openai_schema(tool) for tool in result.tools]
 
-    async def call_tool(self, name: str, arguments: dict):
+    async def call_tool(self, name: str, arguments: dict, user_id: int | None = None):
+        if user_id is not None:
+            arguments = {**arguments, 'user_id': user_id}
+
         result = await self.session.call_tool(name, arguments)
 
         if not result.content:

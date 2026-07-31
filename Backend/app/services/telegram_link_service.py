@@ -31,12 +31,11 @@ async def create_link_code(user_id: int, db: AsyncSession):
 
 
 async def resolve_link_code(code: str):
-    user_id = await redis_client.get(_code_key(code))
+    user_id = await redis_client.getdel(_code_key(code))
 
     if user_id is None:
         return None
 
-    await redis_client.delete(_code_key(code))
     return int(user_id)
 
 
