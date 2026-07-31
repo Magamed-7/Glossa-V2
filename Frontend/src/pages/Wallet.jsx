@@ -2,6 +2,7 @@ import PageHeader from "../components/layout/PageHeader.jsx";
 import NeoCard from "../components/ui/NeoCard.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import TopupForm from "../components/wallet/TopupForm.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getBalance } from "../lib/api/payments.js";
 import { formatMoney } from "../lib/format.js";
@@ -23,7 +24,9 @@ export default function Wallet() {
         </NeoCard>
       )}
 
-      <div>{/* Top-up form and history go here */}</div>
+      <TopupForm />
+
+      <div className="mt-section-gap">{/* Payment history goes here */}</div>
     </div>
   );
 }
