@@ -6,6 +6,7 @@ import Badge from "../components/ui/Badge.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import StoryBody from "../components/stories/StoryBody.jsx";
+import StoryQuestions from "../components/stories/StoryQuestions.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyProgress, getStory, saveProgress } from "../lib/api/stories.js";
 
@@ -100,6 +101,12 @@ export default function StoryReader() {
         <p className="font-body text-body-md italic text-on-surface-variant mb-8">{story.title_translated}</p>
       )}
       <StoryBody body={story.body} words={story.words} storyId={story.id} />
+
+      <StoryQuestions
+        storyId={story.id}
+        questions={story.questions}
+        onCompleted={() => setCompleted(true)}
+      />
 
       <div className="mt-10 pt-6 border-t-2 border-tertiary">
         <NeoButton
