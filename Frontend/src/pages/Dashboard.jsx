@@ -1,5 +1,6 @@
 import DecorativeBackground from "../components/ui/DecorativeBackground.jsx";
 import DailyMission from "../components/dashboard/DailyMission.jsx";
+import StreakCard from "../components/dashboard/StreakCard.jsx";
 
 export default function Dashboard() {
   return (
@@ -7,6 +8,7 @@ export default function Dashboard() {
       <DecorativeBackground variant="circles" />
       <div className="editorial-grid mb-section-gap">
         <DailyMission />
+        <StreakCard />
       </div>
       <div className="editorial-grid">{/* Metrics go here */}</div>
     </div>
