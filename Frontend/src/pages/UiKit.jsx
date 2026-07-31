@@ -1,5 +1,6 @@
 import Icon from "../components/ui/Icon.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
+import NeoCard from "../components/ui/NeoCard.jsx";
 
 export default function UiKit() {
   return (
@@ -30,6 +31,14 @@ export default function UiKit() {
           <NeoButton variant="primary" loading>
             Loading
           </NeoButton>
+        </div>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="font-headline text-headline-md mb-4">NeoCard</h2>
+        <div className="flex flex-wrap gap-8">
+          <NeoCard>Default card</NeoCard>
+          <NeoCard variant="accent">Accent card</NeoCard>
         </div>
       </section>
     </div>
