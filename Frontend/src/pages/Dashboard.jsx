@@ -3,6 +3,7 @@ import DailyMission from "../components/dashboard/DailyMission.jsx";
 import StreakCard from "../components/dashboard/StreakCard.jsx";
 import StoryProgressCard from "../components/dashboard/StoryProgressCard.jsx";
 import MetricGauges from "../components/dashboard/MetricGauges.jsx";
+import Insights from "../components/dashboard/Insights.jsx";
 
 export default function Dashboard() {
   return (
@@ -16,6 +17,7 @@ export default function Dashboard() {
         <StoryProgressCard />
         <MetricGauges />
       </div>
+      <Insights />
     </div>
   );
 }
