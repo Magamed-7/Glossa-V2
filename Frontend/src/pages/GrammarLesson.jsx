@@ -1,13 +1,25 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Badge from "../components/ui/Badge.jsx";
+import NeoButton from "../components/ui/NeoButton.jsx";
+import QuestionForm from "../components/grammar/QuestionForm.jsx";
+import LessonResults from "../components/grammar/LessonResults.jsx";
 import { useApi } from "../lib/useApi.js";
-import { getLesson } from "../lib/api/grammar.js";
+import { useAppData } from "../lib/AppDataContext.jsx";
+import { errorText } from "../lib/api/errorText.js";
+import { getLesson, submitLesson } from "../lib/api/grammar.js";
 
 export default function GrammarLesson() {
   const { id } = useParams();
+  const { refreshStreak } = useAppData();
   const { data: lesson, loading, error, reload } = useApi(() => getLesson(id), [id]);
+
+  const [answers, setAnswers] = useState({});
+  const [result, setResult] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   if (loading) {
     return (
@@ -27,6 +39,27 @@ export default function GrammarLesson() {
   }
 
   const examples = [...lesson.examples].sort((a, b) => a.order - b.order);
+
+  function setAnswer(questionId, value) {
+    setAnswers((current) => ({ ...current, [questionId]: value }));
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setSubmitError(null);
+    setSubmitting(true);
+
+    try {
+      const payload = lesson.questions.map((q) => ({ question_id: q.id, answer: answers[q.id] || "" }));
+      const outcome = await submitLesson(lesson.id, payload);
+      setResult(outcome);
+      refreshStreak();
+    } catch (err) {
+      setSubmitError(errorText(err));
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -58,12 +91,29 @@ export default function GrammarLesson() {
       )}
 
       {lesson.tip && (
-        <div className="bg-secondary-container text-on-secondary-container p-6 border-2 border-tertiary italic font-body text-body-md">
+        <div className="bg-secondary-container text-on-secondary-container p-6 border-2 border-tertiary italic font-body text-body-md mb-8">
           {lesson.tip}
         </div>
       )}
 
-      <div>{/* Question form goes here */}</div>
+      {result ? (
+        <LessonResults result={result} />
+      ) : (
+        lesson.questions.length > 0 && (
+          <form className="pt-6 border-t-2 border-tertiary space-y-6" onSubmit={onSubmit}>
+            <h2 className="font-headline text-headline-md">Practice</h2>
+            <QuestionForm questions={lesson.questions} answers={answers} onChange={setAnswer} />
+            {submitError && (
+              <p role="alert" className="font-label text-label-md text-error">
+                {submitError}
+              </p>
+            )}
+            <NeoButton type="submit" loading={submitting}>
+              Submit Answers
+            </NeoButton>
+          </form>
+        )
+      )}
     </div>
   );
 }
