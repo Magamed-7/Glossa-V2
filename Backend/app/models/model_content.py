@@ -18,6 +18,7 @@ class VocabEntries(Base):
     translation_tg: Mapped[str | None] = mapped_column(String, nullable=True)
     cefr_level: Mapped[str] = mapped_column(String, nullable=False, index=True)
     unit: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_key: Mapped[str | None] = mapped_column(String, nullable=True, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -36,6 +37,7 @@ class GrammarLessons(Base):
     rule_tg: Mapped[str | None] = mapped_column(String, nullable=True)
     structure: Mapped[str | None] = mapped_column(String, nullable=True)
     tip: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_key: Mapped[str | None] = mapped_column(String, nullable=True, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -93,6 +95,7 @@ class Stories(Base):
     grammar_topic: Mapped[str | None] = mapped_column(String, nullable=True)
     image_url: Mapped[str | None] = mapped_column(String, nullable=True)
     is_system: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    source_key: Mapped[str | None] = mapped_column(String, nullable=True, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
