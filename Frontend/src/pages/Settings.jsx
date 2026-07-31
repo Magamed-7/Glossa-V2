@@ -4,6 +4,7 @@ import Tabs from "../components/ui/Tabs.jsx";
 import LearningSettings from "../components/settings/LearningSettings.jsx";
 import NotificationSettings from "../components/settings/NotificationSettings.jsx";
 import PrivacyPreferences from "../components/settings/PrivacyPreferences.jsx";
+import AccountSection from "../components/settings/AccountSection.jsx";
 
 const TABS = [
   { value: "learning", label: "Learning" },
@@ -23,6 +24,7 @@ export default function Settings() {
         {tab === "learning" && <LearningSettings />}
         {tab === "notifications" && <NotificationSettings />}
         {tab === "privacy" && <PrivacyPreferences />}
+        {tab === "account" && <AccountSection />}
       </div>
     </div>
   );
