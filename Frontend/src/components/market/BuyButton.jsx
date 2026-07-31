@@ -28,6 +28,7 @@ export default function BuyButton({ story, onPurchased }) {
       onPurchased();
     } catch (err) {
       toast.error(errorText(err));
+      if (err.code === "CANNOT_BUY_STORIES") navigate("/pricing");
     } finally {
       setBuying(false);
     }

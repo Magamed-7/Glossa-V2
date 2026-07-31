@@ -9,6 +9,9 @@ const MESSAGES = {
   WRITER_LEVEL_REQUIRED: "Writing stories requires Upper-Intermediate (B2) level or above.",
   CANNOT_BUY_OWN_STORY: "You can't buy your own story.",
   ALREADY_PURCHASED: "You already own this story.",
+  CANNOT_BUY_STORIES: "Your plan doesn't allow buying stories — upgrade to unlock the marketplace.",
+  PAID_STORY_NEEDS_DESCRIPTION: "Paid stories need a description before they can be saved.",
+  STORY_NOT_FOUND: "This story isn't available.",
 };
 
 export function errorText(error) {
