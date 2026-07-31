@@ -3,12 +3,13 @@ import Gauge from "../ui/Gauge.jsx";
 import NeoCard from "../ui/NeoCard.jsx";
 import Icon from "../ui/Icon.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
+import ErrorState from "../ui/ErrorState.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getStats } from "../../lib/api/learning.js";
 import { getGrammarPrecision } from "../../lib/api/_pending/grammarPrecision.js";
 
 export default function MetricGauges() {
-  const { data, loading } = useApi(async () => {
+  const { data, loading, error, reload } = useApi(async () => {
     const [stats, grammar] = await Promise.all([getStats(), getGrammarPrecision()]);
     return { stats, grammar };
   }, []);
@@ -18,6 +19,14 @@ export default function MetricGauges() {
       <div className="col-span-12 md:col-span-6 lg:col-span-5 grid grid-cols-1 gap-6">
         <Skeleton className="h-32" />
         <Skeleton className="h-32" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="col-span-12 md:col-span-6 lg:col-span-5">
+        <ErrorState error={error} onRetry={reload} />
       </div>
     );
   }

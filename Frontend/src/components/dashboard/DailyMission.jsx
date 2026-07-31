@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import NeoButton from "../ui/NeoButton.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
+import ErrorState from "../ui/ErrorState.jsx";
 import Icon from "../ui/Icon.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
@@ -14,7 +15,7 @@ export default function DailyMission() {
   const navigate = useNavigate();
   const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
 
-  const { data, loading } = useApi(async () => {
+  const { data, loading, error, reload } = useApi(async () => {
     // GET /stories/{id} расходует дневной лимит — искать незавершённую историю в уже
     // загруженном списке GET /stories/, не открывая её напрямую (см. API_CONTRACT.md §3.3).
     const progress = await getMyProgress();
@@ -34,6 +35,14 @@ export default function DailyMission() {
 
   if (loading) {
     return <Skeleton className="col-span-12 lg:col-span-8 h-64" />;
+  }
+
+  if (error) {
+    return (
+      <div className="col-span-12 lg:col-span-8">
+        <ErrorState error={error} onRetry={reload} />
+      </div>
+    );
   }
 
   if (!data) return null;

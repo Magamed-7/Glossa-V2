@@ -2,10 +2,11 @@ import NeoCard from "../ui/NeoCard.jsx";
 import Icon from "../ui/Icon.jsx";
 import ProgressBar from "../ui/ProgressBar.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
+import ErrorState from "../ui/ErrorState.jsx";
 import { useAppData } from "../../lib/AppDataContext.jsx";
 
 export default function StreakCard() {
-  const { streak } = useAppData();
+  const { streak, refreshStreak } = useAppData();
 
   if (streak === undefined) {
     return (
@@ -15,7 +16,15 @@ export default function StreakCard() {
     );
   }
 
-  const current = streak?.current_streak ?? 0;
+  if (streak === null) {
+    return (
+      <div className="col-span-12 lg:col-span-4">
+        <ErrorState error={{ message: "Couldn't load your streak" }} onRetry={refreshStreak} />
+      </div>
+    );
+  }
+
+  const current = streak.current_streak ?? 0;
   const weekProgress = (current % 7) || (current > 0 ? 7 : 0);
 
   return (

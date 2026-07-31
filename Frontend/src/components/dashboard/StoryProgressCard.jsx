@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import NeoCard from "../ui/NeoCard.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
 import EmptyState from "../ui/EmptyState.jsx";
+import ErrorState from "../ui/ErrorState.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getMyProgress, getStories } from "../../lib/api/stories.js";
@@ -11,7 +12,7 @@ export default function StoryProgressCard() {
 
   // Как и в DailyMission: GET /stories/{id} расходует дневной лимит, поэтому история ищется
   // в уже загруженном списке GET /stories/, а не открывается напрямую.
-  const { data, loading } = useApi(async () => {
+  const { data, loading, error, reload } = useApi(async () => {
     const progress = await getMyProgress();
     const unfinished = progress.find((p) => !p.is_completed);
     if (!unfinished) return null;
@@ -25,6 +26,14 @@ export default function StoryProgressCard() {
     return (
       <div className="col-span-12 md:col-span-6 lg:col-span-7">
         <Skeleton className="h-[420px]" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="col-span-12 md:col-span-6 lg:col-span-7">
+        <ErrorState error={error} onRetry={reload} />
       </div>
     );
   }
