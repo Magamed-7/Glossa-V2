@@ -6,7 +6,7 @@ import Skeleton from "../components/ui/Skeleton.jsx";
 import StoryCard from "../components/stories/StoryCard.jsx";
 import CatalogIndex from "../components/stories/CatalogIndex.jsx";
 import { useApi } from "../lib/useApi.js";
-import { getStories } from "../lib/api/stories.js";
+import { getMyProgress, getStories } from "../lib/api/stories.js";
 
 const LEVEL_TABS = [
   { value: "", label: "All" },
@@ -26,6 +26,9 @@ export default function StoriesCatalog() {
     () => getStories({ level: level || undefined, limit: 60 }),
     [level]
   );
+  // Один запрос на страницу, не по карточке — прогресс не тянется отдельно для каждой истории.
+  const { data: progressList } = useApi(() => getMyProgress(), []);
+  const progressByStoryId = new Map((progressList || []).map((p) => [p.story_id, p]));
 
   function onLevelChange(value) {
     const next = new URLSearchParams(searchParams);
@@ -74,7 +77,7 @@ export default function StoriesCatalog() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featured.map((story) => (
-              <StoryCard key={story.id} story={story} />
+              <StoryCard key={story.id} story={story} progress={progressByStoryId.get(story.id)} />
             ))}
           </div>
           <CatalogIndex stories={rest} />
