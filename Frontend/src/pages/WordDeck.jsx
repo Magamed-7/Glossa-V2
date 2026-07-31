@@ -1,6 +1,14 @@
 import PageHeader from "../components/layout/PageHeader.jsx";
+import WordCard from "../components/deck/WordCard.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import Skeleton from "../components/ui/Skeleton.jsx";
+import ErrorState from "../components/ui/ErrorState.jsx";
+import { useApi } from "../lib/useApi.js";
+import { getCards } from "../lib/api/deck.js";
 
 export default function WordDeck() {
+  const { data: cards, loading, error, reload } = useApi(() => getCards({ limit: 24 }), []);
+
   return (
     <div>
       <PageHeader
@@ -9,7 +17,26 @@ export default function WordDeck() {
         accent="Salon"
         subtitle="Every word you collect, tracked through spaced repetition until it becomes second nature."
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{/* Word cards go here */}</div>
+
+      {error && <ErrorState error={error} onRetry={reload} />}
+
+      {!error && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <button
+            type="button"
+            className="border-2 border-dashed border-tertiary flex flex-col items-center justify-center gap-2 min-h-[180px] hover:bg-surface-container transition-colors"
+          >
+            <Icon name="add" className="text-4xl text-tertiary" />
+            <span className="font-label text-label-md uppercase">Add New Word</span>
+          </button>
+
+          {loading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="min-h-[180px]" />)}
+
+          {!loading && cards?.map((card) => (
+            <WordCard key={card.id} card={card} onStatusChange={() => {}} onDelete={() => {}} onPlayAudio={() => {}} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
