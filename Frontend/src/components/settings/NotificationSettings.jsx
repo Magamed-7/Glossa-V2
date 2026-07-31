@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import NeoButton from "../ui/NeoButton.jsx";
 import Field from "../ui/Field.jsx";
+import TelegramLink from "./TelegramLink.jsx";
 import { getSettings, updateSettings } from "../../lib/api/settings.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
@@ -73,6 +74,11 @@ export default function NotificationSettings() {
         <NeoButton size="md" loading={submitting} onClick={onSaveReminder}>
           Save
         </NeoButton>
+      </div>
+
+      <div className="pt-6 border-t-2 border-surface-container-highest">
+        <h3 className="font-headline text-headline-md mb-4">Telegram</h3>
+        <TelegramLink />
       </div>
     </div>
   );
