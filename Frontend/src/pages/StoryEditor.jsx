@@ -9,6 +9,7 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Modal from "../components/ui/Modal.jsx";
+import ExerciseBuilder from "../components/market/ExerciseBuilder.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useToast } from "../lib/toast.jsx";
@@ -235,6 +236,8 @@ export default function StoryEditor() {
           )}
         </div>
       </form>
+
+      {isEditing && <ExerciseBuilder storyId={id} cefrLevel={cefrLevel} />}
 
       <Modal open={confirmDelete} onClose={() => setConfirmDelete(false)} title="Delete Story">
         <p className="font-body text-body-md mb-6">
