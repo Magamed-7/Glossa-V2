@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Achievements from "./pages/Achievements.jsx";
 import AuthorStudio from "./pages/AuthorStudio.jsx";
@@ -21,28 +22,35 @@ import SearchResults from "./pages/SearchResults.jsx";
 import Settings from "./pages/Settings.jsx";
 import SpacedRepetition from "./pages/SpacedRepetition.jsx";
 import StoriesCatalog from "./pages/StoriesCatalog.jsx";
-import StoryEditor from "./pages/StoryEditor.jsx";
-import StoryReader from "./pages/StoryReader.jsx";
 import StripeReturn from "./pages/StripeReturn.jsx";
-import TutorChat from "./pages/TutorChat.jsx";
 import TutorScenarios from "./pages/TutorScenarios.jsx";
 import UiKit from "./pages/UiKit.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import WordDeck from "./pages/WordDeck.jsx";
 import AppLayout from "./components/layout/AppLayout.jsx";
+import LoadingScreen from "./components/LoadingScreen.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
 import { RouteErrorBoundary } from "./components/ErrorBoundary.jsx";
 
+// Тяжёлые страницы — отдельным чанком: редактор историй (крупная форма + загрузка
+// обложки), читалка (клик по словам, попап перевода) и чат ИИ-тренажёра (WebSocket).
+const StoryEditor = lazy(() => import("./pages/StoryEditor.jsx"));
+const StoryReader = lazy(() => import("./pages/StoryReader.jsx"));
+const TutorChat = lazy(() => import("./pages/TutorChat.jsx"));
+
 // react-router-dom здесь работает в декларативном режиме (<BrowserRouter><Routes>),
 // а не через createBrowserRouter/RouterProvider — только там существует errorElement.
 // Та же изоляция сбоя одной страницы достигается оборачиванием каждого листового
-// маршрута в свою собственную границу ошибок.
+// маршрута в свою собственную границу ошибок; Suspense — тот же полноэкранный
+// кремовый экран, что и при старте приложения, для лениво загружаемых страниц выше.
 function page(Component) {
   return (
     <RouteErrorBoundary>
-      <Component />
+      <Suspense fallback={<LoadingScreen />}>
+        <Component />
+      </Suspense>
     </RouteErrorBoundary>
   );
 }
