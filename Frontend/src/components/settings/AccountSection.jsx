@@ -4,6 +4,7 @@ import NeoCard from "../ui/NeoCard.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
 import Field from "../ui/Field.jsx";
 import Modal from "../ui/Modal.jsx";
+import DataExport from "./DataExport.jsx";
 import * as authApi from "../../lib/api/auth.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
@@ -249,6 +250,7 @@ export default function AccountSection() {
         <h3 className="font-headline text-headline-md mb-4">Two-Factor Authentication</h3>
         <TwoFactor />
       </NeoCard>
+      <DataExport />
       <NeoCard variant="accent">
         <h3 className="font-headline text-headline-md mb-4">Danger Zone</h3>
         <DeleteAccount />
