@@ -68,7 +68,28 @@ export default function MarketplaceStory() {
 
       {story.description && <p className="font-body text-body-lg mb-8">{story.description}</p>}
 
-      <div>{/* Purchase / body / reviews go here */}</div>
+      {/* body === null у некупленной платной истории — это витрина, не ошибка (API_CONTRACT.md §3.7). */}
+      {!owned && (
+        <div className="relative border-2 border-tertiary p-8 md:p-12 overflow-hidden mb-8">
+          <span className="absolute top-6 right-[-40px] rotate-12 bg-tertiary text-surface font-label text-label-md uppercase tracking-widest px-10 py-2">
+            Locked
+          </span>
+          <div className="flex items-center gap-3 mb-4">
+            <Icon name="lock" className="text-tertiary text-2xl" />
+            <p className="font-headline text-headline-md">Available after purchase</p>
+          </div>
+          <p className="font-body text-body-md text-on-surface-variant">
+            Buy this story for {story.price ? formatMoney(story.price) : "free"} to read the full text and
+            take its exercises.
+          </p>
+        </div>
+      )}
+
+      {owned && story.body && (
+        <div className="font-body text-body-lg leading-relaxed whitespace-pre-line mb-8">{story.body}</div>
+      )}
+
+      <div>{/* Purchase button / reviews go here */}</div>
     </div>
   );
 }
