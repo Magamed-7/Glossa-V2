@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1600" viewBox="0 0 2400 1600">
+  <rect x="1" y="1" width="2398" height="1598" fill="#fcf9f6" stroke="#000000" stroke-width="2"/>
+  <circle cx="1200" cy="800" r="352" fill="none" stroke="#b90538" stroke-width="3"/>
+  <line x1="707.2" y1="800" x2="1692.8" y2="800" stroke="#b90538" stroke-width="3"/>
+  <line x1="1200" y1="307.20000000000005" x2="1200" y2="1292.8" stroke="#b90538" stroke-width="3"/>
+  <text x="1200" y="1576" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#000000" letter-spacing="2">TEXTURES</text>
+  <text x="1200" y="1592" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#000000" opacity="0.6">tape-reel</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect x="1" y="1" width="1198" height="798" fill="#fcf9f6" stroke="#000000" stroke-width="2"/>
+  <circle cx="600" cy="400" r="176" fill="none" stroke="#b90538" stroke-width="3"/>
+  <line x1="353.6" y1="400" x2="846.4" y2="400" stroke="#b90538" stroke-width="3"/>
+  <line x1="600" y1="153.60000000000002" x2="600" y2="646.4" stroke="#b90538" stroke-width="3"/>
+  <text x="600" y="776" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#000000" letter-spacing="2">TEXTURES</text>
+  <text x="600" y="792" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#000000" opacity="0.6">swiss-circles</text>
+</svg>

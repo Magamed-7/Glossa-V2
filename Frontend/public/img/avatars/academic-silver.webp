@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect x="1" y="1" width="254" height="254" fill="#fcf9f6" stroke="#000000" stroke-width="2"/>
+  <circle cx="128" cy="128" r="56.32" fill="none" stroke="#b90538" stroke-width="3"/>
+  <line x1="49.152" y1="128" x2="206.848" y2="128" stroke="#b90538" stroke-width="3"/>
+  <line x1="128" y1="49.152" x2="128" y2="206.848" stroke="#b90538" stroke-width="3"/>
+  <text x="128" y="232" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#000000" letter-spacing="2">AVATARS</text>
+  <text x="128" y="248" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#000000" opacity="0.6">academic-silver</text>
+</svg>
