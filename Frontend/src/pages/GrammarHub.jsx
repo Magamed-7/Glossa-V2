@@ -1,10 +1,32 @@
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import DecorativeBackground from "../components/ui/DecorativeBackground.jsx";
+import Fab from "../components/layout/Fab.jsx";
 import FeaturedLesson from "../components/grammar/FeaturedLesson.jsx";
 import GrammarRoadmap from "../components/grammar/GrammarRoadmap.jsx";
 import WeakTopics from "../components/grammar/WeakTopics.jsx";
+import { useApi } from "../lib/useApi.js";
+import { useAuth } from "../lib/auth/AuthContext.jsx";
+import { getLessons, getWeakTopics } from "../lib/api/grammar.js";
 
 export default function GrammarHub() {
+  const navigate = useNavigate();
+  const { languages } = useAuth();
+  const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
+
+  // Ищем реальный урок, соответствующий самой слабой теме, чтобы кнопка вела к настоящему
+  // полезному действию, а не была декорацией.
+  const { data: nextWeakLesson } = useApi(async () => {
+    const [topics, lessons] = await Promise.all([
+      getWeakTopics(),
+      getLessons({ level: targetLevel, limit: 100 }),
+    ]);
+    if (topics.length === 0) return null;
+
+    const worst = [...topics].sort((a, b) => b.error_rate - a.error_rate)[0];
+    return lessons.find((l) => l.topic === worst.topic) || null;
+  }, [targetLevel]);
+
   return (
     <div className="relative">
       <DecorativeBackground variant="rays" />
@@ -17,6 +39,14 @@ export default function GrammarHub() {
       <FeaturedLesson />
       <GrammarRoadmap />
       <WeakTopics />
+
+      {nextWeakLesson && (
+        <Fab
+          icon="priority_high"
+          label="Practice your weakest topic"
+          onClick={() => navigate(`/grammar/${nextWeakLesson.id}`)}
+        />
+      )}
     </div>
   );
 }
