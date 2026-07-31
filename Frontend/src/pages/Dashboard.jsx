@@ -1,6 +1,7 @@
 import DecorativeBackground from "../components/ui/DecorativeBackground.jsx";
 import DailyMission from "../components/dashboard/DailyMission.jsx";
 import StreakCard from "../components/dashboard/StreakCard.jsx";
+import StoryProgressCard from "../components/dashboard/StoryProgressCard.jsx";
 
 export default function Dashboard() {
   return (
@@ -10,7 +11,9 @@ export default function Dashboard() {
         <DailyMission />
         <StreakCard />
       </div>
-      <div className="editorial-grid">{/* Metrics go here */}</div>
+      <div className="editorial-grid">
+        <StoryProgressCard />
+      </div>
     </div>
   );
 }
