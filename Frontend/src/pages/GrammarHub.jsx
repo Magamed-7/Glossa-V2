@@ -1,5 +1,6 @@
 import PageHeader from "../components/layout/PageHeader.jsx";
 import DecorativeBackground from "../components/ui/DecorativeBackground.jsx";
+import FeaturedLesson from "../components/grammar/FeaturedLesson.jsx";
 
 export default function GrammarHub() {
   return (
@@ -11,7 +12,8 @@ export default function GrammarHub() {
         accent="Ledger"
         subtitle="Every rule you've mastered, and every one still worth revising."
       />
-      <div>{/* Featured lesson, roadmap, weak topics go here */}</div>
+      <FeaturedLesson />
+      <div>{/* Roadmap and weak topics go here */}</div>
     </div>
   );
 }
