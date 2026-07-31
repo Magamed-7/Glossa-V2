@@ -3,12 +3,15 @@ import Avatar from "../components/ui/Avatar.jsx";
 import Badge from "../components/ui/Badge.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import FollowButton from "../components/profile/FollowButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPublicProfile } from "../lib/api/profile.js";
+import { readUserId } from "../lib/auth/tokens.js";
 
 export default function PublicProfile() {
   const { userId } = useParams();
   const { data: profile, loading, error, reload } = useApi(() => getPublicProfile(userId), [userId]);
+  const isMine = Number(readUserId()) === Number(userId);
 
   if (loading) return <Skeleton className="h-64 max-w-2xl mx-auto" />;
   if (error) {
@@ -23,10 +26,11 @@ export default function PublicProfile() {
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center gap-6 mb-section-gap">
         <Avatar photoUrl={profile.photo_url} name={profile.username} size="xl" />
-        <div>
+        <div className="flex-1">
           <h1 className="font-display text-headline-lg">{profile.username}</h1>
           {profile.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
+        {!isMine && <FollowButton userId={userId} />}
       </div>
 
       {/* Поля, скрытые владельцем приватности, отсутствуют в объекте целиком, а не равны null —
@@ -54,8 +58,6 @@ export default function PublicProfile() {
           </div>
         </div>
       )}
-
-      <div>{/* Follow button and stats go here */}</div>
     </div>
   );
 }
