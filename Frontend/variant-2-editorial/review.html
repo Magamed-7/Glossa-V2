@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Повторение — Glossa</title>
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="masthead">
+  <div class="wrap masthead__row">
+    <a class="masthead__brand" href="dashboard.html">GLOSSA <small>English · B1</small></a>
+    <nav class="masthead__nav" aria-label="Основная навигация">
+      <a data-nav-link href="deck.html">Колода</a>
+      <a data-nav-link href="stories.html">Истории</a>
+      <a data-nav-link href="grammar.html">Грамматика</a>
+      <a data-nav-link href="ai-chat.html">ИИ-чат</a>
+      <a data-nav-link href="leaderboard.html">Рейтинг</a>
+      <a data-nav-link href="profile.html">Профиль</a>
+      <a data-nav-link href="settings.html">Настройки</a>
+    </nav>
+    <div class="masthead__tools">
+      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Переключить тёмную тему">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </button>
+      <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="icon-btn__dot" aria-hidden="true"></span>
+      </a>
+      <button class="masthead__burger" data-burger aria-label="Открыть меню" aria-expanded="false" aria-controls="mobilenav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobilenav" class="mobilenav" data-mobilenav aria-label="Мобильная навигация">
+  <div class="mobilenav__top">
+    <span class="masthead__brand">GLOSSA</span>
+    <button class="icon-btn" data-mobilenav-close aria-label="Закрыть меню">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="mobilenav__list">
+    <li><a data-nav-link href="dashboard.html">Главная</a></li>
+    <li><a data-nav-link href="deck.html">Колода</a></li>
+    <li><a data-nav-link href="stories.html">Истории</a></li>
+    <li><a data-nav-link href="community.html">Сообщество</a></li>
+    <li><a data-nav-link href="grammar.html">Грамматика</a></li>
+    <li><a data-nav-link href="ai-chat.html">ИИ-чат</a></li>
+    <li><a data-nav-link href="leaderboard.html">Рейтинг</a></li>
+    <li><a data-nav-link href="achievements.html">Достижения</a></li>
+    <li><a data-nav-link href="profile.html">Профиль</a></li>
+    <li><a data-nav-link href="settings.html">Настройки</a></li>
+    <li><a data-nav-link href="notifications.html">Уведомления</a></li>
+  </ul>
+</nav>
+
+<div class="runhead">
+  <div class="wrap runhead__row">
+    <span>Глосса</span>
+    <span>Выпуск № 05</span>
+    <span>Повторение карточек</span>
+    <span>@amina.r · B1 · Английский</span>
+  </div>
+</div>
+
+<main id="main">
+<section class="wrap section--tight">
+  <div class="flex justify-between items-center" style="flex-wrap:wrap; gap:1em;">
+    <div>
+      <p class="eyebrow">Иммерсивное повторение</p>
+      <h1 class="mt-2">Разбор сегодняшних карточек</h1>
+    </div>
+    <a href="dashboard.html" class="btn--quiet">Прервать и выйти</a>
+  </div>
+  <div class="flex justify-between items-center mt-5" style="font-family:var(--font-ui); font-size:var(--text-xs); letter-spacing:.08em; text-transform:uppercase; color:var(--color-muted-ink);">
+    <span id="review-counter">Карточка 1 из 8</span>
+    <span id="review-remaining">Осталось 8</span>
+  </div>
+  <div class="progress-bar mt-2"><div class="progress-bar__fill" id="review-progress" style="width:12.5%;"></div></div>
+</section>
+
+<section class="wrap section--tight" style="max-width:760px; margin-inline:auto;">
+  <div id="review-active">
+    <div class="flashcard-stage">
+      <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Карточка. Нажмите, чтобы увидеть перевод">
+        <div class="flashcard__face flashcard__face--front">
+          <p class="eyebrow" id="card-status"></p>
+          <p class="flashcard__word" id="card-word">achieve</p>
+          <p class="flashcard__hint">Нажмите или Пробел, чтобы открыть перевод</p>
+        </div>
+        <div class="flashcard__face flashcard__face--back">
+          <p class="eyebrow">Перевод</p>
+          <p class="flashcard__word" id="card-translation">достигать</p>
+          <p class="prose text-center" id="card-example" style="font-style:italic;">She worked for years to achieve her goal.</p>
+          <button type="button" class="icon-btn" id="card-audio" aria-label="Прослушать произношение" onclick="event.stopPropagation();">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rating-row" id="rating-row" aria-label="Оцените, насколько хорошо вы вспомнили слово" hidden>
+      <button class="rating-btn" data-quality="1"><span class="rating-btn__n">1</span>Совсем забыл</button>
+      <button class="rating-btn" data-quality="2"><span class="rating-btn__n">2</span>С трудом</button>
+      <button class="rating-btn" data-quality="3"><span class="rating-btn__n">3</span>Неуверенно</button>
+      <button class="rating-btn" data-quality="4"><span class="rating-btn__n">4</span>Хорошо</button>
+      <button class="rating-btn" data-quality="5"><span class="rating-btn__n">5</span>Легко вспомнил</button>
+    </div>
+  </div>
+
+  <div id="review-done" class="text-center" hidden>
+    <p class="numeral numeral--display">8/8</p>
+    <h2 class="mt-3">Повторение завершено</h2>
+    <p class="prose mt-3" style="margin-inline:auto;">Вы разобрали все карточки на сегодня. Двенадцать дней подряд — рекорд ждёт на отметке сорок пять.</p>
+    <div class="flex gap-4 justify-between mt-6" style="justify-content:center;">
+      <a href="dashboard.html" class="btn">На главную</a>
+      <a href="deck.html" class="btn btn--ghost">Открыть колоду</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Glossa — издание для изучающих языки глубоко</span>
+    <span>Карточка за карточкой — до следующей встречи со словом</span>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  var deck = [
+    {word:'achieve', translation:'достигать', example:'She worked for years to achieve her goal.', status:'Выучено'},
+    {word:'reluctant', translation:'неохотный', example:'He was reluctant to leave his hometown.', status:'Сложное'},
+    {word:'wander', translation:'бродить', example:'They wandered through the old quarter for hours.', status:'Изучается'},
+    {word:'commitment', translation:'обязательство', example:'Marriage requires real commitment.', status:'Изучается'},
+    {word:'thrive', translation:'процветать', example:'Small businesses thrive in this neighbourhood.', status:'Выучено'},
+    {word:'overwhelmed', translation:'подавленный', example:'She felt overwhelmed by the workload.', status:'Сложное'},
+    {word:'bittersweet', translation:'горько-сладкий', example:'Graduation day was a bittersweet moment.', status:'Пропущено'},
+    {word:'linger', translation:'задерживаться', example:'The smell of coffee lingered in the kitchen.', status:'Изучается'}
+  ];
+  var idx = 0;
+  var flipped = false;
+
+  var card = document.getElementById('flashcard');
+  var wordEl = document.getElementById('card-word');
+  var statusEl = document.getElementById('card-status');
+  var translationEl = document.getElementById('card-translation');
+  var exampleEl = document.getElementById('card-example');
+  var counter = document.getElementById('review-counter');
+  var remaining = document.getElementById('review-remaining');
+  var progress = document.getElementById('review-progress');
+  var ratingRow = document.getElementById('rating-row');
+  var audioBtn = document.getElementById('card-audio');
+  var activeBlock = document.getElementById('review-active');
+  var doneBlock = document.getElementById('review-done');
+
+  function render(){
+    var c = deck[idx];
+    wordEl.textContent = c.word;
+    statusEl.textContent = c.status;
+    translationEl.textContent = c.translation;
+    exampleEl.textContent = c.example;
+    counter.textContent = 'Карточка ' + (idx+1) + ' из ' + deck.length;
+    remaining.textContent = 'Осталось ' + (deck.length - idx);
+    progress.style.width = ((idx)/deck.length*100) + '%';
+    flipped = false;
+    card.classList.remove('is-flipped');
+    ratingRow.hidden = true;
+  }
+
+  function flip(){
+    flipped = !flipped;
+    card.classList.toggle('is-flipped', flipped);
+    ratingRow.hidden = !flipped;
+  }
+
+  card.addEventListener('click', flip);
+  card.addEventListener('keydown', function(e){
+    if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flip(); }
+  });
+
+  audioBtn.addEventListener('click', function(){
+    try{
+      if ('speechSynthesis' in window){
+        var u = new SpeechSynthesisUtterance(deck[idx].word);
+        u.lang = 'en-US';
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+      } else {
+        glossaToast('Озвучка недоступна в этом браузере');
+      }
+    } catch(e){ glossaToast('Озвучка недоступна'); }
+  });
+
+  ratingRow.querySelectorAll('.rating-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      idx++;
+      if (idx >= deck.length){
+        progress.style.width = '100%';
+        activeBlock.hidden = true;
+        doneBlock.hidden = false;
+      } else {
+        render();
+      }
+    });
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

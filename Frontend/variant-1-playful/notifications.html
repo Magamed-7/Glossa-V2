@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossa — Уведомления</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .notif-item{ display:flex; gap:var(--space-3); padding:var(--space-4); border-bottom:3px dashed var(--color-border); align-items:flex-start; position:relative; }
+  .notif-item:last-child{ border-bottom:none; }
+  .notif-item.unread{ background:var(--color-muted); border-radius:var(--radius-sm); }
+  .notif-item.unread::before{ content:''; position:absolute; left:6px; top:22px; width:8px; height:8px; border-radius:50%; background:var(--color-primary); }
+  .notif-item .ico{ width:40px; height:40px; border-radius:50%; background:var(--color-surface); border:3px solid var(--color-border); display:flex; align-items:center; justify-content:center; flex:none; }
+  .notif-item .ico svg{ width:20px; height:20px; color:var(--color-primary); }
+  .notif-item .body{ flex:1; }
+  .notif-item time{ font-size:12px; color:var(--color-muted-foreground); }
+</style>
+</head>
+<body class="app-shell" data-page="notifications">
+<div id="rail-root"></div>
+<main class="app-main">
+  <div id="topbar-root"></div>
+  <div class="row between">
+    <h1 class="mb-0">Уведомления</h1>
+    <button class="btn btn-secondary btn-sm" data-mark-all-read>Прочитать все</button>
+  </div>
+
+  <div class="card" style="padding:0;margin-top:var(--space-5);">
+    <div class="notif-item unread">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3v18M18 3v18M6 8h12M6 13h12"/></svg></span>
+      <div class="body"><strong>Новый отзыв на «Голос за стеной»</strong><p class="mb-0 text-muted">qwen.li оставил(а) отзыв ★★★★☆</p><time>2 ч назад</time></div>
+      <button class="btn btn-sm btn-ghost" data-mark-read>Прочитано</button>
+    </div>
+    <div class="notif-item unread">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg></span>
+      <div class="body"><strong>Куплена ваша история «Голос за стеной»</strong><p class="mb-0 text-muted">dilnoza99 купил(а) историю за 120 🪙</p><time>5 ч назад</time></div>
+      <button class="btn btn-sm btn-ghost" data-mark-read>Прочитано</button>
+    </div>
+    <div class="notif-item">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span>
+      <div class="body"><strong>Достижение получено: «Сова»</strong><p class="mb-0 text-muted">Ты позанимался(ась) после полуночи</p><time>Вчера</time></div>
+    </div>
+    <div class="notif-item unread">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="6" width="12" height="15" rx="3" transform="rotate(-8 10 13)"/></svg></span>
+      <div class="body"><strong>Не забудьте повторить 15 карточек сегодня</strong><p class="mb-0 text-muted">3 из них отмечены как сложные</p><time>Сегодня</time></div>
+      <button class="btn btn-sm btn-ghost" data-mark-read>Прочитано</button>
+    </div>
+  </div>
+</main>
+<div id="bottomnav-root"></div>
+<script src="app.js"></script>
+</body>
+</html>

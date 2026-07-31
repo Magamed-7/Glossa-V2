@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Колода — Glossa</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к содержимому</a>
+<div class="app-shell">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <a href="dashboard.html" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg></span>
+      Glossa
+    </a>
+    <nav class="nav-list" aria-label="Основная навигация">
+      <a class="nav-link" data-nav href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Дашборд</a>
+      <a class="nav-link" data-nav href="deck.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="8" rx="1.5"/><rect x="4" y="12" width="16" height="9" rx="1.5"/></svg>Колода</a>
+      <a class="nav-link" data-nav href="stories.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2v13c2.4 0 4.5.7 6 2 1.5-1.3 3.6-2 6-2V4c-2.4 0-4.5.7-6 2Z"/><path d="M12 6v13"/></svg>Истории</a>
+      <a class="nav-link" data-nav href="grammar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg>Грамматика</a>
+      <a class="nav-link" data-nav href="ai-chat.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16V16H9l-4 3.5V16H4V5.5Z"/><path d="M12 8v4M10 10h4"/></svg>ИИ-чат</a>
+      <a class="nav-link" data-nav href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg>Рейтинг</a>
+      <a class="nav-link" data-nav href="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.4-3.6 4-5.4 7-5.4s5.6 1.8 7 5.4"/></svg>Профиль</a>
+      <a class="nav-link" data-nav href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.1 5.9l-1.7 1.7M7.6 16.4l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6 5.9 5.9"/></svg>Настройки</a>
+    </nav>
+    <div class="nav-group-label">Ещё</div>
+    <nav class="nav-list" aria-label="Дополнительная навигация">
+      <a class="nav-link" data-nav href="community.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3"/><path d="M3 19c1.1-3 3.2-4.5 6-4.5s4.9 1.5 6 4.5"/><circle cx="17.5" cy="9.5" r="2.3"/><path d="M15.8 14.6c1.9.4 3.3 1.7 4.2 4.4"/></svg>Комьюнити</a>
+      <a class="nav-link" data-nav href="achievements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="m8.5 13.5-1.4 6.6L12 17.8l4.9 2.3-1.4-6.6"/></svg>Достижения</a>
+      <a class="nav-link" data-nav href="pricing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 3.5H6a1.5 1.5 0 0 0-1.5 1.5v6.5L13.5 20l6-6-9-10.5Z"/><circle cx="8.5" cy="8" r="1.3"/></svg>Тарифы</a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-clock">
+      <span class="row" style="gap:6px;"><span class="dot"></span>Ночная сессия</span>
+      <strong data-live-clock class="font-mono">--:--:--</strong>
+    </div>
+    <a href="profile.html" class="user-chip">
+      <span class="avatar">АР</span>
+      <span class="user-chip-meta">
+        <span class="user-chip-name">Амина Рахимова</span>
+        <span class="user-chip-sub">3 240 XP · #47</span>
+      </span>
+    </a>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Открыть меню" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="topbar-title">
+        <div class="eyebrow">Обучение</div>
+        <h1>Колода слов</h1>
+      </div>
+      <div class="topbar-actions">
+        <span class="live-clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span data-live-clock>--:--:--</span></span>
+        <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+          <span class="badge-dot" aria-hidden="true"></span>
+        </a>
+      </div>
+    </header>
+
+    <main class="content" id="main">
+      <div class="tabs" data-tabs="deckPanels" role="tablist" aria-label="Разделы колоды" style="margin-bottom:var(--space-5);">
+        <button class="tab-btn" role="tab" id="tab-words" aria-controls="panel-words" aria-selected="true" tabindex="0">Слова</button>
+        <button class="tab-btn" role="tab" id="tab-stats" aria-controls="panel-stats" aria-selected="false" tabindex="-1">Статистика</button>
+      </div>
+
+      <div id="panel-words" role="tabpanel" aria-labelledby="tab-words" class="tab-panel">
+        <div class="row-between wrap" style="gap:var(--space-4); margin-bottom:var(--space-4);">
+          <div class="input-icon-wrap" style="max-width:280px; flex:1;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>
+            <input type="search" class="input" id="wordSearch" placeholder="Поиск слова..." aria-label="Поиск слова">
+          </div>
+          <button type="button" class="btn btn-primary" data-modal-open="addWordModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Добавить слово
+          </button>
+        </div>
+
+        <div class="pill-group" data-pill-group="single" style="margin-bottom:var(--space-4);" role="group" aria-label="Фильтр по статусу">
+          <button type="button" class="pill-btn" data-filter="all" aria-pressed="true">Все · 214</button>
+          <button type="button" class="pill-btn" data-filter="learning" aria-pressed="false">Изучается</button>
+          <button type="button" class="pill-btn" data-filter="learned" aria-pressed="false">Выучено</button>
+          <button type="button" class="pill-btn" data-filter="hard" aria-pressed="false">Сложное</button>
+          <button type="button" class="pill-btn" data-filter="skipped" aria-pressed="false">Пропущено</button>
+        </div>
+
+        <div class="card" style="padding:0;">
+          <div class="word-row text-xs faint font-mono" style="text-transform:uppercase; letter-spacing:.05em;">
+            <span>Слово</span><span>Перевод</span><span>Статус</span><span></span>
+          </div>
+          <div id="wordList">
+            <div class="word-row" data-status="learned" data-word="achieve">
+              <span class="word-en">achieve</span><span class="word-ru">достигать</span>
+              <span class="badge badge-learned">выучено</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом achieve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="hard" data-word="reluctant">
+              <span class="word-en">reluctant</span><span class="word-ru">неохотный</span>
+              <span class="badge badge-hard">сложное</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом reluctant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="learning" data-word="wander">
+              <span class="word-en">wander</span><span class="word-ru">бродить</span>
+              <span class="badge badge-progress">изучается</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом wander"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="learning" data-word="commitment">
+              <span class="word-en">commitment</span><span class="word-ru">обязательство</span>
+              <span class="badge badge-progress">изучается</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом commitment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="learned" data-word="thrive">
+              <span class="word-en">thrive</span><span class="word-ru">процветать</span>
+              <span class="badge badge-learned">выучено</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом thrive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="hard" data-word="overwhelmed">
+              <span class="word-en">overwhelmed</span><span class="word-ru">подавленный</span>
+              <span class="badge badge-hard">сложное</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом overwhelmed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="skipped" data-word="bittersweet">
+              <span class="word-en">bittersweet</span><span class="word-ru">горько-сладкий</span>
+              <span class="badge badge-skipped">пропущено</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом bittersweet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+            <div class="word-row" data-status="learning" data-word="linger">
+              <span class="word-en">linger</span><span class="word-ru">задерживаться</span>
+              <span class="badge badge-progress">изучается</span>
+              <button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом linger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>
+            </div>
+          </div>
+          <p id="noWordsMsg" class="text-sm muted" style="padding:var(--space-5); display:none;">По этому запросу слов не найдено. Попробуйте другой фильтр или добавьте слово вручную.</p>
+        </div>
+        <p class="text-xs faint" style="margin-top:var(--space-3);">Показаны 8 из 214 слов колоды — этого достаточно, чтобы почувствовать интерфейс.</p>
+      </div>
+
+      <div id="panel-stats" role="tabpanel" aria-labelledby="tab-stats" class="tab-panel" hidden>
+        <div class="grid grid-4" style="margin-bottom:var(--space-5);">
+          <div class="stat-tile"><span class="stat-label">Всего слов</span><span class="stat-value">214</span></div>
+          <div class="stat-tile accent"><span class="stat-label">Выучено</span><span class="stat-value glow-num">132</span></div>
+          <div class="stat-tile"><span class="stat-label">Забыто</span><span class="stat-value" style="color:var(--color-destructive);">18</span></div>
+          <div class="stat-tile accent"><span class="stat-label">Retention rate</span><span class="stat-value glow-num">87%</span></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Распределение по статусам</h3></div>
+          <div class="stack" style="gap:var(--space-3);">
+            <div>
+              <div class="row-between text-sm" style="margin-bottom:4px;"><span>Выучено</span><span class="font-mono">132</span></div>
+              <div class="progress"><span style="width:62%; background:var(--color-accent);"></span></div>
+            </div>
+            <div>
+              <div class="row-between text-sm" style="margin-bottom:4px;"><span>Изучается</span><span class="font-mono">64</span></div>
+              <div class="progress"><span style="width:30%; background:#60A5FA;"></span></div>
+            </div>
+            <div>
+              <div class="row-between text-sm" style="margin-bottom:4px;"><span>Сложное</span><span class="font-mono">18</span></div>
+              <div class="progress"><span style="width:8%; background:var(--color-amber);"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Нижняя навигация">
+  <div class="bottom-nav-list">
+    <a class="bottom-nav-link" data-nav href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Дашборд</a>
+    <a class="bottom-nav-link" data-nav href="deck.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="8" rx="1.5"/><rect x="4" y="12" width="16" height="9" rx="1.5"/></svg>Колода</a>
+    <a class="bottom-nav-link" data-nav href="stories.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2v13c2.4 0 4.5.7 6 2 1.5-1.3 3.6-2 6-2V4c-2.4 0-4.5.7-6 2Z"/><path d="M12 6v13"/></svg>Истории</a>
+    <a class="bottom-nav-link" data-nav href="grammar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg>Грамматика</a>
+    <a class="bottom-nav-link" data-nav href="ai-chat.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16V16H9l-4 3.5V16H4V5.5Z"/><path d="M12 8v4M10 10h4"/></svg>ИИ-чат</a>
+    <a class="bottom-nav-link" data-nav href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg>Рейтинг</a>
+    <a class="bottom-nav-link" data-nav href="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.4-3.6 4-5.4 7-5.4s5.6 1.8 7 5.4"/></svg>Профиль</a>
+    <a class="bottom-nav-link" data-nav href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.1 5.9l-1.7 1.7M7.6 16.4l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6 5.9 5.9"/></svg>Настройки</a>
+  </div>
+</nav>
+
+<div class="modal-overlay" id="addWordModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="addWordTitle">
+    <div class="modal-head">
+      <h2 class="h3" id="addWordTitle">Добавить слово</h2>
+      <button type="button" class="icon-btn" data-modal-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <form class="stack" id="addWordForm">
+      <div class="field">
+        <label for="newWordEn">Слово (английский)</label>
+        <input class="input" id="newWordEn" required placeholder="например, resilient">
+      </div>
+      <div class="field">
+        <label for="newWordRu">Перевод</label>
+        <input class="input" id="newWordRu" required placeholder="например, стойкий">
+      </div>
+      <div class="field">
+        <label for="newWordEx">Пример использования <span class="faint">(необязательно)</span></label>
+        <textarea class="input" id="newWordEx" placeholder="She stayed resilient through the exams."></textarea>
+      </div>
+      <div class="row" style="justify-content:flex-end; gap:var(--space-3); margin-top:var(--space-2);">
+        <button type="button" class="btn btn-ghost" data-modal-close>Отмена</button>
+        <button type="submit" class="btn btn-primary">Добавить в колоду</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  (function () {
+    var filterGroup = document.querySelector('[data-pill-group]');
+    var rows = document.querySelectorAll('#wordList .word-row');
+    var search = document.getElementById('wordSearch');
+    var noMsg = document.getElementById('noWordsMsg');
+
+    function applyFilters() {
+      var status = document.querySelector('[data-filter][aria-pressed="true"]').getAttribute('data-filter');
+      var query = search.value.trim().toLowerCase();
+      var visible = 0;
+      rows.forEach(function (row) {
+        var matchesStatus = status === 'all' || row.getAttribute('data-status') === status;
+        var matchesQuery = !query || row.getAttribute('data-word').indexOf(query) !== -1 || row.querySelector('.word-ru').textContent.toLowerCase().indexOf(query) !== -1;
+        var show = matchesStatus && matchesQuery;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      noMsg.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    filterGroup.addEventListener('pillchange', applyFilters);
+    search.addEventListener('input', applyFilters);
+
+    document.getElementById('addWordForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var en = document.getElementById('newWordEn').value.trim();
+      var ru = document.getElementById('newWordRu').value.trim();
+      if (!en || !ru) return;
+      var row = document.createElement('div');
+      row.className = 'word-row';
+      row.setAttribute('data-status', 'learning');
+      row.setAttribute('data-word', en.toLowerCase());
+      row.innerHTML = '<span class="word-en">' + en + '</span><span class="word-ru">' + ru + '</span><span class="badge badge-progress">изучается</span><button class="icon-btn btn-sm" style="width:36px;height:36px;" aria-label="Действия со словом ' + en + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L15.6 5.2a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z"/></svg></button>';
+      document.getElementById('wordList').prepend(row);
+      rows = document.querySelectorAll('#wordList .word-row');
+      document.getElementById('addWordModal').classList.remove('is-open');
+      e.target.reset();
+      applyFilters();
+    });
+  })();
+</script>
+</body>
+</html>

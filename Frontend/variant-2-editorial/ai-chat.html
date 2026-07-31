@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИИ-чат — Glossa</title>
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="masthead">
+  <div class="wrap masthead__row">
+    <a class="masthead__brand" href="dashboard.html">GLOSSA <small>English · B1</small></a>
+    <nav class="masthead__nav" aria-label="Основная навигация">
+      <a data-nav-link href="deck.html">Колода</a>
+      <a data-nav-link href="stories.html">Истории</a>
+      <a data-nav-link href="grammar.html">Грамматика</a>
+      <a data-nav-link href="ai-chat.html">ИИ-чат</a>
+      <a data-nav-link href="leaderboard.html">Рейтинг</a>
+      <a data-nav-link href="profile.html">Профиль</a>
+      <a data-nav-link href="settings.html">Настройки</a>
+    </nav>
+    <div class="masthead__tools">
+      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Переключить тёмную тему">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </button>
+      <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="icon-btn__dot" aria-hidden="true"></span>
+      </a>
+      <button class="masthead__burger" data-burger aria-label="Открыть меню" aria-expanded="false" aria-controls="mobilenav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobilenav" class="mobilenav" data-mobilenav aria-label="Мобильная навигация">
+  <div class="mobilenav__top">
+    <span class="masthead__brand">GLOSSA</span>
+    <button class="icon-btn" data-mobilenav-close aria-label="Закрыть меню">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="mobilenav__list">
+    <li><a data-nav-link href="dashboard.html">Главная</a></li>
+    <li><a data-nav-link href="deck.html">Колода</a></li>
+    <li><a data-nav-link href="stories.html">Истории</a></li>
+    <li><a data-nav-link href="community.html">Сообщество</a></li>
+    <li><a data-nav-link href="grammar.html">Грамматика</a></li>
+    <li><a data-nav-link href="ai-chat.html">ИИ-чат</a></li>
+    <li><a data-nav-link href="leaderboard.html">Рейтинг</a></li>
+    <li><a data-nav-link href="achievements.html">Достижения</a></li>
+    <li><a data-nav-link href="profile.html">Профиль</a></li>
+    <li><a data-nav-link href="settings.html">Настройки</a></li>
+    <li><a data-nav-link href="notifications.html">Уведомления</a></li>
+  </ul>
+</nav>
+
+<div class="runhead">
+  <div class="wrap runhead__row">
+    <span>Глосса</span>
+    <span>Выпуск № 08</span>
+    <span>ИИ-собеседник</span>
+    <span>@amina.r · B1 · Английский</span>
+  </div>
+</div>
+
+<main id="main">
+<section class="section wrap">
+  <div class="grid12 items-start">
+    <div class="col-span-8">
+      <p class="eyebrow">Разговорная практика</p>
+      <h1 class="mt-2">ИИ-собеседник</h1>
+      <p class="prose mt-3">Выберите сценарий и говорите свободно — собеседник поправит ошибки прямо по ходу разговора.</p>
+    </div>
+    <div class="col-span-4">
+      <div class="plate">
+        <p class="stat__label">Лимит на сегодня (Premium)</p>
+        <p class="numeral numeral--lg mt-2">12 <span class="text-muted" style="font-size:var(--text-md);">/ 30 мин</span></p>
+        <div class="progress-bar mt-2"><div class="progress-bar__fill" style="width:40%;"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section--tight">
+  <div class="grid12">
+    <div class="col-span-4">
+      <h3 class="mb-3">Сценарии</h3>
+      <div id="scenario-list">
+        <button class="entry scenario-item is-active" data-scenario="casual" style="width:100%; text-align:left; display:grid; grid-template-columns:2.5rem 1fr; align-items:center; gap:1em;">
+          <span class="numeral" style="font-size:var(--text-lg);">01</span>
+          <span><strong style="font-family:var(--font-display); font-size:var(--text-md);">Обычная беседа</strong></span>
+        </button>
+        <button class="entry scenario-item" data-scenario="interview" style="width:100%; text-align:left; display:grid; grid-template-columns:2.5rem 1fr; align-items:center; gap:1em;">
+          <span class="numeral" style="font-size:var(--text-lg);">02</span>
+          <span><strong style="font-family:var(--font-display); font-size:var(--text-md);">Собеседование на работу</strong></span>
+        </button>
+        <button class="entry scenario-item" data-scenario="restaurant" style="width:100%; text-align:left; display:grid; grid-template-columns:2.5rem 1fr; align-items:center; gap:1em;">
+          <span class="numeral" style="font-size:var(--text-lg);">03</span>
+          <span><strong style="font-family:var(--font-display); font-size:var(--text-md);">В ресторане</strong></span>
+        </button>
+        <button class="entry scenario-item" data-scenario="airport" style="width:100%; text-align:left; display:grid; grid-template-columns:2.5rem 1fr; align-items:center; gap:1em;">
+          <span class="numeral" style="font-size:var(--text-lg);">04</span>
+          <span><strong style="font-family:var(--font-display); font-size:var(--text-md);">В аэропорту</strong></span>
+        </button>
+      </div>
+
+      <div class="hr"></div>
+      <label class="switch">
+        <input type="checkbox" id="demo-locked-toggle">
+        <span class="switch__track" aria-hidden="true"></span>
+        <span class="switch__label">Показать вид для тарифа Free</span>
+      </label>
+    </div>
+
+    <div class="col-span-8" style="position:relative;">
+      <div id="chat-panel">
+        <p class="eyebrow" id="chat-scenario-label">Сценарий: обычная беседа</p>
+        <div class="chat-log mt-4" id="chat-log">
+          <div class="bubble bubble--ai">
+            <p class="bubble__meta">ИИ-собеседник</p>
+            <p class="bubble__body">Hi Amina! How was your week? Tell me something interesting that happened.</p>
+          </div>
+          <div class="bubble bubble--user">
+            <p class="bubble__meta">Вы</p>
+            <p class="bubble__body">It was good. I <span class="correction" data-explain="Здесь нужно прошедшее время: «went», а не «go» — действие уже завершилось.">go</span> to a new café with my friend and we <span class="correction" data-explain="После «talked about» существительное «books» стоит во множественном числе без артикля — books, а не a books.">talked about a books</span> for two hours.</p>
+          </div>
+          <div class="bubble bubble--ai">
+            <p class="bubble__meta">ИИ-собеседник</p>
+            <p class="bubble__body">That sounds lovely! Small correction: "I <em>went</em> to a new café" and "we talked about <em>books</em>". What did you two talk about exactly?</p>
+          </div>
+        </div>
+
+        <form class="mt-5 flex gap-3" id="chat-form" style="align-items:flex-end;">
+          <div class="field" style="flex:1; margin-bottom:0;">
+            <label for="chat-input" class="sr-only">Сообщение</label>
+            <input type="text" id="chat-input" placeholder="Напишите ответ на английском…">
+          </div>
+          <button type="submit" class="btn">Отправить</button>
+        </form>
+      </div>
+
+      <div id="locked-overlay" class="locked-plate mt-4" hidden style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:var(--color-background);">
+        <p class="eyebrow">Тариф Free</p>
+        <h3 class="mt-2">ИИ-чат доступен 5 минут в день</h3>
+        <p class="prose mt-2" style="max-width:34ch;">Вы использовали дневной лимит. Перейдите на Premium для 30 минут в день или на Pro — без ограничений.</p>
+        <a href="pricing.html" class="btn mt-4">Смотреть тарифы</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Glossa — издание для изучающих языки глубоко</span>
+    <span>Использовано 12 из 30 минут сегодня</span>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  var scenarioLabels = {
+    casual: 'Сценарий: обычная беседа',
+    interview: 'Сценарий: собеседование на работу',
+    restaurant: 'Сценарий: в ресторане',
+    airport: 'Сценарий: в аэропорту'
+  };
+  var scenarioOpeners = {
+    casual: 'Hi Amina! How was your week? Tell me something interesting that happened.',
+    interview: 'Good morning. Thank you for coming in. Could you start by telling me about your last job?',
+    restaurant: 'Good evening! Welcome. Can I start you off with something to drink?',
+    airport: 'Good afternoon, may I see your boarding pass and passport, please?'
+  };
+
+  var items = document.querySelectorAll('.scenario-item');
+  var label = document.getElementById('chat-scenario-label');
+  var log = document.getElementById('chat-log');
+
+  items.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      items.forEach(function(b){ b.classList.remove('is-active'); b.style.background=''; });
+      btn.classList.add('is-active');
+      var key = btn.getAttribute('data-scenario');
+      label.textContent = scenarioLabels[key];
+      log.innerHTML = '<div class="bubble bubble--ai"><p class="bubble__meta">ИИ-собеседник</p><p class="bubble__body">' + scenarioOpeners[key] + '</p></div>';
+    });
+  });
+
+  var form = document.getElementById('chat-form');
+  var input = document.getElementById('chat-input');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text) return;
+    var userBubble = document.createElement('div');
+    userBubble.className = 'bubble bubble--user';
+    userBubble.innerHTML = '<p class="bubble__meta">Вы</p><p class="bubble__body"></p>';
+    userBubble.querySelector('.bubble__body').textContent = text;
+    log.appendChild(userBubble);
+
+    var aiBubble = document.createElement('div');
+    aiBubble.className = 'bubble bubble--ai';
+    aiBubble.innerHTML = '<p class="bubble__meta">ИИ-собеседник</p><p class="bubble__body">Got it — thanks for sharing! Let\'s continue: could you tell me a bit more?</p>';
+    log.appendChild(aiBubble);
+
+    input.value = '';
+    log.scrollTop = log.scrollHeight;
+  });
+
+  document.querySelectorAll('.correction').forEach(function(span){
+    var pop = document.createElement('span');
+    pop.className = 'tooltip';
+    pop.textContent = span.getAttribute('data-explain');
+    var wrap = document.createElement('span');
+    wrap.style.position = 'relative';
+    wrap.style.display = 'inline-block';
+    span.parentNode.insertBefore(wrap, span);
+    wrap.appendChild(span);
+    wrap.appendChild(pop);
+    span.setAttribute('tabindex', '0');
+    function toggle(e){ e.preventDefault(); pop.classList.toggle('is-visible'); }
+    span.addEventListener('click', toggle);
+    span.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') toggle(e); });
+  });
+
+  var lockToggle = document.getElementById('demo-locked-toggle');
+  var overlay = document.getElementById('locked-overlay');
+  lockToggle.addEventListener('change', function(){
+    overlay.hidden = !lockToggle.checked;
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тарифы — Glossa</title>
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="masthead">
+  <div class="wrap masthead__row">
+    <a class="masthead__brand" href="dashboard.html">GLOSSA <small>English · B1</small></a>
+    <nav class="masthead__nav" aria-label="Основная навигация">
+      <a data-nav-link href="deck.html">Колода</a>
+      <a data-nav-link href="stories.html">Истории</a>
+      <a data-nav-link href="grammar.html">Грамматика</a>
+      <a data-nav-link href="ai-chat.html">ИИ-чат</a>
+      <a data-nav-link href="leaderboard.html">Рейтинг</a>
+      <a data-nav-link href="profile.html">Профиль</a>
+      <a data-nav-link href="settings.html">Настройки</a>
+    </nav>
+    <div class="masthead__tools">
+      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Переключить тёмную тему">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </button>
+      <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="icon-btn__dot" aria-hidden="true"></span>
+      </a>
+      <button class="masthead__burger" data-burger aria-label="Открыть меню" aria-expanded="false" aria-controls="mobilenav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobilenav" class="mobilenav" data-mobilenav aria-label="Мобильная навигация">
+  <div class="mobilenav__top">
+    <span class="masthead__brand">GLOSSA</span>
+    <button class="icon-btn" data-mobilenav-close aria-label="Закрыть меню">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="mobilenav__list">
+    <li><a data-nav-link href="dashboard.html">Главная</a></li>
+    <li><a data-nav-link href="deck.html">Колода</a></li>
+    <li><a data-nav-link href="stories.html">Истории</a></li>
+    <li><a data-nav-link href="community.html">Сообщество</a></li>
+    <li><a data-nav-link href="grammar.html">Грамматика</a></li>
+    <li><a data-nav-link href="ai-chat.html">ИИ-чат</a></li>
+    <li><a data-nav-link href="leaderboard.html">Рейтинг</a></li>
+    <li><a data-nav-link href="achievements.html">Достижения</a></li>
+    <li><a data-nav-link href="profile.html">Профиль</a></li>
+    <li><a data-nav-link href="settings.html">Настройки</a></li>
+    <li><a data-nav-link href="notifications.html">Уведомления</a></li>
+  </ul>
+</nav>
+
+<div class="runhead">
+  <div class="wrap runhead__row">
+    <span>Глосса</span>
+    <span>Выпуск № 13</span>
+    <span>Тарифы</span>
+    <span>@amina.r · B1 · Английский</span>
+  </div>
+</div>
+
+<main id="main">
+<style>
+  .plan-grid{ display:grid; grid-template-columns:1.3fr repeat(3,1fr); }
+  .plan-grid > div{ border-top:var(--rule); padding:var(--space-4) var(--space-3); }
+  .plan-grid > div:first-child{ border-top:0; }
+  .plan-head{ text-align:center; }
+  .plan-col--current{ background:var(--color-muted); }
+  @media (max-width:767px){
+    .plan-grid{ grid-template-columns:1fr; }
+    .plan-grid > div:nth-child(4n+1){ font-weight:700; border-top:var(--rule-strong); padding-top:var(--space-6); }
+  }
+</style>
+
+<section class="section wrap">
+  <p class="eyebrow">Подписка</p>
+  <h1 class="mt-2">Тарифы</h1>
+  <p class="prose mt-3">Ваш текущий тариф — <strong>Premium</strong>, действует до <strong>14.09.2026</strong>.</p>
+
+  <label class="switch mt-5">
+    <input type="checkbox" id="yearly-toggle">
+    <span class="switch__track" aria-hidden="true"></span>
+    <span class="switch__label">Оплата за год (скидка 20%)</span>
+  </label>
+</section>
+
+<section class="wrap section--tight">
+  <div class="table-scroll">
+    <div class="plan-grid" style="min-width:640px;">
+      <div></div>
+      <div class="plan-head"><h3>Free</h3></div>
+      <div class="plan-head plan-col--current"><h3>Premium</h3><span class="tag tag--solid mt-1" style="display:inline-block;">Текущий</span></div>
+      <div class="plan-head"><h3>Pro</h3></div>
+
+      <div>Слов в колоде</div>
+      <div class="text-center">до 100</div>
+      <div class="text-center plan-col--current">безлимит</div>
+      <div class="text-center">безлимит</div>
+
+      <div>ИИ-чат</div>
+      <div class="text-center">5 мин/день</div>
+      <div class="text-center plan-col--current">30 мин/день</div>
+      <div class="text-center">безлимит</div>
+
+      <div>Платные истории</div>
+      <div class="text-center">нет доступа</div>
+      <div class="text-center plan-col--current">доступ</div>
+      <div class="text-center">доступ + скидка 20%</div>
+
+      <div>Публикация историй</div>
+      <div class="text-center">1 черновик</div>
+      <div class="text-center plan-col--current">5 историй</div>
+      <div class="text-center">безлимит + аналитика</div>
+
+      <div>Цена</div>
+      <div class="text-center numeral" data-price-free>0 c.</div>
+      <div class="text-center numeral plan-col--current" data-price-premium>39 c./мес</div>
+      <div class="text-center numeral" data-price-pro>79 c./мес</div>
+
+      <div></div>
+      <div class="text-center"><button class="btn btn--ghost btn--sm" onclick="glossaToast('Переход на Free потребует подтверждения')">Перейти на Free</button></div>
+      <div class="text-center plan-col--current"><button class="btn btn--sm" disabled>Текущий тариф</button></div>
+      <div class="text-center"><button class="btn btn--accent btn--sm" onclick="glossaToast('Переход на Pro — демо-режим')">Перейти на Pro</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section--tight">
+  <blockquote class="pullquote">«Premium снимает потолок в 100 слов и открывает доступ к платным историям сообщества — этого обычно достаточно для ежедневной практики.»</blockquote>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Glossa — издание для изучающих языки глубоко</span>
+    <span>Текущий тариф: Premium до 14.09.2026</span>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  var toggle = document.getElementById('yearly-toggle');
+  var freeEl = document.querySelector('[data-price-free]');
+  var premiumEl = document.querySelector('[data-price-premium]');
+  var proEl = document.querySelector('[data-price-pro]');
+
+  function render(){
+    if (toggle.checked){
+      freeEl.textContent = '0 c.';
+      premiumEl.textContent = '31 c./мес';
+      proEl.textContent = '63 c./мес';
+    } else {
+      freeEl.textContent = '0 c.';
+      premiumEl.textContent = '39 c./мес';
+      proEl.textContent = '79 c./мес';
+    }
+  }
+  toggle.addEventListener('change', render);
+  render();
+})();
+</script>
+
+</body>
+</html>

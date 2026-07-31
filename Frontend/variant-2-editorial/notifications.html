@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Уведомления — Glossa</title>
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="masthead">
+  <div class="wrap masthead__row">
+    <a class="masthead__brand" href="dashboard.html">GLOSSA <small>English · B1</small></a>
+    <nav class="masthead__nav" aria-label="Основная навигация">
+      <a data-nav-link href="deck.html">Колода</a>
+      <a data-nav-link href="stories.html">Истории</a>
+      <a data-nav-link href="grammar.html">Грамматика</a>
+      <a data-nav-link href="ai-chat.html">ИИ-чат</a>
+      <a data-nav-link href="leaderboard.html">Рейтинг</a>
+      <a data-nav-link href="profile.html">Профиль</a>
+      <a data-nav-link href="settings.html">Настройки</a>
+    </nav>
+    <div class="masthead__tools">
+      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Переключить тёмную тему">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </button>
+      <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="icon-btn__dot" aria-hidden="true"></span>
+      </a>
+      <button class="masthead__burger" data-burger aria-label="Открыть меню" aria-expanded="false" aria-controls="mobilenav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobilenav" class="mobilenav" data-mobilenav aria-label="Мобильная навигация">
+  <div class="mobilenav__top">
+    <span class="masthead__brand">GLOSSA</span>
+    <button class="icon-btn" data-mobilenav-close aria-label="Закрыть меню">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="mobilenav__list">
+    <li><a data-nav-link href="dashboard.html">Главная</a></li>
+    <li><a data-nav-link href="deck.html">Колода</a></li>
+    <li><a data-nav-link href="stories.html">Истории</a></li>
+    <li><a data-nav-link href="community.html">Сообщество</a></li>
+    <li><a data-nav-link href="grammar.html">Грамматика</a></li>
+    <li><a data-nav-link href="ai-chat.html">ИИ-чат</a></li>
+    <li><a data-nav-link href="leaderboard.html">Рейтинг</a></li>
+    <li><a data-nav-link href="achievements.html">Достижения</a></li>
+    <li><a data-nav-link href="profile.html">Профиль</a></li>
+    <li><a data-nav-link href="settings.html">Настройки</a></li>
+    <li><a data-nav-link href="notifications.html">Уведомления</a></li>
+  </ul>
+</nav>
+
+<div class="runhead">
+  <div class="wrap runhead__row">
+    <span>Глосса</span>
+    <span>Выпуск № 15</span>
+    <span>Уведомления</span>
+    <span>@amina.r · B1 · Английский</span>
+  </div>
+</div>
+
+<main id="main">
+<style>
+  .notif-row{ display:grid; grid-template-columns:1fr auto; align-items:start; gap:1em; border-top:var(--rule); padding-block:var(--space-5); position:relative; }
+  .notif-row:last-child{ border-bottom:var(--rule); }
+  .notif-row.is-unread{ border-left:2px solid var(--color-accent); padding-left:var(--space-4); margin-left:calc(-1 * var(--space-4) - 2px); }
+  .notif-row.is-unread .notif-title{ font-weight:700; }
+  .notif-dot{ width:7px; height:7px; border-radius:50%; background:var(--color-accent); position:absolute; left:calc(-1 * var(--space-4) - 6px); top:calc(var(--space-5) + 4px); }
+  .notif-row:not(.is-unread) .notif-dot{ display:none; }
+</style>
+
+<section class="section wrap">
+  <div class="flex justify-between items-center" style="flex-wrap:wrap; gap:1em;">
+    <div>
+      <p class="eyebrow">Центр уведомлений</p>
+      <h1 class="mt-2">Уведомления</h1>
+    </div>
+    <button class="btn btn--ghost" id="mark-all-read">Отметить все как прочитанные</button>
+  </div>
+  <p class="mt-3 text-muted" id="unread-summary" style="font-size:var(--text-sm);">3 непрочитанных</p>
+</section>
+
+<section class="wrap section--tight">
+  <div id="notif-list">
+    <div class="notif-row is-unread" data-id="1">
+      <span class="notif-dot" aria-hidden="true"></span>
+      <div>
+        <p class="notif-title">Новый отзыв на «Голос за стеной»</p>
+        <p class="text-muted mt-1" style="font-size:var(--text-sm);">2 часа назад</p>
+      </div>
+      <button class="btn--quiet notif-mark" style="font-size:var(--text-xs);">Прочитано</button>
+    </div>
+
+    <div class="notif-row is-unread" data-id="2">
+      <span class="notif-dot" aria-hidden="true"></span>
+      <div>
+        <p class="notif-title">Куплена ваша история «Голос за стеной» — пользователем dilnoza99</p>
+        <p class="text-muted mt-1" style="font-size:var(--text-sm);">5 часов назад</p>
+      </div>
+      <button class="btn--quiet notif-mark" style="font-size:var(--text-xs);">Прочитано</button>
+    </div>
+
+    <div class="notif-row is-unread" data-id="3">
+      <span class="notif-dot" aria-hidden="true"></span>
+      <div>
+        <p class="notif-title">Не забудьте повторить 15 карточек сегодня</p>
+        <p class="text-muted mt-1" style="font-size:var(--text-sm);">сегодня</p>
+      </div>
+      <button class="btn--quiet notif-mark" style="font-size:var(--text-xs);">Прочитано</button>
+    </div>
+
+    <div class="notif-row" data-id="4">
+      <div>
+        <p class="notif-title">Достижение получено: «Сова»</p>
+        <p class="text-muted mt-1" style="font-size:var(--text-sm);">вчера</p>
+      </div>
+      <span class="text-muted" style="font-size:var(--text-xs);">Прочитано</span>
+    </div>
+
+    <div class="notif-row" data-id="5">
+      <div>
+        <p class="notif-title">Новый подписчик: qwen.li</p>
+        <p class="text-muted mt-1" style="font-size:var(--text-sm);">3 дня назад</p>
+      </div>
+      <span class="text-muted" style="font-size:var(--text-xs);">Прочитано</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Glossa — издание для изучающих языки глубоко</span>
+    <span>3 непрочитанных уведомления</span>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  var list = document.getElementById('notif-list');
+  var summary = document.getElementById('unread-summary');
+  var markAllBtn = document.getElementById('mark-all-read');
+
+  function updateSummary(){
+    var unread = list.querySelectorAll('.notif-row.is-unread').length;
+    summary.textContent = unread === 0 ? 'Все уведомления прочитаны' : unread + ' непрочитанных';
+  }
+
+  function markRead(row){
+    if (!row.classList.contains('is-unread')) return;
+    row.classList.remove('is-unread');
+    var btn = row.querySelector('.notif-mark');
+    if (btn){
+      var span = document.createElement('span');
+      span.className = 'text-muted';
+      span.style.fontSize = 'var(--text-xs)';
+      span.textContent = 'Прочитано';
+      btn.replaceWith(span);
+    }
+    updateSummary();
+  }
+
+  list.querySelectorAll('.notif-mark').forEach(function(btn){
+    btn.addEventListener('click', function(){ markRead(btn.closest('.notif-row')); });
+  });
+
+  markAllBtn.addEventListener('click', function(){
+    list.querySelectorAll('.notif-row.is-unread').forEach(markRead);
+    glossaToast('Все уведомления отмечены как прочитанные');
+  });
+
+  updateSummary();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Профиль — Glossa</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к содержимому</a>
+<div class="app-shell">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <a href="dashboard.html" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg></span>
+      Glossa
+    </a>
+    <nav class="nav-list" aria-label="Основная навигация">
+      <a class="nav-link" data-nav href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Дашборд</a>
+      <a class="nav-link" data-nav href="deck.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="8" rx="1.5"/><rect x="4" y="12" width="16" height="9" rx="1.5"/></svg>Колода</a>
+      <a class="nav-link" data-nav href="stories.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2v13c2.4 0 4.5.7 6 2 1.5-1.3 3.6-2 6-2V4c-2.4 0-4.5.7-6 2Z"/><path d="M12 6v13"/></svg>Истории</a>
+      <a class="nav-link" data-nav href="grammar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg>Грамматика</a>
+      <a class="nav-link" data-nav href="ai-chat.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16V16H9l-4 3.5V16H4V5.5Z"/><path d="M12 8v4M10 10h4"/></svg>ИИ-чат</a>
+      <a class="nav-link" data-nav href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg>Рейтинг</a>
+      <a class="nav-link" data-nav href="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.4-3.6 4-5.4 7-5.4s5.6 1.8 7 5.4"/></svg>Профиль</a>
+      <a class="nav-link" data-nav href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.1 5.9l-1.7 1.7M7.6 16.4l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6 5.9 5.9"/></svg>Настройки</a>
+    </nav>
+    <div class="nav-group-label">Ещё</div>
+    <nav class="nav-list" aria-label="Дополнительная навигация">
+      <a class="nav-link" data-nav href="community.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3"/><path d="M3 19c1.1-3 3.2-4.5 6-4.5s4.9 1.5 6 4.5"/><circle cx="17.5" cy="9.5" r="2.3"/><path d="M15.8 14.6c1.9.4 3.3 1.7 4.2 4.4"/></svg>Комьюнити</a>
+      <a class="nav-link" data-nav href="achievements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="m8.5 13.5-1.4 6.6L12 17.8l4.9 2.3-1.4-6.6"/></svg>Достижения</a>
+      <a class="nav-link" data-nav href="pricing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 3.5H6a1.5 1.5 0 0 0-1.5 1.5v6.5L13.5 20l6-6-9-10.5Z"/><circle cx="8.5" cy="8" r="1.3"/></svg>Тарифы</a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-clock">
+      <span class="row" style="gap:6px;"><span class="dot"></span>Ночная сессия</span>
+      <strong data-live-clock class="font-mono">--:--:--</strong>
+    </div>
+    <a href="profile.html" class="user-chip">
+      <span class="avatar">АР</span>
+      <span class="user-chip-meta">
+        <span class="user-chip-name">Амина Рахимова</span>
+        <span class="user-chip-sub">3 240 XP · #47</span>
+      </span>
+    </a>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Открыть меню" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="topbar-title">
+        <div class="eyebrow">Профиль</div>
+        <h1>Амина Рахимова</h1>
+      </div>
+      <div class="topbar-actions">
+        <span class="live-clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span data-live-clock>--:--:--</span></span>
+        <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+          <span class="badge-dot" aria-hidden="true"></span>
+        </a>
+      </div>
+    </header>
+
+    <main class="content" id="main">
+      <div class="segmented" role="group" aria-label="Режим просмотра профиля" style="margin-bottom:var(--space-6);">
+        <button type="button" data-value="edit" aria-pressed="true">Редактирование</button>
+        <button type="button" data-value="public" aria-pressed="false">Публичный вид</button>
+      </div>
+
+      <!-- EDIT VIEW -->
+      <section id="editView">
+        <div class="profile-edit-grid">
+          <div class="card card-tight stack" style="align-items:center; text-align:center;">
+            <span class="avatar xl">АР</span>
+            <button type="button" class="btn btn-secondary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h3l1.5-2h7l1.5 2h3v10.5H4V8.5Z"/><circle cx="12" cy="14" r="3.3"/></svg>
+              Сменить фото
+            </button>
+            <div class="divider" style="width:100%; margin:var(--space-3) 0;"></div>
+            <div class="stat-value glow-num font-mono" style="font-size:22px;">12 дней</div>
+            <div class="stat-label">текущий страйк</div>
+          </div>
+
+          <form class="card stack">
+            <div class="grid grid-2">
+              <div class="field">
+                <label for="fName">Имя</label>
+                <input class="input" id="fName" value="Амина Рахимова">
+              </div>
+              <div class="field">
+                <label for="fNick">Никнейм</label>
+                <input class="input" id="fNick" value="@amina.r">
+              </div>
+            </div>
+            <div class="field">
+              <label for="fBio">О себе</label>
+              <textarea class="input" id="fBio">Учу английский по ночам, люблю детективы и истории с несколькими смыслами. Открыта к языковому обмену.</textarea>
+            </div>
+            <div class="field">
+              <label for="fInterests">Интересы</label>
+              <div class="row wrap" style="gap:var(--space-2);">
+                <span class="badge badge-level">детективы</span>
+                <span class="badge badge-level">путешествия</span>
+                <span class="badge badge-level">кофе</span>
+                <span class="badge badge-level">ночной кодинг</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Изучаемые языки</label>
+              <div class="row wrap" style="gap:var(--space-2);">
+                <span class="badge badge-progress">English · B1</span>
+              </div>
+            </div>
+            <div class="row" style="justify-content:flex-end; gap:var(--space-3);">
+              <button type="button" class="btn btn-ghost">Отмена</button>
+              <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- PUBLIC VIEW -->
+      <section id="publicView" style="display:none;">
+        <div class="card" style="margin-bottom:var(--space-5);">
+          <div class="row wrap" style="gap:var(--space-5); align-items:center;">
+            <span class="avatar xl">АР</span>
+            <div class="stack" style="gap:6px; flex:1; min-width:220px;">
+              <h2>Амина Рахимова</h2>
+              <div class="text-sm faint font-mono">@amina.r</div>
+              <div class="row wrap" style="gap:var(--space-2); margin-top:4px;">
+                <span class="badge badge-progress">English · B1</span>
+                <span class="badge badge-learned"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M12 3c1 3-3 4-3 7.5A3 3 0 0 0 12 13.5a3 3 0 0 0 3-3c1.2 1 2 2.6 2 4.3A5 5 0 0 1 12 20a5 5 0 0 1-5-4.9C7 11 9 9 9 6.5 10 7.5 10.5 8 11 8c0-2 .3-3.5 1-5Z"/></svg>12 дней страйк</span>
+              </div>
+            </div>
+            <div class="row" style="gap:var(--space-6); text-align:center;">
+              <div><div class="font-mono h4">86</div><div class="text-xs faint">подписчики</div></div>
+              <div><div class="font-mono h4">54</div><div class="text-xs faint">подписки</div></div>
+              <div><div class="font-mono h4">6</div><div class="text-xs faint">друзья</div></div>
+              <div><div class="font-mono h4">1</div><div class="text-xs faint">историй</div></div>
+            </div>
+          </div>
+          <hr class="divider">
+          <p class="text-body">Учу английский по ночам, люблю детективы и истории с несколькими смыслами. Открыта к языковому обмену.</p>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Достижения</h3><a href="achievements.html" class="link text-sm">Все →</a></div>
+            <div class="row wrap" style="gap:var(--space-4);">
+              <div class="stack" style="align-items:center; width:80px; text-align:center;">
+                <div class="avatar" style="background:var(--color-accent-soft); border-color:var(--color-accent-soft-border); color:var(--color-accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M12 3c1 3-3 4-3 7.5A3 3 0 0 0 12 13.5a3 3 0 0 0 3-3c1.2 1 2 2.6 2 4.3A5 5 0 0 1 12 20a5 5 0 0 1-5-4.9C7 11 9 9 9 6.5 10 7.5 10.5 8 11 8c0-2 .3-3.5 1-5Z"/></svg></div>
+                <span class="text-xs">7 дней подряд</span>
+              </div>
+              <div class="stack" style="align-items:center; width:80px; text-align:center;">
+                <div class="avatar" style="background:var(--color-accent-soft); border-color:var(--color-accent-soft-border); color:var(--color-accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg></div>
+                <span class="text-xs">Сова</span>
+              </div>
+              <div class="stack" style="align-items:center; width:80px; text-align:center;">
+                <div class="avatar" style="background:var(--color-muted-2); color:var(--color-foreground-faint);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="9" r="5"/><path d="m8.5 13.5-1.4 6.6L12 17.8l4.9 2.3-1.4-6.6"/></svg></div>
+                <span class="text-xs faint">1000 слов</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Друзья</h3></div>
+            <div class="hidden-block">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9" rx="1.6"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+              <span class="text-sm">Список друзей скрыт настройками приватности</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Нижняя навигация">
+  <div class="bottom-nav-list">
+    <a class="bottom-nav-link" data-nav href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Дашборд</a>
+    <a class="bottom-nav-link" data-nav href="deck.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="8" rx="1.5"/><rect x="4" y="12" width="16" height="9" rx="1.5"/></svg>Колода</a>
+    <a class="bottom-nav-link" data-nav href="stories.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2v13c2.4 0 4.5.7 6 2 1.5-1.3 3.6-2 6-2V4c-2.4 0-4.5.7-6 2Z"/><path d="M12 6v13"/></svg>Истории</a>
+    <a class="bottom-nav-link" data-nav href="grammar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></svg>Грамматика</a>
+    <a class="bottom-nav-link" data-nav href="ai-chat.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16V16H9l-4 3.5V16H4V5.5Z"/><path d="M12 8v4M10 10h4"/></svg>ИИ-чат</a>
+    <a class="bottom-nav-link" data-nav href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg>Рейтинг</a>
+    <a class="bottom-nav-link" data-nav href="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.4-3.6 4-5.4 7-5.4s5.6 1.8 7 5.4"/></svg>Профиль</a>
+    <a class="bottom-nav-link" data-nav href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.1 5.9l-1.7 1.7M7.6 16.4l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6 5.9 5.9"/></svg>Настройки</a>
+  </div>
+</nav>
+
+<script src="app.js"></script>
+<script>
+  (function () {
+    var seg = document.querySelector('.segmented');
+    seg.addEventListener('segchange', function (e) {
+      var isPublic = e.detail.value === 'public';
+      document.getElementById('editView').style.display = isPublic ? 'none' : 'block';
+      document.getElementById('publicView').style.display = isPublic ? 'block' : 'none';
+    });
+  })();
+</script>
+</body>
+</html>

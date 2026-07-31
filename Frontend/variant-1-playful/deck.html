@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossa — Колода слов</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .deck-toolbar{ display:flex; flex-wrap:wrap; gap:var(--space-3); align-items:center; margin-bottom:var(--space-4); }
+  .search-box{ flex:1; min-width:200px; }
+  .search-box input{ width:100%; border:3px solid var(--color-border); border-radius:var(--radius-pill); padding:11px 18px; font-size:15px; min-height:44px; }
+  .word-row{ display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap; }
+  .word-row .word-main{ flex:1; min-width:140px; }
+  .word-main strong{ font-family:var(--font-display); font-size:17px; }
+  .stats-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-4); }
+  @media (min-width:640px){ .stats-grid{ grid-template-columns:repeat(4,1fr); } }
+  .stat-box{ text-align:center; padding:var(--space-4); }
+  .stat-box strong{ display:block; font-family:var(--font-display); font-size:28px; color:var(--color-primary); }
+</style>
+</head>
+<body class="app-shell" data-page="deck">
+<div id="rail-root"></div>
+<main class="app-main">
+  <div id="topbar-root"></div>
+  <div class="row between">
+    <h1 class="mb-0">Колода слов</h1>
+    <button class="btn btn-primary" data-modal-open="add-word-modal">+ Добавить слово</button>
+  </div>
+
+  <div class="tabs" data-tabs="deck-view" role="tablist" style="margin:var(--space-5) 0;">
+    <button class="tab active" role="tab" aria-selected="true" data-tab="list">Список слов</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="stats">Статистика</button>
+  </div>
+
+  <div class="tab-panel active" data-panel="list" data-tabs-group="deck-view">
+    <div class="deck-toolbar">
+      <div class="search-box"><input type="search" placeholder="Найти слово…" aria-label="Поиск по колоде"></div>
+      <div class="tabs" data-filter-group="deck" role="group" aria-label="Фильтр по статусу">
+        <button class="tab active" data-filter="all">Все · 214</button>
+        <button class="tab" data-filter="learning">Изучается</button>
+        <button class="tab" data-filter="learned">Выучено</button>
+        <button class="tab" data-filter="hard">Сложное</button>
+        <button class="tab" data-filter="skipped">Пропущено</button>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card word-row" data-filterable="deck" data-status="learned">
+        <div class="word-main"><strong>achieve</strong> <span class="text-muted">— достигать</span></div>
+        <span class="chip status-learned">Выучено</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="hard">
+        <div class="word-main"><strong>reluctant</strong> <span class="text-muted">— неохотный</span></div>
+        <span class="chip status-hard">Сложное</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="learning">
+        <div class="word-main"><strong>wander</strong> <span class="text-muted">— бродить</span></div>
+        <span class="chip status-learning">Изучается</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="learning">
+        <div class="word-main"><strong>commitment</strong> <span class="text-muted">— обязательство</span></div>
+        <span class="chip status-learning">Изучается</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="learned">
+        <div class="word-main"><strong>thrive</strong> <span class="text-muted">— процветать</span></div>
+        <span class="chip status-learned">Выучено</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="hard">
+        <div class="word-main"><strong>overwhelmed</strong> <span class="text-muted">— подавленный</span></div>
+        <span class="chip status-hard">Сложное</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="skipped">
+        <div class="word-main"><strong>bittersweet</strong> <span class="text-muted">— горько-сладкий</span></div>
+        <span class="chip status-skipped">Пропущено</span>
+      </div>
+      <div class="card word-row" data-filterable="deck" data-status="learning">
+        <div class="word-main"><strong>linger</strong> <span class="text-muted">— задерживаться</span></div>
+        <span class="chip status-learning">Изучается</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-panel="stats" data-tabs-group="deck-view">
+    <div class="stats-grid">
+      <div class="card stat-box"><strong>214</strong><span class="text-muted">слов всего</span></div>
+      <div class="card stat-box"><strong>132</strong><span class="text-muted">выучено</span></div>
+      <div class="card stat-box"><strong>18</strong><span class="text-muted">забыто</span></div>
+      <div class="card stat-box"><strong>87%</strong><span class="text-muted">retention rate</span></div>
+    </div>
+  </div>
+</main>
+<div id="bottomnav-root"></div>
+
+<div class="modal-overlay" id="add-word-modal">
+  <div class="modal">
+    <div class="row between"><h2 class="mb-0">Новое слово</h2><button class="icon-btn" data-modal-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <form onsubmit="return false" style="margin-top:var(--space-4);">
+      <div class="field"><label for="w-word">Слово</label><input id="w-word" type="text" placeholder="serendipity"></div>
+      <div class="field"><label for="w-tr">Перевод</label><input id="w-tr" type="text" placeholder="счастливая случайность"></div>
+      <div class="field"><label for="w-ex">Пример использования</label><textarea id="w-ex" rows="2" placeholder="Meeting you was pure serendipity."></textarea></div>
+      <button class="btn btn-primary btn-block">Добавить в колоду</button>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

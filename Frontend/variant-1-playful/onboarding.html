@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossa — Начало обучения</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{ display:flex; align-items:center; justify-content:center; padding:var(--space-5); }
+  .ob-wrap{ width:100%; max-width:560px; }
+  .ob-progress{ display:flex; gap:8px; margin-bottom:var(--space-5); }
+  .ob-progress i{ flex:1; height:8px; border-radius:var(--radius-pill); background:var(--color-border); }
+  .ob-progress i.done{ background:var(--color-accent); }
+  .ob-step{ display:none; }
+  .ob-step.active{ display:block; }
+  .choice-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-3); }
+  @media (min-width:480px){ .choice-grid.langs{ grid-template-columns:repeat(3,1fr); } .choice-grid.levels{ grid-template-columns:repeat(3,1fr); } }
+  .choice-card{ border:3px solid var(--color-border); background:var(--color-surface); border-radius:var(--radius-chip-a); padding:var(--space-4); text-align:center; cursor:pointer; font-weight:800; font-family:var(--font-display); }
+  .choice-card.selected{ border-color:var(--color-primary); background:var(--color-muted); box-shadow:var(--shadow-clay-sm); }
+  .choice-card small{ display:block; font-family:var(--font-body); font-weight:600; color:var(--color-muted-foreground); margin-top:4px; }
+  .goal-option{ display:flex; align-items:center; justify-content:space-between; border:3px solid var(--color-border); border-radius:var(--radius-sm); padding:var(--space-3) var(--space-4); margin-bottom:10px; cursor:pointer; }
+  .goal-option.selected{ border-color:var(--color-accent); background:#F0FBF4; }
+  .step-nav{ display:flex; justify-content:space-between; margin-top:var(--space-6); }
+</style>
+</head>
+<body>
+<div class="ob-wrap card">
+  <div class="ob-progress" id="ob-progress">
+    <i class="done" data-step="0"></i><i data-step="1"></i><i data-step="2"></i>
+  </div>
+
+  <div class="ob-step active" data-step="0">
+    <h2>Какой язык хочешь выучить?</h2>
+    <p>Можно изменить позже в настройках</p>
+    <div class="choice-grid langs">
+      <div class="choice-card selected" data-choice="lang">🇬🇧<br>Английский</div>
+      <div class="choice-card" data-choice="lang">🇩🇪<br>Немецкий</div>
+      <div class="choice-card" data-choice="lang">🇫🇷<br>Французский</div>
+    </div>
+  </div>
+
+  <div class="ob-step" data-step="1">
+    <h2>Какой у тебя уровень?</h2>
+    <p>Не уверен(а)? Пройди короткий тест — 5 минут</p>
+    <div class="choice-grid levels">
+      <div class="choice-card" data-choice="level">A1<small>Начальный</small></div>
+      <div class="choice-card" data-choice="level">A2<small>Элементарный</small></div>
+      <div class="choice-card selected" data-choice="level">B1<small>Средний</small></div>
+      <div class="choice-card" data-choice="level">B2<small>Выше среднего</small></div>
+      <div class="choice-card" data-choice="level">C1<small>Продвинутый</small></div>
+      <div class="choice-card" data-choice="level">C2<small>Свободный</small></div>
+    </div>
+    <button class="btn btn-secondary btn-block" style="margin-top:var(--space-4);">Пройти тест на уровень</button>
+  </div>
+
+  <div class="ob-step" data-step="2">
+    <h2>Сколько заниматься в день?</h2>
+    <div class="goal-option" data-choice="goal"><span>Спокойно · 10 XP/день</span><span class="text-muted">≈5 слов</span></div>
+    <div class="goal-option selected" data-choice="goal"><span>Стабильно · 20 XP/день</span><span class="text-muted">≈15 слов</span></div>
+    <div class="goal-option" data-choice="goal"><span>Интенсивно · 40 XP/день</span><span class="text-muted">≈30 слов</span></div>
+  </div>
+
+  <div class="step-nav">
+    <button class="btn btn-ghost" id="ob-back" style="visibility:hidden;">Назад</button>
+    <button class="btn btn-primary" id="ob-next">Далее</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  var step = 0;
+  var steps = document.querySelectorAll('.ob-step');
+  var dots = document.querySelectorAll('#ob-progress i');
+  var backBtn = document.getElementById('ob-back');
+  var nextBtn = document.getElementById('ob-next');
+
+  document.querySelectorAll('.choice-card, .goal-option').forEach(function(el){
+    el.addEventListener('click', function(){
+      var group = el.closest('.ob-step').querySelectorAll('[data-choice="' + el.getAttribute('data-choice') + '"]');
+      group.forEach(function(g){ g.classList.remove('selected'); });
+      el.classList.add('selected');
+    });
+  });
+
+  function render(){
+    steps.forEach(function(s){ s.classList.toggle('active', +s.getAttribute('data-step') === step); });
+    dots.forEach(function(d){ d.classList.toggle('done', +d.getAttribute('data-step') <= step); });
+    backBtn.style.visibility = step === 0 ? 'hidden' : 'visible';
+    nextBtn.textContent = step === steps.length - 1 ? 'Начать учиться' : 'Далее';
+  }
+  backBtn.addEventListener('click', function(){ if (step > 0) { step--; render(); } });
+  nextBtn.addEventListener('click', function(){
+    if (step < steps.length - 1) { step++; render(); }
+    else { window.location.href = 'dashboard.html'; }
+  });
+</script>
+</body>
+</html>

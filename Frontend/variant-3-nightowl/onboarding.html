@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Настройка обучения — Glossa</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к содержимому</a>
+<div class="bare-shell">
+  <main class="bare-form-side" id="main" style="flex:1; max-width:640px; margin:0 auto; align-items:flex-start; padding-top:var(--space-8);">
+    <div style="width:100%;">
+      <div class="brand" style="margin-bottom:var(--space-6);">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg></span>
+        Glossa
+      </div>
+
+      <div class="row-between" style="margin-bottom:var(--space-3);">
+        <span class="eyebrow" id="stepLabel">ШАГ 1 ИЗ 3</span>
+        <span class="eyebrow" id="stepTitle">Целевой язык</span>
+      </div>
+      <div class="stepper" style="margin-bottom:var(--space-7);">
+        <span class="step-dot is-active" data-step-dot="1"></span>
+        <span class="step-dot" data-step-dot="2"></span>
+        <span class="step-dot" data-step-dot="3"></span>
+      </div>
+
+      <!-- step 1: language -->
+      <section data-step="1">
+        <h1 class="h2" style="margin-bottom:var(--space-2);">Какой язык изучаем?</h1>
+        <p class="text-sm muted" style="margin-bottom:var(--space-6);">Интерфейс останется на русском — эту настройку можно сменить позже в настройках.</p>
+        <div class="grid grid-3" role="radiogroup" aria-label="Целевой язык">
+          <button type="button" class="card card-tight pill-radio" data-lang role="radio" aria-checked="true" style="text-align:left; cursor:pointer; border-color:var(--color-accent-soft-border); background:var(--color-accent-soft);">
+            <div class="h4">English</div>
+            <div class="text-sm muted">Английский</div>
+          </button>
+          <button type="button" class="card card-tight pill-radio" data-lang role="radio" aria-checked="false" style="text-align:left; cursor:pointer;">
+            <div class="h4">Deutsch</div>
+            <div class="text-sm muted">Немецкий</div>
+          </button>
+          <button type="button" class="card card-tight pill-radio" data-lang role="radio" aria-checked="false" style="text-align:left; cursor:pointer;">
+            <div class="h4">Español</div>
+            <div class="text-sm muted">Испанский</div>
+          </button>
+          <button type="button" class="card card-tight pill-radio" data-lang role="radio" aria-checked="false" style="text-align:left; cursor:pointer;">
+            <div class="h4">Français</div>
+            <div class="text-sm muted">Французский</div>
+          </button>
+          <button type="button" class="card card-tight pill-radio" data-lang role="radio" aria-checked="false" disabled style="text-align:left; opacity:.5; cursor:not-allowed;">
+            <div class="h4">日本語</div>
+            <div class="text-sm muted">Скоро</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- step 2: level -->
+      <section data-step="2" hidden>
+        <h1 class="h2" style="margin-bottom:var(--space-2);">Ваш текущий уровень</h1>
+        <p class="text-sm muted" style="margin-bottom:var(--space-6);">Не уверены? Пройдите короткий тест — это займёт 5 минут.</p>
+        <div class="pill-group" role="radiogroup" aria-label="Уровень CEFR" style="margin-bottom:var(--space-5);">
+          <button type="button" class="pill-btn" data-level role="radio" aria-checked="false">A1</button>
+          <button type="button" class="pill-btn" data-level role="radio" aria-checked="false">A2</button>
+          <button type="button" class="pill-btn" data-level role="radio" aria-checked="true" aria-pressed="true">B1</button>
+          <button type="button" class="pill-btn" data-level role="radio" aria-checked="false">B2</button>
+          <button type="button" class="pill-btn" data-level role="radio" aria-checked="false">C1</button>
+          <button type="button" class="pill-btn" data-level role="radio" aria-checked="false">C2</button>
+        </div>
+        <div class="card card-tight row-between">
+          <div>
+            <div class="h4">Не знаете уровень?</div>
+            <div class="text-sm muted">Тест на уровень — 20 вопросов, 5 минут</div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm">Пройти тест</button>
+        </div>
+      </section>
+
+      <!-- step 3: goal -->
+      <section data-step="3" hidden>
+        <h1 class="h2" style="margin-bottom:var(--space-2);">Дневная цель</h1>
+        <p class="text-sm muted" style="margin-bottom:var(--space-6);">Сколько времени в среднем вы готовы уделять занятиям ночью?</p>
+        <div class="stack" role="radiogroup" aria-label="Дневная цель">
+          <button type="button" class="card card-tight row-between" data-goal role="radio" aria-checked="false" style="cursor:pointer;">
+            <span><span class="h4">Лёгкая</span><br><span class="text-sm muted">10 XP · ~7 слов в день</span></span>
+            <span class="font-mono text-sm faint">5 мин</span>
+          </button>
+          <button type="button" class="card card-tight row-between" data-goal role="radio" aria-checked="true" style="cursor:pointer; border-color:var(--color-accent-soft-border); background:var(--color-accent-soft);">
+            <span><span class="h4">Стандартная</span><br><span class="text-sm muted">20 XP · ~15 слов в день</span></span>
+            <span class="font-mono text-sm accent-text">10 мин</span>
+          </button>
+          <button type="button" class="card card-tight row-between" data-goal role="radio" aria-checked="false" style="cursor:pointer;">
+            <span><span class="h4">Интенсивная</span><br><span class="text-sm muted">30 XP · ~22 слова в день</span></span>
+            <span class="font-mono text-sm faint">15 мин</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="row-between" style="margin-top:var(--space-8);">
+        <button type="button" class="btn btn-ghost" id="backBtn" style="visibility:hidden;">Назад</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">Далее</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script>
+  (function () {
+    var step = 1;
+    var total = 3;
+    var sections = document.querySelectorAll('[data-step]');
+    var dots = document.querySelectorAll('[data-step-dot]');
+    var stepLabel = document.getElementById('stepLabel');
+    var stepTitle = document.getElementById('stepTitle');
+    var titles = { 1: 'Целевой язык', 2: 'Уровень', 3: 'Дневная цель' };
+    var nextBtn = document.getElementById('nextBtn');
+    var backBtn = document.getElementById('backBtn');
+
+    function render() {
+      sections.forEach(function (s) { s.hidden = Number(s.getAttribute('data-step')) !== step; });
+      dots.forEach(function (d) {
+        var n = Number(d.getAttribute('data-step-dot'));
+        d.classList.toggle('is-active', n === step);
+        d.classList.toggle('is-done', n < step);
+      });
+      stepLabel.textContent = 'ШАГ ' + step + ' ИЗ ' + total;
+      stepTitle.textContent = titles[step];
+      backBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+      nextBtn.textContent = step === total ? 'Начать обучение' : 'Далее';
+    }
+
+    nextBtn.addEventListener('click', function () {
+      if (step < total) { step++; render(); }
+      else { window.location.href = 'dashboard.html'; }
+    });
+    backBtn.addEventListener('click', function () {
+      if (step > 1) { step--; render(); }
+    });
+
+    function wireRadioGroup(selector) {
+      document.querySelectorAll(selector).forEach(function (group) {
+        // handled per-button below
+      });
+    }
+
+    document.querySelectorAll('[data-lang]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        document.querySelectorAll('[data-lang]').forEach(function (b) {
+          b.setAttribute('aria-checked', 'false');
+          b.style.borderColor = '';
+          b.style.background = '';
+        });
+        btn.setAttribute('aria-checked', 'true');
+        btn.style.borderColor = 'var(--color-accent-soft-border)';
+        btn.style.background = 'var(--color-accent-soft)';
+      });
+    });
+
+    document.querySelectorAll('[data-level]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-level]').forEach(function (b) {
+          b.setAttribute('aria-checked', 'false');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.setAttribute('aria-checked', 'true');
+        btn.setAttribute('aria-pressed', 'true');
+      });
+    });
+
+    document.querySelectorAll('[data-goal]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-goal]').forEach(function (b) {
+          b.setAttribute('aria-checked', 'false');
+          b.style.borderColor = '';
+          b.style.background = '';
+        });
+        btn.setAttribute('aria-checked', 'true');
+        btn.style.borderColor = 'var(--color-accent-soft-border)';
+        btn.style.background = 'var(--color-accent-soft)';
+      });
+    });
+
+    render();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossa — Авторские истории</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .story-cover-sm{ height:100px; border-radius:var(--radius-chip-a); margin-bottom:var(--space-3); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:26px; color:#fff; }
+  .price-tag{ font-family:var(--font-display); font-weight:800; color:var(--color-warning); display:inline-flex; align-items:center; gap:4px; }
+  #view-catalog, #view-showcase, #view-reader, #view-author{ display:none; }
+  #view-catalog.active, #view-showcase.active, #view-reader.active, #view-author.active{ display:block; }
+  .review-row{ border-bottom:3px dashed var(--color-border); padding:var(--space-3) 0; }
+  .stars{ color:var(--color-warning); font-family:var(--font-display); letter-spacing:2px; }
+  .author-stat{ text-align:center; }
+  .author-stat strong{ display:block; font-family:var(--font-display); font-size:24px; color:var(--color-primary); }
+</style>
+</head>
+<body class="app-shell" data-page="community">
+<div id="rail-root"></div>
+<main class="app-main">
+  <div id="topbar-root"></div>
+
+  <div class="row between">
+    <h1 class="mb-0">Авторские истории</h1>
+    <a href="#" class="btn btn-secondary" onclick="showView('author');return false;">Мой кабинет автора</a>
+  </div>
+
+  <div id="view-catalog" class="active">
+    <div class="tabs" data-filter-group="community" role="group" aria-label="Тип истории" style="margin:var(--space-4) 0;">
+      <button class="tab active" data-filter="all">Все</button>
+      <button class="tab" data-filter="free">Бесплатные</button>
+      <button class="tab" data-filter="paid">Платные</button>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card" data-filterable="community" data-status="paid">
+        <div class="story-cover-sm" style="background:#4F46E5;">🌉</div>
+        <span class="chip status-learning">B1 · @martinwrites</span>
+        <h3>Письма из Лиссабона</h3>
+        <div class="row between"><span class="price-tag">🪙 80 GC</span><button class="btn btn-sm btn-primary" onclick="showView('showcase')">Открыть</button></div>
+      </div>
+      <div class="card" data-filterable="community" data-status="free">
+        <div class="story-cover-sm" style="background:#16A34A;">🍜</div>
+        <span class="chip status-learned">A2 · @lena_kd</span>
+        <h3>Утро в Осаке</h3>
+        <div class="row between"><span class="badge accent">Бесплатно</span><button class="btn btn-sm btn-primary" onclick="showView('reader')">Читать</button></div>
+      </div>
+      <div class="card" data-filterable="community" data-status="paid">
+        <div class="story-cover-sm" style="background:#D97706;">🌆</div>
+        <span class="chip status-learning">B2 · @amina.r (моя)</span>
+        <h3>Голос за стеной</h3>
+        <div class="row between"><span class="price-tag">🪙 120 GC</span><button class="btn btn-sm btn-secondary" onclick="showView('reader')">Читать</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-showcase">
+    <button class="btn btn-ghost" onclick="showView('catalog')">← К каталогу</button>
+    <div class="card" style="max-width:520px;">
+      <div class="story-cover-sm" style="height:180px;background:#4F46E5;">🌉</div>
+      <span class="chip status-learning">B1 · Драма</span>
+      <h1>Письма из Лиссабона</h1>
+      <p class="text-muted">Автор: @martinwrites</p>
+      <p>История о переписке двух незнакомцев, которая меняет их жизнь. Написана специально для уровня B1, с 6 упражнениями на понимание и новую лексику.</p>
+      <div class="row between">
+        <span class="price-tag" style="font-size:20px;">🪙 80 GC</span>
+        <button class="btn btn-primary" onclick="alert('Демо: покупка истории')">Купить историю</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-reader">
+    <button class="btn btn-ghost" onclick="showView('catalog')">← К каталогу</button>
+    <span class="chip status-learning">B2 · @amina.r</span>
+    <h1>Голос за стеной</h1>
+    <p class="story-text">Maria had lived in the apartment for three years before she finally learned her neighbour's name — a small <button class="unknown-word">commitment</button> to community she had always avoided.</p>
+
+    <div class="rule-box card-flat" style="margin-top:var(--space-5);">
+      <h3>Упражнение к истории</h3>
+      <p>Что заставило Марию наконец познакомиться с соседкой?</p>
+      <button class="btn btn-secondary btn-block">Три года тишины утомили её</button>
+    </div>
+
+    <div style="margin-top:var(--space-6);">
+      <h2>Отзывы <span class="stars">★★★★☆</span> <span class="text-muted">(4.6 · 52 оценки)</span></h2>
+      <div class="review-row"><strong>dilnoza99</strong> <span class="stars">★★★★★</span><p class="mb-0">Очень тёплая история, идеально по сложности для B2.</p></div>
+      <div class="review-row"><strong>qwen.li</strong> <span class="stars">★★★★☆</span><p class="mb-0">Хотелось бы больше диалогов, но лексика супер.</p></div>
+      <form onsubmit="return false" style="margin-top:var(--space-4);">
+        <div class="field"><label for="rev-text">Оставить отзыв</label><textarea id="rev-text" rows="2" placeholder="Поделись впечатлением…"></textarea></div>
+        <button class="btn btn-secondary">Отправить отзыв</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="view-author">
+    <button class="btn btn-ghost" onclick="showView('catalog')">← К каталогу</button>
+    <h1>Кабинет автора</h1>
+    <div class="grid grid-3" style="margin-bottom:var(--space-5);">
+      <div class="card author-stat"><strong>340</strong><span class="text-muted">просмотров</span></div>
+      <div class="card author-stat"><strong>52</strong><span class="text-muted">покупок</span></div>
+      <div class="card author-stat"><strong>4160 🪙</strong><span class="text-muted">доход всего</span></div>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>История</th><th>Статус</th><th>Просмотры</th><th>Покупки</th><th>Доход</th></tr></thead>
+      <tbody>
+        <tr><td>Голос за стеной</td><td><span class="badge accent">Опубликована</span></td><td>340</td><td>52</td><td>4160 🪙</td></tr>
+        <tr><td>Тень над городом</td><td><span class="badge muted">Черновик</span></td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" style="margin-top:var(--space-5);" data-modal-open="new-story-modal">+ Новая история</button>
+  </div>
+</main>
+<div id="bottomnav-root"></div>
+
+<div class="modal-overlay" id="new-story-modal">
+  <div class="modal">
+    <div class="row between"><h2 class="mb-0">Новая история</h2><button class="icon-btn" data-modal-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <form onsubmit="return false" style="margin-top:var(--space-4);">
+      <div class="field"><label for="s-title">Заголовок</label><input id="s-title" type="text"></div>
+      <div class="field"><label for="s-level">Уровень</label><select id="s-level"><option>A1</option><option>A2</option><option selected>B1</option><option>B2</option><option>C1</option></select></div>
+      <div class="field"><label for="s-text">Текст истории</label><textarea id="s-text" rows="4"></textarea></div>
+      <div class="row" style="margin-bottom:var(--space-4);">
+        <label class="switch"><input type="checkbox" id="s-paid"><span class="track"></span> Платная история</label>
+      </div>
+      <button class="btn btn-primary btn-block">Сохранить как черновик</button>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  function showView(name){
+    ['catalog','showcase','reader','author'].forEach(function(v){
+      document.getElementById('view-'+v).classList.toggle('active', v===name);
+    });
+    window.scrollTo(0,0);
+  }
+</script>
+</body>
+</html>

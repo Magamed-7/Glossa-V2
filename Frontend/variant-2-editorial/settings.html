@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Настройки — Glossa</title>
+<link rel="stylesheet" href="assets/styles.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="masthead">
+  <div class="wrap masthead__row">
+    <a class="masthead__brand" href="dashboard.html">GLOSSA <small>English · B1</small></a>
+    <nav class="masthead__nav" aria-label="Основная навигация">
+      <a data-nav-link href="deck.html">Колода</a>
+      <a data-nav-link href="stories.html">Истории</a>
+      <a data-nav-link href="grammar.html">Грамматика</a>
+      <a data-nav-link href="ai-chat.html">ИИ-чат</a>
+      <a data-nav-link href="leaderboard.html">Рейтинг</a>
+      <a data-nav-link href="profile.html">Профиль</a>
+      <a data-nav-link href="settings.html">Настройки</a>
+    </nav>
+    <div class="masthead__tools">
+      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Переключить тёмную тему">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </button>
+      <a class="icon-btn" href="notifications.html" aria-label="Уведомления, есть непрочитанные">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="icon-btn__dot" aria-hidden="true"></span>
+      </a>
+      <button class="masthead__burger" data-burger aria-label="Открыть меню" aria-expanded="false" aria-controls="mobilenav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobilenav" class="mobilenav" data-mobilenav aria-label="Мобильная навигация">
+  <div class="mobilenav__top">
+    <span class="masthead__brand">GLOSSA</span>
+    <button class="icon-btn" data-mobilenav-close aria-label="Закрыть меню">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="mobilenav__list">
+    <li><a data-nav-link href="dashboard.html">Главная</a></li>
+    <li><a data-nav-link href="deck.html">Колода</a></li>
+    <li><a data-nav-link href="stories.html">Истории</a></li>
+    <li><a data-nav-link href="community.html">Сообщество</a></li>
+    <li><a data-nav-link href="grammar.html">Грамматика</a></li>
+    <li><a data-nav-link href="ai-chat.html">ИИ-чат</a></li>
+    <li><a data-nav-link href="leaderboard.html">Рейтинг</a></li>
+    <li><a data-nav-link href="achievements.html">Достижения</a></li>
+    <li><a data-nav-link href="profile.html">Профиль</a></li>
+    <li><a data-nav-link href="settings.html">Настройки</a></li>
+    <li><a data-nav-link href="notifications.html">Уведомления</a></li>
+  </ul>
+</nav>
+
+<div class="runhead">
+  <div class="wrap runhead__row">
+    <span>Глосса</span>
+    <span>Выпуск № 14</span>
+    <span>Настройки</span>
+    <span>@amina.r · B1 · Английский</span>
+  </div>
+</div>
+
+<main id="main">
+<section class="section wrap">
+  <p class="eyebrow">Управление аккаунтом</p>
+  <h1 class="mt-2">Настройки</h1>
+</section>
+
+<section class="wrap" data-tabs data-tabs-hash data-tabs-initial="learning">
+  <div class="tabs__list" role="tablist" aria-label="Разделы настроек">
+    <button role="tab" data-tab="learning" aria-selected="true" id="tab-learning" aria-controls="panel-learning">Обучение</button>
+    <button role="tab" data-tab="notifications" aria-selected="false" id="tab-notifications" aria-controls="panel-notifications">Уведомления</button>
+    <button role="tab" data-tab="privacy" aria-selected="false" id="tab-privacy" aria-controls="panel-privacy">Приватность</button>
+    <button role="tab" data-tab="subscription" aria-selected="false" id="tab-subscription" aria-controls="panel-subscription">Подписка</button>
+    <button role="tab" data-tab="account" aria-selected="false" id="tab-account" aria-controls="panel-account">Аккаунт</button>
+  </div>
+
+  <div data-tabpanel="learning" id="panel-learning" role="tabpanel" aria-labelledby="tab-learning" class="tabpanel">
+    <div class="grid12">
+      <div class="col-span-6">
+        <form onsubmit="event.preventDefault(); glossaToast('Настройки обучения сохранены');">
+          <div class="field">
+            <label for="set-lang">Изучаемый язык</label>
+            <select id="set-lang"><option>English</option><option>Deutsch</option><option>Français</option></select>
+          </div>
+          <div class="field">
+            <label for="set-level">Уровень</label>
+            <select id="set-level"><option>A1</option><option>A2</option><option selected>B1</option><option>B2</option><option>C1</option><option>C2</option></select>
+          </div>
+          <div class="field">
+            <label for="set-goal">Дневная цель</label>
+            <select id="set-goal"><option>10 слов / 12 XP</option><option selected>15 слов / 20 XP</option><option>25 слов / 35 XP</option></select>
+          </div>
+          <div class="field">
+            <label for="set-time">Время напоминания о повторении</label>
+            <input type="text" id="set-time" value="19:30">
+          </div>
+          <button type="submit" class="btn mt-2">Сохранить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div data-tabpanel="notifications" id="panel-notifications" role="tabpanel" aria-labelledby="tab-notifications" class="tabpanel" hidden>
+    <div class="col-span-8" style="max-width:640px;">
+      <label class="switch mb-4"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Напоминания о повторении карточек</span></label>
+      <label class="switch mb-4"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Новые отзывы на мои истории</span></label>
+      <label class="switch mb-4"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Покупки моих историй</span></label>
+      <label class="switch mb-4"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Полученные достижения</span></label>
+      <label class="switch mb-4"><input type="checkbox"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Активность друзей</span></label>
+      <label class="switch mb-4"><input type="checkbox"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Новости и рассылка Glossa</span></label>
+    </div>
+  </div>
+
+  <div data-tabpanel="privacy" id="panel-privacy" role="tabpanel" aria-labelledby="tab-privacy" class="tabpanel" hidden>
+    <div style="max-width:640px;">
+      <h3 class="mb-3">Кто видит мой профиль</h3>
+      <div class="field">
+        <label for="priv-visibility">Видимость профиля</label>
+        <select id="priv-visibility"><option>Все пользователи</option><option selected>Только подписчики</option><option>Никто</option></select>
+      </div>
+      <h3 class="mt-6 mb-3">Отдельные блоки</h3>
+      <label class="switch mb-4"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Показывать страйк и статистику</span></label>
+      <label class="switch mb-4"><input type="checkbox"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Показывать список друзей</span></label>
+      <label class="switch mb-4"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Показывать опубликованные истории</span></label>
+      <label class="switch mb-4"><input type="checkbox"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Показывать эл. почту в профиле</span></label>
+      <h3 class="mt-6 mb-3">Рейтинг</h3>
+      <label class="switch mb-4"><input type="checkbox"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Не показывать меня в общем рейтинге</span></label>
+      <p class="field-hint">Ваш прогресс продолжит учитываться, но не будет виден другим участникам.</p>
+    </div>
+  </div>
+
+  <div data-tabpanel="subscription" id="panel-subscription" role="tabpanel" aria-labelledby="tab-subscription" class="tabpanel" hidden>
+    <div class="plate" style="max-width:520px;">
+      <p class="stat__label">Текущий тариф</p>
+      <h3 class="mt-2">Premium</h3>
+      <p class="text-muted mt-1" style="font-size:var(--text-sm);">Продление 14.09.2026</p>
+      <a href="pricing.html" class="btn btn--ghost mt-4">Изменить тариф</a>
+    </div>
+
+    <h3 class="mt-7 mb-3">Кошелёк — 320 GC</h3>
+    <div class="table-scroll">
+      <table class="table">
+        <thead><tr><th>Дата</th><th>Операция</th><th>Сумма</th></tr></thead>
+        <tbody>
+          <tr><td>20.07</td><td>Пополнение картой</td><td>+500 GC</td></tr>
+          <tr><td>22.07</td><td>Покупка «Письма из Лиссабона»</td><td>−80 GC</td></tr>
+          <tr><td>25.07</td><td>Доход от продаж историй</td><td>+4 160 GC</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn--ghost mt-4">Пополнить баланс</button>
+  </div>
+
+  <div data-tabpanel="account" id="panel-account" role="tabpanel" aria-labelledby="tab-account" class="tabpanel" hidden>
+    <div class="grid12">
+      <div class="col-span-6">
+        <h3 class="mb-3">Смена пароля</h3>
+        <form onsubmit="event.preventDefault(); glossaToast('Пароль обновлён'); this.reset();">
+          <div class="field"><label for="pw-current">Текущий пароль</label><input type="password" id="pw-current"></div>
+          <div class="field"><label for="pw-new">Новый пароль</label><input type="password" id="pw-new" minlength="8"></div>
+          <button type="submit" class="btn mt-2">Обновить пароль</button>
+        </form>
+
+        <h3 class="mt-7 mb-3">Telegram</h3>
+        <p class="text-muted mb-3" style="font-size:var(--text-sm);">Привяжите Telegram, чтобы получать напоминания в мессенджер.</p>
+        <form class="flex gap-3" style="align-items:flex-end;" onsubmit="event.preventDefault(); glossaToast('Telegram привязан'); this.reset();">
+          <div class="field" style="margin-bottom:0; flex:1;">
+            <label for="tg-code">Код из бота @glossa_bot</label>
+            <input type="text" id="tg-code" placeholder="123456">
+          </div>
+          <button type="submit" class="btn btn--ghost">Привязать</button>
+        </form>
+      </div>
+
+      <div class="col-span-6">
+        <h3 class="mb-3">Удаление аккаунта</h3>
+        <p class="text-muted" style="font-size:var(--text-sm); max-width:44ch;">Это действие необратимо: колода, истории и достижения будут удалены без возможности восстановления.</p>
+        <button class="btn btn--destructive mt-4" data-modal-open="modal-delete">Удалить аккаунт</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="overlay" id="modal-delete" role="dialog" aria-modal="true" aria-labelledby="delete-title">
+  <div class="modal">
+    <button class="modal__close" data-modal-close aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <p class="eyebrow">Необратимое действие</p>
+    <h2 id="delete-title" class="mt-2">Удалить аккаунт навсегда?</h2>
+    <p class="prose mt-3">Вы потеряете доступ к колоде из 214 слов, страйку 12 дней и опубликованным историям. Отменить это будет нельзя.</p>
+    <div class="flex gap-3 mt-5">
+      <button class="btn btn--destructive" onclick="glossaToast('Демо-режим: удаление отключено'); document.getElementById('modal-delete').classList.remove('is-open');">Да, удалить</button>
+      <button class="btn btn--ghost" data-modal-close>Отмена</button>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Glossa — издание для изучающих языки глубоко</span>
+    <span>Обучение · Уведомления · Приватность · Подписка · Аккаунт</span>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+
+</body>
+</html>

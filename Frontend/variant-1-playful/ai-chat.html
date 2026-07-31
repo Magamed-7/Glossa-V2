@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossa — ИИ-чат</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .scenario-card{ cursor:pointer; text-align:center; }
+  .scenario-card .ico-wrap{ width:56px; height:56px; margin:0 auto var(--space-2); border-radius:var(--radius-chip-a); background:var(--color-muted); display:flex; align-items:center; justify-content:center; border:3px solid var(--color-border); }
+  .scenario-card svg{ width:26px; height:26px; color:var(--color-primary); }
+  #chat-view{ display:none; }
+  #chat-view.active{ display:block; }
+  .chat-limit{ display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-4); }
+  .chat-limit-bar{ flex:1; height:10px; background:var(--color-muted); border-radius:var(--radius-pill); border:3px solid var(--color-border); overflow:hidden; }
+  .chat-limit-bar i{ display:block; height:100%; width:40%; background:var(--color-accent); }
+  .chat-input-row{ display:flex; gap:var(--space-2); margin-top:var(--space-4); }
+  .chat-input-row input{ flex:1; border:3px solid var(--color-border); border-radius:var(--radius-pill); padding:12px 18px; font-size:15px; }
+  .fix-tip{ position:relative; }
+  .fix-explain{ display:none; background:#fff; color:var(--color-foreground); border:3px solid var(--color-destructive); border-radius:var(--radius-sm); padding:10px 14px; font-size:13px; margin-top:8px; }
+  .fix-tip.open .fix-explain{ display:block; }
+  .locked-panel{ text-align:center; padding:var(--space-7) var(--space-4); }
+  .locked-panel svg{ width:56px; height:56px; color:var(--color-secondary); margin-bottom:var(--space-3); }
+</style>
+</head>
+<body class="app-shell" data-page="ai-chat">
+<div id="rail-root"></div>
+<main class="app-main">
+  <div id="topbar-root"></div>
+
+  <div id="scenario-view">
+    <h1>ИИ-чат</h1>
+    <p>Выбери сценарий и потренируйся говорить свободно — ИИ поправит ошибки на лету</p>
+    <div class="grid grid-4">
+      <div class="card scenario-card" onclick="openChat()"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5Z"/></svg></div><strong>Обычная беседа</strong></div>
+      <div class="card scenario-card" onclick="openChat()"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><strong>Собеседование</strong></div>
+      <div class="card scenario-card" onclick="openChat()"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v18M18 3v18M6 8h12M6 13h12"/></svg></div><strong>В ресторане</strong></div>
+      <div class="card scenario-card" onclick="openLocked()"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/></svg></div><strong>В аэропорту</strong></div>
+    </div>
+  </div>
+
+  <div id="chat-view">
+    <button class="btn btn-ghost" onclick="closeChat()">← К сценариям</button>
+    <h1>Обычная беседа</h1>
+    <div class="chat-limit">
+      <span class="text-muted" style="font-size:13px;">Осталось 18 из 30 мин сегодня</span>
+      <div class="chat-limit-bar"><i></i></div>
+    </div>
+
+    <div class="chat-window">
+      <div class="msg from-ai">Hi Amina! How was your weekend?</div>
+      <div class="msg from-user">I go to the cinema with my <span class="fix-tip" tabindex="0" onclick="this.classList.toggle('open')">friend<span class="fix-explain">Ошибка времени: нужно «went» — говорим о прошлом (weekend). «go» используется для настоящего/привычных действий.</span></span>.</div>
+      <div class="msg from-ai">Nice! What movie did you watch?</div>
+    </div>
+
+    <div class="chat-input-row">
+      <input type="text" placeholder="Напиши сообщение…" aria-label="Сообщение">
+      <button class="btn btn-primary" onclick="alert('Демо: сообщение отправлено')">Отправить</button>
+    </div>
+  </div>
+
+  <div id="locked-view" class="card locked-panel" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    <h2>Доступно на Premium и Pro</h2>
+    <p>Сценарий «В аэропорту» открывается на платных тарифах вместе с безлимитным ИИ-чатом</p>
+    <a href="pricing.html" class="btn btn-primary">Посмотреть тарифы</a>
+    <br><button class="btn btn-ghost" style="margin-top:var(--space-3);" onclick="backHome()">← К сценариям</button>
+  </div>
+</main>
+<div id="bottomnav-root"></div>
+<script src="app.js"></script>
+<script>
+  function openChat(){ document.getElementById('scenario-view').style.display='none'; document.getElementById('chat-view').classList.add('active'); }
+  function closeChat(){ document.getElementById('scenario-view').style.display='block'; document.getElementById('chat-view').classList.remove('active'); }
+  function openLocked(){ document.getElementById('scenario-view').style.display='none'; document.getElementById('locked-view').style.display='block'; }
+  function backHome(){ document.getElementById('scenario-view').style.display='block'; document.getElementById('locked-view').style.display='none'; }
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossa — Главная</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:var(--space-5); margin-bottom:var(--space-6); }
+  @media (min-width:800px){ .hero-grid{ grid-template-columns:1.4fr 1fr; } }
+  .mission-card{ background:var(--color-primary); color:#fff; }
+  .mission-card p{ color:rgba(255,255,255,.85); }
+  .mission-card .btn-accent{ margin-top:var(--space-4); }
+  .side-stats{ display:grid; gap:var(--space-4); grid-template-columns:1fr 1fr; }
+  .stat-card{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; }
+  .feed-item{ display:flex; gap:var(--space-3); align-items:flex-start; padding:var(--space-3) 0; border-bottom:3px dashed var(--color-border); }
+  .feed-item:last-child{ border-bottom:none; }
+  .feed-item svg{ width:26px; height:26px; color:var(--color-primary); flex:none; }
+  .quick-links{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--space-4); }
+  @media (min-width:700px){ .quick-links{ grid-template-columns:repeat(4,1fr); } }
+  .quick-link{ text-decoration:none; color:var(--color-foreground); text-align:center; }
+  .quick-link .ico-wrap{ width:64px; height:64px; margin:0 auto var(--space-2); border-radius:var(--radius-chip-a); background:var(--color-muted); display:flex; align-items:center; justify-content:center; border:3px solid var(--color-border); }
+  .quick-link svg{ width:28px; height:28px; color:var(--color-primary); }
+</style>
+</head>
+<body class="app-shell" data-page="dashboard">
+<div id="rail-root"></div>
+<main class="app-main">
+  <div id="topbar-root"></div>
+
+  <h1>С возвращением, Амина 👋</h1>
+  <p>Сегодня хороший день, чтобы подрастить свой стрик</p>
+
+  <div class="hero-grid">
+    <div class="card mission-card">
+      <span class="badge accent">Сегодняшняя цель</span>
+      <h2>15 карточек ждут повторения</h2>
+      <p>Из них 3 отмечены как «сложные» — самое время закрепить</p>
+      <a href="review.html" class="btn btn-accent">Начать повторение</a>
+    </div>
+    <div class="side-stats">
+      <div class="card stat-card">
+        <div class="sprout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V11"/><path d="M12 11C12 7 9 5 5 5c0 4 3 6 7 6Z"/><path d="M12 13C12 9.5 14.5 8 18 8c0 3.5-2.5 5.5-6 5Z"/></svg>
+          <span class="num">12</span>
+        </div>
+        <span class="text-muted">дней подряд · рекорд 45</span>
+      </div>
+      <div class="card stat-card">
+        <div class="ring">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="40"/><circle class="value" cx="50" cy="50" r="40" stroke-dasharray="251" stroke-dashoffset="90"/></svg>
+          <div class="label"><strong>3240</strong><span>XP</span></div>
+        </div>
+        <span class="text-muted">место #47 в мире</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>Быстрый доступ</h2>
+  <div class="quick-links" style="margin-bottom:var(--space-6);">
+    <a class="quick-link" href="deck.html"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="12" height="15" rx="3" transform="rotate(-8 10 13)"/><rect x="8" y="4" width="12" height="15" rx="3" fill="var(--color-surface)"/></svg></div>Колода</a>
+    <a class="quick-link" href="stories.html"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5a1.5 1.5 0 0 0 1.5-1.5v-13Z"/></svg></div>Истории</a>
+    <a class="quick-link" href="grammar.html"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20 15 9l3-3 2 2-3 3L6 22H4v-2Z"/><path d="M13 6l5 5"/></svg></div>Грамматика</a>
+    <a class="quick-link" href="ai-chat.html"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></div>ИИ-чат</a>
+  </div>
+
+  <div class="card">
+    <h2>Подсказки для тебя</h2>
+    <div class="feed-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20 15 9l3-3 2 2-3 3L6 22H4v-2Z"/></svg>
+      <div><strong>Артикли всё ещё хромают</strong><p class="mb-0 text-muted">62% верных ответов — стоит повторить урок «Артикли a/an/the»</p></div>
+    </div>
+    <div class="feed-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="12" height="15" rx="3" transform="rotate(-8 10 13)"/></svg>
+      <div><strong>3 «сложных» слова на подходе</strong><p class="mb-0 text-muted">reluctant, overwhelmed, bittersweet — сегодня в повторении</p></div>
+    </div>
+    <div class="feed-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z"/></svg>
+      <div><strong>Новая история уровня B1</strong><p class="mb-0 text-muted">«Последний рейс» — драма, 12 минут чтения</p></div>
+    </div>
+  </div>
+</main>
+<div id="bottomnav-root"></div>
+<script src="app.js"></script>
+</body>
+</html>
