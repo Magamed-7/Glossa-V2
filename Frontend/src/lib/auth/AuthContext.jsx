@@ -23,10 +23,16 @@ export function AuthProvider({ children }) {
 
       const userId = readUserId();
       if (userId) {
-        profileApi
-          .getPublicProfile(userId)
-          .then((pub) => setLanguages(pub.languages || []))
-          .catch(() => setLanguages([]));
+        // Дожидаемся явно: callers (например, Onboarding.jsx) делают `await refreshUser()`
+        // и сразу `navigate("/")`, рассчитывая, что languages уже актуальны к этому моменту —
+        // ProtectedRoute иначе увидит старое значение (ещё [] от первой загрузки) и вернёт
+        // обратно на /onboarding, сбросив весь прогресс формы.
+        try {
+          const pub = await profileApi.getPublicProfile(userId);
+          setLanguages(pub.languages || []);
+        } catch (e) {
+          setLanguages([]);
+        }
       } else {
         setLanguages([]);
       }

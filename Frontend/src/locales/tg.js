@@ -389,7 +389,7 @@ export const tg = {
     pricePaid: "Пулакӣ",
     price: "Нарх",
     apply: "Татбиқ кардан",
-    stars: "{n} ситора",
+    stars: { other: "{n} ситора" },
     reviews: "Шарҳҳо",
     yourReviewLabel: "Шарҳи шумо (ихтиёрӣ)",
     submitReview: "Ирсоли шарҳ",

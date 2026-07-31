@@ -389,7 +389,7 @@ export const en = {
     pricePaid: "Paid",
     price: "Price",
     apply: "Apply",
-    stars: "{n} stars",
+    stars: { one: "{n} star", other: "{n} stars" },
     reviews: "Reviews",
     yourReviewLabel: "Your review (optional)",
     submitReview: "Submit Review",

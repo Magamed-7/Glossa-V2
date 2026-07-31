@@ -389,7 +389,7 @@ export const ru = {
     pricePaid: "Платные",
     price: "Цена",
     apply: "Применить",
-    stars: "{n} звёзд",
+    stars: { one: "{n} звезда", few: "{n} звезды", many: "{n} звёзд", other: "{n} звезды" },
     reviews: "Отзывы",
     yourReviewLabel: "Ваш отзыв (необязательно)",
     submitReview: "Отправить отзыв",
