@@ -12,6 +12,7 @@ from app.api.router_notification import router_notification
 from app.api.router_payment import router_payment, router_payments_history, router_stripe
 from app.api.router_profile import router_profile
 from app.api.router_rating import router_rating
+from app.api.router_search import router_search
 from app.api.router_settings import router_settings
 from app.api.router_social import router_social
 from app.api.router_story import router_stories
@@ -75,6 +76,7 @@ app.include_router(router_user_story)
 app.include_router(router_notification)
 app.include_router(router_telegram)
 app.include_router(router_export)
+app.include_router(router_search)
 
 
 @app.get('/health')

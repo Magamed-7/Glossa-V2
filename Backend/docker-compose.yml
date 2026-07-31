@@ -27,6 +27,22 @@ services:
       timeout: 5s
       retries: 5
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: 'false'
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+    ports:
+      - '9200:9200'
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -s http://localhost:9200/_cluster/health | grep -q -E "\"status\":\"(green|yellow)\""']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
   django_app:
     build:
       context: .
@@ -249,6 +265,27 @@ services:
       redis:
         condition: service_healthy
 
+  consumer_content:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.consumer
+    command: python -m app.consumers.content_consumer
+    env_file: .env
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      REDIS_URL: redis://redis:6379/0
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    depends_on:
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+
   telegram_bot:
     build:
       context: .
@@ -281,3 +318,4 @@ volumes:
   postgres_data:
   redis_data:
   minio_data:
+  elasticsearch_data:

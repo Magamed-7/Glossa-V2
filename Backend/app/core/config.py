@@ -46,5 +46,7 @@ class Settings:
     LLM_BASE_URL: str = os.getenv('LLM_BASE_URL', 'https://api.groq.com/openai/v1')
     LLM_MODEL: str = os.getenv('LLM_MODEL', 'llama-3.3-70b-versatile')
 
+    ELASTICSEARCH_URL: str = os.getenv('ELASTICSEARCH_URL', 'http://localhost:9200')
+
 
 settings = Settings()

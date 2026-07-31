@@ -16,6 +16,7 @@ from app.models.model_user_story import (
 from app.schemas.schema_user_story import ExerciseCreate, ReviewCreate, UserStoryCreate, UserStoryUpdate
 from app.services import crud_subscription, purchase_service, ratings
 from app.tasks.analytics import process_analytics_event
+from app.tasks.content import process_content_event
 
 SELLER_SHARE = Decimal('0.7')
 
@@ -75,6 +76,14 @@ async def update_user_story(story_id: int, author_id: int, data: UserStoryUpdate
 
     await db.commit()
     await db.refresh(story)
+
+    if story.status == 'published':
+        await publish_event(
+            'content_events',
+            {'action': 'index_user_story', 'story_id': story.id},
+            fallback_task=process_content_event,
+        )
+
     return story
 
 
@@ -86,6 +95,13 @@ async def delete_user_story(story_id: int, author_id: int, db: AsyncSession):
 
     await db.delete(story)
     await db.commit()
+
+    await publish_event(
+        'content_events',
+        {'action': 'delete_user_story_index', 'story_id': story_id},
+        fallback_task=process_content_event,
+    )
+
     return story
 
 
@@ -115,6 +131,12 @@ async def publish_user_story(story_id: int, author_id: int, db: AsyncSession):
             {'action': 'check_achievements', 'user_id': author_id},
             fallback_task=process_analytics_event,
         )
+
+    await publish_event(
+        'content_events',
+        {'action': 'index_user_story', 'story_id': story.id},
+        fallback_task=process_content_event,
+    )
 
     return story
 

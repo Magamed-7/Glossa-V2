@@ -25,13 +25,15 @@ def story_translation(story: Stories, locale: str, field_prefix: str):
     return None
 
 
-async def get_stories(db: AsyncSession, level=None, genre=None, limit=20, offset=0):
+async def get_stories(db: AsyncSession, level=None, genre=None, topic=None, limit=20, offset=0):
     query = select(Stories)
 
     if level:
         query = query.where(Stories.cefr_level == level)
     if genre:
         query = query.where(Stories.genre == genre)
+    if topic:
+        query = query.where(Stories.grammar_topic == topic)
 
     query = query.order_by(Stories.id).limit(limit).offset(offset)
     result = await db.execute(query)
