@@ -1,6 +1,7 @@
 import PageHeader from "../components/layout/PageHeader.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import PlanComparison from "../components/pricing/PlanComparison.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPlans } from "../lib/api/subscriptions.js";
 import { formatMoney } from "../lib/format.js";
@@ -43,6 +44,8 @@ export default function Pricing() {
           ))}
         </div>
       )}
+
+      {!loading && !error && plans && <PlanComparison plans={plans} />}
     </div>
   );
 }
