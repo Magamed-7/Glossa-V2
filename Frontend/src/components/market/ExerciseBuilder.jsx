@@ -6,8 +6,10 @@ import { createExercise } from "../../lib/api/userStories.js";
 import { generateExercise } from "../../lib/api/ai.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function ExerciseBuilder({ storyId, cefrLevel }) {
+  const t = useT();
   const toast = useToast();
   const [exercises, setExercises] = useState([]);
   const [question, setQuestion] = useState("");
@@ -44,7 +46,7 @@ export default function ExerciseBuilder({ storyId, cefrLevel }) {
     setGenerating(true);
     try {
       const generated = await generateExercise({ topic: "reading comprehension", level: cefrLevel || "B2" });
-      toast.success("Generated — review it below before adding.");
+      toast.success(t("market.exerciseGenerated"));
       if (generated?.question) setQuestion(generated.question);
       if (generated?.answer) setAnswer(generated.answer);
       if (generated?.explanation) setExplanation(generated.explanation);
@@ -58,9 +60,9 @@ export default function ExerciseBuilder({ storyId, cefrLevel }) {
   return (
     <div className="mt-section-gap">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-headline text-headline-md">Exercises</h2>
+        <h2 className="font-headline text-headline-md">{t("market.exercises")}</h2>
         <NeoButton variant="ghost" size="md" loading={generating} onClick={onGenerate}>
-          Generate with AI
+          {t("market.generateWithAi")}
         </NeoButton>
       </div>
 
@@ -69,17 +71,19 @@ export default function ExerciseBuilder({ storyId, cefrLevel }) {
           {exercises.map((ex) => (
             <NeoCard key={ex.id} padding="sm">
               <p className="font-body text-body-md">{ex.question}</p>
-              <p className="font-label text-label-md text-secondary mt-1">Answer: {ex.answer}</p>
+              <p className="font-label text-label-md text-secondary mt-1">
+                {t("market.answerPrefix")}{ex.answer}
+              </p>
             </NeoCard>
           ))}
         </div>
       )}
 
       <form className="space-y-4" onSubmit={onAdd}>
-        <Field label="Question" value={question} onChange={(e) => setQuestion(e.target.value)} required />
-        <Field label="Answer" value={answer} onChange={(e) => setAnswer(e.target.value)} required />
+        <Field label={t("market.questionLabel")} value={question} onChange={(e) => setQuestion(e.target.value)} required />
+        <Field label={t("market.answerLabel")} value={answer} onChange={(e) => setAnswer(e.target.value)} required />
         <Field
-          label="Explanation (optional)"
+          label={t("market.explanationLabel")}
           value={explanation}
           onChange={(e) => setExplanation(e.target.value)}
         />
@@ -89,7 +93,7 @@ export default function ExerciseBuilder({ storyId, cefrLevel }) {
           </p>
         )}
         <NeoButton type="submit" variant="ghost" loading={submitting}>
-          Add Exercise
+          {t("market.addExercise")}
         </NeoButton>
       </form>
     </div>

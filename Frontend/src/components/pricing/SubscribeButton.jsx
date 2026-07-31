@@ -4,8 +4,10 @@ import NeoButton from "../ui/NeoButton.jsx";
 import { subscribe } from "../../lib/api/subscriptions.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function SubscribeButton({ plan, period, isCurrent, onSubscribed }) {
+  const t = useT();
   const navigate = useNavigate();
   const toast = useToast();
   const [submitting, setSubmitting] = useState(false);
@@ -14,7 +16,7 @@ export default function SubscribeButton({ plan, period, isCurrent, onSubscribed 
     setSubmitting(true);
     try {
       await subscribe({ plan_code: plan.code, period });
-      toast.success(`You're now on the ${plan.code} plan!`);
+      toast.success(t("pricing.subscribed", { code: plan.code }));
       onSubscribed();
     } catch (err) {
       if (err.code === "INSUFFICIENT_FUNDS") {
@@ -31,14 +33,14 @@ export default function SubscribeButton({ plan, period, isCurrent, onSubscribed 
   if (isCurrent) {
     return (
       <NeoButton variant="ghost" disabled className="w-full">
-        Current Plan
+        {t("pricing.currentPlan")}
       </NeoButton>
     );
   }
 
   return (
     <NeoButton className="w-full" loading={submitting} onClick={onSubscribe}>
-      Choose {plan.code}
+      {t("pricing.choose", { code: plan.code })}
     </NeoButton>
   );
 }

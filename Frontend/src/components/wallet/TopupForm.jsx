@@ -5,10 +5,12 @@ import Field from "../ui/Field.jsx";
 import { createCheckoutSession, getBalance } from "../../lib/api/payments.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 const QUICK_AMOUNTS = [5, 10, 25, 50];
 
 export default function TopupForm() {
+  const t = useT();
   const toast = useToast();
   const [amount, setAmount] = useState(10);
   const [submitting, setSubmitting] = useState(false);
@@ -31,7 +33,7 @@ export default function TopupForm() {
 
   return (
     <NeoCard>
-      <h3 className="font-headline text-headline-md mb-4">Top Up</h3>
+      <h3 className="font-headline text-headline-md mb-4">{t("wallet.topUp")}</h3>
       <div className="flex flex-wrap gap-3 mb-4">
         {QUICK_AMOUNTS.map((value) => (
           <button
@@ -47,7 +49,7 @@ export default function TopupForm() {
         ))}
       </div>
       <Field
-        label="Custom amount (USD)"
+        label={t("wallet.customAmountLabel")}
         type="number"
         min="1"
         step="1"
@@ -56,7 +58,7 @@ export default function TopupForm() {
         className="mb-4"
       />
       <NeoButton loading={submitting} onClick={onTopup} disabled={!amount || amount <= 0}>
-        Pay with Card
+        {t("wallet.payWithCard")}
       </NeoButton>
     </NeoCard>
   );

@@ -22,10 +22,12 @@ import {
   uploadCover,
 } from "../lib/api/userStories.js";
 import { errorText } from "../lib/api/errorText.js";
+import { useT } from "../lib/i18n.jsx";
 
 const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 export default function StoryEditor() {
+  const t = useT();
   const navigate = useNavigate();
   const toast = useToast();
   const { id } = useParams();
@@ -73,10 +75,8 @@ export default function StoryEditor() {
       <div className="max-w-xl mx-auto">
         <EmptyState
           icon="lock"
-          title="Upper-Intermediate level required"
-          description={`Writing stories requires your target language to be at least B2. Your current level is ${
-            targetLevel || "not set"
-          }. Keep practicing grammar and reading to level up.`}
+          title={t("storyEditor.levelRequiredTitle")}
+          description={t("storyEditor.levelRequiredBody", { level: targetLevel || t("storyEditor.levelNotSet") })}
         />
       </div>
     );
@@ -115,7 +115,7 @@ export default function StoryEditor() {
     try {
       if (isEditing) {
         await updateUserStory(id, payload);
-        toast.success("Saved");
+        toast.success(t("storyEditor.saved"));
       } else {
         const story = await createUserStory(payload);
         navigate(`/studio/${story.id}/edit`, { replace: true });
@@ -132,7 +132,7 @@ export default function StoryEditor() {
     try {
       const updated = await publishUserStory(id);
       setStatus(updated.status);
-      toast.success("Published to the marketplace");
+      toast.success(t("storyEditor.published"));
     } catch (err) {
       toast.error(errorText(err));
     } finally {
@@ -158,7 +158,7 @@ export default function StoryEditor() {
     setUploadingCover(true);
     try {
       await uploadCover(id, file);
-      toast.success("Cover updated");
+      toast.success(t("storyEditor.coverUpdated"));
     } catch (err) {
       toast.error(errorText(err));
     } finally {
@@ -169,27 +169,31 @@ export default function StoryEditor() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="flex justify-between items-start">
-        <PageHeader eyebrow="Author Studio" title={isEditing ? "Edit" : "New"} accent="Manuscript" />
+        <PageHeader
+          eyebrow={t("storyEditor.eyebrow")}
+          title={isEditing ? t("storyEditor.editAccent") : t("storyEditor.newAccent")}
+          accent={t("storyEditor.manuscript")}
+        />
         {isEditing && (
           <span className="font-label text-label-md uppercase border-2 border-tertiary px-3 py-1">{status}</span>
         )}
       </div>
 
       <form className="space-y-6" onSubmit={onSubmit}>
-        <Field label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        <Field label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <Field label={t("storyEditor.titleLabel")} value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <Field label={t("storyEditor.descriptionLabel")} value={description} onChange={(e) => setDescription(e.target.value)} />
         <div className="grid grid-cols-2 gap-4">
-          <Select label="CEFR Level" value={cefrLevel} onChange={(e) => setCefrLevel(e.target.value)}>
+          <Select label={t("storyEditor.levelLabel")} value={cefrLevel} onChange={(e) => setCefrLevel(e.target.value)}>
             {CEFR_ORDER.map((level) => (
               <option key={level} value={level}>
                 {level}
               </option>
             ))}
           </Select>
-          <Field label="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
+          <Field label={t("storyEditor.genreLabel")} value={genre} onChange={(e) => setGenre(e.target.value)} />
         </div>
         <Field
-          label="Price (leave empty for free)"
+          label={t("storyEditor.priceLabel")}
           type="number"
           min="0"
           step="0.01"
@@ -199,20 +203,22 @@ export default function StoryEditor() {
 
         {isEditing && (
           <div>
-            <label className="block font-label text-label-md uppercase mb-2">Cover Image</label>
+            <label className="block font-label text-label-md uppercase mb-2">{t("storyEditor.coverLabel")}</label>
             <input type="file" accept="image/*" onChange={onCoverChange} disabled={uploadingCover} />
           </div>
         )}
 
         <TextArea
-          label="Story Text"
+          label={t("storyEditor.bodyLabel")}
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={16}
           className="font-ledger"
           required
         />
-        <p className="font-label text-label-md text-on-surface-variant">{body.length} characters</p>
+        <p className="font-label text-label-md text-on-surface-variant">
+          {t("storyEditor.characterCount", { n: body.length })}
+        </p>
 
         {formError && (
           <p role="alert" className="font-label text-label-md text-error">
@@ -222,16 +228,16 @@ export default function StoryEditor() {
 
         <div className="flex flex-wrap gap-4">
           <NeoButton type="submit" loading={submitting}>
-            {isEditing ? "Save Changes" : "Save Draft"}
+            {isEditing ? t("storyEditor.saveChanges") : t("storyEditor.saveDraft")}
           </NeoButton>
           {isEditing && status !== "published" && (
             <NeoButton type="button" variant="solid" loading={publishing} onClick={onPublish}>
-              Publish
+              {t("storyEditor.publish")}
             </NeoButton>
           )}
           {isEditing && (
             <NeoButton type="button" variant="ghost" onClick={() => setConfirmDelete(true)}>
-              Delete
+              {t("storyEditor.delete")}
             </NeoButton>
           )}
         </div>
@@ -239,16 +245,14 @@ export default function StoryEditor() {
 
       {isEditing && <ExerciseBuilder storyId={id} cefrLevel={cefrLevel} />}
 
-      <Modal open={confirmDelete} onClose={() => setConfirmDelete(false)} title="Delete Story">
-        <p className="font-body text-body-md mb-6">
-          This will permanently remove &ldquo;{title}&rdquo;. This can&apos;t be undone.
-        </p>
+      <Modal open={confirmDelete} onClose={() => setConfirmDelete(false)} title={t("storyEditor.deleteTitle")}>
+        <p className="font-body text-body-md mb-6">{t("storyEditor.deleteBody", { title })}</p>
         <div className="flex gap-4">
           <NeoButton variant="ghost" onClick={() => setConfirmDelete(false)}>
-            Cancel
+            {t("storyEditor.cancel")}
           </NeoButton>
           <NeoButton loading={deleting} onClick={onDelete}>
-            Delete
+            {t("storyEditor.delete")}
           </NeoButton>
         </div>
       </Modal>

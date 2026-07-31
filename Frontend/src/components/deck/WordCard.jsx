@@ -1,12 +1,6 @@
 import NeoCard from "../ui/NeoCard.jsx";
 import Icon from "../ui/Icon.jsx";
-
-const STATUS_LABEL = {
-  learning: "Learning",
-  learned: "Learned",
-  hard: "Hard",
-  skipped: "Skipped",
-};
+import { useT } from "../../lib/i18n.jsx";
 
 const STATUS_CLASS = {
   learning: "border-tertiary text-on-surface",
@@ -16,6 +10,7 @@ const STATUS_CLASS = {
 };
 
 export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }) {
+  const t = useT();
   return (
     <NeoCard className="flex flex-col gap-3">
       <div className="flex justify-between items-start">
@@ -23,7 +18,7 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
         <span
           className={`font-label text-label-md uppercase tracking-widest border-2 px-3 py-1 ${STATUS_CLASS[card.status]}`}
         >
-          {STATUS_LABEL[card.status]}
+          {t(`deck.status.${card.status}`)}
         </span>
       </div>
       <p className="font-body text-body-md text-on-surface-variant">{card.translation}</p>
@@ -34,7 +29,7 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
           type="button"
           className="text-tertiary hover:text-secondary transition-colors"
           onClick={() => onPlayAudio(card)}
-          aria-label="Play pronunciation"
+          aria-label={t("deck.playPronunciation")}
         >
           <Icon name="volume_up" />
         </button>
@@ -42,7 +37,7 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
           type="button"
           className="text-tertiary hover:text-secondary transition-colors"
           onClick={() => onStatusChange(card)}
-          aria-label="Change status"
+          aria-label={t("deck.changeStatus")}
         >
           <Icon name="sync_alt" />
         </button>
@@ -50,7 +45,7 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
           type="button"
           className="ml-auto text-tertiary hover:text-error transition-colors"
           onClick={() => onDelete(card)}
-          aria-label="Delete word"
+          aria-label={t("deck.deleteWord")}
         >
           <Icon name="delete" />
         </button>

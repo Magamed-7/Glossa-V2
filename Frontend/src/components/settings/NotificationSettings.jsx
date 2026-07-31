@@ -5,14 +5,16 @@ import TelegramLink from "./TelegramLink.jsx";
 import { getSettings, updateSettings } from "../../lib/api/settings.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
-const TOGGLES = [
-  { key: "email_enabled", label: "Email notifications" },
-  { key: "push_enabled", label: "Push notifications" },
-  { key: "telegram_enabled", label: "Telegram notifications" },
+const TOGGLE_KEYS = [
+  { key: "email_enabled", i18nKey: "email" },
+  { key: "push_enabled", i18nKey: "push" },
+  { key: "telegram_enabled", i18nKey: "telegram" },
 ];
 
 export default function NotificationSettings() {
+  const t = useT();
   const toast = useToast();
   const [settings, setSettings] = useState(null);
   const [reminderTime, setReminderTime] = useState("");
@@ -42,7 +44,7 @@ export default function NotificationSettings() {
     try {
       const updated = await updateSettings({ reminder_time: reminderTime || null });
       setSettings(updated);
-      toast.success("Reminder time saved");
+      toast.success(t("settings.notifications.saved"));
     } catch (err) {
       toast.error(errorText(err));
     } finally {
@@ -54,30 +56,28 @@ export default function NotificationSettings() {
 
   return (
     <div className="space-y-6">
-      {TOGGLES.map((toggle) => (
+      {TOGGLE_KEYS.map((toggle) => (
         <label key={toggle.key} className="flex items-center gap-3 cursor-pointer">
           <input type="checkbox" checked={settings[toggle.key]} onChange={() => onToggle(toggle.key)} />
-          <span className="font-body text-body-md">{toggle.label}</span>
+          <span className="font-body text-body-md">{t(`settings.notifications.${toggle.i18nKey}`)}</span>
         </label>
       ))}
-      <p className="font-label text-label-md text-on-surface-variant">
-        Push delivery isn&apos;t wired up in this environment yet — the toggle is saved, but no push will be sent.
-      </p>
+      <p className="font-label text-label-md text-on-surface-variant">{t("settings.notifications.pushNotWiredUp")}</p>
 
       <div className="flex items-end gap-4">
         <Field
-          label="Daily reminder time"
+          label={t("settings.notifications.reminderTimeLabel")}
           type="time"
           value={reminderTime}
           onChange={(e) => setReminderTime(e.target.value)}
         />
         <NeoButton size="md" loading={submitting} onClick={onSaveReminder}>
-          Save
+          {t("settings.notifications.save")}
         </NeoButton>
       </div>
 
       <div className="pt-6 border-t-2 border-surface-container-highest">
-        <h3 className="font-headline text-headline-md mb-4">Telegram</h3>
+        <h3 className="font-headline text-headline-md mb-4">{t("settings.notifications.telegramTitle")}</h3>
         <TelegramLink />
       </div>
     </div>

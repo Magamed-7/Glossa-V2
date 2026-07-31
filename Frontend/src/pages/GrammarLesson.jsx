@@ -10,8 +10,10 @@ import { useApi } from "../lib/useApi.js";
 import { useAppData } from "../lib/AppDataContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { getLesson, submitLesson } from "../lib/api/grammar.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function GrammarLesson() {
+  const t = useT();
   const { id } = useParams();
   const { refreshStreak } = useAppData();
   const { data: lesson, loading, error, reload } = useApi(() => getLesson(id), [id]);
@@ -72,14 +74,14 @@ export default function GrammarLesson() {
 
       {lesson.rule && (
         <div className="neo-card p-6 mb-8">
-          <h2 className="font-headline text-headline-md mb-3">Rule</h2>
+          <h2 className="font-headline text-headline-md mb-3">{t("grammar.rule")}</h2>
           <p className="font-body text-body-lg">{lesson.rule}</p>
         </div>
       )}
 
       {examples.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-headline text-headline-md mb-4">Examples</h2>
+          <h2 className="font-headline text-headline-md mb-4">{t("grammar.examples")}</h2>
           <ul className="space-y-3 border-t-2 border-tertiary pt-4">
             {examples.map((ex) => (
               <li key={ex.id} className="font-body text-body-lg pl-4 border-l-2 border-secondary">
@@ -101,7 +103,7 @@ export default function GrammarLesson() {
       ) : (
         lesson.questions.length > 0 && (
           <form className="pt-6 border-t-2 border-tertiary space-y-6" onSubmit={onSubmit}>
-            <h2 className="font-headline text-headline-md">Practice</h2>
+            <h2 className="font-headline text-headline-md">{t("grammar.practice")}</h2>
             <QuestionForm questions={lesson.questions} answers={answers} onChange={setAnswer} />
             {submitError && (
               <p role="alert" className="font-label text-label-md text-error">
@@ -109,7 +111,7 @@ export default function GrammarLesson() {
               </p>
             )}
             <NeoButton type="submit" loading={submitting}>
-              Submit Answers
+              {t("grammar.submitAnswers")}
             </NeoButton>
           </form>
         )

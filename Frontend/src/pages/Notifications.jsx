@@ -7,8 +7,10 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getNotifications, markAllRead, markRead } from "../lib/api/notifications.js";
 import { formatRelative } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Notifications() {
+  const t = useT();
   const { data: fetched, loading, error, reload } = useApi(() => getNotifications({ limit: 50 }), []);
   const [items, setItems] = useState([]);
 
@@ -41,10 +43,10 @@ export default function Notifications() {
   return (
     <div>
       <div className="flex justify-between items-start">
-        <PageHeader eyebrow="Updates" title="Notifications" />
+        <PageHeader eyebrow={t("notifications.eyebrow")} title={t("notifications.title")} />
         {hasUnread && (
           <NeoButton variant="ghost" size="md" onClick={onMarkAllRead}>
-            Mark all read
+            {t("notifications.markAllRead")}
           </NeoButton>
         )}
       </div>
@@ -52,7 +54,7 @@ export default function Notifications() {
       {loading && <Skeleton className="h-64" />}
       {error && <ErrorState error={error} onRetry={reload} />}
 
-      {!loading && !error && items.length === 0 && <EmptyState icon="notifications" title="You're all caught up" />}
+      {!loading && !error && items.length === 0 && <EmptyState icon="notifications" title={t("notifications.caughtUp")} />}
 
       {!loading && !error && items.length > 0 && (
         <ul className="divide-y-2 divide-surface-container-highest">

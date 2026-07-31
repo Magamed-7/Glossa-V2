@@ -8,8 +8,10 @@ import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useAppData } from "../../lib/AppDataContext.jsx";
 import { getMyProgress, getStories } from "../../lib/api/stories.js";
 import { getLessons } from "../../lib/api/grammar.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function DailyMission() {
+  const t = useT();
   const { languages } = useAuth();
   const { streak } = useAppData();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function DailyMission() {
     <div className="col-span-12 lg:col-span-8 bg-secondary-container border-2 border-tertiary p-8 md:p-12 shadow-[8px_8px_0px_0px_#000000] flex flex-col md:flex-row gap-12 items-center relative overflow-hidden">
       <div className="relative z-10 space-y-6">
         <span className="bg-tertiary text-surface font-label text-label-md px-3 py-1 uppercase tracking-widest">
-          MISSION {String(missionNumber).padStart(3, "0")}
+          {t("dashboard.mission", { n: String(missionNumber).padStart(3, "0") })}
         </span>
         <h2 className="font-display text-display-lg-mobile md:text-display-lg text-on-secondary-container leading-tight">
           {data.type === "story" ? data.story.title : data.lesson.topic}
@@ -67,7 +69,7 @@ export default function DailyMission() {
             navigate(data.type === "story" ? `/stories/${data.story.id}` : `/grammar/${data.lesson.id}`)
           }
         >
-          {data.type === "story" ? "Continue Reading" : "Resume Lesson"}
+          {data.type === "story" ? t("dashboard.continueReading") : t("dashboard.resumeLesson")}
         </NeoButton>
       </div>
       <div className="w-full md:w-1/3 aspect-square relative z-10 flex items-center justify-center">

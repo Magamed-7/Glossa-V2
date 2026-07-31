@@ -1,6 +1,8 @@
 import Icon from "../ui/Icon.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function AchievementCard({ achievement, earned }) {
+  const t = useT();
   return (
     <div
       className={`border-2 border-tertiary p-4 flex flex-col items-center text-center gap-2 ${
@@ -14,10 +16,12 @@ export default function AchievementCard({ achievement, earned }) {
       )}
       {earned ? (
         <p className="font-label text-label-md text-secondary">
-          Earned {new Date(earned.earned_at).toLocaleDateString()}
+          {t("achievements.earned", { date: new Date(earned.earned_at).toLocaleDateString() })}
         </p>
       ) : (
-        <p className="font-label text-label-md text-on-surface-variant">Threshold: {achievement.threshold}</p>
+        <p className="font-label text-label-md text-on-surface-variant">
+          {t("achievements.threshold", { n: achievement.threshold })}
+        </p>
       )}
     </div>
   );

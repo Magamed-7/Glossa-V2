@@ -6,8 +6,10 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Login() {
+  const t = useT();
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,16 +47,14 @@ export default function Login() {
           <span className="font-display text-display-lg text-primary italic mb-2 tracking-tighter">Glossa</span>
           <div className="h-[2px] w-12 bg-secondary mb-4" />
           <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest">
-            Identity Verification
+            {t("auth.login.title")}
           </h1>
-          <p className="font-label text-label-md text-outline mt-2 italic">
-            EST. 1954 · DIGITAL CLEARANCE REQUIRED
-          </p>
+          <p className="font-label text-label-md text-outline mt-2 italic">{t("auth.login.subtitle")}</p>
         </div>
 
         <form className="space-y-8" onSubmit={onSubmit}>
           <Field
-            label="Agent Identifier"
+            label={t("auth.login.identifierLabel")}
             marker="bg-mustard"
             icon="fingerprint"
             name="username"
@@ -64,7 +64,7 @@ export default function Login() {
             required
           />
           <Field
-            label="Encryption Key"
+            label={t("auth.login.keyLabel")}
             marker="bg-mustard"
             icon="key"
             type="password"
@@ -82,7 +82,7 @@ export default function Login() {
           )}
 
           <NeoButton type="submit" className="w-full flex items-center justify-center gap-3" loading={submitting}>
-            <span>Initialize Portal</span>
+            <span>{t("auth.login.submit")}</span>
             <Icon name="arrow_forward" />
           </NeoButton>
 
@@ -91,13 +91,13 @@ export default function Login() {
               className="font-label text-label-md text-outline hover:text-secondary transition-colors underline decoration-mustard decoration-2 underline-offset-4"
               to="/password-reset"
             >
-              Forgot access
+              {t("auth.login.forgot")}
             </Link>
             <Link
               className="font-label text-label-md text-outline hover:text-secondary transition-colors underline decoration-mustard decoration-2 underline-offset-4"
               to="/register"
             >
-              Request Clearance
+              {t("auth.login.request")}
             </Link>
           </div>
         </form>

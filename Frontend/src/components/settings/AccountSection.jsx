@@ -9,8 +9,10 @@ import * as authApi from "../../lib/api/auth.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 function ChangePassword() {
+  const t = useT();
   const toast = useToast();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -23,7 +25,7 @@ function ChangePassword() {
     setSubmitting(true);
     try {
       await authApi.changePassword({ old_password: oldPassword, new_password: newPassword });
-      toast.success("Password changed");
+      toast.success(t("settings.account.passwordChanged"));
       setOldPassword("");
       setNewPassword("");
     } catch (err) {
@@ -36,14 +38,14 @@ function ChangePassword() {
   return (
     <form className="space-y-4" onSubmit={onSubmit}>
       <Field
-        label="Current Password"
+        label={t("settings.account.currentPasswordLabel")}
         type="password"
         value={oldPassword}
         onChange={(e) => setOldPassword(e.target.value)}
         required
       />
       <Field
-        label="New Password"
+        label={t("settings.account.newPasswordLabel")}
         type="password"
         minLength={8}
         value={newPassword}
@@ -56,13 +58,14 @@ function ChangePassword() {
         </p>
       )}
       <NeoButton type="submit" size="md" loading={submitting}>
-        Change Password
+        {t("settings.account.changePassword")}
       </NeoButton>
     </form>
   );
 }
 
 function TwoFactor() {
+  const t = useT();
   const toast = useToast();
   const [setupData, setSetupData] = useState(null);
   const [code, setCode] = useState("");
@@ -104,7 +107,7 @@ function TwoFactor() {
     setBusy(true);
     try {
       await authApi.disable2fa({ password: disablePassword });
-      toast.success("Two-factor authentication disabled");
+      toast.success(t("settings.account.twoFactorDisabled"));
       setDisablePassword("");
       setBackupCodes(null);
     } catch (err) {
@@ -117,10 +120,7 @@ function TwoFactor() {
   if (backupCodes) {
     return (
       <div className="space-y-4">
-        <p className="font-body text-body-md">
-          Save these backup codes somewhere safe — each can be used once if you lose access to your
-          authenticator app. They won&apos;t be shown again.
-        </p>
+        <p className="font-body text-body-md">{t("settings.account.backupCodesNotice")}</p>
         <div className="grid grid-cols-2 gap-2 font-ledger">
           {backupCodes.map((c) => (
             <span key={c} className="border-2 border-tertiary px-3 py-2">
@@ -129,7 +129,7 @@ function TwoFactor() {
           ))}
         </div>
         <NeoButton variant="ghost" size="md" onClick={() => setBackupCodes(null)}>
-          Done
+          {t("settings.account.done")}
         </NeoButton>
       </div>
     );
@@ -138,18 +138,16 @@ function TwoFactor() {
   if (setupData) {
     return (
       <form className="space-y-4" onSubmit={onConfirm}>
-        <p className="font-body text-body-md">
-          Add this secret to your authenticator app (Google Authenticator, Authy, etc.):
-        </p>
+        <p className="font-body text-body-md">{t("settings.account.addSecretNotice")}</p>
         <p className="font-ledger border-2 border-tertiary px-4 py-3 break-all">{setupData.secret}</p>
-        <Field label="Enter the 6-digit code" maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} />
+        <Field label={t("settings.account.codeLabel")} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} />
         {error && (
           <p role="alert" className="font-label text-label-md text-error">
             {error}
           </p>
         )}
         <NeoButton type="submit" size="md" loading={busy}>
-          Confirm
+          {t("settings.account.confirm")}
         </NeoButton>
       </form>
     );
@@ -158,13 +156,13 @@ function TwoFactor() {
   return (
     <div className="space-y-4">
       <NeoButton size="md" loading={busy} onClick={onStartSetup}>
-        Enable Two-Factor Authentication
+        {t("settings.account.enable2fa")}
       </NeoButton>
       <details>
-        <summary className="font-label text-label-md uppercase cursor-pointer">Disable 2FA</summary>
+        <summary className="font-label text-label-md uppercase cursor-pointer">{t("settings.account.disable2faSummary")}</summary>
         <form className="space-y-4 mt-4" onSubmit={onDisable}>
           <Field
-            label="Password"
+            label={t("settings.account.passwordLabel")}
             type="password"
             value={disablePassword}
             onChange={(e) => setDisablePassword(e.target.value)}
@@ -176,7 +174,7 @@ function TwoFactor() {
             </p>
           )}
           <NeoButton type="submit" variant="ghost" size="md" loading={busy}>
-            Disable
+            {t("settings.account.disable")}
           </NeoButton>
         </form>
       </details>
@@ -185,6 +183,7 @@ function TwoFactor() {
 }
 
 function DeleteAccount() {
+  const t = useT();
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [open, setOpen] = useState(false);
@@ -209,17 +208,14 @@ function DeleteAccount() {
   return (
     <>
       <NeoButton variant="ghost" size="md" onClick={() => setOpen(true)}>
-        Delete Account
+        {t("settings.account.deleteAccount")}
       </NeoButton>
 
-      <Modal open={open} onClose={() => setOpen(false)} title="Delete Account">
+      <Modal open={open} onClose={() => setOpen(false)} title={t("settings.account.deleteAccount")}>
         <form className="space-y-4" onSubmit={onDelete}>
-          <p className="font-body text-body-md">
-            This deactivates your account. It won&apos;t be permanently erased — your data is retained
-            because other records reference it — but you won&apos;t be able to sign in again.
-          </p>
+          <p className="font-body text-body-md">{t("settings.account.deleteAccountBody")}</p>
           <Field
-            label="Confirm your password"
+            label={t("settings.account.confirmPasswordLabel")}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -231,7 +227,7 @@ function DeleteAccount() {
             </p>
           )}
           <NeoButton type="submit" loading={submitting}>
-            Confirm Deletion
+            {t("settings.account.confirmDeletion")}
           </NeoButton>
         </form>
       </Modal>
@@ -240,19 +236,20 @@ function DeleteAccount() {
 }
 
 export default function AccountSection() {
+  const t = useT();
   return (
     <div className="space-y-8">
       <NeoCard>
-        <h3 className="font-headline text-headline-md mb-4">Password</h3>
+        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.passwordTitle")}</h3>
         <ChangePassword />
       </NeoCard>
       <NeoCard>
-        <h3 className="font-headline text-headline-md mb-4">Two-Factor Authentication</h3>
+        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.twoFactorTitle")}</h3>
         <TwoFactor />
       </NeoCard>
       <DataExport />
       <NeoCard variant="accent">
-        <h3 className="font-headline text-headline-md mb-4">Danger Zone</h3>
+        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.dangerZone")}</h3>
         <DeleteAccount />
       </NeoCard>
     </div>

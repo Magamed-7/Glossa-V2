@@ -7,10 +7,12 @@ import Select from "../ui/Select.jsx";
 import { addLanguage } from "../../lib/api/profile.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 const CEFR_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 export default function LanguagesSection({ languages, onAdded }) {
+  const t = useT();
   const toast = useToast();
   const [adding, setAdding] = useState(false);
   const [language, setLanguage] = useState("");
@@ -43,7 +45,7 @@ export default function LanguagesSection({ languages, onAdded }) {
 
   return (
     <NeoCard>
-      <h3 className="font-headline text-headline-md mb-4">Languages</h3>
+      <h3 className="font-headline text-headline-md mb-4">{t("profile.languages")}</h3>
       <div className="flex flex-wrap gap-3 mb-4">
         {(languages || []).map((lang) => (
           <span key={lang.id} className="flex items-center gap-2 border-2 border-tertiary px-3 py-1">
@@ -55,8 +57,8 @@ export default function LanguagesSection({ languages, onAdded }) {
 
       {adding ? (
         <form className="space-y-4" onSubmit={onSubmit}>
-          <Field label="Language" value={language} onChange={(e) => setLanguage(e.target.value)} required />
-          <Select label="Level" value={level} onChange={(e) => setLevel(e.target.value)}>
+          <Field label={t("profile.languageLabel")} value={language} onChange={(e) => setLanguage(e.target.value)} required />
+          <Select label={t("profile.levelLabel")} value={level} onChange={(e) => setLevel(e.target.value)}>
             {CEFR_LEVELS.map((l) => (
               <option key={l} value={l}>
                 {l}
@@ -64,22 +66,20 @@ export default function LanguagesSection({ languages, onAdded }) {
             ))}
           </Select>
           {alreadyAdded && (
-            <p className="font-label text-label-md text-error">
-              You already have this language — remove it first to change its level.
-            </p>
+            <p className="font-label text-label-md text-error">{t("profile.alreadyHaveLanguage")}</p>
           )}
           <div className="flex gap-3">
             <NeoButton type="submit" size="md" loading={submitting} disabled={alreadyAdded}>
-              Add
+              {t("profile.add")}
             </NeoButton>
             <NeoButton type="button" variant="ghost" size="md" onClick={() => setAdding(false)}>
-              Cancel
+              {t("profile.cancel")}
             </NeoButton>
           </div>
         </form>
       ) : (
         <NeoButton variant="ghost" size="md" onClick={() => setAdding(true)}>
-          Add Language
+          {t("profile.addLanguage")}
         </NeoButton>
       )}
     </NeoCard>

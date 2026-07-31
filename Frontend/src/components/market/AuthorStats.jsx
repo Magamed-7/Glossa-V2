@@ -1,17 +1,19 @@
 import { Link } from "react-router-dom";
 import { formatMoney } from "../../lib/format.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function AuthorStats({ stories }) {
+  const t = useT();
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b-2 border-tertiary">
-            <th scope="col" className="text-left py-3 font-label text-label-md uppercase">Story</th>
-            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">Views</th>
-            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">Sales</th>
-            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">Income</th>
-            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">Rating</th>
+            <th scope="col" className="text-left py-3 font-label text-label-md uppercase">{t("market.authorStats.story")}</th>
+            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">{t("market.authorStats.views")}</th>
+            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">{t("market.authorStats.sales")}</th>
+            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">{t("market.authorStats.income")}</th>
+            <th scope="col" className="text-right py-3 font-label text-label-md uppercase">{t("market.authorStats.rating")}</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +31,7 @@ export default function AuthorStats({ stories }) {
               <td className="py-3 text-right font-ledger">{story.purchases_count}</td>
               <td className="py-3 text-right font-ledger">{formatMoney(story.income)}</td>
               <td className="py-3 text-right font-ledger">
-                {story.average_rating != null ? story.average_rating.toFixed(1) : "—"}
+                {story.average_rating != null ? story.average_rating.toFixed(1) : t("common.dash")}
               </td>
             </tr>
           ))}

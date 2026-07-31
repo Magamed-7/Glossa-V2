@@ -4,6 +4,7 @@ import Badge from "../ui/Badge.jsx";
 import Icon from "../ui/Icon.jsx";
 import { resolveUser } from "../../lib/api/_pending/userLookup.js";
 import { formatMoney } from "../../lib/format.js";
+import { useT } from "../../lib/i18n.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -12,6 +13,7 @@ const FALLBACK_COVERS = [
 ];
 
 export default function AcquisitionCard({ story }) {
+  const t = useT();
   const [author, setAuthor] = useState(null);
 
   useEffect(() => {
@@ -48,10 +50,10 @@ export default function AcquisitionCard({ story }) {
         </div>
         <h3 className="font-headline text-xl mb-1">{story.title}</h3>
         <p className="font-body text-body-md text-on-surface-variant mb-3">
-          by {author?.username || "…"}
+          {t("market.by", { name: author?.username || "…" })}
         </p>
         <p className="font-ledger text-secondary">
-          {story.price ? formatMoney(story.price) : "Free"}
+          {story.price ? formatMoney(story.price) : t("market.free")}
         </p>
       </div>
     </Link>

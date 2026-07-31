@@ -5,8 +5,10 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import AchievementCard from "../components/profile/AchievementCard.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getAllAchievements, getMyAchievements } from "../lib/api/achievements.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Achievements() {
+  const t = useT();
   const { data, loading, error, reload } = useApi(async () => {
     const [all, mine] = await Promise.all([getAllAchievements(), getMyAchievements()]);
     return { all, mine };
@@ -15,7 +17,7 @@ export default function Achievements() {
   if (loading) {
     return (
       <div>
-        <PageHeader eyebrow="Milestones" title="Your" accent="Achievements" />
+        <PageHeader eyebrow={t("achievements.eyebrow")} title={t("achievements.titleLead")} accent={t("achievements.titleAccent")} />
         <Skeleton className="h-64" />
       </div>
     );
@@ -24,7 +26,7 @@ export default function Achievements() {
   if (error) {
     return (
       <div>
-        <PageHeader eyebrow="Milestones" title="Your" accent="Achievements" />
+        <PageHeader eyebrow={t("achievements.eyebrow")} title={t("achievements.titleLead")} accent={t("achievements.titleAccent")} />
         <ErrorState error={error} onRetry={reload} />
       </div>
     );
@@ -33,11 +35,11 @@ export default function Achievements() {
   if (data.all.length === 0) {
     return (
       <div>
-        <PageHeader eyebrow="Milestones" title="Your" accent="Achievements" />
+        <PageHeader eyebrow={t("achievements.eyebrow")} title={t("achievements.titleLead")} accent={t("achievements.titleAccent")} />
         <EmptyState
           icon="military_tech"
-          title="No achievements available yet"
-          description="Achievement templates haven't been set up for this environment yet."
+          title={t("achievements.emptyTitle")}
+          description={t("achievements.emptyDescription")}
         />
       </div>
     );
@@ -52,7 +54,7 @@ export default function Achievements() {
 
   return (
     <div>
-      <PageHeader eyebrow="Milestones" title="Your" accent="Achievements" />
+      <PageHeader eyebrow={t("achievements.eyebrow")} title={t("achievements.titleLead")} accent={t("achievements.titleAccent")} />
       {Array.from(groups.entries()).map(([category, items]) => (
         <div key={category} className="mb-section-gap">
           <h2 className="font-headline text-headline-md mb-4 capitalize">{category}</h2>

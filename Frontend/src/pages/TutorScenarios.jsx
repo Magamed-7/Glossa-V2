@@ -7,8 +7,10 @@ import { SCENARIOS } from "../lib/scenarios.js";
 import { useApi } from "../lib/useApi.js";
 import { getMySubscription } from "../lib/api/subscriptions.js";
 import { formatSeconds } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function TutorScenarios() {
+  const t = useT();
   const navigate = useNavigate();
   const featured = SCENARIOS.find((s) => s.featured);
   const rest = SCENARIOS.filter((s) => !s.featured);
@@ -26,7 +28,7 @@ export default function TutorScenarios() {
   if (loading) {
     return (
       <div>
-        <PageHeader eyebrow="Live Practice" title="The Dialogue" accent="Bureau" />
+        <PageHeader eyebrow={t("tutor.scenariosEyebrow")} title={t("tutor.scenariosTitleLead")} accent={t("tutor.scenariosTitleAccent")} />
         <Skeleton className="h-64" />
       </div>
     );
@@ -35,13 +37,13 @@ export default function TutorScenarios() {
   return (
     <div>
       <PageHeader
-        eyebrow="Live Practice"
-        title="The Dialogue"
-        accent="Bureau"
+        eyebrow={t("tutor.scenariosEyebrow")}
+        title={t("tutor.scenariosTitleLead")}
+        accent={t("tutor.scenariosTitleAccent")}
         subtitle={
           hasAccess
-            ? `Your plan gives you ${aiSeconds === null ? "unlimited" : formatSeconds(aiSeconds)} of AI conversation per day.`
-            : "Practice real conversation with an AI partner — upgrade your plan to unlock it."
+            ? t("tutor.planGivesYou", { seconds: aiSeconds === null ? t("tutor.unlimited") : formatSeconds(aiSeconds) })
+            : t("tutor.lockedUpsell")
         }
       />
       {hasAccess ? (

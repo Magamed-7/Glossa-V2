@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { LANGS, useI18n } from "../../lib/i18n.jsx";
+import { LANGS, useI18n, useT } from "../../lib/i18n.jsx";
 import Icon from "../ui/Icon.jsx";
 
 export default function LanguageSwitcher() {
+  const t = useT();
   const { lang, setLang } = useI18n();
   const [open, setOpen] = useState(false);
   const current = LANGS.find((l) => l.code === lang) || LANGS[0];
@@ -19,7 +20,7 @@ export default function LanguageSwitcher() {
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Change language"
+        aria-label={t("nav.changeLanguage")}
         className="flex items-center gap-1.5 border-2 border-tertiary px-3 py-1.5 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors"
       >
         <Icon name="language" className="text-sm" />

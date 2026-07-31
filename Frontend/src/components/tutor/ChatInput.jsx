@@ -1,7 +1,9 @@
 import { useState } from "react";
 import NeoButton from "../ui/NeoButton.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function ChatInput({ disabled, onSend }) {
+  const t = useT();
   const [text, setText] = useState("");
 
   function submit() {
@@ -27,10 +29,10 @@ export default function ChatInput({ disabled, onSend }) {
         onChange={(e) => setText(e.target.value)}
         onKeyDown={onKeyDown}
         disabled={disabled}
-        placeholder="Type your reply…"
+        placeholder={t("tutor.typeReply")}
       />
       <NeoButton onClick={submit} disabled={disabled || !text.trim()}>
-        Send
+        {t("tutor.sendMessage")}
       </NeoButton>
     </div>
   );

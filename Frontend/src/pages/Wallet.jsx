@@ -7,20 +7,22 @@ import PaymentHistory from "../components/wallet/PaymentHistory.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getBalance } from "../lib/api/payments.js";
 import { formatMoney } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Wallet() {
+  const t = useT();
   const { data: balance, loading, error, reload } = useApi(() => getBalance(), []);
 
   return (
     <div>
-      <PageHeader eyebrow="Your Funds" title="The" accent="Wallet" />
+      <PageHeader eyebrow={t("wallet.eyebrow")} title={t("wallet.titleLead")} accent={t("wallet.titleAccent")} />
 
       {loading && <Skeleton className="h-40" />}
       {error && <ErrorState error={error} onRetry={reload} />}
 
       {!loading && !error && balance && (
         <NeoCard variant="accent" className="mb-section-gap">
-          <p className="font-label text-label-md uppercase text-on-surface-variant">Current Balance</p>
+          <p className="font-label text-label-md uppercase text-on-surface-variant">{t("wallet.currentBalance")}</p>
           <p className="font-display text-5xl text-secondary">{formatMoney(balance.balance)}</p>
         </NeoCard>
       )}
@@ -28,7 +30,7 @@ export default function Wallet() {
       <TopupForm />
 
       <div className="mt-section-gap">
-        <h2 className="font-headline text-headline-md mb-4">History</h2>
+        <h2 className="font-headline text-headline-md mb-4">{t("wallet.history")}</h2>
         <PaymentHistory />
       </div>
     </div>

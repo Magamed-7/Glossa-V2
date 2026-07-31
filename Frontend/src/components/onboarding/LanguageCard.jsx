@@ -1,6 +1,8 @@
 import Icon from "../ui/Icon.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function LanguageCard({ selected, onSelect, image, title, description, gateway }) {
+  const t = useT();
   return (
     <button
       type="button"
@@ -26,7 +28,7 @@ export default function LanguageCard({ selected, onSelect, image, title, descrip
         <p className="font-body text-body-md text-on-surface-variant mb-6">{description}</p>
         <div className="mt-auto flex justify-between items-center">
           <span className="font-label text-label-md uppercase bg-secondary-container text-on-secondary-container px-3 py-1 border-2 border-tertiary">
-            Gateway: {gateway}
+            {t("onboarding.gateway", { gateway })}
           </span>
           <Icon
             name="arrow_forward"

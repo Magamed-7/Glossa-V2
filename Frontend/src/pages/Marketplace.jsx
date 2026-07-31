@@ -10,8 +10,10 @@ import { useApi } from "../lib/useApi.js";
 import { getBalance } from "../lib/api/payments.js";
 import { getUserStories } from "../lib/api/userStories.js";
 import { formatMoney } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Marketplace() {
+  const t = useT();
   const [filters, setFilters] = useState({ level: "", price: "" });
   const { data: balance } = useApi(() => getBalance(), []);
   const { data: stories, loading } = useApi(
@@ -32,10 +34,10 @@ export default function Marketplace() {
     <div>
       <div className="flex justify-between items-start mb-8">
         <PageHeader
-          eyebrow="Community Marketplace"
-          title="The Global"
-          accent="Exchange"
-          subtitle="Stories written by fellow learners, ready to buy and read."
+          eyebrow={t("market.eyebrow")}
+          title={t("market.titleLead")}
+          accent={t("market.titleAccent")}
+          subtitle={t("market.subtitle")}
         />
         <Link
           to="/wallet"

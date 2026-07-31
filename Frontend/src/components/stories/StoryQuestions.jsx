@@ -3,8 +3,10 @@ import NeoButton from "../ui/NeoButton.jsx";
 import NeoCard from "../ui/NeoCard.jsx";
 import { submitQuestions } from "../../lib/api/stories.js";
 import { errorText } from "../../lib/api/errorText.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function StoryQuestions({ storyId, questions, onCompleted }) {
+  const t = useT();
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
@@ -37,10 +39,10 @@ export default function StoryQuestions({ storyId, questions, onCompleted }) {
     return (
       <NeoCard variant="accent" className="mt-10">
         <h3 className="font-headline text-headline-md mb-2">
-          {result.correct} / {result.total} correct
+          {t("grammar.scoreOf", { correct: result.correct, total: result.total })}
         </h3>
         {result.completed && (
-          <p className="font-body text-body-md text-secondary">Story marked as read.</p>
+          <p className="font-body text-body-md text-secondary">{t("stories.markedReadToast")}</p>
         )}
       </NeoCard>
     );
@@ -48,7 +50,7 @@ export default function StoryQuestions({ storyId, questions, onCompleted }) {
 
   return (
     <form className="mt-10 pt-6 border-t-2 border-tertiary space-y-6" onSubmit={onSubmit}>
-      <h3 className="font-headline text-headline-md">Comprehension Check</h3>
+      <h3 className="font-headline text-headline-md">{t("stories.comprehensionCheck")}</h3>
       {questions.map((q) => (
         <div key={q.id}>
           <p className="font-body text-body-md mb-3">{q.text}</p>
@@ -82,7 +84,7 @@ export default function StoryQuestions({ storyId, questions, onCompleted }) {
         </p>
       )}
       <NeoButton type="submit" loading={submitting}>
-        Submit Answers
+        {t("stories.submitAnswers")}
       </NeoButton>
     </form>
   );

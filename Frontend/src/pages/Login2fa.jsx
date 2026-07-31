@@ -6,8 +6,10 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Login2fa() {
+  const t = useT();
   const { loginWith2fa } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,10 +48,10 @@ export default function Login2fa() {
       <AuthLayout>
         <div className="w-full max-w-lg bg-surface border-2 border-navy p-8 md:p-12 text-center">
           <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest mb-4">
-            Verification Failed
+            {t("auth.login2fa.failedTitle")}
           </h1>
           <p className="font-body text-body-md text-on-surface-variant mb-8">{error}</p>
-          <NeoButton onClick={() => navigate("/login")}>Start Over</NeoButton>
+          <NeoButton onClick={() => navigate("/login")}>{t("auth.login2fa.startOver")}</NeoButton>
         </div>
       </AuthLayout>
     );
@@ -62,13 +64,13 @@ export default function Login2fa() {
           <span className="font-display text-display-lg text-primary italic mb-2 tracking-tighter">Glossa</span>
           <div className="h-[2px] w-12 bg-secondary mb-4" />
           <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest">
-            Two-Factor Verification
+            {t("auth.login2fa.title")}
           </h1>
         </div>
 
         <form className="space-y-8" onSubmit={onSubmit}>
           <Field
-            label={useBackupCode ? "Backup Code" : "Authenticator Code"}
+            label={useBackupCode ? t("auth.login2fa.backupLabel") : t("auth.login2fa.authenticatorLabel")}
             marker="bg-mustard"
             icon="pin"
             name="code"
@@ -87,11 +89,11 @@ export default function Login2fa() {
               setCode("");
             }}
           >
-            {useBackupCode ? "Use authenticator code instead" : "Use a backup code instead"}
+            {useBackupCode ? t("auth.login2fa.useAuthenticator") : t("auth.login2fa.useBackup")}
           </button>
 
           <NeoButton type="submit" className="w-full flex items-center justify-center gap-3" loading={submitting}>
-            <span>Verify</span>
+            <span>{t("auth.login2fa.verify")}</span>
             <Icon name="arrow_forward" />
           </NeoButton>
         </form>

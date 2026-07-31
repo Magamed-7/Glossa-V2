@@ -3,8 +3,10 @@ import Skeleton from "../ui/Skeleton.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { getLessons } from "../../lib/api/grammar.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function GrammarRoadmap() {
+  const t = useT();
   const { languages } = useAuth();
   const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
 
@@ -26,7 +28,7 @@ export default function GrammarRoadmap() {
 
   const groups = new Map();
   lessons.forEach((lesson) => {
-    const key = lesson.unit || "Other";
+    const key = lesson.unit || t("grammar.otherUnit");
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(lesson);
   });

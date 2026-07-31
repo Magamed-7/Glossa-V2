@@ -7,8 +7,10 @@ import Icon from "../components/ui/Icon.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { useToast } from "../lib/toast.jsx";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Register() {
+  const t = useT();
   const { register, login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
@@ -30,7 +32,7 @@ export default function Register() {
       const result = await register({ username, email, password });
 
       if (result.email_sent === false) {
-        toast.error("Registered, but the verification email didn't go out. You can request a new code.");
+        toast.error(t("auth.register.verificationEmailFailed"));
       }
 
       await login({ username, password });
@@ -53,14 +55,14 @@ export default function Register() {
           <span className="font-display text-display-lg text-primary italic mb-2 tracking-tighter">Glossa</span>
           <div className="h-[2px] w-12 bg-secondary mb-4" />
           <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest">
-            Request Clearance
+            {t("auth.register.title")}
           </h1>
-          <p className="font-label text-label-md text-outline mt-2 italic">NEW AGENT REGISTRATION</p>
+          <p className="font-label text-label-md text-outline mt-2 italic">{t("auth.register.subtitle")}</p>
         </div>
 
         <form className="space-y-8" onSubmit={onSubmit}>
           <Field
-            label="Agent Identifier"
+            label={t("auth.register.identifierLabel")}
             marker="bg-mustard"
             icon="badge"
             name="username"
@@ -71,7 +73,7 @@ export default function Register() {
             required
           />
           <Field
-            label="Contact Address"
+            label={t("auth.register.contactLabel")}
             marker="bg-mustard"
             icon="mail"
             type="email"
@@ -83,7 +85,7 @@ export default function Register() {
             required
           />
           <Field
-            label="Encryption Key"
+            label={t("auth.register.keyLabel")}
             marker="bg-mustard"
             icon="key"
             type="password"
@@ -103,7 +105,7 @@ export default function Register() {
           )}
 
           <NeoButton type="submit" className="w-full flex items-center justify-center gap-3" loading={submitting}>
-            <span>Submit Application</span>
+            <span>{t("auth.register.submit")}</span>
             <Icon name="arrow_forward" />
           </NeoButton>
 
@@ -112,7 +114,7 @@ export default function Register() {
               className="font-label text-label-md text-outline hover:text-secondary transition-colors underline decoration-mustard decoration-2 underline-offset-4"
               to="/login"
             >
-              Already have clearance? Sign in
+              {t("auth.register.haveClearance")}
             </Link>
           </div>
         </form>

@@ -9,6 +9,7 @@ import StoryBody from "../components/stories/StoryBody.jsx";
 import StoryQuestions from "../components/stories/StoryQuestions.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyProgress, getStory, saveProgress } from "../lib/api/stories.js";
+import { useI18n, useT } from "../lib/i18n.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -18,10 +19,14 @@ const FALLBACK_COVERS = [
 
 export default function StoryReader() {
   const { id } = useParams();
-  // Локаль пока не передаётся явно — подключится в Фазе 19 (i18n), сервер использует
-  // умолчание 'en' (см. API_CONTRACT.md §3.3). Этот запрос расходует дневной лимит чтения —
-  // вызывается ровно один раз на открытие страницы.
-  const { data: story, loading, error, reload } = useApi(() => getStory(id), [id]);
+  const t = useT();
+  const { lang } = useI18n();
+  // Локаль интерфейса уходит в /stories/{id} параметром — сервер иначе умолчает в 'en'
+  // (API_CONTRACT.md §3.3). Этот запрос расходует дневной лимит чтения — вызывается
+  // ровно один раз на открытие страницы, смена языка интерфейса НЕ должна её повторять
+  // (см. задачу 9.6 / 19.6): и story.body_translated уже содержит перевод для lang,
+  // выбранного в момент первой загрузки.
+  const { data: story, loading, error, reload } = useApi(() => getStory(id, { locale: lang }), [id]);
   const { data: progressList } = useApi(() => getMyProgress(), []);
   const progress = progressList?.find((p) => p.story_id === Number(id));
 
@@ -115,7 +120,7 @@ export default function StoryReader() {
             className="font-label text-label-md uppercase text-secondary underline underline-offset-4"
             onClick={() => setShowTranslation((v) => !v)}
           >
-            {showTranslation ? "Hide translation" : "Show translation"}
+            {showTranslation ? t("stories.hideTranslation") : t("stories.showTranslation")}
           </button>
         )}
       </div>
@@ -149,7 +154,7 @@ export default function StoryReader() {
           className="flex items-center gap-2"
         >
           <Icon name={completed ? "check_circle" : "task_alt"} />
-          {completed ? "Marked as Read" : "Mark as Read"}
+          {completed ? t("stories.markedAsRead") : t("stories.markAsRead")}
         </NeoButton>
       </div>
     </div>

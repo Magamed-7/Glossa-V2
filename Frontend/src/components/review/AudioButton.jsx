@@ -1,8 +1,10 @@
 import { forwardRef, useRef, useState } from "react";
 import Icon from "../ui/Icon.jsx";
 import { generateAudio } from "../../lib/api/deck.js";
+import { useT } from "../../lib/i18n.jsx";
 
 const AudioButton = forwardRef(function AudioButton({ card, onAudioGenerated }, ref) {
+  const t = useT();
   const [state, setState] = useState("idle");
   const audioRef = useRef(null);
 
@@ -39,7 +41,7 @@ const AudioButton = forwardRef(function AudioButton({ card, onAudioGenerated }, 
       type="button"
       className={`text-tertiary hover:text-secondary transition-colors ${state === "playing" ? "text-secondary" : ""}`}
       onClick={play}
-      aria-label="Play pronunciation"
+      aria-label={t("deck.playPronunciation")}
       disabled={state === "generating"}
     >
       <Icon name={icon} className="text-3xl" />

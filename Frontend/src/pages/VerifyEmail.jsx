@@ -6,8 +6,10 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import * as authApi from "../lib/api/auth.js";
 import { errorText } from "../lib/api/errorText.js";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
+import { useT } from "../lib/i18n.jsx";
 
 export default function VerifyEmail() {
+  const t = useT();
   const { refreshUser } = useAuth();
   const navigate = useNavigate();
 
@@ -63,12 +65,12 @@ export default function VerifyEmail() {
       <AuthLayout>
         <div className="w-full max-w-lg bg-surface border-2 border-navy p-8 md:p-12 text-center">
           <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest mb-4">
-            Email Verified
+            {t("auth.verifyEmail.verifiedTitle")}
           </h1>
           <p className="font-body text-body-md text-on-surface-variant mb-8">
-            Your address has been confirmed.
+            {t("auth.verifyEmail.verifiedDescription")}
           </p>
-          <NeoButton onClick={() => navigate("/")}>Continue</NeoButton>
+          <NeoButton onClick={() => navigate("/")}>{t("auth.verifyEmail.continue")}</NeoButton>
         </div>
       </AuthLayout>
     );
@@ -81,16 +83,16 @@ export default function VerifyEmail() {
           <span className="font-display text-display-lg text-primary italic mb-2 tracking-tighter">Glossa</span>
           <div className="h-[2px] w-12 bg-secondary mb-4" />
           <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest">
-            Confirm Your Email
+            {t("auth.verifyEmail.title")}
           </h1>
           <p className="font-body text-body-md text-on-surface-variant mt-4 max-w-sm">
-            Enter the 6-digit code we sent to your email address.
+            {t("auth.verifyEmail.description")}
           </p>
         </div>
 
         <form className="space-y-8" onSubmit={onSubmit}>
           <Field
-            label="Verification Code"
+            label={t("auth.verifyEmail.codeLabel")}
             marker="bg-mustard"
             icon="pin"
             name="code"
@@ -107,7 +109,7 @@ export default function VerifyEmail() {
           )}
 
           <NeoButton type="submit" className="w-full" loading={submitting}>
-            Verify
+            {t("auth.verifyEmail.verify")}
           </NeoButton>
 
           <div className="flex justify-between items-center pt-4 border-t-2 border-surface-container-highest">
@@ -117,14 +119,14 @@ export default function VerifyEmail() {
               onClick={onResend}
               disabled={cooldown > 0 || resending}
             >
-              {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend code"}
+              {cooldown > 0 ? t("auth.verifyEmail.resendIn", { n: cooldown }) : t("auth.verifyEmail.resend")}
             </button>
             <button
               type="button"
               className="font-label text-label-md text-outline hover:text-secondary transition-colors underline"
               onClick={() => navigate("/")}
             >
-              Skip for now
+              {t("auth.verifyEmail.skip")}
             </button>
           </div>
         </form>

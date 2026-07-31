@@ -7,8 +7,10 @@ import ErrorState from "../ui/ErrorState.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getStats } from "../../lib/api/learning.js";
 import { getGrammarPrecision } from "../../lib/api/_pending/grammarPrecision.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function MetricGauges() {
+  const t = useT();
   const { data, loading, error, reload } = useApi(async () => {
     const [stats, grammar] = await Promise.all([getStats(), getGrammarPrecision()]);
     return { stats, grammar };
@@ -41,18 +43,16 @@ export default function MetricGauges() {
       <NeoCard className="flex items-center gap-8">
         <Gauge value={retention} color="secondary" />
         <div>
-          <h4 className="font-headline text-2xl">Synaptic Retention</h4>
+          <h4 className="font-headline text-2xl">{t("dashboard.metrics.retentionTitle")}</h4>
           {retention === null ? (
             <p className="font-body text-body-md opacity-70">
               <Link to="/deck" className="underline">
-                Add your first word
+                {t("dashboard.metrics.addFirstWord")}
               </Link>{" "}
-              to see this metric.
+              {t("dashboard.metrics.toSeeMetric")}
             </p>
           ) : (
-            <p className="font-body text-body-md opacity-70">
-              Long-term memory stability for core vocabulary sets.
-            </p>
+            <p className="font-body text-body-md opacity-70">{t("dashboard.metrics.retentionDescription")}</p>
           )}
         </div>
       </NeoCard>
@@ -60,21 +60,21 @@ export default function MetricGauges() {
       <NeoCard className="flex items-center gap-8">
         <Gauge value={grammarValue} color="tertiary" />
         <div>
-          <h4 className="font-headline text-2xl">Grammar Precision</h4>
+          <h4 className="font-headline text-2xl">{t("dashboard.metrics.grammarTitle")}</h4>
           {grammarValue === null ? (
             <p className="font-body text-body-md opacity-70">
               <Link to="/grammar" className="underline">
-                Solve your first lesson
+                {t("dashboard.metrics.solveFirstLesson")}
               </Link>{" "}
-              to see this metric.
+              {t("dashboard.metrics.toSeeMetric")}
             </p>
           ) : (
             <p className="font-body text-body-md opacity-70">
-              Accuracy across {data.grammar.attempts} grammar attempts.
+              {t("dashboard.metrics.grammarAccuracy", { n: data.grammar.attempts })}
             </p>
           )}
           <div className="mt-2 text-tertiary font-label text-label-md flex items-center gap-1">
-            <Icon name="verified" className="text-sm" /> Based on your review history
+            <Icon name="verified" className="text-sm" /> {t("dashboard.metrics.basedOnHistory")}
           </div>
         </div>
       </NeoCard>

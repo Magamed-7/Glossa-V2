@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function SearchBar() {
+  const t = useT();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -32,7 +34,7 @@ export default function SearchBar() {
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} aria-label="Search">
+      <button type="button" onClick={() => setOpen(true)} aria-label={t("nav.search")}>
         <Icon name="search" className="text-tertiary" />
       </button>
     );
@@ -44,12 +46,12 @@ export default function SearchBar() {
         ref={inputRef}
         type="search"
         className="bg-surface-container-low border-2 border-tertiary px-3 py-1 font-body text-body-md outline-none focus:border-secondary"
-        placeholder="Search stories and words…"
+        placeholder={t("nav.searchPlaceholder")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onBlur={() => !query && setOpen(false)}
       />
-      <button type="submit" aria-label="Submit search">
+      <button type="submit" aria-label={t("nav.submitSearch")}>
         <Icon name="search" className="text-secondary" />
       </button>
     </form>

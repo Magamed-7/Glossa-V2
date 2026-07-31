@@ -3,18 +3,20 @@ import { useApi } from "../../lib/useApi.js";
 import { getPrivacy, updatePrivacy } from "../../lib/api/profile.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
-const FIELDS = [
-  { key: "show_stories_count", label: "Stories read count", description: "How many stories you've completed." },
-  { key: "show_achievements", label: "Achievements", description: "Badges you've earned." },
-  { key: "show_current_streak", label: "Current streak", description: "Your active daily streak." },
-  { key: "show_best_streak", label: "Best streak", description: "Your all-time longest streak." },
-  { key: "show_languages", label: "Languages", description: "Which languages you're learning." },
-  { key: "show_language_levels", label: "Language levels", description: "Your CEFR level per language." },
-  { key: "show_followers", label: "Followers", description: "Your follower and following counts." },
+const FIELD_KEYS = [
+  { key: "show_stories_count", i18nKey: "storiesRead" },
+  { key: "show_achievements", i18nKey: "achievements" },
+  { key: "show_current_streak", i18nKey: "currentStreak" },
+  { key: "show_best_streak", i18nKey: "bestStreak" },
+  { key: "show_languages", i18nKey: "languages" },
+  { key: "show_language_levels", i18nKey: "languageLevels" },
+  { key: "show_followers", i18nKey: "followers" },
 ];
 
 export default function PrivacySettings() {
+  const t = useT();
   const { data: privacy, reload } = useApi(() => getPrivacy(), []);
   const toast = useToast();
 
@@ -32,9 +34,9 @@ export default function PrivacySettings() {
 
   return (
     <NeoCard>
-      <h3 className="font-headline text-headline-md mb-4">Privacy</h3>
+      <h3 className="font-headline text-headline-md mb-4">{t("profile.privacy.title")}</h3>
       <div className="space-y-4">
-        {FIELDS.map((field) => (
+        {FIELD_KEYS.map((field) => (
           <label key={field.key} className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
@@ -43,8 +45,10 @@ export default function PrivacySettings() {
               onChange={() => onToggle(field.key)}
             />
             <span>
-              <span className="font-body text-body-md block">{field.label}</span>
-              <span className="font-body text-body-md text-on-surface-variant text-sm">{field.description}</span>
+              <span className="font-body text-body-md block">{t(`profile.privacy.${field.i18nKey}.label`)}</span>
+              <span className="font-body text-body-md text-on-surface-variant text-sm">
+                {t(`profile.privacy.${field.i18nKey}.description`)}
+              </span>
             </span>
           </label>
         ))}

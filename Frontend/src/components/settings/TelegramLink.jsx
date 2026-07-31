@@ -6,8 +6,10 @@ import { getMySubscription } from "../../lib/api/subscriptions.js";
 import { useApi } from "../../lib/useApi.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function TelegramLink() {
+  const t = useT();
   const toast = useToast();
   const { data: subscription } = useApi(() => getMySubscription(), []);
   const [submitting, setSubmitting] = useState(false);
@@ -27,11 +29,9 @@ export default function TelegramLink() {
   if (subscription && !subscription.plan.telegram_access) {
     return (
       <div>
-        <p className="font-body text-body-md text-on-surface-variant mb-4">
-          Telegram access requires a Premium or Pro plan.
-        </p>
+        <p className="font-body text-body-md text-on-surface-variant mb-4">{t("settings.telegram.requiresPlan")}</p>
         <Link to="/pricing">
-          <NeoButton variant="ghost">View Plans</NeoButton>
+          <NeoButton variant="ghost">{t("settings.telegram.viewPlans")}</NeoButton>
         </Link>
       </div>
     );
@@ -39,7 +39,7 @@ export default function TelegramLink() {
 
   return (
     <NeoButton loading={submitting} onClick={onLink}>
-      Link Telegram
+      {t("settings.telegram.link")}
     </NeoButton>
   );
 }

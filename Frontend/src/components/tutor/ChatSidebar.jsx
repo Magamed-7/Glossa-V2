@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import NeoCard from "../ui/NeoCard.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getMyErrors } from "../../lib/api/ai.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function ChatSidebar({ messages, scenario, language, sessionId }) {
+  const t = useT();
   const { data: recentErrors } = useApi(() => getMyErrors(), []);
   const [elapsed, setElapsed] = useState(0);
 
@@ -23,40 +25,40 @@ export default function ChatSidebar({ messages, scenario, language, sessionId })
   return (
     <div className="space-y-6">
       <NeoCard>
-        <h3 className="font-headline text-headline-md mb-2">Accuracy</h3>
-        <p className="font-display text-4xl text-secondary">{accuracy === null ? "—" : `${accuracy}%`}</p>
-        <p className="font-body text-body-md opacity-70 mt-1">This session</p>
+        <h3 className="font-headline text-headline-md mb-2">{t("tutor.accuracy")}</h3>
+        <p className="font-display text-4xl text-secondary">{accuracy === null ? t("common.dash") : `${accuracy}%`}</p>
+        <p className="font-body text-body-md opacity-70 mt-1">{t("tutor.thisSession")}</p>
       </NeoCard>
 
       <NeoCard>
-        <h3 className="font-headline text-headline-md mb-4">Recent Mistakes</h3>
+        <h3 className="font-headline text-headline-md mb-4">{t("tutor.recentMistakes")}</h3>
         {recentErrors && recentErrors.length > 0 ? (
           <ul className="space-y-2">
             {recentErrors.slice(0, 5).map((err) => (
               <li key={err.id} className="font-body text-body-md">
                 <span className="line-through opacity-60">{err.original}</span>
-                <span className="text-secondary"> → {err.corrected}</span>
+                <span className="text-secondary">{t("tutor.arrow")}{err.corrected}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="font-body text-body-md opacity-70">No mistakes recorded yet.</p>
+          <p className="font-body text-body-md opacity-70">{t("tutor.noMistakes")}</p>
         )}
       </NeoCard>
 
       <NeoCard variant="accent">
-        <h3 className="font-headline text-headline-md mb-2">Session</h3>
+        <h3 className="font-headline text-headline-md mb-2">{t("tutor.session")}</h3>
         <dl className="space-y-2 font-body text-body-md">
           <div className="flex justify-between">
-            <dt className="opacity-70">Scenario</dt>
+            <dt className="opacity-70">{t("tutor.scenarioLabel")}</dt>
             <dd className="capitalize">{scenario}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="opacity-70">Language</dt>
+            <dt className="opacity-70">{t("tutor.languageLabel")}</dt>
             <dd>{language}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="opacity-70">Duration</dt>
+            <dt className="opacity-70">{t("tutor.durationLabel")}</dt>
             <dd className="font-ledger">
               {minutes}:{String(seconds).padStart(2, "0")}
             </dd>

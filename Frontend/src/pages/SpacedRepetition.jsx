@@ -15,8 +15,10 @@ import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { getDueToday, submitReview } from "../lib/api/reviews.js";
 import { useAppData } from "../lib/AppDataContext.jsx";
+import { useT } from "../lib/i18n.jsx";
 
 export default function SpacedRepetition() {
+  const t = useT();
   const navigate = useNavigate();
   const toast = useToast();
   const { refreshStreak } = useAppData();
@@ -77,7 +79,7 @@ export default function SpacedRepetition() {
   if (loading) {
     return (
       <div>
-        <PageHeader eyebrow="Daily Practice" title="The Lexical" accent="Gauge" />
+        <PageHeader eyebrow={t("review.eyebrow")} title={t("review.titleLead")} accent={t("review.titleAccent")} />
         <Skeleton className="h-80" />
       </div>
     );
@@ -86,7 +88,7 @@ export default function SpacedRepetition() {
   if (error) {
     return (
       <div>
-        <PageHeader eyebrow="Daily Practice" title="The Lexical" accent="Gauge" />
+        <PageHeader eyebrow={t("review.eyebrow")} title={t("review.titleLead")} accent={t("review.titleAccent")} />
         <ErrorState error={error} onRetry={reload} />
       </div>
     );
@@ -95,12 +97,12 @@ export default function SpacedRepetition() {
   if (!queue || queue.length === 0) {
     return (
       <div>
-        <PageHeader eyebrow="Daily Practice" title="The Lexical" accent="Gauge" />
+        <PageHeader eyebrow={t("review.eyebrow")} title={t("review.titleLead")} accent={t("review.titleAccent")} />
         <EmptyState
           icon="task_alt"
-          title="Nothing due right now"
-          description="Add more words to your deck, or come back later when the next batch is ready."
-          action={<NeoButton onClick={() => navigate("/deck")}>Go to Deck</NeoButton>}
+          title={t("review.emptyTitle")}
+          description={t("review.emptyDescription")}
+          action={<NeoButton onClick={() => navigate("/deck")}>{t("review.goToDeck")}</NeoButton>}
         />
       </div>
     );
@@ -109,19 +111,19 @@ export default function SpacedRepetition() {
   if (index >= queue.length) {
     return (
       <div>
-        <PageHeader eyebrow="Daily Practice" title="The Lexical" accent="Gauge" />
+        <PageHeader eyebrow={t("review.eyebrow")} title={t("review.titleLead")} accent={t("review.titleAccent")} />
         <EmptyState
           icon="celebration"
-          title="Session complete"
-          description={`You reviewed ${completed} word${completed === 1 ? "" : "s"}${
-            againCount ? `, ${againCount} needing another pass` : ""
+          title={t("review.sessionCompleteTitle")}
+          description={`${t("review.reviewedSummary", { n: completed })}${
+            againCount ? t("review.reviewedAgainSuffix", { n: againCount }) : ""
           }.`}
           action={
             <div className="flex gap-4">
               <NeoButton variant="ghost" onClick={() => navigate("/deck")}>
-                Deck
+                {t("review.deck")}
               </NeoButton>
-              <NeoButton onClick={() => navigate("/")}>Dashboard</NeoButton>
+              <NeoButton onClick={() => navigate("/")}>{t("review.dashboard")}</NeoButton>
             </div>
           }
         />
@@ -131,7 +133,7 @@ export default function SpacedRepetition() {
 
   return (
     <div>
-      <PageHeader eyebrow="Daily Practice" title="The Lexical" accent="Gauge" />
+      <PageHeader eyebrow={t("review.eyebrow")} title={t("review.titleLead")} accent={t("review.titleAccent")} />
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-8">
         <div className="order-2 lg:order-1">
           <SessionStats remaining={remaining} completed={completed} againCount={againCount} />
@@ -144,7 +146,7 @@ export default function SpacedRepetition() {
           </div>
           <QualityButtons disabled={!flipped || submitting} onAnswer={onAnswer} />
           <p className="text-center font-label text-label-md uppercase text-on-surface-variant opacity-60">
-            Space to flip · 1–4 to answer · S to listen
+            {t("review.hint")}
           </p>
         </div>
 

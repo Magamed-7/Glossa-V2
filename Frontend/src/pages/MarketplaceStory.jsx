@@ -11,6 +11,7 @@ import { getUserStory } from "../lib/api/userStories.js";
 import { resolveUser } from "../lib/api/_pending/userLookup.js";
 import { readUserId } from "../lib/auth/tokens.js";
 import { formatMoney } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -19,6 +20,7 @@ const FALLBACK_COVERS = [
 ];
 
 export default function MarketplaceStory() {
+  const t = useT();
   const { id } = useParams();
   const { data: story, loading, error, reload } = useApi(() => getUserStory(id), [id]);
   const [author, setAuthor] = useState(null);
@@ -75,7 +77,7 @@ export default function MarketplaceStory() {
 
       <h1 className="font-display text-headline-lg mb-2">{story.title}</h1>
       <p className="font-body text-body-md text-on-surface-variant mb-8">
-        by {author?.username || "…"} · {story.views_count} views
+        {t("market.byViews", { name: author?.username || "…", n: story.views_count })}
       </p>
 
       {story.description && <p className="font-body text-body-lg mb-8">{story.description}</p>}
@@ -84,15 +86,14 @@ export default function MarketplaceStory() {
       {!owned && (
         <div className="relative border-2 border-tertiary p-8 md:p-12 overflow-hidden mb-8">
           <span className="absolute top-6 right-[-40px] rotate-12 bg-tertiary text-surface font-label text-label-md uppercase tracking-widest px-10 py-2">
-            Locked
+            {t("market.locked")}
           </span>
           <div className="flex items-center gap-3 mb-4">
             <Icon name="lock" className="text-tertiary text-2xl" />
-            <p className="font-headline text-headline-md">Available after purchase</p>
+            <p className="font-headline text-headline-md">{t("market.availableAfterPurchase")}</p>
           </div>
           <p className="font-body text-body-md text-on-surface-variant mb-6">
-            Buy this story for {story.price ? formatMoney(story.price) : "free"} to read the full text and
-            take its exercises.
+            {t("market.buyToRead", { price: story.price ? formatMoney(story.price) : t("market.free") })}
           </p>
           {!isMine && <BuyButton story={story} onPurchased={reload} />}
         </div>

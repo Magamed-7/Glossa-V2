@@ -7,8 +7,10 @@ import SubscribeButton from "../components/pricing/SubscribeButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPlans, getMySubscription } from "../lib/api/subscriptions.js";
 import { formatMoney } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function Pricing() {
+  const t = useT();
   const { data: plans, loading, error, reload } = useApi(() => getPlans(), []);
   const { data: mySubscription, reload: reloadMySubscription } = useApi(() => getMySubscription(), []);
   const [period, setPeriod] = useState("monthly");
@@ -16,10 +18,10 @@ export default function Pricing() {
   return (
     <div>
       <PageHeader
-        eyebrow="Choose Your Tier"
-        title="Study"
-        accent="Plans"
-        subtitle="From free daily practice to unlimited access across every feature."
+        eyebrow={t("pricing.eyebrow")}
+        title={t("pricing.titleLead")}
+        accent={t("pricing.titleAccent")}
+        subtitle={t("pricing.subtitle")}
       />
 
       <div className="flex justify-center mb-8">
@@ -31,7 +33,7 @@ export default function Pricing() {
             }`}
             onClick={() => setPeriod("monthly")}
           >
-            Monthly
+            {t("pricing.monthly")}
           </button>
           <button
             type="button"
@@ -40,7 +42,7 @@ export default function Pricing() {
             }`}
             onClick={() => setPeriod("yearly")}
           >
-            Yearly
+            {t("pricing.yearly")}
           </button>
         </div>
       </div>
@@ -68,17 +70,17 @@ export default function Pricing() {
               >
                 {plan.code === "premium" && (
                   <span className="self-start bg-secondary text-on-secondary font-label text-label-md uppercase px-3 py-1 mb-4">
-                    Most Popular
+                    {t("pricing.mostPopular")}
                   </span>
                 )}
                 <h3 className="font-headline text-headline-md uppercase mb-2">{plan.code}</h3>
                 <p className="font-display text-4xl mb-1">
                   {formatMoney(monthlyEquivalent)}
-                  <span className="font-label text-label-md">/mo</span>
+                  <span className="font-label text-label-md">{t("pricing.perMonth")}</span>
                 </p>
                 {period === "yearly" && plan.price_monthly > 0 && (
                   <p className="font-label text-label-md text-secondary mb-4">
-                    {formatMoney(price)} billed yearly · save {savingsPercent}%
+                    {t("pricing.billedYearly", { price: formatMoney(price), percent: savingsPercent })}
                   </p>
                 )}
                 <div className="mt-auto pt-4">

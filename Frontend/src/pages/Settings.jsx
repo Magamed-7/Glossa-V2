@@ -6,20 +6,21 @@ import NotificationSettings from "../components/settings/NotificationSettings.js
 import PrivacyPreferences from "../components/settings/PrivacyPreferences.jsx";
 import AccountSection from "../components/settings/AccountSection.jsx";
 import LanguageSwitcher from "../components/layout/LanguageSwitcher.jsx";
-
-const TABS = [
-  { value: "learning", label: "Learning" },
-  { value: "notifications", label: "Notifications" },
-  { value: "privacy", label: "Privacy" },
-  { value: "account", label: "Account" },
-];
+import { useT } from "../lib/i18n.jsx";
 
 export default function Settings() {
+  const t = useT();
+  const TABS = [
+    { value: "learning", label: t("settings.tabs.learning") },
+    { value: "notifications", label: t("settings.tabs.notifications") },
+    { value: "privacy", label: t("settings.tabs.privacy") },
+    { value: "account", label: t("settings.tabs.account") },
+  ];
   const [tab, setTab] = useState("learning");
 
   return (
     <div>
-      <PageHeader eyebrow="Configuration" title="Settings" actions={<LanguageSwitcher />} />
+      <PageHeader eyebrow={t("settings.eyebrow")} title={t("settings.title")} actions={<LanguageSwitcher />} />
       <Tabs id="settings" tabs={TABS} value={tab} onChange={setTab} />
       <div className="mt-8 max-w-2xl">
         {tab === "learning" && <LearningSettings />}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Badge from "../ui/Badge.jsx";
 import { formatMoney } from "../../lib/format.js";
+import { useT } from "../../lib/i18n.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -9,11 +10,12 @@ const FALLBACK_COVERS = [
 ];
 
 export default function CommunityGrid({ stories }) {
+  const t = useT();
   if (stories.length === 0) return null;
 
   return (
     <div className="mt-section-gap">
-      <h3 className="font-display text-headline-lg mb-6">Community Submissions.</h3>
+      <h3 className="font-display text-headline-lg mb-6">{t("market.communitySubmissions")}</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {stories.map((story) => (
           <Link
@@ -36,7 +38,7 @@ export default function CommunityGrid({ stories }) {
               <Badge level={story.cefr_level} className="mb-2 text-[10px] px-2 py-0.5" />
               <h4 className="font-headline text-sm truncate">{story.title}</h4>
               <p className="font-ledger text-xs text-secondary mt-1">
-                {story.price ? formatMoney(story.price) : "Free"}
+                {story.price ? formatMoney(story.price) : t("market.free")}
               </p>
             </div>
           </Link>

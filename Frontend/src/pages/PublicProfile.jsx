@@ -7,8 +7,10 @@ import FollowButton from "../components/profile/FollowButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPublicProfile } from "../lib/api/profile.js";
 import { readUserId } from "../lib/auth/tokens.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function PublicProfile() {
+  const t = useT();
   const { userId } = useParams();
   const { data: profile, loading, error, reload } = useApi(() => getPublicProfile(userId), [userId]);
   const isMine = Number(readUserId()) === Number(userId);
@@ -50,11 +52,11 @@ export default function PublicProfile() {
         <div className="flex gap-8 mb-8">
           <div>
             <span className="font-display text-2xl">{profile.followers_count}</span>
-            <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">Followers</span>
+            <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.followers")}</span>
           </div>
           <div>
             <span className="font-display text-2xl">{profile.following_count}</span>
-            <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">Following</span>
+            <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.following")}</span>
           </div>
         </div>
       )}

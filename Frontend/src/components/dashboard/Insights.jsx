@@ -1,12 +1,15 @@
 import insights from "../../data/insights.json";
+import { useT } from "../../lib/i18n.jsx";
 
 // Локальный контент — см. Frontend/Plan/MISSING_API.md, пункт 5.
 // Заменить на GET /insights, когда бэкенд его отдаст (форма ответа уже совпадает).
+// Сам контент insights.json — англоязычный мок, локализация ждёт реального API.
 export default function Insights() {
+  const t = useT();
   return (
     <div className="mt-section-gap grid grid-cols-12 gap-gutter">
       <div className="col-span-12 lg:col-span-3">
-        <h3 className="font-display text-headline-lg border-l-4 border-secondary pl-6 py-2">Glossa Insights.</h3>
+        <h3 className="font-display text-headline-lg border-l-4 border-secondary pl-6 py-2">{t("dashboard.insightsTitle")}</h3>
       </div>
       <div className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
         {insights.slice(0, 2).map((item) => (

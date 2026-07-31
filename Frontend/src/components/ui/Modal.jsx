@@ -1,9 +1,11 @@
 import { useEffect, useId, useRef } from "react";
 import Icon from "./Icon.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 export default function Modal({ open, onClose, title, children }) {
+  const t = useT();
   const panelRef = useRef(null);
   const triggerRef = useRef(null);
   const titleId = useId();
@@ -61,7 +63,7 @@ export default function Modal({ open, onClose, title, children }) {
         <button
           className="absolute top-4 right-4"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t("common.close")}
         >
           <Icon name="close" />
         </button>

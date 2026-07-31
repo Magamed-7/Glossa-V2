@@ -5,11 +5,13 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { getBalance } from "../lib/api/payments.js";
 import { formatMoney } from "../lib/format.js";
+import { useT } from "../lib/i18n.jsx";
 
 const MAX_ATTEMPTS = 5;
 const POLL_INTERVAL_MS = 2000;
 
 export default function StripeReturn() {
+  const t = useT();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const cancelled = searchParams.get("cancelled") === "1";
@@ -58,41 +60,36 @@ export default function StripeReturn() {
         {status === "checking" && (
           <>
             <Icon name="hourglass_top" className="text-4xl text-secondary mb-4" />
-            <p className="font-body text-body-md">Confirming your payment…</p>
+            <p className="font-body text-body-md">{t("stripeReturn.confirming")}</p>
           </>
         )}
 
         {status === "success" && (
           <>
             <Icon name="check_circle" filled className="text-4xl text-secondary mb-4" />
-            <h2 className="font-headline text-headline-md mb-2">Payment Confirmed</h2>
+            <h2 className="font-headline text-headline-md mb-2">{t("stripeReturn.confirmedTitle")}</h2>
             <p className="font-body text-body-md text-on-surface-variant mb-6">
-              Your new balance is {formatMoney(balance)}.
+              {t("stripeReturn.newBalance", { balance: formatMoney(balance) })}
             </p>
-            <NeoButton onClick={() => navigate("/wallet")}>Back to Wallet</NeoButton>
+            <NeoButton onClick={() => navigate("/wallet")}>{t("stripeReturn.backToWallet")}</NeoButton>
           </>
         )}
 
         {status === "pending" && (
           <>
             <Icon name="pending" className="text-4xl text-secondary mb-4" />
-            <h2 className="font-headline text-headline-md mb-2">Payment Processing</h2>
-            <p className="font-body text-body-md text-on-surface-variant mb-6">
-              Stripe hasn&apos;t confirmed this payment yet. It usually only takes a moment —
-              check your wallet again shortly.
-            </p>
-            <NeoButton onClick={() => navigate("/wallet")}>Back to Wallet</NeoButton>
+            <h2 className="font-headline text-headline-md mb-2">{t("stripeReturn.processingTitle")}</h2>
+            <p className="font-body text-body-md text-on-surface-variant mb-6">{t("stripeReturn.processingBody")}</p>
+            <NeoButton onClick={() => navigate("/wallet")}>{t("stripeReturn.backToWallet")}</NeoButton>
           </>
         )}
 
         {status === "cancelled" && (
           <>
             <Icon name="cancel" className="text-4xl text-error mb-4" />
-            <h2 className="font-headline text-headline-md mb-2">Payment Cancelled</h2>
-            <p className="font-body text-body-md text-on-surface-variant mb-6">
-              No charge was made. You can try again anytime.
-            </p>
-            <NeoButton onClick={() => navigate("/wallet")}>Back to Wallet</NeoButton>
+            <h2 className="font-headline text-headline-md mb-2">{t("stripeReturn.cancelledTitle")}</h2>
+            <p className="font-body text-body-md text-on-surface-variant mb-6">{t("stripeReturn.cancelledBody")}</p>
+            <NeoButton onClick={() => navigate("/wallet")}>{t("stripeReturn.backToWallet")}</NeoButton>
           </>
         )}
       </NeoCard>

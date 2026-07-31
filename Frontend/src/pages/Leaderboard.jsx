@@ -8,13 +8,14 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getGlobal, getWeekly, getMyRank } from "../lib/api/leaderboard.js";
 import { readUserId } from "../lib/auth/tokens.js";
-
-const PERIOD_TABS = [
-  { value: "global", label: "All Time" },
-  { value: "weekly", label: "This Week" },
-];
+import { useT } from "../lib/i18n.jsx";
 
 export default function Leaderboard() {
+  const t = useT();
+  const PERIOD_TABS = [
+    { value: "global", label: t("leaderboard.allTime") },
+    { value: "weekly", label: t("leaderboard.thisWeek") },
+  ];
   const [searchParams, setSearchParams] = useSearchParams();
   const period = searchParams.get("period") === "weekly" ? "weekly" : "global";
   const myUserId = Number(readUserId());
@@ -34,10 +35,10 @@ export default function Leaderboard() {
   return (
     <div>
       <PageHeader
-        eyebrow="Global Standing"
-        title="The Global"
-        accent="Ledger"
-        subtitle="Where you stand among every learner on Glossa."
+        eyebrow={t("leaderboard.eyebrow")}
+        title={t("leaderboard.titleLead")}
+        accent={t("leaderboard.titleAccent")}
+        subtitle={t("leaderboard.subtitle")}
       />
 
       <div className="mb-8">

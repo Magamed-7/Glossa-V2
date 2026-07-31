@@ -7,8 +7,10 @@ import NeoButton from "../ui/NeoButton.jsx";
 import { createCard } from "../../lib/api/deck.js";
 import { getMySubscription } from "../../lib/api/subscriptions.js";
 import { errorText } from "../../lib/api/errorText.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function AddWordModal({ open, onClose, onCreated }) {
+  const t = useT();
   const navigate = useNavigate();
   const [word, setWord] = useState("");
   const [translation, setTranslation] = useState("");
@@ -55,27 +57,29 @@ export default function AddWordModal({ open, onClose, onCreated }) {
         reset();
         onClose();
       }}
-      title="Add a Word"
+      title={t("deck.addModal.title")}
     >
       {limitPlan ? (
         <div className="space-y-4">
           <p className="font-body text-body-md">
-            Your <strong>{limitPlan.code}</strong> plan allows {limitPlan.deck_words_per_day ?? "unlimited"} new
-            words per day. Come back tomorrow, or upgrade for a higher limit.
+            {t("deck.addModal.limitMessage", {
+              code: limitPlan.code,
+              limit: limitPlan.deck_words_per_day ?? t("deck.addModal.unlimited"),
+            })}
           </p>
-          <NeoButton onClick={() => navigate("/pricing")}>View Plans</NeoButton>
+          <NeoButton onClick={() => navigate("/pricing")}>{t("common.viewPlans")}</NeoButton>
         </div>
       ) : (
         <form className="space-y-6" onSubmit={onSubmit}>
-          <Field label="Word" value={word} onChange={(e) => setWord(e.target.value)} required />
+          <Field label={t("deck.addModal.wordLabel")} value={word} onChange={(e) => setWord(e.target.value)} required />
           <Field
-            label="Translation"
+            label={t("deck.addModal.translationLabel")}
             value={translation}
             onChange={(e) => setTranslation(e.target.value)}
             required
           />
           <TextArea
-            label="Example (optional)"
+            label={t("deck.addModal.exampleLabel")}
             value={example}
             onChange={(e) => setExample(e.target.value)}
             rows={2}
@@ -86,7 +90,7 @@ export default function AddWordModal({ open, onClose, onCreated }) {
             </p>
           )}
           <NeoButton type="submit" className="w-full" loading={submitting}>
-            Add to Deck
+            {t("deck.addModal.submit")}
           </NeoButton>
         </form>
       )}

@@ -1,7 +1,9 @@
 import { motion, useReducedMotion } from "motion/react";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function Flashcard({ card, flipped, onFlip }) {
   const reduceMotion = useReducedMotion();
+  const t = useT();
 
   return (
     <div className="[perspective:1200px]" style={{ height: 320 }}>
@@ -12,7 +14,7 @@ export default function Flashcard({ card, flipped, onFlip }) {
         onClick={onFlip}
         role="button"
         tabIndex={0}
-        aria-label={flipped ? "Show word" : "Show translation"}
+        aria-label={flipped ? t("review.showWord") : t("review.showTranslation")}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();

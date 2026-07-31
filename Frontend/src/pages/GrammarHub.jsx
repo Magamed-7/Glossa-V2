@@ -8,8 +8,10 @@ import WeakTopics from "../components/grammar/WeakTopics.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { getLessons, getWeakTopics } from "../lib/api/grammar.js";
+import { useT } from "../lib/i18n.jsx";
 
 export default function GrammarHub() {
+  const t = useT();
   const navigate = useNavigate();
   const { languages } = useAuth();
   const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
@@ -31,10 +33,10 @@ export default function GrammarHub() {
     <div className="relative">
       <DecorativeBackground variant="rays" />
       <PageHeader
-        eyebrow="Structural Analysis"
-        title="The Syntactic"
-        accent="Ledger"
-        subtitle="Every rule you've mastered, and every one still worth revising."
+        eyebrow={t("grammar.eyebrow")}
+        title={t("grammar.titleLead")}
+        accent={t("grammar.titleAccent")}
+        subtitle={t("grammar.subtitle")}
       />
       <FeaturedLesson />
       <GrammarRoadmap />
@@ -43,7 +45,7 @@ export default function GrammarHub() {
       {nextWeakLesson && (
         <Fab
           icon="priority_high"
-          label="Practice your weakest topic"
+          label={t("grammar.practiceWeakest")}
           onClick={() => navigate(`/grammar/${nextWeakLesson.id}`)}
         />
       )}

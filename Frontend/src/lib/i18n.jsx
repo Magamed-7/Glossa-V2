@@ -58,6 +58,22 @@ function interpolate(str, vars) {
   return result;
 }
 
+function translate(lang, key, vars) {
+  let entry = resolve(dicts[lang], key);
+  if (entry === undefined) entry = resolve(dicts.en, key);
+  if (entry === undefined) return key;
+
+  if (Array.isArray(entry)) return entry;
+
+  if (entry !== null && typeof entry === "object") {
+    const category = PLURAL_RULES[lang](vars?.n ?? 0);
+    const str = entry[category] ?? entry.other ?? Object.values(entry)[0];
+    return interpolate(str, vars);
+  }
+
+  return vars ? interpolate(entry, vars) : entry;
+}
+
 export function I18nProvider({ children }) {
   const [lang, setLang] = useState(readLang);
 
@@ -68,25 +84,16 @@ export function I18nProvider({ children }) {
     } catch (e) {}
   }, [lang]);
 
-  const t = useCallback(
-    (key, vars) => {
-      let entry = resolve(dicts[lang], key);
-      if (entry === undefined) entry = resolve(dicts.en, key);
-      if (entry === undefined) return key;
-
-      if (entry !== null && typeof entry === "object") {
-        const category = PLURAL_RULES[lang](vars?.n ?? 0);
-        const str = entry[category] ?? entry.other ?? Object.values(entry)[0];
-        return interpolate(str, vars);
-      }
-
-      return vars ? interpolate(entry, vars) : entry;
-    },
-    [lang]
-  );
+  const t = useCallback((key, vars) => translate(lang, key, vars), [lang]);
 
   return <I18nContext.Provider value={{ lang, setLang, t }}>{children}</I18nContext.Provider>;
 }
 
 export const useI18n = () => useContext(I18nContext);
 export const useT = () => useContext(I18nContext).t;
+
+// Для мест вне дерева I18nProvider (например, ErrorBoundary — он выше BrowserRouter).
+export function getStaticT() {
+  const lang = readLang();
+  return (key, vars) => translate(lang, key, vars);
+}

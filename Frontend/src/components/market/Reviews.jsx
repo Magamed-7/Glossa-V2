@@ -5,12 +5,14 @@ import TextArea from "../ui/TextArea.jsx";
 import { createReview, getReviews } from "../../lib/api/userStories.js";
 import { resolveUser } from "../../lib/api/_pending/userLookup.js";
 import { errorText } from "../../lib/api/errorText.js";
+import { useT } from "../../lib/i18n.jsx";
 
 function Stars({ value, onChange }) {
+  const t = useT();
   return (
     <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((n) => (
-        <button key={n} type="button" onClick={() => onChange?.(n)} disabled={!onChange} aria-label={`${n} stars`}>
+        <button key={n} type="button" onClick={() => onChange?.(n)} disabled={!onChange} aria-label={t("market.stars", { n })}>
           <Icon name="star" filled={n <= value} className={n <= value ? "text-secondary" : "text-outline-variant"} />
         </button>
       ))}
@@ -37,6 +39,7 @@ function ReviewRow({ review }) {
 }
 
 export default function Reviews({ storyId, canReview }) {
+  const t = useT();
   const [reviews, setReviews] = useState(null);
   const [rating, setRating] = useState(5);
   const [text, setText] = useState("");
@@ -65,25 +68,25 @@ export default function Reviews({ storyId, canReview }) {
 
   return (
     <div className="mt-section-gap">
-      <h2 className="font-headline text-headline-md mb-6">Reviews</h2>
+      <h2 className="font-headline text-headline-md mb-6">{t("market.reviews")}</h2>
 
       {canReview && (
         <form className="mb-8 space-y-4" onSubmit={onSubmit}>
           <Stars value={rating} onChange={setRating} />
-          <TextArea label="Your review (optional)" value={text} onChange={(e) => setText(e.target.value)} rows={2} />
+          <TextArea label={t("market.yourReviewLabel")} value={text} onChange={(e) => setText(e.target.value)} rows={2} />
           {error && (
             <p role="alert" className="font-label text-label-md text-error">
               {error}
             </p>
           )}
           <NeoButton type="submit" loading={submitting}>
-            Submit Review
+            {t("market.submitReview")}
           </NeoButton>
         </form>
       )}
 
       {reviews === null ? null : reviews.length === 0 ? (
-        <p className="font-body text-body-md opacity-70">No reviews yet.</p>
+        <p className="font-body text-body-md opacity-70">{t("market.noReviews")}</p>
       ) : (
         <div className="space-y-4">
           {reviews.map((review) => (

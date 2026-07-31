@@ -6,8 +6,10 @@ import Icon from "../ui/Icon.jsx";
 import { updateMyProfile } from "../../lib/api/profile.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function ProfileEditor({ profile, onUpdated }) {
+  const t = useT();
   const toast = useToast();
   const [bio, setBio] = useState(profile.bio || "");
   const [interests, setInterests] = useState(profile.interests || []);
@@ -31,7 +33,7 @@ export default function ProfileEditor({ profile, onUpdated }) {
     try {
       const updated = await updateMyProfile({ bio, interests });
       onUpdated(updated);
-      toast.success("Profile updated");
+      toast.success(t("profile.updated"));
     } catch (err) {
       toast.error(errorText(err));
     } finally {
@@ -41,10 +43,10 @@ export default function ProfileEditor({ profile, onUpdated }) {
 
   return (
     <NeoCard>
-      <h3 className="font-headline text-headline-md mb-4">Edit Profile</h3>
-      <TextArea label="Bio" value={bio} onChange={(e) => setBio(e.target.value)} rows={3} className="mb-4" />
+      <h3 className="font-headline text-headline-md mb-4">{t("profile.editTitle")}</h3>
+      <TextArea label={t("profile.bioLabel")} value={bio} onChange={(e) => setBio(e.target.value)} rows={3} className="mb-4" />
 
-      <label className="block font-label text-label-md uppercase mb-2">Interests</label>
+      <label className="block font-label text-label-md uppercase mb-2">{t("profile.interests")}</label>
       <div className="flex flex-wrap gap-2 mb-2">
         {interests.map((interest) => (
           <span
@@ -52,7 +54,7 @@ export default function ProfileEditor({ profile, onUpdated }) {
             className="flex items-center gap-1 bg-secondary-container text-on-secondary-container border-2 border-tertiary px-3 py-1 font-label text-label-md"
           >
             {interest}
-            <button type="button" onClick={() => removeInterest(interest)} aria-label={`Remove ${interest}`}>
+            <button type="button" onClick={() => removeInterest(interest)} aria-label={t("profile.removeInterest", { interest })}>
               <Icon name="close" className="text-sm" />
             </button>
           </span>
@@ -60,14 +62,14 @@ export default function ProfileEditor({ profile, onUpdated }) {
       </div>
       <input
         className="w-full bg-surface-container-low border-2 border-tertiary px-4 py-2 font-body text-body-md outline-none focus:border-secondary mb-4"
-        placeholder="Type and press Enter"
+        placeholder={t("profile.interestsPlaceholder")}
         value={interestInput}
         onChange={(e) => setInterestInput(e.target.value)}
         onKeyDown={addInterest}
       />
 
       <NeoButton onClick={onSave} loading={submitting}>
-        Save Changes
+        {t("profile.saveChanges")}
       </NeoButton>
     </NeoCard>
   );

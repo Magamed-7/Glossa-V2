@@ -14,18 +14,20 @@ import { useApi } from "../lib/useApi.js";
 import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { deleteCard, getCards, setCardStatus } from "../lib/api/deck.js";
+import { useT } from "../lib/i18n.jsx";
 
 const PAGE_SIZE = 24;
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
-const STATUS_TABS = [
-  { value: "", label: "All" },
-  { value: "learning", label: "Learning" },
-  { value: "learned", label: "Learned" },
-  { value: "hard", label: "Hard" },
-  { value: "skipped", label: "Skipped" },
-];
 
 export default function WordDeck() {
+  const t = useT();
+  const STATUS_TABS = [
+    { value: "", label: t("deck.tabs.all") },
+    { value: "learning", label: t("deck.tabs.learning") },
+    { value: "learned", label: t("deck.tabs.learned") },
+    { value: "hard", label: t("deck.tabs.hard") },
+    { value: "skipped", label: t("deck.tabs.skipped") },
+  ];
   const [searchParams, setSearchParams] = useSearchParams();
   const status = searchParams.get("status") || "";
 
@@ -108,10 +110,10 @@ export default function WordDeck() {
   return (
     <div>
       <PageHeader
-        eyebrow="Personal Archive"
-        title="Vocabulary"
-        accent="Salon"
-        subtitle="Every word you collect, tracked through spaced repetition until it becomes second nature."
+        eyebrow={t("deck.eyebrow")}
+        title={t("deck.titleLead")}
+        accent={t("deck.titleAccent")}
+        subtitle={t("deck.subtitle")}
       />
 
       <div className="mb-8">
@@ -130,7 +132,7 @@ export default function WordDeck() {
               onClick={() => setModalOpen(true)}
             >
               <Icon name="add" className="text-4xl text-tertiary" />
-              <span className="font-label text-label-md uppercase">Add New Word</span>
+              <span className="font-label text-label-md uppercase">{t("deck.addNewWord")}</span>
             </button>
 
             {loading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="min-h-[180px]" />)}
@@ -150,7 +152,7 @@ export default function WordDeck() {
           {!loading && hasMore && (
             <div className="flex justify-center mt-10">
               <NeoButton variant="ghost" onClick={loadMore} loading={loadingMore}>
-                Load more
+                {t("deck.loadMore")}
               </NeoButton>
             </div>
           )}
@@ -159,15 +161,13 @@ export default function WordDeck() {
 
       <AddWordModal open={modalOpen} onClose={closeModal} onCreated={reload} />
 
-      <Modal open={!!pendingDelete} onClose={() => setPendingDelete(null)} title="Remove Word">
-        <p className="font-body text-body-md mb-6">
-          Remove &ldquo;{pendingDelete?.word}&rdquo; from your deck? This can&apos;t be undone.
-        </p>
+      <Modal open={!!pendingDelete} onClose={() => setPendingDelete(null)} title={t("deck.removeTitle")}>
+        <p className="font-body text-body-md mb-6">{t("deck.removeBody", { word: pendingDelete?.word })}</p>
         <div className="flex gap-4">
           <NeoButton variant="ghost" onClick={() => setPendingDelete(null)}>
-            Cancel
+            {t("common.cancel")}
           </NeoButton>
-          <NeoButton onClick={confirmDelete}>Remove</NeoButton>
+          <NeoButton onClick={confirmDelete}>{t("deck.remove")}</NeoButton>
         </div>
       </Modal>
     </div>

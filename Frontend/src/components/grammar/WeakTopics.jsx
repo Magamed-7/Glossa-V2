@@ -3,21 +3,23 @@ import EmptyState from "../ui/EmptyState.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getWeakTopics } from "../../lib/api/grammar.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function WeakTopics() {
+  const t = useT();
   const { data: topics, loading } = useApi(() => getWeakTopics(), []);
 
   if (loading) return <Skeleton className="h-40" />;
 
   if (!topics || topics.length === 0) {
-    return <EmptyState icon="verified" title="No weak spots yet" description="Errors will show up here as you practice." />;
+    return <EmptyState icon="verified" title={t("grammar.weakEmptyTitle")} description={t("grammar.weakEmptyDescription")} />;
   }
 
   const worst = [...topics].sort((a, b) => b.error_rate - a.error_rate).slice(0, 5);
 
   return (
     <NeoCard variant="accent">
-      <h3 className="font-headline text-headline-md mb-4">Critical Revisions</h3>
+      <h3 className="font-headline text-headline-md mb-4">{t("grammar.criticalRevisions")}</h3>
       <ul className="space-y-3">
         {worst.map((topic) => (
           <li key={topic.topic} className="flex justify-between items-center">

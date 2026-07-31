@@ -6,8 +6,10 @@ import ErrorState from "../ui/ErrorState.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getMyProgress, getStories } from "../../lib/api/stories.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function StoryProgressCard() {
+  const t = useT();
   const navigate = useNavigate();
 
   // Как и в DailyMission: GET /stories/{id} расходует дневной лимит, поэтому история ищется
@@ -43,11 +45,11 @@ export default function StoryProgressCard() {
       <div className="col-span-12 md:col-span-6 lg:col-span-7">
         <EmptyState
           icon="auto_stories"
-          title="No story in progress"
-          description="Open the catalog and start reading to see your progress here."
+          title={t("dashboard.story.emptyTitle")}
+          description={t("dashboard.story.emptyDescription")}
           action={
             <NeoButton variant="ghost" onClick={() => navigate("/stories")}>
-              Browse Stories
+              {t("dashboard.story.browse")}
             </NeoButton>
           }
         />
@@ -67,14 +69,14 @@ export default function StoryProgressCard() {
         <div className="relative z-20 p-8 h-full flex flex-col justify-end">
           <div className="flex items-center gap-2 mb-4">
             <span className="bg-secondary text-on-secondary px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase">
-              Ongoing Story
+              {t("dashboard.story.ongoing")}
             </span>
           </div>
           <h3 className="font-headline text-headline-lg mb-2">{data.title}</h3>
           {data.genre && <p className="font-body text-body-md max-w-md mb-6">{data.genre}</p>}
           <div className="flex gap-4">
             <NeoButton variant="solid" onClick={() => navigate(`/stories/${data.id}`)}>
-              Continue Voyage
+              {t("dashboard.story.continue")}
             </NeoButton>
           </div>
         </div>

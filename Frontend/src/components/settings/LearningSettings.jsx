@@ -5,8 +5,10 @@ import Select from "../ui/Select.jsx";
 import { getSettings, updateSettings } from "../../lib/api/settings.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function LearningSettings() {
+  const t = useT();
   const toast = useToast();
   const [settings, setSettings] = useState(null);
   const [dailyGoal, setDailyGoal] = useState(10);
@@ -32,7 +34,7 @@ export default function LearningSettings() {
         difficulty,
       });
       setSettings(updated);
-      toast.success("Settings saved");
+      toast.success(t("settings.learning.saved"));
     } catch (err) {
       toast.error(errorText(err));
     } finally {
@@ -45,24 +47,24 @@ export default function LearningSettings() {
   return (
     <div className="space-y-6">
       <Field
-        label="Daily word goal"
+        label={t("settings.learning.dailyGoalLabel")}
         type="number"
         min="1"
         value={dailyGoal}
         onChange={(e) => setDailyGoal(Number(e.target.value))}
       />
       <Field
-        label="Preferred study time (e.g. 08:00)"
+        label={t("settings.learning.studyTimeLabel")}
         value={studyTime}
         onChange={(e) => setStudyTime(e.target.value)}
       />
-      <Select label="Difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
+      <Select label={t("settings.learning.difficultyLabel")} value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+        <option value="easy">{t("settings.learning.difficultyOptions.easy")}</option>
+        <option value="medium">{t("settings.learning.difficultyOptions.medium")}</option>
+        <option value="hard">{t("settings.learning.difficultyOptions.hard")}</option>
       </Select>
       <NeoButton loading={submitting} onClick={onSave}>
-        Save
+        {t("settings.learning.save")}
       </NeoButton>
     </div>
   );

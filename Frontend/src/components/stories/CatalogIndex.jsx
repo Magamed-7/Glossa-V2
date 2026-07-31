@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function CatalogIndex({ stories }) {
+  const t = useT();
   if (stories.length === 0) return null;
 
   return (
     <div className="mt-section-gap">
       <h3 className="font-display text-headline-lg border-l-4 border-secondary pl-6 py-2 mb-6">
-        Full Index.
+        {t("stories.fullIndex")}
       </h3>
       <ul className="divide-y-2 divide-surface-container-highest border-t-2 border-tertiary">
         {stories.map((story) => (

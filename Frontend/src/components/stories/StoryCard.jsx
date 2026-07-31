@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
+import { useT } from "../../lib/i18n.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -13,6 +14,7 @@ function coverFor(story) {
 }
 
 export default function StoryCard({ story, progress }) {
+  const t = useT();
   return (
     <Link
       to={`/stories/${story.id}`}
@@ -40,7 +42,7 @@ export default function StoryCard({ story, progress }) {
             {story.cefr_level}
           </span>
           {progress && !progress.is_completed && (
-            <span className="font-label text-label-md text-secondary uppercase">Reading</span>
+            <span className="font-label text-label-md text-secondary uppercase">{t("stories.reading")}</span>
           )}
         </div>
         <h3 className="font-headline text-xl mb-1">{story.title}</h3>

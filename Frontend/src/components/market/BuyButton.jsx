@@ -6,8 +6,10 @@ import { getBalance } from "../../lib/api/payments.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
 import { formatMoney } from "../../lib/format.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function BuyButton({ story, onPurchased }) {
+  const t = useT();
   const navigate = useNavigate();
   const toast = useToast();
   const [buying, setBuying] = useState(false);
@@ -18,13 +20,13 @@ export default function BuyButton({ story, onPurchased }) {
     try {
       const { balance } = await getBalance();
       if (story.price && Number(balance) < Number(story.price)) {
-        toast.error("Insufficient balance — top up your wallet first.");
+        toast.error(t("market.insufficientBalance"));
         navigate("/wallet");
         return;
       }
 
       await buyUserStory(story.id);
-      toast.success("Story unlocked!");
+      toast.success(t("market.unlocked"));
       onPurchased();
     } catch (err) {
       toast.error(errorText(err));
@@ -36,7 +38,7 @@ export default function BuyButton({ story, onPurchased }) {
 
   return (
     <NeoButton onClick={onBuy} loading={buying}>
-      Buy for {story.price ? formatMoney(story.price) : "Free"}
+      {t("market.buyFor", { price: story.price ? formatMoney(story.price) : t("market.free") })}
     </NeoButton>
   );
 }

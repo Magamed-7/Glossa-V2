@@ -7,18 +7,19 @@ import StoryCard from "../components/stories/StoryCard.jsx";
 import CatalogIndex from "../components/stories/CatalogIndex.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyProgress, getStories } from "../lib/api/stories.js";
-
-const LEVEL_TABS = [
-  { value: "", label: "All" },
-  { value: "A1", label: "A1" },
-  { value: "A2", label: "A2" },
-  { value: "B1", label: "B1" },
-  { value: "B2", label: "B2" },
-  { value: "C1", label: "C1" },
-  { value: "C2", label: "C2" },
-];
+import { useT } from "../lib/i18n.jsx";
 
 export default function StoriesCatalog() {
+  const t = useT();
+  const LEVEL_TABS = [
+    { value: "", label: t("stories.all") },
+    { value: "A1", label: "A1" },
+    { value: "A2", label: "A2" },
+    { value: "B1", label: "B1" },
+    { value: "B2", label: "B2" },
+    { value: "C1", label: "C1" },
+    { value: "C2", label: "C2" },
+  ];
   const [searchParams, setSearchParams] = useSearchParams();
   const level = searchParams.get("level") || "";
 
@@ -43,10 +44,10 @@ export default function StoriesCatalog() {
   return (
     <div>
       <PageHeader
-        eyebrow="Leveled Reading"
-        title="The Story"
-        accent="Archives"
-        subtitle="Read your way up through the CEFR scale, one leveled story at a time."
+        eyebrow={t("stories.eyebrow")}
+        title={t("stories.titleLead")}
+        accent={t("stories.titleAccent")}
+        subtitle={t("stories.subtitle")}
       />
 
       <div className="mb-8">
@@ -62,15 +63,11 @@ export default function StoriesCatalog() {
       )}
 
       {!loading && level === "C2" && stories?.length === 0 && (
-        <EmptyState
-          icon="auto_stories"
-          title="C2 material is on its way"
-          description="Our most advanced stories are still being written. Check back soon, or keep reading at C1 in the meantime."
-        />
+        <EmptyState icon="auto_stories" title={t("stories.c2ComingTitle")} description={t("stories.c2ComingDescription")} />
       )}
 
       {!loading && level !== "C2" && stories?.length === 0 && (
-        <EmptyState icon="auto_stories" title="No stories at this level yet" />
+        <EmptyState icon="auto_stories" title={t("stories.emptyLevelTitle")} />
       )}
 
       {!loading && stories?.length > 0 && (
