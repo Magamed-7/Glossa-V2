@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import * as authApi from "../api/auth.js";
 import * as profileApi from "../api/profile.js";
-import { clearTokens, setTokens } from "./tokens.js";
+import { clearTokens, readUserId, setTokens } from "./tokens.js";
 
 const AuthContext = createContext(null);
 
@@ -9,6 +9,10 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [status, setStatus] = useState("loading");
+  // undefined = ещё не известно (не путать с "известно, что языков нет" — []).
+  // ProfileResponse из GET /profile/me не содержит languages, только PublicProfileResponse —
+  // поэтому список языков берётся отдельным вызовом GET /profile/{свой user_id}.
+  const [languages, setLanguages] = useState(undefined);
 
   const loadUser = useCallback(async () => {
     try {
@@ -16,10 +20,21 @@ export function AuthProvider({ children }) {
       setUser(me);
       setProfile(myProfile);
       setStatus("authenticated");
+
+      const userId = readUserId();
+      if (userId) {
+        profileApi
+          .getPublicProfile(userId)
+          .then((pub) => setLanguages(pub.languages || []))
+          .catch(() => setLanguages([]));
+      } else {
+        setLanguages([]);
+      }
     } catch (e) {
       clearTokens();
       setUser(null);
       setProfile(null);
+      setLanguages(undefined);
       setStatus("anonymous");
     }
   }, []);
@@ -57,6 +72,7 @@ export function AuthProvider({ children }) {
     clearTokens();
     setUser(null);
     setProfile(null);
+    setLanguages(undefined);
     setStatus("anonymous");
   }, []);
 
@@ -64,6 +80,7 @@ export function AuthProvider({ children }) {
     user,
     profile,
     status,
+    languages,
     login,
     loginWith2fa,
     register,
