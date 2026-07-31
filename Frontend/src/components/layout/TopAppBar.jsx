@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 export default function TopAppBar({ streak, hasUnread, user }) {
   return (
@@ -19,6 +20,7 @@ export default function TopAppBar({ streak, hasUnread, user }) {
         </span>
       </div>
       <div className="flex items-center gap-4">
+        <SearchBar />
         <span className="flex items-center gap-1 text-tertiary" aria-label="Current streak">
           <Icon name="local_fire_department" />
           {streak === undefined ? <Skeleton className="w-4 h-4" /> : <span className="font-ledger text-sm">{streak}</span>}
