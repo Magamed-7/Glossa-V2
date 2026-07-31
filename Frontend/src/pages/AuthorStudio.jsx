@@ -5,6 +5,7 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import AuthorStats from "../components/market/AuthorStats.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyAuthorStats } from "../lib/api/userStories.js";
 import { formatMoney } from "../lib/format.js";
@@ -65,20 +66,7 @@ export default function AuthorStudio() {
               }
             />
           ) : (
-            <div className="space-y-3">
-              {data.stories.map((story) => (
-                <Link
-                  key={story.story_id}
-                  to={`/studio/${story.story_id}/edit`}
-                  className="flex items-center justify-between p-4 border-2 border-tertiary hover:-translate-y-1 hard-shadow transition-all bg-surface"
-                >
-                  <span className="font-headline text-lg">{story.title}</span>
-                  <span className="font-ledger text-sm text-secondary">
-                    {story.views_count} views · {story.purchases_count} sales
-                  </span>
-                </Link>
-              ))}
-            </div>
+            <AuthorStats stories={data.stories} />
           )}
         </>
       )}
