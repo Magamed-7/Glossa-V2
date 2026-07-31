@@ -1,9 +1,9 @@
-import asyncio
 import json
 
 from sqlalchemy import select
 
 from app.celery_app import celery_app
+from app.core.task_loop import run_async
 from app.db.database import AsyncSessionLocal
 from app.models.model_content import GrammarLessons, GrammarQuestions
 from app.services import llm_client
@@ -57,7 +57,7 @@ async def _generate_exercise(topic: str, level: str):
 
 @celery_app.task(name='app.tasks.ai.generate_exercise')
 def generate_exercise_task(topic: str, level: str):
-    return asyncio.run(_generate_exercise(topic, level))
+    return run_async(_generate_exercise(topic, level))
 
 
 @celery_app.task(name='app.tasks.ai.process_event')

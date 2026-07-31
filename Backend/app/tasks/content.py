@@ -1,16 +1,11 @@
-import asyncio
-
 from sqlalchemy import select
 
 from app.celery_app import celery_app
 from app.core.es import STORIES_INDEX, VOCABULARY_INDEX, ensure_indices, es_client
+from app.core.task_loop import run_async
 from app.db.database import AsyncSessionLocal
 from app.models.model_content import Stories, VocabEntries
 from app.models.model_user_story import UserStories
-
-
-def _run_async(coro):
-    return asyncio.run(coro)
 
 
 async def _index_system_story(story_id: int):
@@ -108,22 +103,22 @@ async def _index_vocab_entry(entry_id: int):
 
 @celery_app.task(name='app.tasks.content.index_system_story')
 def index_system_story_task(story_id: int):
-    return _run_async(_index_system_story(story_id))
+    return run_async(_index_system_story(story_id))
 
 
 @celery_app.task(name='app.tasks.content.index_user_story')
 def index_user_story_task(story_id: int):
-    return _run_async(_index_user_story(story_id))
+    return run_async(_index_user_story(story_id))
 
 
 @celery_app.task(name='app.tasks.content.delete_user_story_index')
 def delete_user_story_index_task(story_id: int):
-    return _run_async(_delete_user_story_index(story_id))
+    return run_async(_delete_user_story_index(story_id))
 
 
 @celery_app.task(name='app.tasks.content.index_vocab')
 def index_vocab_task(entry_id: int):
-    return _run_async(_index_vocab_entry(entry_id))
+    return run_async(_index_vocab_entry(entry_id))
 
 
 @celery_app.task(name='app.tasks.content.process_event')

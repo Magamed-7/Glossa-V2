@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import smtplib
 from datetime import datetime, timezone
@@ -9,6 +8,7 @@ from sqlalchemy import select
 
 from app.celery_app import celery_app
 from app.core.config import settings
+from app.core.task_loop import run_async
 from app.db.database import AsyncSessionLocal
 from app.models.model_settings import UserSettings
 
@@ -53,7 +53,7 @@ def daily_review_reminders(**kwargs):
 
             return sent
 
-    return asyncio.run(run())
+    return run_async(run())
 
 
 @celery_app.task(name='app.tasks.priority.send_email')
@@ -92,4 +92,4 @@ def send_telegram_task(chat_id: str, title: str, body: str):
 
         return 'sent'
 
-    return asyncio.run(run())
+    return run_async(run())

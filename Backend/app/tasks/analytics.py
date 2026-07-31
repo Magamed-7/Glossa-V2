@@ -1,12 +1,7 @@
-import asyncio
-
 from app.celery_app import celery_app
 from app.core.redis_client import redis_client
+from app.core.task_loop import run_async
 from app.db.database import AsyncSessionLocal
-
-
-def _run_async(coro):
-    return asyncio.run(coro)
 
 
 @celery_app.task(name='app.tasks.analytics.process_event')
@@ -26,7 +21,7 @@ def check_achievements_task(user_id: int):
             awarded = await achievements.check_achievements(user_id, db)
             return [a.code for a in awarded]
 
-    return _run_async(run())
+    return run_async(run())
 
 
 @celery_app.task(name='app.tasks.analytics.rebuild_leaderboards')
@@ -38,7 +33,7 @@ def rebuild_leaderboards_task():
             await ratings.rebuild_from_db(db)
             return 'rebuilt'
 
-    return _run_async(run())
+    return run_async(run())
 
 
 @celery_app.task(name='app.tasks.analytics.nightly_achievements_check')
@@ -54,7 +49,7 @@ def reset_weekly_leaderboard_task():
         await redis_client.delete(ratings.weekly_leaderboard_key())
         return 'reset'
 
-    return _run_async(run())
+    return run_async(run())
 
 
 @celery_app.task(name='app.tasks.analytics.recompute_daily_metrics')
