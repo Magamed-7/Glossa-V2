@@ -1,11 +1,15 @@
+import time
+
 from aiogram import Router
 from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
 from sqlalchemy import select
 
+from app.core.errors import AppError
+from app.core.limits import add_ai_seconds, check_ai_access
 from app.db.database import AsyncSessionLocal
 from app.models.model_profile import UserLanguages
-from app.services import crud_card, ratings, streaks, telegram_link_service
+from app.services import ai_chat, crud_card, ratings, streaks, telegram_link_service
 
 router = Router()
 
@@ -103,3 +107,42 @@ async def handle_rank(message: Message):
         return
 
     await message.answer(f"Your global rank: #{rank_info['rank']} with {rank_info['score']} XP")
+
+
+@router.message(Command('ai'))
+async def handle_ai(message: Message, command: CommandObject | None = None):
+    text = command.args if command is not None else None
+
+    if not text:
+        await message.answer('Usage: /ai <your message>')
+        return
+
+    async with AsyncSessionLocal() as db:
+        user_id = await _get_linked_user_id(message, db)
+
+        if user_id is None:
+            return
+
+        try:
+            await check_ai_access(user_id, db)
+        except AppError as exc:
+            await message.answer(exc.message)
+            return
+
+        result = await db.execute(
+            select(UserLanguages).where(UserLanguages.user_id == user_id, UserLanguages.is_target.is_(True))
+        )
+        language = result.scalar_one_or_none()
+        language_name = language.language if language is not None else 'English'
+
+        session = await ai_chat.get_or_create_open_session(user_id, 'telegram', language_name, db)
+
+        started = time.monotonic()
+        reply = await ai_chat.send_message(session.id, text, db)
+        elapsed = max(1, round(time.monotonic() - started))
+
+        await add_ai_seconds(user_id, elapsed)
+        session.seconds_spent += elapsed
+        await db.commit()
+
+        await message.answer(reply['assistant_message'].text)

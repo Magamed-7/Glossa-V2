@@ -42,5 +42,9 @@ class Settings:
     EMAIL_HOST_PASSWORD: str = os.getenv('EMAIL_HOST_PASSWORD')
     DEFAULT_FROM_EMAIL: str = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
+    LLM_API_KEY: str = os.getenv('LLM_API_KEY', '')
+    LLM_BASE_URL: str = os.getenv('LLM_BASE_URL', 'https://api.groq.com/openai/v1')
+    LLM_MODEL: str = os.getenv('LLM_MODEL', 'llama-3.3-70b-versatile')
+
 
 settings = Settings()

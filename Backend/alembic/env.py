@@ -15,6 +15,7 @@ from app.core.config import settings  # noqa: E402
 from app.db.database import Base  # noqa: E402
 from app.models import (  # noqa: E402, F401
     model_achievement,
+    model_ai_chat,
     model_card,
     model_content,
     model_notification,

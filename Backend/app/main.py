@@ -1,7 +1,10 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router_achievement import router_achievement
+from app.api.router_ai import router_ai
 from app.api.router_content import router_grammar, router_vocabulary
 from app.api.router_deck import router_deck, router_learning, router_reviews
 from app.api.router_export import router_export
@@ -16,8 +19,9 @@ from app.api.router_subscription import router_subscription
 from app.api.router_telegram import router_telegram
 from app.api.router_user_story import router_user_story
 from app.core.errors import register_exception_handlers
-from app.models import (  # noqa: F401
+from app.models import (
     model_achievement,
+    model_ai_chat,
     model_card,
     model_content,
     model_notification,
@@ -30,8 +34,17 @@ from app.models import (  # noqa: F401
     model_user,
     model_user_story,
 )
+from app.services import ai_mcp
 
-app = FastAPI(title='Glossa 🌍 — Language Learning API')
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await ai_mcp.connect()
+    yield
+    await ai_mcp.disconnect()
+
+
+app = FastAPI(title='Glossa 🌍 — Language Learning API', lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -52,6 +65,7 @@ app.include_router(router_grammar)
 app.include_router(router_stories)
 app.include_router(router_social)
 app.include_router(router_achievement)
+app.include_router(router_ai)
 app.include_router(router_rating)
 app.include_router(router_subscription)
 app.include_router(router_payment)

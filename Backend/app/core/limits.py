@@ -131,13 +131,10 @@ async def add_ai_seconds(user_id: int, seconds: int):
     return value
 
 
-async def require_ai_access(
-    current_user=Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-):
+async def check_ai_access(user_id: int, db: AsyncSession):
     from app.services import crud_subscription
 
-    subscription = await crud_subscription.get_active_subscription(current_user.id, db)
+    subscription = await crud_subscription.get_active_subscription(user_id, db)
     limit = subscription['plan'].ai_seconds_per_day
 
     if limit == 0:
@@ -145,9 +142,15 @@ async def require_ai_access(
             code='AI_ACCESS_DENIED', message='AI chat is available for premium plans', status_code=403
         )
 
-    if limit is not None and await get_ai_seconds_used(current_user.id) >= limit:
+    if limit is not None and await get_ai_seconds_used(user_id) >= limit:
         raise AppError(
             code='AI_LIMIT_REACHED', message='Daily AI time limit reached, upgrade your plan', status_code=403
         )
 
+
+async def require_ai_access(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    await check_ai_access(current_user.id, db)
     return current_user
