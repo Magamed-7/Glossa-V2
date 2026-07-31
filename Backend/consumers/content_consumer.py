@@ -1,6 +1,6 @@
 import asyncio
 
-from app.consumers.base import run_consumer
+from consumers.base import run_consumer
 from app.tasks.content import process_content_event
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 import asyncio
 
-from app.consumers.base import run_consumer
+from consumers.base import run_consumer
 from app.tasks.ai import process_ai_event
 
 if __name__ == '__main__':
