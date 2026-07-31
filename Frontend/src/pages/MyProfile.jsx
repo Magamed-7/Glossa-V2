@@ -3,12 +3,13 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import ProfileEditor from "../components/profile/ProfileEditor.jsx";
 import PhotoUpload from "../components/profile/PhotoUpload.jsx";
 import PrivacySettings from "../components/profile/PrivacySettings.jsx";
+import LanguagesSection from "../components/profile/LanguagesSection.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import * as authApi from "../lib/api/auth.js";
 
 export default function MyProfile() {
-  const { profile, refreshUser } = useAuth();
+  const { profile, languages, refreshUser } = useAuth();
   const { data: account, loading, error, reload } = useApi(() => authApi.getMe(), []);
 
   if (loading) return <Skeleton className="h-64" />;
@@ -24,6 +25,9 @@ export default function MyProfile() {
         </div>
       </div>
       {profile && <ProfileEditor profile={profile} onUpdated={refreshUser} />}
+      <div className="mt-6">
+        <LanguagesSection languages={languages} onAdded={refreshUser} />
+      </div>
       <div className="mt-6">
         <PrivacySettings />
       </div>
