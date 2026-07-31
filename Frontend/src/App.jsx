@@ -6,6 +6,7 @@ import GrammarHub from "./pages/GrammarHub.jsx";
 import GrammarLesson from "./pages/GrammarLesson.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Login from "./pages/Login.jsx";
+import Login2fa from "./pages/Login2fa.jsx";
 import Marketplace from "./pages/Marketplace.jsx";
 import MarketplaceStory from "./pages/MarketplaceStory.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
@@ -38,6 +39,7 @@ export default function App() {
     <Routes>
       <Route element={<GuestRoute />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/login/2fa" element={<Login2fa />} />
         <Route path="/register" element={<Register />} />
       </Route>
 
