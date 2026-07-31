@@ -2,7 +2,7 @@ import { useState } from "react";
 import NeoCard from "../ui/NeoCard.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
 import Field from "../ui/Field.jsx";
-import { createCheckoutSession } from "../../lib/api/payments.js";
+import { createCheckoutSession, getBalance } from "../../lib/api/payments.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
 
@@ -16,6 +16,11 @@ export default function TopupForm() {
   async function onTopup() {
     setSubmitting(true);
     try {
+      // Баланс до ухода на Stripe — точка отсчёта для StripeReturn, чтобы понять,
+      // применился ли уже вебхук к моменту возврата пользователя.
+      const { balance } = await getBalance();
+      sessionStorage.setItem("glossa_balance_before_topup", balance);
+
       const { url } = await createCheckoutSession({ amount, currency: "usd" });
       window.location.href = url;
     } catch (err) {
