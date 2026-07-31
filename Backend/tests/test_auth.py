@@ -1,5 +1,9 @@
+from datetime import datetime, timedelta, timezone
+
+from jose import jwt
 from sqlalchemy import text
 
+from app.core.config import settings
 from tests.conftest import make_token
 
 
@@ -28,5 +32,18 @@ async def test_me_with_deactivated_user_token_returns_401(client, db, user):
     await db.commit()
 
     response = await client.get('/profile/me', headers={'Authorization': f'Bearer {deactivated_token}'})
+
+    assert response.status_code == 401
+
+
+async def test_me_with_refresh_token_returns_401(client, user):
+    payload = {
+        'user_id': user.id,
+        'token_type': 'refresh',
+        'exp': datetime.now(timezone.utc) + timedelta(days=7),
+    }
+    refresh_token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
+
+    response = await client.get('/profile/me', headers={'Authorization': f'Bearer {refresh_token}'})
 
     assert response.status_code == 401
