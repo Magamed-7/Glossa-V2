@@ -1,8 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LanguageCard from "../components/onboarding/LanguageCard.jsx";
 import LevelPicker from "../components/onboarding/LevelPicker.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import { addLanguage } from "../lib/api/profile.js";
+import { updateSettings } from "../lib/api/settings.js";
+import { useAuth } from "../lib/auth/AuthContext.jsx";
+import { errorText } from "../lib/api/errorText.js";
+import { useToast } from "../lib/toast.jsx";
 
 const LANGUAGES = [
   {
@@ -29,8 +35,27 @@ const LANGUAGES = [
 ];
 
 export default function Onboarding() {
+  const { refreshUser } = useAuth();
+  const navigate = useNavigate();
+  const toast = useToast();
+
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [level, setLevel] = useState("A1");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function onBeginJourney() {
+    setSubmitting(true);
+
+    try {
+      await addLanguage({ language: selectedLanguage, level, is_target: true });
+      await updateSettings({ target_language: selectedLanguage });
+      await refreshUser();
+      navigate("/", { replace: true });
+    } catch (err) {
+      toast.error(errorText(err));
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-surface relative overflow-hidden">
@@ -87,6 +112,8 @@ export default function Onboarding() {
           <NeoButton
             className="flex items-center gap-2"
             disabled={!selectedLanguage}
+            loading={submitting}
+            onClick={onBeginJourney}
           >
             Begin Journey
             <Icon name="flight_takeoff" />
