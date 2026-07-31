@@ -2,6 +2,7 @@ import PageHeader from "../components/layout/PageHeader.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import AchievementCard from "../components/profile/AchievementCard.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getAllAchievements, getMyAchievements } from "../lib/api/achievements.js";
 
@@ -56,28 +57,9 @@ export default function Achievements() {
         <div key={category} className="mb-section-gap">
           <h2 className="font-headline text-headline-md mb-4 capitalize">{category}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {items.map((a) => {
-              const earned = earnedByCode.get(a.code);
-              return (
-                <div
-                  key={a.id}
-                  className={`border-2 border-tertiary p-4 flex flex-col items-center text-center gap-2 ${
-                    earned ? "bg-surface" : "opacity-40"
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-4xl text-secondary">
-                    {a.icon || "military_tech"}
-                  </span>
-                  <h3 className="font-headline text-sm">{a.title}</h3>
-                  {a.description && (
-                    <p className="font-body text-xs text-on-surface-variant">{a.description}</p>
-                  )}
-                  {!earned && (
-                    <p className="font-label text-label-md text-on-surface-variant">Threshold: {a.threshold}</p>
-                  )}
-                </div>
-              );
-            })}
+            {items.map((a) => (
+              <AchievementCard key={a.id} achievement={a} earned={earnedByCode.get(a.code)} />
+            ))}
           </div>
         </div>
       ))}
