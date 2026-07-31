@@ -1,11 +1,12 @@
 import json
+import os
 import sys
 from contextlib import AsyncExitStack
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-SERVER_PARAMS = StdioServerParameters(command=sys.executable, args=['-m', 'mcp_server.server'])
+SERVER_PARAMS = StdioServerParameters(command=sys.executable, args=['-m', 'mcp_server.server'], env=dict(os.environ))
 
 
 def tool_to_openai_schema(tool):
