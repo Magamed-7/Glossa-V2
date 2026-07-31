@@ -24,7 +24,6 @@ import SpacedRepetition from "./pages/SpacedRepetition.jsx";
 import StoriesCatalog from "./pages/StoriesCatalog.jsx";
 import StripeReturn from "./pages/StripeReturn.jsx";
 import TutorScenarios from "./pages/TutorScenarios.jsx";
-import UiKit from "./pages/UiKit.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import WordDeck from "./pages/WordDeck.jsx";
@@ -98,7 +97,6 @@ export default function App() {
         </Route>
       </Route>
 
-      <Route path="/ui-kit" element={<UiKit />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
