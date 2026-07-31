@@ -16,6 +16,17 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("glossa-theme");
+          var isDark =
+            stored === "dark" ||
+            (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (isDark) document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

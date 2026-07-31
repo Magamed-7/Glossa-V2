@@ -34,6 +34,10 @@ export const en = {
     searchPlaceholder: "Search stories and words…",
     changeLanguage: "Change language",
     primaryNav: "Primary",
+    changeTheme: "Change theme",
+    themeLight: "Light",
+    themeDark: "Dark",
+    themeSystem: "System",
   },
   errorBoundary: {
     title: "Something went wrong",

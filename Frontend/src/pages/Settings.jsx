@@ -6,6 +6,7 @@ import NotificationSettings from "../components/settings/NotificationSettings.js
 import PrivacyPreferences from "../components/settings/PrivacyPreferences.jsx";
 import AccountSection from "../components/settings/AccountSection.jsx";
 import LanguageSwitcher from "../components/layout/LanguageSwitcher.jsx";
+import ThemeToggle from "../components/layout/ThemeToggle.jsx";
 import { useT } from "../lib/i18n.jsx";
 
 export default function Settings() {
@@ -20,7 +21,16 @@ export default function Settings() {
 
   return (
     <div>
-      <PageHeader eyebrow={t("settings.eyebrow")} title={t("settings.title")} actions={<LanguageSwitcher />} />
+      <PageHeader
+        eyebrow={t("settings.eyebrow")}
+        title={t("settings.title")}
+        actions={
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
+        }
+      />
       <Tabs id="settings" tabs={TABS} value={tab} onChange={setTab} />
       <div className="mt-8 max-w-2xl">
         {tab === "learning" && <LearningSettings />}

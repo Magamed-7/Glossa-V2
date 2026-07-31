@@ -34,6 +34,10 @@ export const ru = {
     searchPlaceholder: "Искать истории и слова…",
     changeLanguage: "Сменить язык",
     primaryNav: "Основная",
+    changeTheme: "Сменить тему",
+    themeLight: "Светлая",
+    themeDark: "Тёмная",
+    themeSystem: "Системная",
   },
   errorBoundary: {
     title: "Что-то пошло не так",

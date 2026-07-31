@@ -34,6 +34,10 @@ export const tg = {
     searchPlaceholder: "Ҳикояҳо ва калимаҳоро ҷустуҷӯ кунед…",
     changeLanguage: "Тағйири забон",
     primaryNav: "Асосӣ",
+    changeTheme: "Тағйири мавзӯъ",
+    themeLight: "Равшан",
+    themeDark: "Торик",
+    themeSystem: "Системавӣ",
   },
   errorBoundary: {
     title: "Хатогӣ рӯй дод",

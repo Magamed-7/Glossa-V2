@@ -7,21 +7,24 @@ import { ToastProvider } from "./lib/toast.jsx";
 import { AuthProvider } from "./lib/auth/AuthContext.jsx";
 import { AppDataProvider } from "./lib/AppDataContext.jsx";
 import { I18nProvider } from "./lib/i18n.jsx";
+import { ThemeProvider } from "./lib/theme.jsx";
 import "./styles.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
-        <I18nProvider>
-          <ToastProvider>
-            <AuthProvider>
-              <AppDataProvider>
-                <App />
-              </AppDataProvider>
-            </AuthProvider>
-          </ToastProvider>
-        </I18nProvider>
+        <ThemeProvider>
+          <I18nProvider>
+            <ToastProvider>
+              <AuthProvider>
+                <AppDataProvider>
+                  <App />
+                </AppDataProvider>
+              </AuthProvider>
+            </ToastProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>
