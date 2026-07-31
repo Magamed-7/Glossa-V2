@@ -31,10 +31,19 @@ export function useAiChatSocket({ scenario, language }) {
           setSessionId(data.session_id);
           setStatus("open");
         } else if (data.type === "message") {
-          setMessages((current) => [
-            ...current,
-            { role: "assistant", text: data.reply, corrections: data.corrections },
-          ]);
+          setMessages((current) => {
+            // corrections относятся к предыдущей реплике пользователя, а не к ответу
+            // ассистента — design.html рисует их как пометки на полях у сообщения юзера.
+            const updated = [...current];
+            for (let i = updated.length - 1; i >= 0; i--) {
+              if (updated[i].role === "user" && !updated[i].corrections) {
+                updated[i] = { ...updated[i], corrections: data.corrections };
+                break;
+              }
+            }
+            updated.push({ role: "assistant", text: data.reply, corrections: null });
+            return updated;
+          });
         } else if (data.type === "limit_reached") {
           setDenyReason(data.message);
           setStatus("denied");

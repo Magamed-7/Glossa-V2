@@ -1,4 +1,5 @@
 import Avatar from "../ui/Avatar.jsx";
+import Corrections from "./Corrections.jsx";
 
 export default function MessageBubble({ message }) {
   const isUser = message.role === "user";
@@ -12,6 +13,7 @@ export default function MessageBubble({ message }) {
         }`}
       >
         <p className="font-body text-body-md whitespace-pre-line">{message.text}</p>
+        {isUser && <Corrections corrections={message.corrections} />}
       </div>
     </div>
   );
