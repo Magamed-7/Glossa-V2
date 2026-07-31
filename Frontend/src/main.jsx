@@ -6,19 +6,22 @@ import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 import { ToastProvider } from "./lib/toast.jsx";
 import { AuthProvider } from "./lib/auth/AuthContext.jsx";
 import { AppDataProvider } from "./lib/AppDataContext.jsx";
+import { I18nProvider } from "./lib/i18n.jsx";
 import "./styles.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
-        <ToastProvider>
-          <AuthProvider>
-            <AppDataProvider>
-              <App />
-            </AppDataProvider>
-          </AuthProvider>
-        </ToastProvider>
+        <I18nProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <AppDataProvider>
+                <App />
+              </AppDataProvider>
+            </AuthProvider>
+          </ToastProvider>
+        </I18nProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>
