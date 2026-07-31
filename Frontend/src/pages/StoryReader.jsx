@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Badge from "../components/ui/Badge.jsx";
+import StoryBody from "../components/stories/StoryBody.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getStory } from "../lib/api/stories.js";
 
@@ -51,7 +52,7 @@ export default function StoryReader() {
       {story.title_translated && (
         <p className="font-body text-body-md italic text-on-surface-variant mb-8">{story.title_translated}</p>
       )}
-      <div className="font-body text-body-lg leading-relaxed whitespace-pre-line">{story.body}</div>
+      <StoryBody body={story.body} words={story.words} storyId={story.id} />
     </div>
   );
 }
