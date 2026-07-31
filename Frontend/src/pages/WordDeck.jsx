@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import WordCard from "../components/deck/WordCard.jsx";
 import AddWordModal from "../components/deck/AddWordModal.jsx";
+import DeckStats from "../components/deck/DeckStats.jsx";
 import Modal from "../components/ui/Modal.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
@@ -76,6 +77,7 @@ export default function WordDeck() {
 
       {!error && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <DeckStats />
           <button
             type="button"
             className="border-2 border-dashed border-tertiary flex flex-col items-center justify-center gap-2 min-h-[180px] hover:bg-surface-container transition-colors"
