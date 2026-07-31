@@ -46,13 +46,13 @@ async def get_cards(db: AsyncSession, user_id=None, status=None, search=None, li
     return result.scalars().all()
 
 
-async def get_card(card_id: int, db: AsyncSession):
-    result = await db.execute(select(Cards).where(Cards.id == card_id))
+async def get_card(card_id: int, user_id: int, db: AsyncSession):
+    result = await db.execute(select(Cards).where(Cards.id == card_id, Cards.user_id == user_id))
     return result.scalar_one_or_none()
 
 
-async def update_card_status(card_id: int, data: CardStatusUpdate, db: AsyncSession):
-    card = await get_card(card_id, db)
+async def update_card_status(card_id: int, user_id: int, data: CardStatusUpdate, db: AsyncSession):
+    card = await get_card(card_id, user_id, db)
 
     if card is None:
         return None
@@ -69,8 +69,8 @@ async def update_card_status(card_id: int, data: CardStatusUpdate, db: AsyncSess
     return card
 
 
-async def delete_card(card_id: int, db: AsyncSession):
-    card = await get_card(card_id, db)
+async def delete_card(card_id: int, user_id: int, db: AsyncSession):
+    card = await get_card(card_id, user_id, db)
 
     if card is None:
         return None
@@ -80,8 +80,8 @@ async def delete_card(card_id: int, db: AsyncSession):
     return card
 
 
-async def update_audio(card_id: int, audio_url: str, db: AsyncSession):
-    card = await get_card(card_id, db)
+async def update_audio(card_id: int, user_id: int, audio_url: str, db: AsyncSession):
+    card = await get_card(card_id, user_id, db)
 
     if card is None:
         return None

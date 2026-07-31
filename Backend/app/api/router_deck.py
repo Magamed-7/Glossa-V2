@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.auth import get_current_user
 from app.core.errors import AppError
 from app.core.limits import enforce_deck_word_limit
-from app.core.storage import upload_file
+from app.core.storage import ALLOWED_AUDIO_TYPES, read_upload, upload_file
 from app.db.database import get_db
 from app.schemas.schema_learning import (
     CardCreate,
@@ -50,7 +50,7 @@ async def get_card(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    card = await crud_card.get_card(card_id, db)
+    card = await crud_card.get_card(card_id, current_user.id, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
@@ -65,7 +65,7 @@ async def update_card_status(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    card = await crud_card.update_card_status(card_id, data, db)
+    card = await crud_card.update_card_status(card_id, current_user.id, data, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
@@ -79,7 +79,7 @@ async def delete_card(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    card = await crud_card.delete_card(card_id, db)
+    card = await crud_card.delete_card(card_id, current_user.id, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
@@ -94,9 +94,9 @@ async def upload_card_audio(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    file_bytes = await file.read()
-    audio_url = upload_file('pronunciations', file_bytes, file.filename, file.content_type)
-    card = await crud_card.update_audio(card_id, audio_url, db)
+    file_bytes = await read_upload(file)
+    audio_url = upload_file('pronunciations', file_bytes, file.filename, file.content_type, ALLOWED_AUDIO_TYPES)
+    card = await crud_card.update_audio(card_id, current_user.id, audio_url, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
@@ -119,7 +119,7 @@ async def submit_review(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    card = await review.submit_review(card_id, data.quality, db)
+    card = await review.submit_review(card_id, current_user.id, data.quality, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)

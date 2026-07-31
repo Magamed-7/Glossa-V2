@@ -20,8 +20,8 @@ async def get_due_cards(user_id: int, db: AsyncSession):
     return result.scalars().all()
 
 
-async def submit_review(card_id: int, quality: int, db: AsyncSession):
-    card = await get_card(card_id, db)
+async def submit_review(card_id: int, user_id: int, quality: int, db: AsyncSession):
+    card = await get_card(card_id, user_id, db)
 
     if card is None:
         return None
