@@ -1,4 +1,35 @@
+import { useState } from "react";
+import LanguageCard from "../components/onboarding/LanguageCard.jsx";
+import NeoButton from "../components/ui/NeoButton.jsx";
+import Icon from "../components/ui/Icon.jsx";
+
+const LANGUAGES = [
+  {
+    code: "English",
+    title: "English",
+    description: "The global bridge of commerce, literature, and diplomacy.",
+    gateway: "London",
+    image: "/img/languages/english-london.webp",
+  },
+  {
+    code: "Russian",
+    title: "Russian",
+    description: "Explore the profound depths of classical literature and cosmic ambition.",
+    gateway: "Moscow",
+    image: "/img/languages/russian-moscow.webp",
+  },
+  {
+    code: "Tajik",
+    title: "Tajik",
+    description: "The ancient rhythm of the Silk Road and the high peaks of the Pamirs.",
+    gateway: "Pamir",
+    image: "/img/languages/tajik-pamir.webp",
+  },
+];
+
 export default function Onboarding() {
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
   return (
     <div className="min-h-screen bg-surface relative overflow-hidden">
       <header className="w-full px-margin-mobile md:px-margin-desktop py-8 max-w-7xl mx-auto flex justify-between items-center relative z-10">
@@ -17,6 +48,40 @@ export default function Onboarding() {
             Linguistic mastery begins with a single step. Select the cultural landscape you wish to traverse
             and immerse yourself in our curated editorial curriculum.
           </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-section-gap">
+          {LANGUAGES.map((lang) => (
+            <LanguageCard
+              key={lang.code}
+              title={lang.title}
+              description={lang.description}
+              gateway={lang.gateway}
+              image={lang.image}
+              selected={selectedLanguage === lang.code}
+              onSelect={() => setSelectedLanguage(lang.code)}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 pb-20">
+          <div className="max-w-md">
+            <p className="font-label text-label-md uppercase text-on-surface-variant mb-4">Selected Path</p>
+            <div
+              className={`font-headline text-headline-md border-b-2 border-tertiary pb-2 min-w-[200px] ${
+                selectedLanguage ? "text-secondary" : ""
+              }`}
+            >
+              {selectedLanguage || "None Selected"}
+            </div>
+          </div>
+          <NeoButton
+            className="flex items-center gap-2"
+            disabled={!selectedLanguage}
+          >
+            Begin Journey
+            <Icon name="flight_takeoff" />
+          </NeoButton>
         </div>
       </main>
 
