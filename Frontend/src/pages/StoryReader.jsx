@@ -26,6 +26,7 @@ export default function StoryReader() {
   const progress = progressList?.find((p) => p.story_id === Number(id));
 
   const [completed, setCompleted] = useState(false);
+  const [showTranslation, setShowTranslation] = useState(false);
   const restoredRef = useRef(false);
 
   useEffect(() => {
@@ -86,21 +87,45 @@ export default function StoryReader() {
   }
 
   const cover = story.image_url || FALLBACK_COVERS[story.id % FALLBACK_COVERS.length];
+  const hasTranslation = !!story.body_translated;
 
   return (
-    <div className="max-w-2xl mx-auto pb-16">
+    <div className={`mx-auto pb-16 ${showTranslation && hasTranslation ? "max-w-5xl" : "max-w-2xl"}`}>
       <div className="aspect-[16/9] w-full overflow-hidden border-2 border-tertiary mb-8">
         <img className="w-full h-full object-cover" src={cover} alt="" aria-hidden="true" />
       </div>
-      <div className="flex items-center gap-3 mb-4">
-        <Badge level={story.cefr_level} />
-        {story.genre && <span className="font-label text-label-md text-on-surface-variant uppercase">{story.genre}</span>}
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-3">
+          <Badge level={story.cefr_level} />
+          {story.genre && (
+            <span className="font-label text-label-md text-on-surface-variant uppercase">{story.genre}</span>
+          )}
+        </div>
+        {hasTranslation && (
+          <button
+            type="button"
+            className="font-label text-label-md uppercase text-secondary underline underline-offset-4"
+            onClick={() => setShowTranslation((v) => !v)}
+          >
+            {showTranslation ? "Hide translation" : "Show translation"}
+          </button>
+        )}
       </div>
       <h1 className="font-display text-headline-lg mb-2">{story.title}</h1>
       {story.title_translated && (
         <p className="font-body text-body-md italic text-on-surface-variant mb-8">{story.title_translated}</p>
       )}
-      <StoryBody body={story.body} words={story.words} storyId={story.id} />
+
+      {showTranslation && hasTranslation ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <StoryBody body={story.body} words={story.words} storyId={story.id} />
+          <div className="font-body text-body-lg leading-relaxed whitespace-pre-line italic text-on-surface-variant border-l-2 border-tertiary pl-6">
+            {story.body_translated}
+          </div>
+        </div>
+      ) : (
+        <StoryBody body={story.body} words={story.words} storyId={story.id} />
+      )}
 
       <StoryQuestions
         storyId={story.id}
