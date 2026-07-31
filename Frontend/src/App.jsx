@@ -25,6 +25,7 @@ import StoryReader from "./pages/StoryReader.jsx";
 import StripeReturn from "./pages/StripeReturn.jsx";
 import TutorChat from "./pages/TutorChat.jsx";
 import TutorScenarios from "./pages/TutorScenarios.jsx";
+import UiKit from "./pages/UiKit.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import WordDeck from "./pages/WordDeck.jsx";
@@ -61,6 +62,7 @@ export default function App() {
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/search" element={<SearchResults />} />
+      <Route path="/ui-kit" element={<UiKit />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
