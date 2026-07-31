@@ -3,6 +3,7 @@ import NeoCard from "../components/ui/NeoCard.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import TopupForm from "../components/wallet/TopupForm.jsx";
+import PaymentHistory from "../components/wallet/PaymentHistory.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getBalance } from "../lib/api/payments.js";
 import { formatMoney } from "../lib/format.js";
@@ -26,7 +27,10 @@ export default function Wallet() {
 
       <TopupForm />
 
-      <div className="mt-section-gap">{/* Payment history goes here */}</div>
+      <div className="mt-section-gap">
+        <h2 className="font-headline text-headline-md mb-4">History</h2>
+        <PaymentHistory />
+      </div>
     </div>
   );
 }
