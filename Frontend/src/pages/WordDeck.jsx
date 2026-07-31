@@ -15,6 +15,7 @@ import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { deleteCard, getCards, setCardStatus } from "../lib/api/deck.js";
 
+const PAGE_SIZE = 24;
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 const STATUS_TABS = [
   { value: "", label: "All" },
@@ -29,17 +30,36 @@ export default function WordDeck() {
   const status = searchParams.get("status") || "";
 
   const { data: fetched, loading, error, reload } = useApi(
-    () => getCards({ status: status || undefined, limit: 24 }),
+    () => getCards({ status: status || undefined, limit: PAGE_SIZE }),
     [status]
   );
   const [items, setItems] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
   const [modalOpen, setModalOpen] = useState(searchParams.get("new") === "1");
   const toast = useToast();
 
   useEffect(() => {
-    if (fetched) setItems(fetched);
+    if (fetched) {
+      setItems(fetched);
+      setHasMore(fetched.length === PAGE_SIZE);
+    }
   }, [fetched]);
+
+  async function loadMore() {
+    setLoadingMore(true);
+
+    try {
+      const more = await getCards({ status: status || undefined, limit: PAGE_SIZE, offset: items.length });
+      setItems((current) => [...current, ...more]);
+      setHasMore(more.length === PAGE_SIZE);
+    } catch (err) {
+      toast.error(errorText(err));
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   function onStatusFilterChange(value) {
     const next = new URLSearchParams(searchParams);
@@ -101,30 +121,40 @@ export default function WordDeck() {
       {error && <ErrorState error={error} onRetry={reload} />}
 
       {!error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <DeckStats />
-          <button
-            type="button"
-            className="border-2 border-dashed border-tertiary flex flex-col items-center justify-center gap-2 min-h-[180px] hover:bg-surface-container transition-colors"
-            onClick={() => setModalOpen(true)}
-          >
-            <Icon name="add" className="text-4xl text-tertiary" />
-            <span className="font-label text-label-md uppercase">Add New Word</span>
-          </button>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <DeckStats />
+            <button
+              type="button"
+              className="border-2 border-dashed border-tertiary flex flex-col items-center justify-center gap-2 min-h-[180px] hover:bg-surface-container transition-colors"
+              onClick={() => setModalOpen(true)}
+            >
+              <Icon name="add" className="text-4xl text-tertiary" />
+              <span className="font-label text-label-md uppercase">Add New Word</span>
+            </button>
 
-          {loading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="min-h-[180px]" />)}
+            {loading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="min-h-[180px]" />)}
 
-          {!loading &&
-            items.map((card) => (
-              <WordCard
-                key={card.id}
-                card={card}
-                onStatusChange={onStatusChange}
-                onDelete={setPendingDelete}
-                onPlayAudio={() => {}}
-              />
-            ))}
-        </div>
+            {!loading &&
+              items.map((card) => (
+                <WordCard
+                  key={card.id}
+                  card={card}
+                  onStatusChange={onStatusChange}
+                  onDelete={setPendingDelete}
+                  onPlayAudio={() => {}}
+                />
+              ))}
+          </div>
+
+          {!loading && hasMore && (
+            <div className="flex justify-center mt-10">
+              <NeoButton variant="ghost" onClick={loadMore} loading={loadingMore}>
+                Load more
+              </NeoButton>
+            </div>
+          )}
+        </>
       )}
 
       <AddWordModal open={modalOpen} onClose={closeModal} onCreated={reload} />
