@@ -1,9 +1,14 @@
 import { api } from "./client.js";
 
-export function getUserStories({ level, genre, limit = 20, offset = 0 } = {}) {
+// author_id/is_free существуют на бэкенде (router_user_story.py), но даже с author_id
+// этот эндпоинт жёстко фильтрует status == 'published' — черновики через него не видны
+// (см. crud_user_story.get_user_stories). Для кабинета автора использовать getMyAuthorStats.
+export function getUserStories({ level, genre, isFree, authorId, limit = 20, offset = 0 } = {}) {
   const params = new URLSearchParams({ limit, offset });
   if (level) params.set("level", level);
   if (genre) params.set("genre", genre);
+  if (isFree !== undefined) params.set("is_free", isFree);
+  if (authorId !== undefined) params.set("author_id", authorId);
   return api.get(`/user-stories?${params}`);
 }
 
