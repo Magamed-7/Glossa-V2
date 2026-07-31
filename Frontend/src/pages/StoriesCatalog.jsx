@@ -2,6 +2,9 @@ import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/layout/PageHeader.jsx";
 import Tabs from "../components/ui/Tabs.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
+import Skeleton from "../components/ui/Skeleton.jsx";
+import StoryCard from "../components/stories/StoryCard.jsx";
+import CatalogIndex from "../components/stories/CatalogIndex.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getStories } from "../lib/api/stories.js";
 
@@ -31,6 +34,9 @@ export default function StoriesCatalog() {
     setSearchParams(next);
   }
 
+  const featured = stories?.slice(0, 3) || [];
+  const rest = stories?.slice(3) || [];
+
   return (
     <div>
       <PageHeader
@@ -44,6 +50,14 @@ export default function StoriesCatalog() {
         <Tabs id="story-level" tabs={LEVEL_TABS} value={level} onChange={onLevelChange} />
       </div>
 
+      {loading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="aspect-[4/5]" />
+          ))}
+        </div>
+      )}
+
       {!loading && level === "C2" && stories?.length === 0 && (
         <EmptyState
           icon="auto_stories"
@@ -56,7 +70,16 @@ export default function StoriesCatalog() {
         <EmptyState icon="auto_stories" title="No stories at this level yet" />
       )}
 
-      <div>{/* Story grid goes here */}</div>
+      {!loading && stories?.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((story) => (
+              <StoryCard key={story.id} story={story} />
+            ))}
+          </div>
+          <CatalogIndex stories={rest} />
+        </>
+      )}
     </div>
   );
 }
