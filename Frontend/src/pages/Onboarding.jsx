@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LanguageCard from "../components/onboarding/LanguageCard.jsx";
+import LevelPicker from "../components/onboarding/LevelPicker.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 
@@ -29,6 +30,7 @@ const LANGUAGES = [
 
 export default function Onboarding() {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [level, setLevel] = useState("A1");
 
   return (
     <div className="min-h-screen bg-surface relative overflow-hidden">
@@ -63,6 +65,13 @@ export default function Onboarding() {
             />
           ))}
         </div>
+
+        {selectedLanguage && (
+          <div className="mb-section-gap">
+            <p className="font-label text-label-md uppercase text-on-surface-variant mb-4">Your Current Level</p>
+            <LevelPicker value={level} onChange={setLevel} />
+          </div>
+        )}
 
         <div className="flex flex-col md:flex-row justify-between items-end gap-8 pb-20">
           <div className="max-w-md">
