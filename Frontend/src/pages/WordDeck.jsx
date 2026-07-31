@@ -9,18 +9,31 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import Tabs from "../components/ui/Tabs.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { deleteCard, getCards, setCardStatus } from "../lib/api/deck.js";
 
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
+const STATUS_TABS = [
+  { value: "", label: "All" },
+  { value: "learning", label: "Learning" },
+  { value: "learned", label: "Learned" },
+  { value: "hard", label: "Hard" },
+  { value: "skipped", label: "Skipped" },
+];
 
 export default function WordDeck() {
-  const { data: fetched, loading, error, reload } = useApi(() => getCards({ limit: 24 }), []);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const status = searchParams.get("status") || "";
+
+  const { data: fetched, loading, error, reload } = useApi(
+    () => getCards({ status: status || undefined, limit: 24 }),
+    [status]
+  );
   const [items, setItems] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [modalOpen, setModalOpen] = useState(searchParams.get("new") === "1");
   const toast = useToast();
 
@@ -28,11 +41,19 @@ export default function WordDeck() {
     if (fetched) setItems(fetched);
   }, [fetched]);
 
+  function onStatusFilterChange(value) {
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set("status", value);
+    else next.delete("status");
+    setSearchParams(next);
+  }
+
   function closeModal() {
     setModalOpen(false);
     if (searchParams.get("new")) {
-      searchParams.delete("new");
-      setSearchParams(searchParams, { replace: true });
+      const next = new URLSearchParams(searchParams);
+      next.delete("new");
+      setSearchParams(next, { replace: true });
     }
   }
 
@@ -72,6 +93,10 @@ export default function WordDeck() {
         accent="Salon"
         subtitle="Every word you collect, tracked through spaced repetition until it becomes second nature."
       />
+
+      <div className="mb-8">
+        <Tabs id="deck-status" tabs={STATUS_TABS} value={status} onChange={onStatusFilterChange} />
+      </div>
 
       {error && <ErrorState error={error} onRetry={reload} />}
 
