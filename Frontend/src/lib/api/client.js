@@ -91,4 +91,4 @@ function makeClient(baseUrl) {
 
 export const api = makeClient(API_URL);
 export const auth = makeClient(AUTH_URL);
-export { clearTokens };
+export { clearTokens, refreshAccessToken };
