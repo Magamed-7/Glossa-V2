@@ -1,12 +1,13 @@
 import Avatar from "../components/ui/Avatar.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import ProfileEditor from "../components/profile/ProfileEditor.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import * as authApi from "../lib/api/auth.js";
 
 export default function MyProfile() {
-  const { profile } = useAuth();
+  const { profile, refreshUser } = useAuth();
   const { data: account, loading, error, reload } = useApi(() => authApi.getMe(), []);
 
   if (loading) return <Skeleton className="h-64" />;
@@ -21,7 +22,7 @@ export default function MyProfile() {
           {profile?.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
       </div>
-      <div>{/* Editor, photo upload, privacy, languages go here */}</div>
+      {profile && <ProfileEditor profile={profile} onUpdated={refreshUser} />}
     </div>
   );
 }

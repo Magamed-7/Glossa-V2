@@ -1,0 +1,74 @@
+import { useState } from "react";
+import NeoCard from "../ui/NeoCard.jsx";
+import TextArea from "../ui/TextArea.jsx";
+import NeoButton from "../ui/NeoButton.jsx";
+import Icon from "../ui/Icon.jsx";
+import { updateMyProfile } from "../../lib/api/profile.js";
+import { errorText } from "../../lib/api/errorText.js";
+import { useToast } from "../../lib/toast.jsx";
+
+export default function ProfileEditor({ profile, onUpdated }) {
+  const toast = useToast();
+  const [bio, setBio] = useState(profile.bio || "");
+  const [interests, setInterests] = useState(profile.interests || []);
+  const [interestInput, setInterestInput] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  function addInterest(e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const value = interestInput.trim();
+    if (value && !interests.includes(value)) setInterests([...interests, value]);
+    setInterestInput("");
+  }
+
+  function removeInterest(value) {
+    setInterests(interests.filter((i) => i !== value));
+  }
+
+  async function onSave() {
+    setSubmitting(true);
+    try {
+      const updated = await updateMyProfile({ bio, interests });
+      onUpdated(updated);
+      toast.success("Profile updated");
+    } catch (err) {
+      toast.error(errorText(err));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <NeoCard>
+      <h3 className="font-headline text-headline-md mb-4">Edit Profile</h3>
+      <TextArea label="Bio" value={bio} onChange={(e) => setBio(e.target.value)} rows={3} className="mb-4" />
+
+      <label className="block font-label text-label-md uppercase mb-2">Interests</label>
+      <div className="flex flex-wrap gap-2 mb-2">
+        {interests.map((interest) => (
+          <span
+            key={interest}
+            className="flex items-center gap-1 bg-secondary-container text-on-secondary-container border-2 border-tertiary px-3 py-1 font-label text-label-md"
+          >
+            {interest}
+            <button type="button" onClick={() => removeInterest(interest)} aria-label={`Remove ${interest}`}>
+              <Icon name="close" className="text-sm" />
+            </button>
+          </span>
+        ))}
+      </div>
+      <input
+        className="w-full bg-surface-container-low border-2 border-tertiary px-4 py-2 font-body text-body-md outline-none focus:border-secondary mb-4"
+        placeholder="Type and press Enter"
+        value={interestInput}
+        onChange={(e) => setInterestInput(e.target.value)}
+        onKeyDown={addInterest}
+      />
+
+      <NeoButton onClick={onSave} loading={submitting}>
+        Save Changes
+      </NeoButton>
+    </NeoCard>
+  );
+}
