@@ -5,6 +5,7 @@ import LearningSettings from "../components/settings/LearningSettings.jsx";
 import NotificationSettings from "../components/settings/NotificationSettings.jsx";
 import PrivacyPreferences from "../components/settings/PrivacyPreferences.jsx";
 import AccountSection from "../components/settings/AccountSection.jsx";
+import LanguageSwitcher from "../components/layout/LanguageSwitcher.jsx";
 
 const TABS = [
   { value: "learning", label: "Learning" },
@@ -18,7 +19,7 @@ export default function Settings() {
 
   return (
     <div>
-      <PageHeader eyebrow="Configuration" title="Settings" />
+      <PageHeader eyebrow="Configuration" title="Settings" actions={<LanguageSwitcher />} />
       <Tabs id="settings" tabs={TABS} value={tab} onChange={setTab} />
       <div className="mt-8 max-w-2xl">
         {tab === "learning" && <LearningSettings />}
