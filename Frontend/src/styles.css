@@ -118,6 +118,37 @@
   --radius-xl: 0.75rem;
 }
 
+/* --- Тёмная тема: инверсия поверхностей/текста/обводок, акцент не меняется --- */
+.dark {
+  --color-surface: #1c1c1a;
+  --color-surface-bright: #31302f;
+  --color-surface-dim: #141413;
+  --color-surface-container-lowest: #131211;
+  --color-surface-container-low: #201f1d;
+  --color-surface-container: #262524;
+  --color-surface-container-high: #302f2d;
+  --color-surface-container-highest: #3b3a38;
+  --color-surface-variant: #3b3a38;
+  --color-on-surface: #f3f0ed;
+  --color-on-surface-variant: #c9c6c2;
+  --color-background: #1c1c1a;
+  --color-on-background: #f3f0ed;
+  --color-inverse-surface: #f3f0ed;
+  --color-inverse-on-surface: #1c1c1a;
+
+  --color-primary: #f3f0ed;
+  --color-on-primary: #1c1c1a;
+
+  /* tertiary — это "чернильный" цвет обводок/штампов по всей вёрстке (border-tertiary,
+     text-tertiary, bg-tertiary) — переворачиваем его, и обводки/текст инвертируются
+     автоматически везде, где уже используются семантические токены, а не литеральный #000. */
+  --color-tertiary: #f3f0ed;
+  --color-on-tertiary: #1c1c1a;
+
+  --color-outline: #8f8d89;
+  --color-outline-variant: #45443f;
+}
+
 body {
   background-color: var(--color-surface);
   color: var(--color-on-surface);
@@ -136,12 +167,12 @@ body {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
-/* --- Подпись стиля: жёсткие тени --- */
+/* --- Подпись стиля: жёсткие тени (ink-цвет — var(--color-tertiary), инвертируется в тёмной теме) --- */
 .hard-shadow {
-  box-shadow: 4px 4px 0 0 #000000;
+  box-shadow: 4px 4px 0 0 var(--color-tertiary);
 }
 .hard-shadow-lg {
-  box-shadow: 8px 8px 0 0 #000000;
+  box-shadow: 8px 8px 0 0 var(--color-tertiary);
 }
 .hard-shadow-coral {
   box-shadow: 8px 8px 0 0 #b90538;
@@ -153,14 +184,14 @@ body {
 /* --- Карточки --- */
 .neo-card {
   background-color: var(--color-surface);
-  border: 2px solid #000000;
-  box-shadow: 4px 4px 0 0 #000000;
+  border: 2px solid var(--color-tertiary);
+  box-shadow: 4px 4px 0 0 var(--color-tertiary);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .neo-card-secondary {
   background-color: var(--color-surface);
-  border: 2px solid #000000;
+  border: 2px solid var(--color-tertiary);
   box-shadow: 4px 4px 0 0 #dc2c4f;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -168,7 +199,7 @@ body {
 @media (hover: hover) {
   .neo-card:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 0 #000000;
+    box-shadow: 6px 6px 0 0 var(--color-tertiary);
   }
   .neo-card-secondary:hover {
     transform: translate(-2px, -2px);
@@ -179,7 +210,7 @@ body {
 /* --- Нажатие кнопки: уезжает в тень --- */
 .btn-press:active {
   transform: translate(2px, 2px);
-  box-shadow: 0 0 0 0 #000000;
+  box-shadow: 0 0 0 0 var(--color-tertiary);
 }
 
 /* --- Сетки --- */

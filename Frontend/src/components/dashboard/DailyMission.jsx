@@ -52,7 +52,7 @@ export default function DailyMission() {
   const missionNumber = streak?.current_streak || 1;
 
   return (
-    <div className="col-span-12 lg:col-span-8 bg-secondary-container border-2 border-tertiary p-8 md:p-12 shadow-[8px_8px_0px_0px_#000000] flex flex-col md:flex-row gap-12 items-center relative overflow-hidden">
+    <div className="col-span-12 lg:col-span-8 bg-secondary-container border-2 border-tertiary p-8 md:p-12 shadow-[8px_8px_0px_0px_var(--color-tertiary)] flex flex-col md:flex-row gap-12 items-center relative overflow-hidden">
       <div className="relative z-10 space-y-6">
         <span className="bg-tertiary text-surface font-label text-label-md px-3 py-1 uppercase tracking-widest">
           {t("dashboard.mission", { n: String(missionNumber).padStart(3, "0") })}
