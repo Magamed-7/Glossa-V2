@@ -33,47 +33,60 @@ import WordDeck from "./pages/WordDeck.jsx";
 import AppLayout from "./components/layout/AppLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
+import { RouteErrorBoundary } from "./components/ErrorBoundary.jsx";
+
+// react-router-dom здесь работает в декларативном режиме (<BrowserRouter><Routes>),
+// а не через createBrowserRouter/RouterProvider — только там существует errorElement.
+// Та же изоляция сбоя одной страницы достигается оборачиванием каждого листового
+// маршрута в свою собственную границу ошибок.
+function page(Component) {
+  return (
+    <RouteErrorBoundary>
+      <Component />
+    </RouteErrorBoundary>
+  );
+}
 
 export default function App() {
   return (
     <Routes>
       <Route element={<GuestRoute />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/login/2fa" element={<Login2fa />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={page(Login)} />
+        <Route path="/login/2fa" element={page(Login2fa)} />
+        <Route path="/register" element={page(Register)} />
       </Route>
 
-      <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route path="/password-reset" element={<PasswordReset />} />
+      <Route path="/verify-email" element={page(VerifyEmail)} />
+      <Route path="/password-reset" element={page(PasswordReset)} />
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/onboarding" element={page(Onboarding)} />
 
         <Route element={<AppLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/deck" element={<WordDeck />} />
-          <Route path="/review" element={<SpacedRepetition />} />
-          <Route path="/stories" element={<StoriesCatalog />} />
-          <Route path="/stories/:id" element={<StoryReader />} />
-          <Route path="/grammar" element={<GrammarHub />} />
-          <Route path="/grammar/:id" element={<GrammarLesson />} />
-          <Route path="/tutor" element={<TutorScenarios />} />
-          <Route path="/tutor/chat" element={<TutorChat />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/marketplace/:id" element={<MarketplaceStory />} />
-          <Route path="/studio" element={<AuthorStudio />} />
-          <Route path="/studio/new" element={<StoryEditor />} />
-          <Route path="/studio/:id/edit" element={<StoryEditor />} />
-          <Route path="/profile" element={<MyProfile />} />
-          <Route path="/profile/:userId" element={<PublicProfile />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/wallet" element={<Wallet />} />
-          <Route path="/wallet/return" element={<StripeReturn />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/search" element={<SearchResults />} />
+          <Route path="/" element={page(Dashboard)} />
+          <Route path="/deck" element={page(WordDeck)} />
+          <Route path="/review" element={page(SpacedRepetition)} />
+          <Route path="/stories" element={page(StoriesCatalog)} />
+          <Route path="/stories/:id" element={page(StoryReader)} />
+          <Route path="/grammar" element={page(GrammarHub)} />
+          <Route path="/grammar/:id" element={page(GrammarLesson)} />
+          <Route path="/tutor" element={page(TutorScenarios)} />
+          <Route path="/tutor/chat" element={page(TutorChat)} />
+          <Route path="/leaderboard" element={page(Leaderboard)} />
+          <Route path="/marketplace" element={page(Marketplace)} />
+          <Route path="/marketplace/:id" element={page(MarketplaceStory)} />
+          <Route path="/studio" element={page(AuthorStudio)} />
+          <Route path="/studio/new" element={page(StoryEditor)} />
+          <Route path="/studio/:id/edit" element={page(StoryEditor)} />
+          <Route path="/profile" element={page(MyProfile)} />
+          <Route path="/profile/:userId" element={page(PublicProfile)} />
+          <Route path="/achievements" element={page(Achievements)} />
+          <Route path="/pricing" element={page(Pricing)} />
+          <Route path="/wallet" element={page(Wallet)} />
+          <Route path="/wallet/return" element={page(StripeReturn)} />
+          <Route path="/notifications" element={page(Notifications)} />
+          <Route path="/settings" element={page(Settings)} />
+          <Route path="/search" element={page(SearchResults)} />
         </Route>
       </Route>
 
