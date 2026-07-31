@@ -9,7 +9,7 @@ class Settings:
     DATABASE_URL: str = os.getenv('DATABASE_URL')
     DB_ECHO: bool = os.getenv('DB_ECHO', 'False') == 'True'
 
-    JWT_SECRET_KEY: str = os.getenv('JWT_SECRET_KEY', 'change-me')
+    JWT_SECRET_KEY: str = os.environ['JWT_SECRET_KEY']
     JWT_ALGORITHM: str = os.getenv('JWT_ALGORITHM', 'HS256')
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', '30'))
     REFRESH_TOKEN_EXPIRE_DAYS: int = int(os.getenv('REFRESH_TOKEN_EXPIRE_DAYS', '7'))
@@ -47,6 +47,7 @@ class Settings:
     LLM_MODEL: str = os.getenv('LLM_MODEL', 'llama-3.3-70b-versatile')
 
     ELASTICSEARCH_URL: str = os.getenv('ELASTICSEARCH_URL', 'http://localhost:9200')
+    ELASTIC_PASSWORD: str = os.getenv('ELASTIC_PASSWORD', '')
 
 
 settings = Settings()

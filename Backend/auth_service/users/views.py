@@ -15,6 +15,7 @@ from users.serializers import (
     UserSerializer,
     VerifyEmailSerializer,
 )
+from users.throttles import LoginRateThrottle, TwoFactorRateThrottle
 
 
 class RegisterView(generics.CreateAPIView):
@@ -136,6 +137,7 @@ def _issue_tokens(user):
 
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [LoginRateThrottle]
 
     def post(self, request):
         user = authenticate(
@@ -157,6 +159,7 @@ class LoginView(APIView):
 
 class Verify2FALoginView(APIView):
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [TwoFactorRateThrottle]
 
     def post(self, request):
         pending_token = request.data.get('pending_token')
