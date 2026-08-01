@@ -59,8 +59,8 @@ export const tg = {
     login: {
       title: "Тасдиқи ҳувият",
       subtitle: "СОЛИ ТАЪСИС 1954 · РУХСАТИ РАҚАМӢ ЛОЗИМ АСТ",
-      identifierLabel: "Рамзи агент",
-      keyLabel: "Калиди рамзгузорӣ",
+      identifierLabel: "Номи корбар",
+      keyLabel: "Парол",
       submit: "Фаъол кардани портал",
       forgot: "Дастрасиро фаромӯш кардед",
       request: "Дархости рухсат",
@@ -78,9 +78,9 @@ export const tg = {
     register: {
       title: "Дархости рухсат",
       subtitle: "БАҚАЙДГИРИИ АГЕНТИ НАВ",
-      identifierLabel: "Рамзи агент",
-      contactLabel: "Суроғаи алоқа",
-      keyLabel: "Калиди рамзгузорӣ",
+      identifierLabel: "Номи корбар",
+      contactLabel: "Почтаи электронӣ",
+      keyLabel: "Парол",
       submit: "Аризаро фиристодан",
       haveClearance: "Аллакай рухсат доред? Ворид шавед",
       verificationEmailFailed: "Бақайдгирӣ анҷом ёфт, аммо номаи тасдиқ фиристода нашуд. Шумо метавонед рамзи навро дархост кунед.",

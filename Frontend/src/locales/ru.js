@@ -59,8 +59,8 @@ export const ru = {
     login: {
       title: "Проверка личности",
       subtitle: "УЧР. 1954 · ТРЕБУЕТСЯ ЦИФРОВОЙ ДОПУСК",
-      identifierLabel: "Идентификатор агента",
-      keyLabel: "Ключ шифрования",
+      identifierLabel: "Имя пользователя",
+      keyLabel: "Пароль",
       submit: "Активировать портал",
       forgot: "Забыли доступ",
       request: "Запросить допуск",
@@ -78,9 +78,9 @@ export const ru = {
     register: {
       title: "Запросить допуск",
       subtitle: "РЕГИСТРАЦИЯ НОВОГО АГЕНТА",
-      identifierLabel: "Идентификатор агента",
-      contactLabel: "Контактный адрес",
-      keyLabel: "Ключ шифрования",
+      identifierLabel: "Имя пользователя",
+      contactLabel: "Электронная почта",
+      keyLabel: "Пароль",
       submit: "Отправить заявку",
       haveClearance: "Уже есть допуск? Войти",
       verificationEmailFailed: "Регистрация прошла, но письмо с подтверждением не отправилось. Вы можете запросить новый код.",

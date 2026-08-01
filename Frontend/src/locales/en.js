@@ -59,8 +59,8 @@ export const en = {
     login: {
       title: "Identity Verification",
       subtitle: "EST. 1954 · DIGITAL CLEARANCE REQUIRED",
-      identifierLabel: "Agent Identifier",
-      keyLabel: "Encryption Key",
+      identifierLabel: "Username",
+      keyLabel: "Password",
       submit: "Initialize Portal",
       forgot: "Forgot access",
       request: "Request Clearance",
@@ -78,9 +78,9 @@ export const en = {
     register: {
       title: "Request Clearance",
       subtitle: "NEW AGENT REGISTRATION",
-      identifierLabel: "Agent Identifier",
-      contactLabel: "Contact Address",
-      keyLabel: "Encryption Key",
+      identifierLabel: "Username",
+      contactLabel: "Email",
+      keyLabel: "Password",
       submit: "Submit Application",
       haveClearance: "Already have clearance? Sign in",
       verificationEmailFailed: "Registered, but the verification email didn't go out. You can request a new code.",

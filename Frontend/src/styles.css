@@ -261,6 +261,15 @@ body {
   pointer-events: none;
 }
 
+/* --- Вращающиеся красные лучи на экранах входа/регистрации (design.html:3209) --- */
+.ray-pattern {
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg 10deg,
+    rgba(220, 44, 79, 0.05) 10deg 20deg
+  );
+}
+
 /* --- Уважение к prefers-reduced-motion --- */
 @media (prefers-reduced-motion: reduce) {
   .neo-card,
