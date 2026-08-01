@@ -37,19 +37,12 @@ function pluralEn(n) {
 
 const PLURAL_RULES = { en: pluralEn, ru: pluralRu, tg: pluralTg };
 
-function detectDefaultLang() {
-  const nav = (navigator.language || "en").toLowerCase();
-  if (nav.startsWith("ru")) return "ru";
-  if (nav.startsWith("tg")) return "tg";
-  return "en";
-}
-
 function readLang() {
   try {
     const saved = localStorage.getItem("glossa-lang");
     if (saved && dicts[saved]) return saved;
   } catch (e) {}
-  return detectDefaultLang();
+  return "en";
 }
 
 function interpolate(str, vars) {
