@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import authenticate
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -28,14 +29,20 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
 
         email_sent = True
+        dev_code = None
 
         try:
-            verification.send_verification_email(user)
-        except (verification.EmailDeliveryError, verification.ResendCooldownError):
+            dev_code = verification.send_verification_email(user)
+        except verification.EmailDeliveryError as exc:
+            email_sent = False
+            dev_code = exc.code
+        except verification.ResendCooldownError:
             email_sent = False
 
         data = serializer.data
         data['email_sent'] = email_sent
+        if settings.DEBUG:
+            data['dev_verification_code'] = dev_code
         return Response(data, status=status.HTTP_201_CREATED)
 
 
@@ -103,19 +110,22 @@ class ResendVerificationView(APIView):
             return Response({'detail': 'Email is already verified'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            verification.send_verification_email(request.user)
+            dev_code = verification.send_verification_email(request.user)
         except verification.ResendCooldownError as exc:
             return Response(
                 {'detail': 'Please wait before requesting another code', 'seconds_left': exc.seconds_left},
                 status=status.HTTP_429_TOO_MANY_REQUESTS,
             )
-        except verification.EmailDeliveryError:
-            return Response(
-                {'detail': 'Could not send verification email, try again later'},
-                status=status.HTTP_502_BAD_GATEWAY,
-            )
+        except verification.EmailDeliveryError as exc:
+            data = {'detail': 'Could not send verification email, try again later'}
+            if settings.DEBUG:
+                data['dev_verification_code'] = exc.code
+            return Response(data, status=status.HTTP_502_BAD_GATEWAY)
 
-        return Response({'detail': 'Verification code sent'})
+        data = {'detail': 'Verification code sent'}
+        if settings.DEBUG:
+            data['dev_verification_code'] = dev_code
+        return Response(data)
 
 
 class ChangePasswordView(APIView):

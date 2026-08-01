@@ -16,7 +16,9 @@ class ResendCooldownError(Exception):
 
 
 class EmailDeliveryError(Exception):
-    pass
+    def __init__(self, message, code=None):
+        super().__init__(message)
+        self.code = code
 
 
 def _code_key(user_id):
@@ -43,9 +45,10 @@ def send_verification_email(user):
             fail_silently=False,
         )
     except Exception as exc:
-        raise EmailDeliveryError(str(exc)) from exc
+        raise EmailDeliveryError(str(exc), code=code) from exc
 
     redis_client.set(_cooldown_key(user.id), '1', ex=RESEND_COOLDOWN_SECONDS)
+    return code
 
 
 def confirm_verification_code(user, code):
