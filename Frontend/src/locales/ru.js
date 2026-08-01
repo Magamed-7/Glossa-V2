@@ -11,6 +11,8 @@ export const ru = {
     dismissNotification: "Закрыть уведомление",
     loading: "…",
     dash: "—",
+    showPassword: "Показать пароль",
+    hidePassword: "Скрыть пароль",
   },
   nav: {
     dashboard: "ГЛАВНАЯ",

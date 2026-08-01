@@ -11,6 +11,8 @@ export const tg = {
     dismissNotification: "Огоҳиномаро пӯшидан",
     loading: "…",
     dash: "—",
+    showPassword: "Нишон додани парол",
+    hidePassword: "Пинҳон кардани парол",
   },
   nav: {
     dashboard: "САҲИФАИ АСОСӢ",

@@ -11,6 +11,8 @@ export const en = {
     dismissNotification: "Dismiss notification",
     loading: "…",
     dash: "—",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
   },
   nav: {
     dashboard: "DASHBOARD",
