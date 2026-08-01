@@ -83,6 +83,8 @@ export const tg = {
       identifierLabel: "Номи корбар",
       contactLabel: "Почтаи электронӣ",
       keyLabel: "Парол",
+      confirmKeyLabel: "Такрори парол",
+      passwordMismatch: "Паролҳо мувофиқат намекунанд.",
       submit: "Аризаро фиристодан",
       haveClearance: "Аллакай рухсат доред? Ворид шавед",
       verificationEmailFailed: "Бақайдгирӣ анҷом ёфт, аммо номаи тасдиқ фиристода нашуд. Шумо метавонед рамзи навро дархост кунед.",

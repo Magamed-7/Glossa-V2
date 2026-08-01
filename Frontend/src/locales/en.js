@@ -83,6 +83,8 @@ export const en = {
       identifierLabel: "Username",
       contactLabel: "Email",
       keyLabel: "Password",
+      confirmKeyLabel: "Confirm Password",
+      passwordMismatch: "Passwords don't match.",
       submit: "Submit Application",
       haveClearance: "Already have clearance? Sign in",
       verificationEmailFailed: "Registered, but the verification email didn't go out. You can request a new code.",

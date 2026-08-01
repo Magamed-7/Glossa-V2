@@ -83,6 +83,8 @@ export const ru = {
       identifierLabel: "Имя пользователя",
       contactLabel: "Электронная почта",
       keyLabel: "Пароль",
+      confirmKeyLabel: "Подтверждение пароля",
+      passwordMismatch: "Пароли не совпадают.",
       submit: "Отправить заявку",
       haveClearance: "Уже есть допуск? Войти",
       verificationEmailFailed: "Регистрация прошла, но письмо с подтверждением не отправилось. Вы можете запросить новый код.",

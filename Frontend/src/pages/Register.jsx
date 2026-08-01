@@ -18,6 +18,7 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -26,6 +27,12 @@ export default function Register() {
     e.preventDefault();
     setError(null);
     setFieldErrors({});
+
+    if (password !== confirmPassword) {
+      setFieldErrors({ confirmPassword: t("auth.register.passwordMismatch") });
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -95,6 +102,18 @@ export default function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={fieldErrors.password}
+            required
+          />
+          <Field
+            label={t("auth.register.confirmKeyLabel")}
+            marker="bg-mustard"
+            type="password"
+            name="confirmPassword"
+            autoComplete="new-password"
+            minLength={8}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            error={fieldErrors.confirmPassword}
             required
           />
 
