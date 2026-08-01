@@ -581,4 +581,16 @@ export const en = {
     markAllRead: "Mark all read",
     caughtUp: "You're all caught up",
   },
+  public: {
+    nav: {
+      about: "About",
+      faq: "FAQ",
+      login: "Log in",
+      register: "Sign up",
+      dashboard: "Dashboard",
+    },
+    footer: {
+      copyright: "© 2026 Glossa. Mastery through design.",
+    },
+  },
 };

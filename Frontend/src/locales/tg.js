@@ -581,4 +581,16 @@ export const tg = {
     markAllRead: "Ҳамаро хондашуда қайд кунед",
     caughtUp: "Шумо ҳама чизро дидед",
   },
+  public: {
+    nav: {
+      about: "Дар бораи мо",
+      faq: "Саволҳо",
+      login: "Ворид шудан",
+      register: "Сабти ном",
+      dashboard: "Ба барнома",
+    },
+    footer: {
+      copyright: "© 2026 Glossa. Маҳорат тавассути тарроҳӣ.",
+    },
+  },
 };

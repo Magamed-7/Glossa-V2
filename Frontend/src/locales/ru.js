@@ -581,4 +581,16 @@ export const ru = {
     markAllRead: "Отметить все прочитанными",
     caughtUp: "Вы всё просмотрели",
   },
+  public: {
+    nav: {
+      about: "О нас",
+      faq: "Вопросы",
+      login: "Войти",
+      register: "Зарегистрироваться",
+      dashboard: "В приложение",
+    },
+    footer: {
+      copyright: "© 2026 Glossa. Мастерство через дизайн.",
+    },
+  },
 };
