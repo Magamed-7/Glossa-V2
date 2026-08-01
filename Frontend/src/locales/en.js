@@ -64,8 +64,8 @@ export const en = {
       identifierLabel: "Username",
       keyLabel: "Password",
       submit: "Initialize Portal",
-      forgot: "Forgot access",
-      request: "Request Clearance",
+      forgot: "Forgot password?",
+      request: "No account? Sign up",
     },
     login2fa: {
       failedTitle: "Verification Failed",
@@ -94,6 +94,7 @@ export const en = {
       title: "Confirm Your Email",
       description: "Enter the 6-digit code we sent to your email address.",
       codeLabel: "Verification Code",
+      devCodeHint: "Dev mode: code {code} filled in automatically (email delivery is not required in this environment).",
       verify: "Verify",
       resendIn: "Resend in {n}s",
       resend: "Resend code",

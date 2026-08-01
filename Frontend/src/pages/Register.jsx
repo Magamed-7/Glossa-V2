@@ -36,7 +36,7 @@ export default function Register() {
       }
 
       await login({ username, password });
-      navigate("/verify-email");
+      navigate("/verify-email", { state: { devCode: result.dev_verification_code } });
     } catch (err) {
       if (err.field) {
         setFieldErrors({ [err.field]: err.message });

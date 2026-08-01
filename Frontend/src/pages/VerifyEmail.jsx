@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "../components/layout/AuthLayout.jsx";
 import Field from "../components/ui/Field.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
@@ -12,8 +12,10 @@ export default function VerifyEmail() {
   const t = useT();
   const { refreshUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(location.state?.devCode || "");
+  const [devCode, setDevCode] = useState(location.state?.devCode || null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -47,8 +49,12 @@ export default function VerifyEmail() {
     setResending(true);
 
     try {
-      await authApi.resendVerification();
+      const result = await authApi.resendVerification();
       setCooldown(60);
+      if (result?.dev_verification_code) {
+        setDevCode(result.dev_verification_code);
+        setCode(result.dev_verification_code);
+      }
     } catch (err) {
       if (err.status === 429 && err.message) {
         const match = /(\d+)/.exec(err.message);
@@ -101,6 +107,12 @@ export default function VerifyEmail() {
             onChange={(e) => setCode(e.target.value)}
             required
           />
+
+          {devCode && (
+            <p className="font-label text-label-md text-outline-variant -mt-4">
+              {t("auth.verifyEmail.devCodeHint", { code: devCode })}
+            </p>
+          )}
 
           {error && (
             <p role="alert" className="font-label text-label-md text-error">
