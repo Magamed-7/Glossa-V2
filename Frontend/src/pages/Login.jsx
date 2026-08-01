@@ -32,7 +32,7 @@ export default function Login() {
         return;
       }
 
-      navigate(location.state?.from?.pathname || "/", { replace: true });
+      navigate(location.state?.from?.pathname || "/dashboard", { replace: true });
     } catch (err) {
       setError(errorText(err));
     } finally {

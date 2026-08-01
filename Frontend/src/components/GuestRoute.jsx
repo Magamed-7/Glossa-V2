@@ -9,7 +9,7 @@ export default function GuestRoute() {
   if (status === "loading") return <LoadingScreen />;
 
   if (status === "authenticated") {
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/dashboard";
     return <Navigate to={from} replace />;
   }
 

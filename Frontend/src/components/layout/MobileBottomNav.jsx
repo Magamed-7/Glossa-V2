@@ -3,7 +3,7 @@ import Icon from "../ui/Icon.jsx";
 import { useT } from "../../lib/i18n.jsx";
 
 const ITEMS = [
-  { to: "/", labelKey: "nav.home", icon: "home", end: true },
+  { to: "/dashboard", labelKey: "nav.home", icon: "home", end: true },
   { to: "/deck", labelKey: "nav.library", icon: "library_books" },
   { to: "/stories", labelKey: "nav.stories", icon: "auto_stories" },
   { to: "/tutor", labelKey: "nav.tutor", icon: "smart_toy" },

@@ -76,7 +76,7 @@ export default function VerifyEmail() {
           <p className="font-body text-body-md text-on-surface-variant mb-8">
             {t("auth.verifyEmail.verifiedDescription")}
           </p>
-          <NeoButton onClick={() => navigate("/")}>{t("auth.verifyEmail.continue")}</NeoButton>
+          <NeoButton onClick={() => navigate("/dashboard")}>{t("auth.verifyEmail.continue")}</NeoButton>
         </div>
       </AuthLayout>
     );
@@ -136,7 +136,7 @@ export default function VerifyEmail() {
             <button
               type="button"
               className="font-label text-label-md text-outline hover:text-secondary transition-colors underline"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/dashboard")}
             >
               {t("auth.verifyEmail.skip")}
             </button>

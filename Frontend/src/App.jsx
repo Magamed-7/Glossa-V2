@@ -1,8 +1,11 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Achievements from "./pages/Achievements.jsx";
+import About from "./pages/About.jsx";
 import AuthorStudio from "./pages/AuthorStudio.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Faq from "./pages/Faq.jsx";
+import Landing from "./pages/Landing.jsx";
 import GrammarHub from "./pages/GrammarHub.jsx";
 import GrammarLesson from "./pages/GrammarLesson.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
@@ -28,6 +31,7 @@ import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import WordDeck from "./pages/WordDeck.jsx";
 import AppLayout from "./components/layout/AppLayout.jsx";
+import PublicLayout from "./components/layout/PublicLayout.jsx";
 import LoadingScreen from "./components/LoadingScreen.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
@@ -57,6 +61,12 @@ function page(Component) {
 export default function App() {
   return (
     <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={page(Landing)} />
+        <Route path="/about" element={page(About)} />
+        <Route path="/faq" element={page(Faq)} />
+      </Route>
+
       <Route element={<GuestRoute />}>
         <Route path="/login" element={page(Login)} />
         <Route path="/login/2fa" element={page(Login2fa)} />
@@ -70,7 +80,7 @@ export default function App() {
         <Route path="/onboarding" element={page(Onboarding)} />
 
         <Route element={<AppLayout />}>
-          <Route path="/" element={page(Dashboard)} />
+          <Route path="/dashboard" element={page(Dashboard)} />
           <Route path="/deck" element={page(WordDeck)} />
           <Route path="/review" element={page(SpacedRepetition)} />
           <Route path="/stories" element={page(StoriesCatalog)} />

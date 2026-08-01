@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useT } from "../lib/i18n.jsx";
 
 export default function NotFound() {
   const t = useT();
+  const { status } = useAuth();
+  const homeTo = status === "authenticated" ? "/dashboard" : "/";
   return (
     <div className="min-h-screen flex items-center justify-center bg-surface px-margin-mobile relative overflow-hidden">
       <div className="absolute top-20 right-[-100px] w-[600px] h-[600px] rounded-full border border-tertiary opacity-5 pointer-events-none" aria-hidden="true" />
@@ -12,9 +15,9 @@ export default function NotFound() {
         <p className="font-body text-body-lg text-on-surface-variant mb-10">{t("notFound.description")}</p>
         <Link
           className="inline-block bg-secondary text-on-secondary border-2 border-tertiary px-8 py-4 font-label text-label-md uppercase tracking-widest hard-shadow btn-press transition-all"
-          to="/"
+          to={homeTo}
         >
-          {t("notFound.action")}
+          {status === "authenticated" ? t("notFound.action") : t("notFound.actionGuest")}
         </Link>
       </div>
     </div>

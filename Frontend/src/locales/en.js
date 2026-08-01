@@ -54,6 +54,7 @@ export const en = {
     title: "Page Not Found",
     description: "This page doesn't exist in the archive. Let's get you back on track.",
     action: "Back to Dashboard",
+    actionGuest: "Back to Home",
   },
   auth: {
     layoutNotice:
@@ -120,6 +121,13 @@ export const en = {
     selectedPath: "Selected Path",
     noneSelected: "None Selected",
     begin: "Begin Journey",
+    back: "Back",
+    native: {
+      titleLead: "Choose Your ",
+      titleAccent: "Interface Language",
+      description: "Which language are you most comfortable using Glossa in? You can change this anytime from the language switcher.",
+      continue: "Continue",
+    },
     languages: {
       english: { title: "English", description: "The global bridge of commerce, literature, and diplomacy.", gateway: "London" },
       russian: { title: "Russian", description: "Explore the profound depths of classical literature and cosmic ambition.", gateway: "Moscow" },
@@ -591,6 +599,90 @@ export const en = {
     },
     footer: {
       copyright: "© 2026 Glossa. Mastery through design.",
+    },
+  },
+  landing: {
+    hero: {
+      eyebrow: "Language learning, edited",
+      title: "Learn English, Russian, or Tajik the editorial way",
+      description:
+        "Stories, grammar drills, spaced repetition, and an AI tutor — all in one carefully designed place. Pick a language and start today.",
+      cta: "Start learning free",
+    },
+    features: {
+      title: "Everything you need to get fluent",
+      stories: {
+        title: "Stories",
+        description: "Read leveled stories with tap-to-translate words and comprehension questions.",
+      },
+      grammar: {
+        title: "Grammar",
+        description: "Structured lessons from basics to complex structures, tracked by mastery level.",
+      },
+      tutor: {
+        title: "AI Tutor",
+        description: "Practice real conversations — job interviews, casual chats, restaurants — with instant corrections.",
+      },
+    },
+    ctaBanner: {
+      title: "Ready to begin your journey?",
+    },
+  },
+  about: {
+    eyebrow: "About Glossa",
+    title: "A carefully designed place to actually learn a language",
+    paragraph1:
+      "Glossa is a language-learning platform built around three languages — English, Russian, and Tajik — with stories, grammar lessons, spaced repetition flashcards, and an AI tutor for realistic conversation practice.",
+    paragraph2:
+      "Instead of gamified streaks for their own sake, Glossa focuses on structured progress: leveled reading, tracked grammar mastery, and a marketplace where learners can read and write stories in the language they're studying.",
+    pillarsTitle: "What Glossa is built on",
+    pillars: {
+      stories: {
+        title: "Reading",
+        description: "Leveled stories with tap-to-translate words, written and read by the community.",
+      },
+      grammar: {
+        title: "Grammar",
+        description: "A structured roadmap from basics to complex structures, tracked by mastery.",
+      },
+      tutor: {
+        title: "Conversation",
+        description: "An AI tutor for realistic scenarios — interviews, casual chats, restaurants.",
+      },
+      community: {
+        title: "Community",
+        description: "A marketplace and leaderboard where learners share stories and progress.",
+      },
+    },
+  },
+  faq: {
+    eyebrow: "FAQ",
+    title: "Frequently asked questions",
+    items: {
+      languages: {
+        question: "Which languages can I learn on Glossa?",
+        answer: "English, Russian, and Tajik. You pick one as your target language during onboarding and can add more later from your language settings.",
+      },
+      register: {
+        question: "How do I create an account?",
+        answer: "Tap \"Sign up\", enter a username, email, and password, then confirm your email with the 6-digit code we send you.",
+      },
+      verifyEmail: {
+        question: "I didn't get the verification code, what now?",
+        answer: "Use \"Resend code\" on the verification screen. If it still doesn't arrive, check your spam folder or try updating your email in account settings.",
+      },
+      pricing: {
+        question: "Is Glossa free?",
+        answer: "There's a free plan to get started, plus paid plans that unlock higher daily limits and extra features. See the Pricing page for current plans.",
+      },
+      aiTutor: {
+        question: "What is the AI Tutor?",
+        answer: "A chat-based practice partner for realistic scenarios — job interviews, casual conversation, restaurants — that corrects your mistakes as you go.",
+      },
+      changeLanguage: {
+        question: "Can I change the site's interface language?",
+        answer: "Yes — use the language switcher in the header on any page, including the login and registration screens.",
+      },
     },
   },
 };

@@ -123,7 +123,7 @@ export default function SpacedRepetition() {
               <NeoButton variant="ghost" onClick={() => navigate("/deck")}>
                 {t("review.deck")}
               </NeoButton>
-              <NeoButton onClick={() => navigate("/")}>{t("review.dashboard")}</NeoButton>
+              <NeoButton onClick={() => navigate("/dashboard")}>{t("review.dashboard")}</NeoButton>
             </div>
           }
         />

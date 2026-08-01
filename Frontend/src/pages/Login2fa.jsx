@@ -32,7 +32,7 @@ export default function Login2fa() {
 
     try {
       await loginWith2fa({ pending_token: pendingToken, code });
-      navigate(location.state?.from?.pathname || "/", { replace: true });
+      navigate(location.state?.from?.pathname || "/dashboard", { replace: true });
     } catch (err) {
       // pending_token одноразовый и живёт 5 минут — при ошибке он уже недействителен,
       // повторная попытка тем же токеном не сработает, нужно начинать вход заново.
