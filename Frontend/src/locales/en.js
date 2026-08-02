@@ -608,11 +608,20 @@ export const en = {
   },
   landing: {
     hero: {
-      eyebrow: "Language learning, edited",
-      title: "Learn English, Russian, or Tajik the editorial way",
+      eyebrow: "The Editorial Standard",
+      titleLine1: "Mastery",
+      titleLine2: "Through",
+      titleLine3: "Design.",
       description:
-        "Stories, grammar drills, spaced repetition, and an AI tutor — all in one carefully designed place. Pick a language and start today.",
-      cta: "Start learning free",
+        "Glossa is a refined workspace for the modern language learner, combining archival rigor with digital precision. Stories, grammar, spaced repetition, and an AI tutor — all in one carefully designed place.",
+      cta: "Get Started",
+      secondaryCta: "About Us",
+    },
+    stats: {
+      languages: "Languages",
+      levels: "CEFR Levels",
+      scenarios: "AI Scenarios",
+      plans: "Plans",
     },
     features: {
       title: "Everything you need to get fluent",
@@ -629,40 +638,105 @@ export const en = {
         description: "Practice real conversations — job interviews, casual chats, restaurants — with instant corrections.",
       },
     },
+    pricing: {
+      title: "Editorial Tiers",
+      subtitle: "Select the caliber of your workspace. Real plans, real limits — pulled straight from your account.",
+      mostPopular: "Most Coveted",
+      perMonth: "/mo",
+      cta: "Get Started",
+      comparisonTitle: "Technical Specification",
+      feature: {
+        storiesPerDay: "{n} stories / day",
+        wordsPerDay: "{n} new words / day",
+        ownStoriesPerWeek: "{n} own stories / week",
+        aiTutor: "{n} AI tutor time / day",
+        noAiTutor: "No AI tutor",
+        marketplace: "Marketplace access",
+        telegram: "Telegram bot access",
+      },
+    },
     ctaBanner: {
-      title: "Ready to begin your journey?",
+      titleLead: "Your masterwork",
+      titleAccent: "awaits.",
+      description: "Join a collective of learners, editors, and scholars who value the weight of every word.",
+      cta: "Enter The Archive",
     },
   },
   about: {
-    eyebrow: "About Glossa",
-    title: "A carefully designed place to actually learn a language",
-    paragraph1:
-      "Glossa is a language-learning platform built around three languages — English, Russian, and Tajik — with stories, grammar lessons, spaced repetition flashcards, and an AI tutor for realistic conversation practice.",
-    paragraph2:
-      "Instead of gamified streaks for their own sake, Glossa focuses on structured progress: leveled reading, tracked grammar mastery, and a marketplace where learners can read and write stories in the language they're studying.",
-    pillarsTitle: "What Glossa is built on",
-    pillars: {
-      stories: {
-        title: "Reading",
-        description: "Leveled stories with tap-to-translate words, written and read by the community.",
+    eyebrow: "Editorial Institutional",
+    titleLead: "The Institutional Mission:",
+    titleAccent: "A Stewardship of Syntax",
+    mission:
+      "Founded on the belief that every syllable carries the weight of understanding, Glossa operates as a living workspace for the practice of human expression — in English, Russian, and Tajik.",
+    quote: {
+      text: "“Language is the only vessel of time that never leaks.”",
+      author: "— The Glossa Editorial Standard",
+    },
+    history: {
+      title: "Built for Learners",
+      paragraph1:
+        "Glossa began as a small collection of stories, grammar drills, and flashcards, built around a simple idea: that learning a language deserves the same care as reading a well-set page.",
+      paragraph2:
+        "What started as a handful of tools has grown into a full workspace — leveled reading, structured grammar, spaced repetition, and an AI tutor for real conversation practice, all in one carefully designed place.",
+    },
+    preservation: {
+      title: "Linguistic Preservation",
+      description:
+        "We believe a language is not just a tool for communication, but a window into how people think. Our aim is to make deliberate, structured practice accessible to every learner, in the language they choose.",
+      pillars: {
+        documentation: { title: "Documentation", description: "Structured grammar lessons from basics to complex structures." },
+        translation: { title: "Translation", description: "Tap-to-translate reading that builds vocabulary in context." },
+        education: { title: "Education", description: "Spaced repetition and an AI tutor for lasting, practical fluency." },
       },
-      grammar: {
-        title: "Grammar",
-        description: "A structured roadmap from basics to complex structures, tracked by mastery.",
+    },
+    curators: {
+      title: "Our Curators",
+      description: "Meet the people behind the Glossa content and product — philologists, editors, and technologists.",
+      est: "EST. MMXXVI",
+      people: {
+        osaf: {
+          role: "Chief Philologist",
+          bio: "Specializing in Slavic etymology and the semiotics of resistance.",
+        },
+        julian: {
+          role: "Archive Director",
+          bio: "Expert in 19th-century epistolary traditions and archival science.",
+        },
+        mika: {
+          role: "Computational Linguist",
+          bio: "Bridging the gap between natural language and neural networks.",
+        },
+        arthur: {
+          role: "Founder Emeritus",
+          bio: "Still consulting on the deeper mysteries of grammar and syntax.",
+        },
       },
-      tutor: {
-        title: "Conversation",
-        description: "An AI tutor for realistic scenarios — interviews, casual chats, restaurants.",
-      },
-      community: {
-        title: "Community",
-        description: "A marketplace and leaderboard where learners share stories and progress.",
-      },
+    },
+    tools: {
+      title: "The Curator's Tools",
+      description:
+        "We maintain a small collection of writing instruments spanning three centuries, a reminder that the medium may change, but the impulse to write clearly remains constant.",
+    },
+    archiveEntry: {
+      eyebrow: "Archive Entry",
+      title: "Volume I: The Editorial Standard",
     },
   },
   faq: {
-    eyebrow: "FAQ",
-    title: "Frequently asked questions",
+    eyebrow: "Official Records Office",
+    title: "The Bureau of Inquiries",
+    subtitle: "A curated directory of frequently discussed subjects regarding Glossa accounts, learning, and billing.",
+    searchLabel: "Search Questions",
+    searchPlaceholder: "Enter a keyword…",
+    noResults: "No questions match your search.",
+    categories: {
+      account: "Account & Access",
+      learning: "Learning",
+      billing: "Plans & Billing",
+    },
+    helpTitle: "Still seeking clarity?",
+    helpDescription: "If your question isn't answered here, create an account and reach us from your settings — we're glad to help.",
+    helpCta: "Create an account",
     items: {
       languages: {
         question: "Which languages can I learn on Glossa?",
