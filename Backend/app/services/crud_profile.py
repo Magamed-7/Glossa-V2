@@ -1,4 +1,5 @@
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_profile import ProfilePrivacy, UserLanguages, UserProfiles
@@ -14,8 +15,15 @@ async def get_profile(user_id: int, db: AsyncSession):
     if profile is None:
         profile = UserProfiles(user_id=user_id)
         db.add(profile)
-        await db.commit()
-        await db.refresh(profile)
+
+        try:
+            await db.commit()
+        except IntegrityError:
+            await db.rollback()
+            result = await db.execute(select(UserProfiles).where(UserProfiles.user_id == user_id))
+            profile = result.scalar_one()
+        else:
+            await db.refresh(profile)
 
     return profile
 
@@ -75,8 +83,15 @@ async def get_privacy(user_id: int, db: AsyncSession):
     if privacy is None:
         privacy = ProfilePrivacy(user_id=user_id)
         db.add(privacy)
-        await db.commit()
-        await db.refresh(privacy)
+
+        try:
+            await db.commit()
+        except IntegrityError:
+            await db.rollback()
+            result = await db.execute(select(ProfilePrivacy).where(ProfilePrivacy.user_id == user_id))
+            privacy = result.scalar_one()
+        else:
+            await db.refresh(privacy)
 
     return privacy
 
