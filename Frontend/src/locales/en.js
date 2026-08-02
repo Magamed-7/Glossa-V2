@@ -558,6 +558,9 @@ export const en = {
     topUp: "Top Up",
     customAmountLabel: "Custom amount (USD)",
     payWithCard: "Pay with Card",
+    testModeLabel: "Test mode — Stripe not required",
+    testTopupButton: "Add funds instantly (test)",
+    testTopupSuccess: "Balance topped up.",
   },
   stripeReturn: {
     confirming: "Confirming your payment…",

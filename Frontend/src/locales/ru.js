@@ -558,6 +558,9 @@ export const ru = {
     topUp: "Пополнить",
     customAmountLabel: "Своя сумма (USD)",
     payWithCard: "Оплатить картой",
+    testModeLabel: "Тестовый режим — без Stripe",
+    testTopupButton: "Пополнить сразу (тест)",
+    testTopupSuccess: "Баланс пополнен.",
   },
   stripeReturn: {
     confirming: "Подтверждаем ваш платёж…",

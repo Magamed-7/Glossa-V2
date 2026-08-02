@@ -27,7 +27,7 @@ export default function Wallet() {
         </NeoCard>
       )}
 
-      <TopupForm />
+      <TopupForm onTopupSuccess={reload} />
 
       <div className="mt-section-gap">
         <h2 className="font-headline text-headline-md mb-4">{t("wallet.history")}</h2>

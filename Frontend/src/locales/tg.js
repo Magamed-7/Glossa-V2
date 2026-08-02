@@ -558,6 +558,9 @@ export const tg = {
     topUp: "Пур кардан",
     customAmountLabel: "Маблағи дилхоҳ (USD)",
     payWithCard: "Бо корт пардохт кунед",
+    testModeLabel: "Реҷаи тестӣ — бе Stripe",
+    testTopupButton: "Фавран пур кардан (тест)",
+    testTopupSuccess: "Тавозун пур карда шуд.",
   },
   stripeReturn: {
     confirming: "Пардохти шумо тасдиқ мешавад…",
