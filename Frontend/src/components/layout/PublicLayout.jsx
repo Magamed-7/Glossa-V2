@@ -22,6 +22,9 @@ export default function PublicLayout() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 font-label text-label-md uppercase tracking-widest">
+            <Link to="/#pricing" className="hover:text-secondary transition-colors">
+              {t("public.nav.pricing")}
+            </Link>
             <Link to="/about" className="hover:text-secondary transition-colors">
               {t("public.nav.about")}
             </Link>
@@ -68,6 +71,9 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="font-label text-label-md text-on-surface-variant">{t("public.footer.copyright")}</span>
           <nav className="flex items-center gap-6 font-label text-label-md uppercase tracking-widest">
+            <Link to="/#pricing" className="hover:text-secondary transition-colors">
+              {t("public.nav.pricing")}
+            </Link>
             <Link to="/about" className="hover:text-secondary transition-colors">
               {t("public.nav.about")}
             </Link>

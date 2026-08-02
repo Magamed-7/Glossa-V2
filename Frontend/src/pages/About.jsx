@@ -41,7 +41,7 @@ export default function About() {
             <div className="absolute -inset-4 border-2 border-secondary/20 z-0 opacity-50" aria-hidden="true" />
             <div className="relative z-10 border-2 border-tertiary hard-shadow overflow-hidden">
             <img
-              className="w-full h-[420px] object-cover grayscale contrast-125"
+              className="w-full aspect-[4/5] object-cover grayscale contrast-125"
               src="/img/marketing/about-typewriter.webp"
               srcSet="/img/marketing/about-typewriter.webp 800w, /img/marketing/about-typewriter@2x.webp 1600w"
               alt=""
@@ -122,7 +122,7 @@ export default function About() {
             </div>
           </div>
         </div>
-        <div className="relative min-h-[400px] border-2 border-tertiary overflow-hidden group">
+        <div className="relative aspect-[3/2] border-2 border-tertiary overflow-hidden group">
           <img
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
             src="/img/marketing/archive-room.webp"

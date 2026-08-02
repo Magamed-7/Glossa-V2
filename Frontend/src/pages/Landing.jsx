@@ -10,6 +10,8 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import PlanComparison from "../components/pricing/PlanComparison.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 
+const ROMAN = ["I", "II", "III", "IV", "V"];
+
 const STATS = [
   { value: "3", key: "languages" },
   { value: "A1–C2", key: "levels" },
@@ -81,14 +83,14 @@ export default function Landing() {
           <div className="md:col-span-5 relative mt-12 md:mt-0">
             <div className="border-2 border-tertiary p-2 bg-surface-container-low hard-shadow relative z-10 rotate-2 overflow-hidden">
               <img
-                className="w-full h-[420px] object-cover grayscale contrast-125"
+                className="w-full aspect-[720/760] object-cover grayscale contrast-125"
                 src="/img/marketing/landing-typewriter.webp"
-                srcSet="/img/marketing/landing-typewriter.webp 800w, /img/marketing/landing-typewriter@2x.webp 1600w"
+                srcSet="/img/marketing/landing-typewriter.webp 720w, /img/marketing/landing-typewriter@2x.webp 1440w"
                 alt=""
                 aria-hidden="true"
                 loading="eager"
-                width={800}
-                height={1000}
+                width={720}
+                height={760}
               />
             </div>
             <div className="absolute -bottom-6 -left-6 w-full h-full border-2 border-tertiary bg-secondary opacity-10 -z-10 -rotate-3" />
@@ -132,7 +134,7 @@ export default function Landing() {
 
         {!loading && plans && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-            {plans.map((plan) => {
+            {plans.map((plan, index) => {
               const isPopular = plan.code === "premium";
               return (
                 <div
@@ -147,6 +149,9 @@ export default function Landing() {
                     </span>
                   )}
                   <div>
+                    <span className={`font-label text-label-md uppercase tracking-widest ${isPopular ? "text-secondary" : "text-on-surface-variant"}`}>
+                      {t("landing.pricing.level", { n: ROMAN[index] || index + 1 })}
+                    </span>
                     <h3 className="font-headline text-headline-md uppercase capitalize">{plan.code}</h3>
                     <div className="flex items-baseline gap-1 mt-2">
                       <span className="font-display text-headline-lg">{formatMoney(plan.price_monthly)}</span>

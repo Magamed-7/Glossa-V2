@@ -189,7 +189,7 @@ function LogOut() {
 
   function onLogout() {
     logout();
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   }
 
   return (
@@ -215,7 +215,7 @@ function DeleteAccount() {
     try {
       await authApi.deleteMe({ password });
       logout();
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
       setError(errorText(err));
       setSubmitting(false);

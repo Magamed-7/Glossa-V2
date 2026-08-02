@@ -596,6 +596,7 @@ export const en = {
   },
   public: {
     nav: {
+      pricing: "Pricing",
       about: "About",
       faq: "FAQ",
       login: "Log in",
@@ -642,6 +643,7 @@ export const en = {
       title: "Editorial Tiers",
       subtitle: "Select the caliber of your workspace. Real plans, real limits — pulled straight from your account.",
       mostPopular: "Most Coveted",
+      level: "Level {n}",
       perMonth: "/mo",
       cta: "Get Started",
       comparisonTitle: "Technical Specification",

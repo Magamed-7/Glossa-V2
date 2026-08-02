@@ -33,7 +33,7 @@ export function formatRelative(value) {
 
 // Decimal с бэкенда приходит числом/строкой с ограниченной точностью (2 знака для денег) —
 // Number() безопасен для отображения в этих пределах, без арифметики поверх результата.
-export function formatMoney(value, currency = "USD") {
+export function formatMoney(value, currency = "TJS") {
   if (value === null || value === undefined) return "—";
   const amount = Number(value);
   return new Intl.NumberFormat(undefined, { style: "currency", currency }).format(amount);
