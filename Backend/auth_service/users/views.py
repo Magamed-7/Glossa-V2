@@ -150,9 +150,15 @@ class LoginView(APIView):
     throttle_classes = [LoginRateThrottle]
 
     def post(self, request):
-        user = authenticate(
-            request, username=request.data.get('username'), password=request.data.get('password')
-        )
+        identifier = request.data.get('username')
+        username = identifier
+
+        if identifier and '@' in identifier:
+            existing = User.objects.filter(email__iexact=identifier).first()
+            if existing is not None:
+                username = existing.username
+
+        user = authenticate(request, username=username, password=request.data.get('password'))
 
         if user is None:
             return Response(
