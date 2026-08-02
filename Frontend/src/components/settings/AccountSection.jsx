@@ -182,6 +182,23 @@ function TwoFactor() {
   );
 }
 
+function LogOut() {
+  const t = useT();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  function onLogout() {
+    logout();
+    navigate("/login", { replace: true });
+  }
+
+  return (
+    <NeoButton variant="ghost" size="md" onClick={onLogout}>
+      {t("settings.account.logOut")}
+    </NeoButton>
+  );
+}
+
 function DeleteAccount() {
   const t = useT();
   const navigate = useNavigate();
@@ -248,6 +265,10 @@ export default function AccountSection() {
         <TwoFactor />
       </NeoCard>
       <DataExport />
+      <NeoCard>
+        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.sessionTitle")}</h3>
+        <LogOut />
+      </NeoCard>
       <NeoCard variant="accent">
         <h3 className="font-headline text-headline-md mb-4">{t("settings.account.dangerZone")}</h3>
         <DeleteAccount />

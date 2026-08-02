@@ -524,6 +524,8 @@ export const en = {
       confirmPasswordLabel: "Confirm your password",
       confirmDeletion: "Confirm Deletion",
       passwordTitle: "Password",
+      sessionTitle: "Session",
+      logOut: "Log Out",
       dangerZone: "Danger Zone",
     },
     dataExport: {

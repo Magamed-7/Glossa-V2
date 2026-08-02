@@ -524,6 +524,8 @@ export const tg = {
       confirmPasswordLabel: "Паролро тасдиқ кунед",
       confirmDeletion: "Тасдиқи ҳазф",
       passwordTitle: "Парол",
+      sessionTitle: "Сеанс",
+      logOut: "Баромадан",
       dangerZone: "Минтақаи хатарнок",
     },
     dataExport: {

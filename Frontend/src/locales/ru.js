@@ -524,6 +524,8 @@ export const ru = {
       confirmPasswordLabel: "Подтвердите пароль",
       confirmDeletion: "Подтвердить удаление",
       passwordTitle: "Пароль",
+      sessionTitle: "Сессия",
+      logOut: "Выйти",
       dangerZone: "Опасная зона",
     },
     dataExport: {
