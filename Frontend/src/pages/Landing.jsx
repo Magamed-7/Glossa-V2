@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPlans } from "../lib/api/subscriptions.js";
@@ -44,6 +45,13 @@ export default function Landing() {
   const { status } = useAuth();
   const authed = status === "authenticated";
   const { data: plans, loading } = useApi(() => getPlans(), []);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === "#pricing") {
+      document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [location.hash]);
 
   return (
     <div>

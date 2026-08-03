@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useT } from "../../lib/i18n.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
@@ -8,6 +8,14 @@ export default function PublicLayout() {
   const t = useT();
   const { status } = useAuth();
   const authed = status === "authenticated";
+  const location = useLocation();
+
+  function goToPricing(e) {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
@@ -22,7 +30,7 @@ export default function PublicLayout() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 font-label text-label-md uppercase tracking-widest">
-            <Link to="/#pricing" className="hover:text-secondary transition-colors">
+            <Link to="/#pricing" onClick={goToPricing} className="hover:text-secondary transition-colors">
               {t("public.nav.pricing")}
             </Link>
             <Link to="/about" className="hover:text-secondary transition-colors">
@@ -81,7 +89,7 @@ export default function PublicLayout() {
               <span className="font-label text-label-md uppercase text-primary border-b border-tertiary pb-2">
                 {t("public.footer.navigation")}
               </span>
-              <Link to="/#pricing" className="font-body text-body-md text-on-surface-variant hover:underline decoration-2 decoration-secondary">
+              <Link to="/#pricing" onClick={goToPricing} className="font-body text-body-md text-on-surface-variant hover:underline decoration-2 decoration-secondary">
                 {t("public.nav.pricing")}
               </Link>
               <Link to="/about" className="font-body text-body-md text-on-surface-variant hover:underline decoration-2 decoration-secondary">
