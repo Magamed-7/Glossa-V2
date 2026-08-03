@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Achievements from "./pages/Achievements.jsx";
 import About from "./pages/About.jsx";
 import AuthorStudio from "./pages/AuthorStudio.jsx";
+import Contact from "./pages/Contact.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Faq from "./pages/Faq.jsx";
 import Landing from "./pages/Landing.jsx";
@@ -19,6 +20,7 @@ import Notifications from "./pages/Notifications.jsx";
 import Onboarding from "./pages/Onboarding.jsx";
 import PasswordReset from "./pages/PasswordReset.jsx";
 import Pricing from "./pages/Pricing.jsx";
+import Privacy from "./pages/Privacy.jsx";
 import PublicProfile from "./pages/PublicProfile.jsx";
 import Register from "./pages/Register.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
@@ -26,6 +28,7 @@ import Settings from "./pages/Settings.jsx";
 import SpacedRepetition from "./pages/SpacedRepetition.jsx";
 import StoriesCatalog from "./pages/StoriesCatalog.jsx";
 import StripeReturn from "./pages/StripeReturn.jsx";
+import Terms from "./pages/Terms.jsx";
 import TutorScenarios from "./pages/TutorScenarios.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
@@ -65,6 +68,9 @@ export default function App() {
         <Route path="/" element={page(Landing)} />
         <Route path="/about" element={page(About)} />
         <Route path="/faq" element={page(Faq)} />
+        <Route path="/privacy" element={page(Privacy)} />
+        <Route path="/terms" element={page(Terms)} />
+        <Route path="/contact" element={page(Contact)} />
       </Route>
 
       <Route element={<GuestRoute />}>

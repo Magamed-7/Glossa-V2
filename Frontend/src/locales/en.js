@@ -604,7 +604,14 @@ export const en = {
       dashboard: "Dashboard",
     },
     footer: {
-      copyright: "© 2026 Glossa. Mastery through design.",
+      tagline: "A modern standard for language learners, built on the principles of structured, daily practice.",
+      navigation: "Navigation",
+      legal: "Legal",
+      privacy: "Privacy Policy",
+      terms: "Terms of Service",
+      contact: "Contact",
+      copyright: "© 2026 Glossa.",
+      rights: "All rights reserved.",
     },
   },
   landing: {
@@ -764,6 +771,67 @@ export const en = {
         question: "Can I change the site's interface language?",
         answer: "Yes — use the language switcher in the header on any page, including the login and registration screens.",
       },
+    },
+  },
+  legal: {
+    privacy: {
+      eyebrow: "Legal",
+      title: "Privacy",
+      accent: "Policy",
+      updated: "Last updated: August 2026",
+      sections: [
+        {
+          title: "What we collect",
+          body: "We collect the information you give us directly — your email, username, and learning progress — plus basic technical data like device type and browser, used only to keep the service working correctly.",
+        },
+        {
+          title: "How we use it",
+          body: "Your data is used to run your account, track your learning progress, and personalize stories, grammar, and AI tutor sessions. We do not sell your personal data to third parties.",
+        },
+        {
+          title: "Your choices",
+          body: "You can review and update your profile information, change your privacy visibility, or delete your account entirely from Settings at any time.",
+        },
+        {
+          title: "Contact",
+          body: "Questions about this policy can be sent through the Contact page.",
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "Legal",
+      title: "Terms of",
+      accent: "Service",
+      updated: "Last updated: August 2026",
+      sections: [
+        {
+          title: "Using Glossa",
+          body: "By creating an account, you agree to use Glossa for personal language learning and to keep your login credentials secure.",
+        },
+        {
+          title: "Subscriptions",
+          body: "Paid plans renew automatically until cancelled. You can change or cancel your plan at any time from your Wallet settings; access continues until the end of the current billing period.",
+        },
+        {
+          title: "Content",
+          body: "Stories and materials you create remain yours. By publishing to the Marketplace, you grant other learners a license to read your work within Glossa.",
+        },
+        {
+          title: "Fair use",
+          body: "Automated scraping, abuse of the AI tutor, or attempts to disrupt the service are not permitted and may result in account suspension.",
+        },
+      ],
+    },
+    contact: {
+      eyebrow: "Get in Touch",
+      title: "Contact",
+      accent: "Us",
+      description: "Have a question about your account, a subscription, or something you found on the platform? Reach out — we read everything.",
+      emailLabel: "Email",
+      email: "support@glossa.app",
+      hoursLabel: "Response time",
+      hours: "We typically reply within 2 business days.",
+      cta: "Or create an account and message us from Settings.",
     },
   },
 };

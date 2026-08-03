@@ -13,36 +13,46 @@ const ROW_KEYS = [
   },
 ];
 
+function divider(i, total) {
+  return i < total - 1 ? "border-r-2 border-tertiary" : "";
+}
+
 export default function PlanComparison({ plans }) {
   const t = useT();
   return (
-    <div className="overflow-x-auto mt-section-gap">
-      <table className="w-full border-collapse">
+    <div className="border-2 border-tertiary bg-surface overflow-x-auto">
+      <table className="w-full border-collapse text-left">
         <thead>
-          <tr className="border-b-2 border-tertiary">
-            <th scope="col" className="text-left py-3 font-label text-label-md uppercase">{t("pricing.feature")}</th>
-            {plans.map((plan) => (
-              <th key={plan.id} scope="col" className="text-center py-3 font-label text-label-md uppercase capitalize">
+          <tr className="border-b-2 border-tertiary bg-surface-container-high">
+            <th scope="col" className="p-6 font-label text-label-md uppercase tracking-widest border-r-2 border-tertiary">
+              {t("pricing.feature")}
+            </th>
+            {plans.map((plan, i) => (
+              <th
+                key={plan.id}
+                scope="col"
+                className={`p-6 font-label text-label-md uppercase tracking-widest text-center capitalize ${divider(i, plans.length)}`}
+              >
                 {plan.code}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="font-body text-body-md">
           {ROW_KEYS.map((row) => (
             <tr key={row.key} className="border-b border-surface-container-highest">
-              <td className="py-3 font-body text-body-md">{t(row.labelKey)}</td>
-              {plans.map((plan) => (
-                <td key={plan.id} className="py-3 text-center font-ledger">
+              <td className="p-6 border-r-2 border-tertiary font-semibold">{t(row.labelKey)}</td>
+              {plans.map((plan, i) => (
+                <td key={plan.id} className={`p-6 text-center font-ledger ${divider(i, plans.length)}`}>
                   {row.format(plan[row.key])}
                 </td>
               ))}
             </tr>
           ))}
           <tr className="border-b border-surface-container-highest">
-            <td className="py-3 font-body text-body-md">{t("pricing.rows.buyStories")}</td>
-            {plans.map((plan) => (
-              <td key={plan.id} className="py-3 text-center">
+            <td className="p-6 border-r-2 border-tertiary font-semibold">{t("pricing.rows.buyStories")}</td>
+            {plans.map((plan, i) => (
+              <td key={plan.id} className={`p-6 text-center ${divider(i, plans.length)}`}>
                 {plan.can_buy_stories ? (
                   <Icon name="check" className="text-secondary" />
                 ) : (
@@ -52,9 +62,9 @@ export default function PlanComparison({ plans }) {
             ))}
           </tr>
           <tr>
-            <td className="py-3 font-body text-body-md">{t("pricing.rows.telegram")}</td>
-            {plans.map((plan) => (
-              <td key={plan.id} className="py-3 text-center">
+            <td className="p-6 border-r-2 border-tertiary font-semibold">{t("pricing.rows.telegram")}</td>
+            {plans.map((plan, i) => (
+              <td key={plan.id} className={`p-6 text-center ${divider(i, plans.length)}`}>
                 {plan.telegram_access ? (
                   <Icon name="check" className="text-secondary" />
                 ) : (

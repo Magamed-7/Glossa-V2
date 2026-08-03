@@ -176,25 +176,31 @@ export default function Landing() {
           </div>
         )}
 
-        {!loading && plans && (
-          <div className="mt-section-gap">
-            <h3 className="font-display text-headline-lg mb-8">{t("landing.pricing.comparisonTitle")}</h3>
-            <PlanComparison plans={plans} />
-          </div>
-        )}
       </section>
 
+      {!loading && plans && (
+        <section className="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+          <h3 className="font-display text-headline-lg mb-12">{t("landing.pricing.comparisonTitle")}</h3>
+          <PlanComparison plans={plans} />
+        </section>
+      )}
+
       {!authed && (
-        <section className="border-t-2 border-tertiary bg-surface-container-low">
-          <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-20 text-center">
-            <h2 className="font-headline text-headline-lg mb-6">
-              {t("landing.ctaBanner.titleLead")} <span className="italic text-secondary">{t("landing.ctaBanner.titleAccent")}</span>
-            </h2>
-            <p className="font-body text-body-lg text-on-surface-variant max-w-xl mx-auto mb-10">{t("landing.ctaBanner.description")}</p>
-            <NeoButton as={Link} to="/register" className="inline-flex items-center gap-2">
-              {t("landing.ctaBanner.cta")}
-              <Icon name="arrow_forward" />
-            </NeoButton>
+        <section className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-section-gap text-center overflow-hidden relative">
+          <div className="flex flex-col items-center gap-10">
+            <div className="border-2 border-tertiary p-1 bg-surface rotate-1">
+              <div className="border-2 border-tertiary p-8 md:p-20 flex flex-col items-center gap-8 bg-surface-container-low">
+                <h2 className="font-display text-display-lg-mobile md:text-display-lg max-w-2xl leading-none">
+                  {t("landing.ctaBanner.titleLead")} <br />
+                  <span className="text-secondary italic">{t("landing.ctaBanner.titleAccent")}</span>
+                </h2>
+                <p className="font-body text-body-lg text-on-surface-variant max-w-xl">{t("landing.ctaBanner.description")}</p>
+                <NeoButton as={Link} to="/register" className="px-12 py-6 tracking-[0.2em] inline-flex items-center gap-2">
+                  {t("landing.ctaBanner.cta")}
+                  <Icon name="arrow_forward" />
+                </NeoButton>
+              </div>
+            </div>
           </div>
         </section>
       )}
