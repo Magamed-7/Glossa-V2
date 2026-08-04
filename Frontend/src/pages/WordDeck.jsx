@@ -351,11 +351,7 @@ export default function WordDeck() {
       const selected = shuffled.slice(0, setupCount);
 
       setGameItems(selected);
-      setFlipIndex(0);
       setTypeIndex(0);
-      setFlipCombo(0);
-      setFlipXp(0);
-      setIsFlipped(false);
 
       if (gameToLaunch === "speed-recall") {
         setRecallTimeLeft(60);
