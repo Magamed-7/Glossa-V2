@@ -277,9 +277,6 @@ export const en = {
       currentRank: "Current Rank",
       streakRisk: "BREAKS TODAY",
       total: "total",
-      missionSubtitle: "Review your current directives, track your field progression, and maintain operational readiness.",
-      streakLabel: "STREAK",
-      days: "DAYS",
     },
   },
   review: {

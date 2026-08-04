@@ -759,201 +759,145 @@ export default function WordDeck() {
       : 0;
 
     return (
-      <div className="min-h-screen bg-[#f5f0eb] text-[#1a1a1a]">
-        <div className="max-w-4xl mx-auto px-8 py-12">
-
-          {/* ── Header ── */}
-          <div className="mb-2">
-            <h1 className="font-serif text-[clamp(2.4rem,6vw,3.8rem)] font-black leading-none tracking-tight uppercase">
-              {t("deck.games.missionControlTitle")}
-            </h1>
+      <div className="max-w-5xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
+        {/* Header */}
+        <header className="border-b-[2px] border-on-surface pb-4 mb-8 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <h1 className="font-serif text-4xl md:text-5xl">{t("deck.games.missionControlTitle")}</h1>
+            <button
+              onClick={() => setGameMode("archive")}
+              className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
+            >
+              {t("deck.games.btnStopExit")}
+            </button>
           </div>
-          <p className="text-[13px] text-[#888] mb-10 max-w-sm leading-snug">
-            {t("deck.games.missionSubtitle")}
-          </p>
+        </header>
 
-          {/* ── Back button ── */}
-          <button
-            onClick={() => setGameMode("archive")}
-            className="mb-10 text-xs border border-[#c0b8b0] text-[#555] px-4 py-1.5 uppercase tracking-widest hover:bg-[#e8e2da] transition-colors font-mono"
-          >
-            ← {t("deck.games.btnStopExit")}
-          </button>
-
-          {missionsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-8 animate-pulse">
-              <div className="flex flex-col gap-6">
-                <div className="h-28 bg-[#e2dbd4] rounded" />
-                <div className="h-64 bg-[#e2dbd4] rounded" />
-              </div>
-              <div className="flex flex-col gap-6">
-                <div className="h-52 bg-[#e2dbd4] rounded" />
-                <div className="h-60 bg-[#e2dbd4] rounded" />
-              </div>
+        {missionsLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 animate-pulse">
+            <div className="md:col-span-8 flex flex-col gap-6">
+              <div className="h-32 bg-surface-variant rounded" />
+              <div className="h-56 bg-surface-variant rounded" />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-8 items-start">
-
-              {/* ── LEFT COLUMN ── */}
-              <div className="flex flex-col gap-8">
-
-                {/* Operations Log */}
-                <section>
-                  <h2 className="font-serif text-xl font-bold mb-5">
-                    {t("deck.games.operationsLog")}
-                  </h2>
-                  <div className="grid grid-cols-7 gap-2">
-                    {opLog.map((dayEntry, index) => {
-                      const isToday = dayEntry.date === new Date().toISOString().split("T")[0];
-                      return (
-                        <div
-                          key={index}
-                          className={`aspect-square border flex flex-col items-start justify-start p-1.5 relative overflow-hidden transition-all ${
-                            isToday
-                              ? "border-[2px] border-[#1a1a1a] bg-[#f0ebe4]"
-                              : "border-[#c0b8b0] bg-transparent"
-                          }`}
-                        >
-                          <span className="font-mono text-[10px] text-[#888] leading-none">{dayEntry.day}</span>
-                          {dayEntry.completed && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <span
-                                className="font-serif text-[9px] font-black text-[#c0392b] border border-[#c0392b] px-1 py-0 uppercase leading-none transform -rotate-12 select-none"
-                              >
-                                {t("deck.games.duty")}
-                              </span>
-                            </div>
-                          )}
+            <div className="md:col-span-4 flex flex-col gap-6">
+              <div className="h-40 bg-surface-variant rounded" />
+              <div className="h-48 bg-surface-variant rounded" />
+            </div>
+          </div>
+        ) : (
+          /* Grid Layout */
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Left Column: Operations Log & Checklist */}
+            <div className="md:col-span-8 flex flex-col gap-10">
+              {/* 7-Day Log */}
+              <section>
+                <h2 className="font-serif text-2xl font-bold text-primary mb-6 border-b-2 border-primary inline-block pb-1">
+                  {t("deck.games.operationsLog")}
+                </h2>
+                <div className="grid grid-cols-7 gap-3">
+                  {opLog.map((dayEntry, index) => (
+                    <div
+                      key={index}
+                      className={`aspect-square border-2 border-primary bg-surface flex flex-col items-center justify-center relative overflow-hidden ${
+                        dayEntry.date === new Date().toISOString().split("T")[0]
+                          ? "bg-surface-container-high font-bold ring-2 ring-secondary"
+                          : ""
+                      }`}
+                    >
+                      <span className="font-mono text-xs text-outline absolute top-2 left-2">{dayEntry.day}</span>
+                      {dayEntry.completed && (
+                        <div className="stamp absolute inset-0 m-auto w-max h-max font-serif text-[10px] uppercase px-2 py-0.5 border-2 border-secondary text-secondary font-black transform -rotate-12">
+                          {t("deck.games.duty")}
                         </div>
-                      );
-                    })}
-                  </div>
-                </section>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
 
-                {/* Daily Missions card */}
-                <section className="border border-[#c0b8b0] bg-white relative">
-                  {/* orange dog-ear corner */}
-                  <div className="absolute top-0 right-0 w-9 h-9 bg-[#c0392b] clip-corner" style={{
-                    clipPath: "polygon(100% 0, 0 0, 100% 100%)"
-                  }} />
-
-                  <div className="px-7 pt-7 pb-8">
-                    <h2 className="font-serif text-lg font-black uppercase tracking-widest mb-6 border-b border-[#e0dbd4] pb-4">
-                      {t("deck.games.dailyMissions")}
-                    </h2>
-
-                    <ul className="flex flex-col gap-3">
-                      {missions.map((mission) => (
-                        <li key={mission.id}>
-                          <div className={`flex items-center gap-4 border px-4 py-3.5 transition-colors ${
-                            mission.completed
-                              ? "border-[#c0b8b0] bg-[#f5f0eb]"
-                              : "border-[#c0b8b0] bg-white hover:bg-[#f9f6f2]"
-                          }`}>
-                            {/* Round radio-style checkbox */}
-                            <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${
-                              mission.completed
-                                ? "border-[#1a1a1a] bg-[#1a1a1a]"
-                                : "border-[#c0b8b0] bg-transparent"
-                            }`}>
-                              {mission.completed && (
-                                <div className="w-2.5 h-2.5 rounded-full bg-white" />
-                              )}
+              {/* Daily Missions */}
+              <section className="bg-surface border-2 border-primary p-6 shadow-[5px_5px_0_0_#000] relative">
+                <div className="absolute top-0 right-0 w-8 h-8 border-l-2 border-b-2 border-primary bg-[#ffddb8]"></div>
+                <h2 className="font-serif text-2xl font-bold text-primary mb-6 uppercase tracking-wider">
+                  {t("deck.games.dailyMissions")}
+                </h2>
+                <ul className="flex flex-col gap-4">
+                  {missions.map((mission) => (
+                    <li key={mission.id} className="flex items-start gap-4 p-4 border-2 border-primary hover:bg-surface-container-high transition-all">
+                      <div className={`w-5 h-5 border-2 border-primary flex-shrink-0 flex items-center justify-center mt-0.5 ${
+                        mission.completed ? "bg-primary text-surface text-xs font-bold" : ""
+                      }`}>
+                        {mission.completed && "✓"}
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-body text-base ${mission.completed ? "line-through text-on-surface-variant" : "text-primary"}`}>
+                          {mission.description}
+                          {mission.completed && (
+                            <span className="ml-2 text-xs font-bold text-secondary uppercase">({t("deck.games.completed")})</span>
+                          )}
+                        </p>
+                        {/* Progress bar */}
+                        {!mission.completed && (
+                          <div className="mt-2">
+                            <div className="w-full border border-primary h-2 bg-surface-container relative overflow-hidden">
+                              <div
+                                className="absolute top-0 left-0 h-full bg-secondary transition-all"
+                                style={{ width: `${Math.min(100, Math.round((mission.progress / mission.target) * 100))}%` }}
+                              />
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <span className={`text-sm font-medium leading-tight ${
-                                mission.completed ? "line-through text-[#aaa]" : "text-[#1a1a1a]"
-                              }`}>
-                                {mission.description}
-                              </span>
-                              {!mission.completed && mission.progress > 0 && (
-                                <div className="mt-1.5">
-                                  <div className="h-1 bg-[#e8e2da] rounded-full overflow-hidden">
-                                    <div
-                                      className="h-full bg-[#c0392b] rounded-full transition-all"
-                                      style={{ width: `${Math.min(100, Math.round((mission.progress / mission.target) * 100))}%` }}
-                                    />
-                                  </div>
-                                  <span className="text-[10px] text-[#aaa] mt-0.5 block font-mono">
-                                    {mission.progress}/{mission.target}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
+                            <p className="font-mono text-[10px] text-outline mt-1">
+                              {mission.progress} / {mission.target}
+                            </p>
                           </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </section>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+
+            {/* Right Column: Streak Card & Dossier Record */}
+            <div className="md:col-span-4 flex flex-col gap-8">
+              {/* Streak Counter */}
+              <div className={`border-2 border-primary p-6 shadow-[5px_5px_0_0_#000] flex flex-col items-center justify-center text-center ${isMaintained ? "bg-[#ffdadb]" : "bg-surface-container"}`}>
+                <Icon name="local_fire_department" className={`text-5xl mb-2 ${isMaintained ? "text-secondary" : "text-outline"}`} />
+                <h3 className="font-serif text-2xl font-bold uppercase text-primary">
+                  {t("deck.games.streakDays", { n: streakCount })}
+                </h3>
+                <p className="font-mono text-[10px] text-outline uppercase mt-1 tracking-widest">
+                  {isMaintained ? t("deck.games.maintained") : t("deck.games.streakRisk")}
+                </p>
               </div>
 
-              {/* ── RIGHT COLUMN ── */}
-              <div className="flex flex-col gap-6">
-
-                {/* Streak card */}
-                <div className={`flex flex-col items-center justify-center text-center py-8 px-4 border border-[#c0b8b0] ${
-                  isMaintained ? "bg-[#fde8e8]" : "bg-[#f5f0eb]"
-                }`}>
-                  {/* Flame icon SVG */}
-                  <svg viewBox="0 0 40 48" className="w-10 h-12 mb-3" fill="none">
-                    <path
-                      d="M20 2C20 2 30 14 30 24C30 30 25 36 20 38C15 36 10 30 10 24C10 14 20 2 20 2Z"
-                      fill={isMaintained ? "#c0392b" : "#bbb"}
-                    />
-                    <path
-                      d="M20 20C20 20 25 26 25 30C25 33 22.5 36 20 37C17.5 36 15 33 15 30C15 26 20 20 20 20Z"
-                      fill={isMaintained ? "#ff6b6b" : "#ddd"}
-                    />
-                  </svg>
-                  <div className="font-serif text-2xl font-black uppercase tracking-tight leading-tight text-[#1a1a1a]">
-                    {t("deck.games.streakLabel")}: {streakCount}
-                    <br />
-                    {t("deck.games.days")}
-                  </div>
-                  <div className="w-12 h-[2px] bg-[#c0b8b0] my-3" />
-                  <p className="font-mono text-[10px] text-[#888] uppercase tracking-[0.2em]">
-                    {isMaintained ? t("deck.games.maintained") : t("deck.games.streakRisk")}
-                  </p>
+              {/* Service Record */}
+              <div className="bg-surface border-2 border-primary p-6 shadow-[5px_5px_0_0_#000] flex flex-col items-center text-center">
+                <h3 className="font-mono text-xs text-primary uppercase tracking-widest mb-6 w-full text-left border-b-2 border-primary pb-2">
+                  {t("deck.games.serviceRecord")}
+                </h3>
+                <div className="w-24 h-24 mb-4 border-2 border-primary rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center">
+                  <Icon name="local_police" className="text-5xl text-secondary" />
                 </div>
-
-                {/* Certificate of Service card */}
-                <div className="border border-[#c0b8b0] bg-white px-5 py-6 flex flex-col items-center text-center">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#888] mb-5">
-                    {t("deck.games.serviceRecord")}
-                  </p>
-
-                  {/* Circular badge */}
-                  <div className="w-24 h-24 rounded-full border-2 border-[#1a1a1a] flex items-center justify-center mb-5 bg-[#f5f0eb] relative overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.15)]">
-                    {/* Decorative inner ring */}
-                    <div className="absolute inset-2 rounded-full border border-[#c0b8b0]" />
-                    <Icon name="local_police" className="text-4xl text-[#1a1a1a] relative z-10" />
-                  </div>
-
-                  <div className="font-serif text-2xl font-black uppercase tracking-tight leading-tight mb-1 text-[#1a1a1a]">
-                    {rank.split(" ").slice(-2).join("\n")}
-                  </div>
-                  <p className="text-[11px] italic text-[#888] mb-5">{t("deck.games.currentRank")}</p>
-
-                  {/* XP bar */}
-                  <div className="w-full">
-                    <div className="h-4 bg-[#e8e2da] border border-[#c0b8b0] relative overflow-hidden mb-1">
-                      <div
-                        className="absolute top-0 left-0 h-full bg-[#1a1a1a] transition-all"
-                        style={{ width: `${xpPct}%` }}
-                      />
-                    </div>
-                    <div className="flex justify-between font-mono text-[10px] text-[#888]">
-                      <span>{xpLevelMin} XP</span>
-                      <span>{xpLevelMax} XP</span>
-                    </div>
-                  </div>
+                <div className="font-serif text-xl font-bold uppercase tracking-tight mb-1 text-primary">
+                  {rank}
                 </div>
+                <p className="text-xs text-on-surface-variant mb-4">{t("deck.games.currentRank")}</p>
 
+                <div className="w-full border-2 border-primary h-5 relative bg-surface-container-low overflow-hidden mb-2">
+                  <div
+                    className="absolute top-0 left-0 h-full bg-primary transition-all"
+                    style={{ width: `${xpPct}%` }}
+                  />
+                </div>
+                <div className="w-full flex justify-between font-mono text-[10px] text-outline">
+                  <span>{xpLevelMin} XP</span>
+                  <span>{xpTotal} XP {t("deck.games.total")}</span>
+                  <span>{xpLevelMax} XP</span>
+                </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }

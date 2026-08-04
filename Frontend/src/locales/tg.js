@@ -277,9 +277,6 @@ export const tg = {
       currentRank: "Рутбаи ҷорӣ",
       streakRisk: "ИМРӮЗ МЕШАВАД",
       total: "ҷамъ",
-      missionSubtitle: "Дастурҳои ҷори худро, пешрафти саҳнаварди худ ва тайёрии ҷангҳиявирои амалиётироӣ.",
-      streakLabel: "СИЛСИЛА",
-      days: "РӮЗҲО",
     },
   },
   review: {
