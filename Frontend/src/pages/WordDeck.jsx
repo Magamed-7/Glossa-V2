@@ -180,10 +180,10 @@ export default function WordDeck() {
       setRecallWords((prev) => {
         let allDone = true;
         const next = prev.map((w) => {
-          const nextY = w.y + 1.8; // speed
+          const nextY = w.y + 3.2; // speed increased
           
           let missed = w.missed;
-          if (!w.classified && !missed && nextY > 230) {
+          if (!w.classified && !missed && nextY > 250) {
             missed = true;
             setRecallCombo(0);
             setCardStatus(w.id, "hard").catch((err) => console.error(err));
@@ -359,7 +359,7 @@ export default function WordDeck() {
         setRecallXp(0);
         const initial = selected.map((item, idx) => ({
           ...item,
-          y: -idx * 140 - 50,
+          y: -idx * 200 - 100,
           classified: null,
           missed: false
         }));
@@ -381,7 +381,7 @@ export default function WordDeck() {
 
     recallWords.forEach((w, idx) => {
       if (w.classified === null && !w.missed && w.y >= 100 && w.y <= 280) {
-        const dist = Math.abs(w.y - 190);
+        const dist = Math.abs(w.y - 200);
         if (dist < minDistance) {
           minDistance = dist;
           activeIndex = idx;
@@ -652,141 +652,145 @@ export default function WordDeck() {
           backgroundSize: "20px 20px"
         }}
       >
-        {/* Subtle Header */}
-        <header className="w-full flex justify-between items-center mb-6 z-10">
-          <div className="bg-[#fcf9f6] border-2 border-black p-4 flex items-center gap-2 shadow-[4px_4px_0_0_#000] neo-card">
-            <Icon name="warning" className="text-secondary text-2xl" />
-            <h1 className="font-serif text-2xl font-bold uppercase tracking-tight">
+        {/* Header */}
+        <header className="w-full flex flex-col md:flex-row justify-between items-center gap-4 mb-8 z-10 max-w-5xl mx-auto">
+          <div className="bg-[#fcf9f6] border-2 border-black p-4 flex items-center gap-3 shadow-[4px_4px_0_0_#0F172A] neo-card">
+            <span className="material-symbols-outlined text-secondary text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
+            <h1 className="font-serif text-3xl font-bold uppercase tracking-tight text-primary">
               Speed Recall: Emergency Purge
             </h1>
           </div>
-          <button
-            onClick={() => setGameMode("archive")}
-            className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
-          >
-            {t("deck.games.btnStopExit")}
-          </button>
-          <div className="bg-[#fcf9f6] border-2 border-[#ba1a1a] p-4 flex flex-col items-end shadow-[4px_4px_0_0_#000] neo-card">
-            <span className="text-[10px] text-secondary font-mono uppercase tracking-widest font-bold">Time Remaining</span>
-            <span className="font-serif text-3xl font-black text-secondary">{recallTimeLeft}s</span>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setGameMode("archive")}
+              className="text-sm bg-[#fcf9f6] text-primary border-2 border-primary px-5 py-3 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase cursor-pointer"
+            >
+              {t("deck.games.btnStopExit")}
+            </button>
+            <div className="bg-[#fcf9f6] border-2 border-[#ba1a1a] px-6 py-2.5 flex flex-col items-end shadow-[4px_4px_0_0_#0F172A] neo-card">
+              <span className="text-[10px] text-[#ba1a1a] font-mono uppercase tracking-widest font-bold">Time Remaining</span>
+              <span className="font-serif text-4xl font-black text-[#ba1a1a] leading-none">60s</span>
+            </div>
           </div>
         </header>
 
-        {/* Hazard Wrapper */}
+        {/* Hazard Wrapper Container */}
         <main 
-          className="flex-grow flex flex-col md:flex-row items-stretch gap-6 w-full max-w-5xl mx-auto z-10 p-1"
+          className="flex-grow w-full max-w-5xl mx-auto z-10 p-6 border-4 border-[#ba1a1a] flex flex-col md:flex-row items-stretch gap-6 relative"
           style={{
             background: "repeating-linear-gradient(45deg, #ba1a1a, #ba1a1a 12px, #fcf9f6 12px, #fcf9f6 24px)"
           }}
         >
-          <div className="bg-[#fcf9f6] bg-opacity-95 p-4 flex-grow flex flex-col md:flex-row items-stretch gap-6">
-            
-            {/* Left Indicator */}
-            <div className="hidden md:flex flex-col justify-center items-center w-1/4">
-              <button
-                onClick={() => handleRecallAction(true)}
-                className="bg-[#fcf9f6] border-2 border-black p-6 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer w-full neo-card"
-              >
-                <Icon name="arrow_back" className="text-4xl text-black" />
-                <span className="font-serif text-2xl font-black uppercase text-black">{t("deck.games.btnKnow")}</span>
-                <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Left Arrow</span>
-              </button>
+          {/* Left Card: KNOW */}
+          <div className="hidden md:flex flex-col justify-center items-center w-1/4 select-none">
+            <div
+              onClick={() => handleRecallAction(true)}
+              className="bg-[#fcf9f6] border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform -rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
+            >
+              <span className="material-symbols-outlined text-display-lg text-primary text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_left</span>
+              <span className="font-serif text-3xl font-bold text-primary tracking-tight">KNOW</span>
+              <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Left Arrow</span>
             </div>
-
-            {/* Central Scrolling Area */}
-            <div className="flex-grow relative overflow-hidden flex flex-col items-center justify-center bg-[#f0edea] border-2 border-black shadow-[4px_4px_0_0_#000] min-h-[400px] neo-card">
-              
-              {/* Combo Indicator */}
-              <div className="absolute top-4 right-4 z-20">
-                <div className="px-4 py-2 bg-[#ffddb8] border-2 border-black shadow-[2px_2px_0_0_#000] transform rotate-2">
-                  <span className="font-mono text-xs font-bold text-black uppercase">{t("deck.games.combo").toUpperCase()} x{recallCombo}</span>
-                </div>
-                <div className="px-4 py-1 bg-white border-2 border-black shadow-[2px_2px_0_0_#000] transform -rotate-1 mt-1 text-center">
-                  <span className="font-mono text-[10px] font-bold text-secondary">+{recallXp} XP</span>
-                </div>
-              </div>
-
-              {/* Target Reticle */}
-              <div className="absolute top-1/2 left-0 right-0 h-[100px] -translate-y-1/2 border-y-4 border-[#ba1a1a] pointer-events-none z-10 flex items-center justify-between px-8">
-                <div className="w-4 h-4 bg-[#ba1a1a] rotate-45"></div>
-                <div className="w-4 h-4 bg-[#ba1a1a] rotate-45"></div>
-              </div>
-
-              {/* Words List */}
-              <div className="absolute inset-0">
-                {recallWords.map((w) => {
-                  const isActive = w.y >= 130 && w.y <= 270;
-                  
-                  let wordClass = "absolute left-0 right-0 text-center font-serif text-3xl font-bold transition-transform duration-75 select-none ";
-                  if (w.classified === "know") {
-                    wordClass += "text-emerald-600 line-through opacity-40 scale-90";
-                  } else if (w.classified === "forgot") {
-                    wordClass += "text-secondary line-through opacity-40 scale-90";
-                  } else if (w.missed) {
-                    wordClass += "text-outline opacity-30 scale-95";
-                  } else if (isActive) {
-                    wordClass += "text-primary scale-110 font-black";
-                  } else {
-                    wordClass += "text-outline opacity-60";
-                  }
-
-                  return (
-                    <div
-                      key={w.id}
-                      className={wordClass}
-                      style={{
-                        transform: `translate3d(0, ${w.y - 20}px, 0)`,
-                        top: 0
-                      }}
-                    >
-                      {isActive && !w.classified && !w.missed ? (
-                        <span className="inline-block bg-[#ffdadb] text-secondary border-2 border-[#b90538] px-6 py-1.5 shadow-[3px_3px_0_0_#000] font-sans text-2xl uppercase tracking-wider font-extrabold">
-                          {w.word}
-                        </span>
-                      ) : (
-                        <span>{w.word}</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Gradient Fades */}
-              <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#f0edea] to-transparent pointer-events-none z-20"></div>
-              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f0edea] to-transparent pointer-events-none z-20"></div>
-            </div>
-
-            {/* Right Indicator */}
-            <div className="hidden md:flex flex-col justify-center items-center w-1/4">
-              <button
-                onClick={() => handleRecallAction(false)}
-                className="bg-[#fcf9f6] border-2 border-black p-6 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer w-full neo-card"
-              >
-                <Icon name="arrow_forward" className="text-4xl text-secondary" />
-                <span className="font-serif text-2xl font-black uppercase text-secondary">{t("deck.games.btnForget")}</span>
-                <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Right Arrow</span>
-              </button>
-            </div>
-
-            {/* Mobile Indicators */}
-            <div className="flex md:hidden w-full gap-4 mt-auto">
-              <button
-                onClick={() => handleRecallAction(true)}
-                className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[2px_2px_0_0_#000] active:translate-y-0.5"
-              >
-                <Icon name="arrow_back" className="text-2xl text-black" />
-                <span className="font-bold text-sm uppercase text-black">{t("deck.games.btnKnow")}</span>
-              </button>
-              <button
-                onClick={() => handleRecallAction(false)}
-                className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[2px_2px_0_0_#000] active:translate-y-0.5"
-              >
-                <Icon name="arrow_forward" className="text-2xl text-secondary" />
-                <span className="font-bold text-sm uppercase text-secondary">{t("deck.games.btnForget")}</span>
-              </button>
-            </div>
-
           </div>
+
+          {/* Central Scrolling Area */}
+          <div className="flex-grow relative overflow-hidden flex flex-col items-center justify-center border-2 border-black bg-[#f6f3f0] shadow-[4px_4px_0px_0px_#0F172A] min-h-[400px] select-none neo-card">
+            
+            {/* Combo Indicator */}
+            <div className="absolute top-4 right-4 z-20">
+              <div className="px-4 py-2 bg-[#ffddb8] border-2 border-black shadow-[2px_2px_0_0_#000] transform rotate-2">
+                <span className="font-mono text-xs font-bold text-black uppercase">{t("deck.games.combo").toUpperCase()} x{recallCombo}</span>
+              </div>
+              <div className="px-4 py-1 bg-white border-2 border-black shadow-[2px_2px_0_0_#000] transform -rotate-1 mt-1 text-center">
+                <span className="font-mono text-[10px] font-bold text-secondary">+{recallXp} XP</span>
+              </div>
+            </div>
+
+            {/* Target Reticle Line Overlay */}
+            <div className="absolute top-1/2 left-0 right-0 h-[100px] -translate-y-1/2 border-y-4 border-[#ba1a1a] pointer-events-none z-10 flex items-center justify-between px-8 bg-surface bg-opacity-20">
+              <div className="w-4 h-4 bg-[#ba1a1a] rotate-45"></div>
+              <div className="w-4 h-4 bg-[#ba1a1a] rotate-45"></div>
+            </div>
+
+            {/* Words List Container */}
+            <div className="absolute inset-0 select-none">
+              {recallWords.map((w) => {
+                const isActive = w.y >= 150 && w.y <= 250;
+                
+                let wordContent;
+                if (w.classified === "know") {
+                  wordContent = <span className="text-emerald-600 line-through opacity-40">✓ {w.word}</span>;
+                } else if (w.classified === "forgot") {
+                  wordContent = <span className="text-[#ba1a1a] line-through opacity-40">✗ {w.word}</span>;
+                } else if (w.missed) {
+                  wordContent = <span className="text-[#76777d] opacity-20">{w.word}</span>;
+                } else if (isActive) {
+                  wordContent = (
+                    <span className="inline-block bg-[#ffdadb] text-black border-2 border-black px-8 py-2 font-serif font-black text-4xl md:text-5xl shadow-[4px_4px_0_0_#0F172A] transform rotate-1 select-none">
+                      {w.word}
+                    </span>
+                  );
+                } else {
+                  // Compute opacity based on distance to center line (y=200)
+                  const dist = Math.abs(w.y - 200);
+                  let opacity = "opacity-30";
+                  if (dist < 100) opacity = "opacity-75";
+                  else if (dist < 150) opacity = "opacity-50";
+
+                  wordContent = <span className={`text-[#45464d] ${opacity} transition-opacity duration-150`}>{w.word}</span>;
+                }
+
+                return (
+                  <div
+                    key={w.id}
+                    className="absolute left-0 right-0 text-center font-serif text-5xl md:text-6xl font-semibold pointer-events-none select-none"
+                    style={{
+                      transform: `translate3d(0, ${w.y - 28}px, 0)`,
+                      top: 0,
+                      fontFamily: "'EB Garamond', Georgia, serif"
+                    }}
+                  >
+                    {wordContent}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Gradient Fades for Top/Bottom edges */}
+            <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#f6f3f0] to-transparent pointer-events-none z-20"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f6f3f0] to-transparent pointer-events-none z-20"></div>
+          </div>
+
+          {/* Right Card: FORGOT */}
+          <div className="hidden md:flex flex-col justify-center items-center w-1/4 select-none">
+            <div
+              onClick={() => handleRecallAction(false)}
+              className="bg-[#fcf9f6] border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
+            >
+              <span className="material-symbols-outlined text-display-lg text-[#ba1a1a] text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_right</span>
+              <span className="font-serif text-3xl font-bold text-[#ba1a1a] tracking-tight">FORGOT</span>
+              <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Right Arrow</span>
+            </div>
+          </div>
+
+          {/* Mobile Bottom Control Buttons */}
+          <div className="flex md:hidden w-full gap-4 mt-auto z-20">
+            <button
+              onClick={() => handleRecallAction(true)}
+              className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] active:translate-y-0.5 cursor-pointer rounded-none"
+            >
+              <span className="material-symbols-outlined text-2xl text-black">arrow_back</span>
+              <span className="font-bold text-sm uppercase text-black">{t("deck.games.btnKnow")}</span>
+            </button>
+            <button
+              onClick={() => handleRecallAction(false)}
+              className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] active:translate-y-0.5 cursor-pointer rounded-none"
+            >
+              <span className="material-symbols-outlined text-2xl text-[#ba1a1a]">arrow_forward</span>
+              <span className="font-bold text-sm uppercase text-[#ba1a1a]">{t("deck.games.btnForget")}</span>
+            </button>
+          </div>
+
         </main>
       </div>
     );
