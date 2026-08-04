@@ -275,6 +275,8 @@ export const en = {
       serviceRecord: "Service Record",
       archiveAnalyst: "Archive Analyst",
       currentRank: "Current Rank",
+      streakRisk: "BREAKS TODAY",
+      total: "total",
     },
   },
   review: {

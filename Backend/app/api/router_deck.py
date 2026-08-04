@@ -13,8 +13,9 @@ from app.schemas.schema_learning import (
     LearningStats,
     ReviewResponse,
     ReviewSubmit,
+    DailyMissionsResponse,
 )
-from app.services import crud_card, review
+from app.services import crud_card, review, missions
 
 router_deck = APIRouter(prefix='/deck', tags=['Deck'])
 router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])
@@ -133,3 +134,11 @@ async def get_learning_stats(
     current_user=Depends(get_current_user),
 ):
     return await crud_card.get_learning_stats(current_user.id, db)
+
+
+@router_learning.get('/daily-missions', response_model=DailyMissionsResponse)
+async def get_daily_missions(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await missions.get_daily_missions(current_user.id, db)

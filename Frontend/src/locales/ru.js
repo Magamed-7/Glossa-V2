@@ -275,6 +275,8 @@ export const ru = {
       serviceRecord: "Послужной список",
       archiveAnalyst: "Аналитик архива",
       currentRank: "Текущий ранг",
+      streakRisk: "ПРЕРВЁТСЯ СЕГОДНЯ",
+      total: "итого",
     },
   },
   review: {

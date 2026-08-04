@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -54,3 +54,31 @@ class LearningStats(BaseModel):
     learned_count: int
     forgotten_count: int
     retention_rate: float
+
+
+class DailyMissionItem(BaseModel):
+    id: str
+    title: str
+    description: str
+    progress: int
+    target: int
+    completed: bool
+
+
+class OperationsLogDay(BaseModel):
+    day: str
+    date: date
+    completed: bool
+
+
+class DailyMissionsResponse(BaseModel):
+    streak: int
+    streak_maintained: bool
+    xp_today: int
+    xp_total: int
+    xp_level_min: int
+    xp_level_max: int
+    rank: str
+    operations_log: list[OperationsLogDay]
+    daily_missions: list[DailyMissionItem]
+

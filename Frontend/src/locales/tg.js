@@ -275,6 +275,8 @@ export const tg = {
       serviceRecord: "Сабти хидмат",
       archiveAnalyst: "Таҳлилгари бойгонӣ",
       currentRank: "Рутбаи ҷорӣ",
+      streakRisk: "ИМРӮЗ МЕШАВАД",
+      total: "ҷамъ",
     },
   },
   review: {
