@@ -74,6 +74,7 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
         'body': story.body_en,
         'title_translated': story_translation(story, locale, 'title'),
         'body_translated': story_translation(story, locale, 'body'),
+        'word_dictionary': story.word_dictionary,
         'words': [
             {
                 'id': w.id,

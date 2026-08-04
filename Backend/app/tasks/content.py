@@ -35,6 +35,10 @@ async def _index_system_story(story_id: int):
                 'status': 'published',
             },
         )
+        from app.tasks.ai import generate_story_dictionary_task
+        if not story.word_dictionary:
+            generate_story_dictionary_task.delay(story.id)
+            
         return story.id
 
 

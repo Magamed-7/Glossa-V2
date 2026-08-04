@@ -43,6 +43,10 @@ async def create_user_story(data: UserStoryCreate, author_id: int, db: AsyncSess
     db.add(story)
     await db.commit()
     await db.refresh(story)
+
+    from app.tasks.ai import generate_story_dictionary_task
+    generate_story_dictionary_task.delay(story.id)
+
     return story
 
 
@@ -58,6 +62,7 @@ async def update_user_story(story_id: int, author_id: int, data: UserStoryUpdate
         return None
 
     story.title = data.title or story.title
+    body_changed = data.body is not None and data.body != story.body
     story.body = data.body or story.body
     story.description = data.description or story.description
     story.cefr_level = data.cefr_level or story.cefr_level
@@ -76,6 +81,10 @@ async def update_user_story(story_id: int, author_id: int, data: UserStoryUpdate
 
     await db.commit()
     await db.refresh(story)
+
+    if body_changed:
+        from app.tasks.ai import generate_story_dictionary_task
+        generate_story_dictionary_task.delay(story.id)
 
     if story.status == 'published':
         await publish_event(
@@ -211,6 +220,7 @@ async def get_user_story_detail(story_id: int, user_id: int, db: AsyncSession):
 
     if await has_story_access(story, user_id, db):
         response['body'] = story.body
+        response['word_dictionary'] = story.word_dictionary
 
     return response
 

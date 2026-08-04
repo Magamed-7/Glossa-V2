@@ -15,12 +15,12 @@ import { LANGS, useI18n, useT } from "../lib/i18n.jsx";
 const LANGUAGES = [
   { code: "English", key: "english", image: "/img/languages/english-london.webp" },
   { code: "Russian", key: "russian", image: "/img/languages/russian-moscow.webp" },
-  { code: "Tajik", key: "tajik", image: "/img/languages/tajik-pamir.webp" },
+  { code: "Tajik", key: "tajik", image: "/img/languages/tajik-pamir.png" },
 ];
 
 // Родной/интерфейсный язык — те же три языка и те же фото, но выбор здесь настраивает
 // `useI18n().setLang()`, а не то, что человек изучает (см. `LANGUAGES` выше).
-const NATIVE_IMAGES = { en: "/img/languages/english-london.webp", ru: "/img/languages/russian-moscow.webp", tg: "/img/languages/tajik-pamir.webp" };
+const NATIVE_IMAGES = { en: "/img/languages/english-london.webp", ru: "/img/languages/russian-moscow.webp", tg: "/img/languages/tajik-pamir.png" };
 
 function NativeLanguageStep({ onDone }) {
   const t = useT();

@@ -49,3 +49,17 @@ export function confirm2fa({ code }) {
 export function disable2fa({ password }) {
   return auth.post(`${BASE}/2fa/disable`, { password });
 }
+
+export function requestPasswordReset({ email }) {
+  return auth.post(`${BASE}/password-reset`, { email }, { auth: false });
+}
+
+export function verifyPasswordReset({ email, code }) {
+  return auth.post(`${BASE}/password-reset/verify`, { email, code }, { auth: false });
+}
+
+export function confirmPasswordReset({ email, code, password, password_confirm }) {
+  return auth.post(`${BASE}/password-reset/confirm`, { email, code, password, password_confirm }, { auth: false });
+}
+
+

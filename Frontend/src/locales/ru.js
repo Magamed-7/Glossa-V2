@@ -277,6 +277,13 @@ export const ru = {
       currentRank: "Текущий ранг",
       streakRisk: "ПРЕРВЁТСЯ СЕГОДНЯ",
       total: "итого",
+      missionCleanUpDesc: "Повторите не менее {n} слов за сегодня",
+      missionNewCipherDesc: "Добавьте {n} новых слов в колоду за сегодня",
+      missionSpeedMarchDesc: "Заработайте не менее {n} XP за сегодня",
+      lexiconRecruit: "Рекрут Лексикона",
+      seniorCryptographer: "Старший криптограф",
+      masterDecipherer: "Мастер расшифровки",
+      directorOfLexicography: "Директор лексикографии",
     },
   },
   review: {

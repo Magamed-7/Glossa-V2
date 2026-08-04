@@ -277,6 +277,13 @@ export const en = {
       currentRank: "Current Rank",
       streakRisk: "BREAKS TODAY",
       total: "total",
+      missionCleanUpDesc: "Review at least {n} words today",
+      missionNewCipherDesc: "Add {n} new words to the deck today",
+      missionSpeedMarchDesc: "Earn {n} XP in reviews/learning today",
+      lexiconRecruit: "Lexicon Recruit",
+      seniorCryptographer: "Senior Cryptographer",
+      masterDecipherer: "Master Decipherer",
+      directorOfLexicography: "Director of Lexicography",
     },
   },
   review: {

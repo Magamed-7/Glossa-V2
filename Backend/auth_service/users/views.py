@@ -15,6 +15,9 @@ from users.serializers import (
     UpdateMeSerializer,
     UserSerializer,
     VerifyEmailSerializer,
+    PasswordResetRequestSerializer,
+    PasswordResetConfirmSerializer,
+    PasswordResetVerifySerializer,
 )
 from users.throttles import LoginRateThrottle, TwoFactorRateThrottle
 
@@ -29,20 +32,14 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
 
         email_sent = True
-        dev_code = None
 
         try:
-            dev_code = verification.send_verification_email(user)
-        except verification.EmailDeliveryError as exc:
-            email_sent = False
-            dev_code = exc.code
+            verification.send_verification_email(user)
         except verification.ResendCooldownError:
             email_sent = False
 
         data = serializer.data
         data['email_sent'] = email_sent
-        if settings.DEBUG:
-            data['dev_verification_code'] = dev_code
         return Response(data, status=status.HTTP_201_CREATED)
 
 
@@ -71,7 +68,7 @@ class MeView(APIView):
 
             try:
                 verification.send_verification_email(user)
-            except (verification.EmailDeliveryError, verification.ResendCooldownError):
+            except verification.ResendCooldownError:
                 email_sent = False
 
         data = UserSerializer(user).data
@@ -110,21 +107,14 @@ class ResendVerificationView(APIView):
             return Response({'detail': 'Email is already verified'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            dev_code = verification.send_verification_email(request.user)
+            verification.send_verification_email(request.user)
         except verification.ResendCooldownError as exc:
             return Response(
                 {'detail': 'Please wait before requesting another code', 'seconds_left': exc.seconds_left},
                 status=status.HTTP_429_TOO_MANY_REQUESTS,
             )
-        except verification.EmailDeliveryError as exc:
-            data = {'detail': 'Could not send verification email, try again later'}
-            if settings.DEBUG:
-                data['dev_verification_code'] = exc.code
-            return Response(data, status=status.HTTP_502_BAD_GATEWAY)
 
         data = {'detail': 'Verification code sent'}
-        if settings.DEBUG:
-            data['dev_verification_code'] = dev_code
         return Response(data)
 
 
@@ -249,3 +239,68 @@ class Disable2FAView(APIView):
         request.user.save(update_fields=['is_2fa_enabled', 'totp_secret', 'backup_codes'])
 
         return Response({'is_2fa_enabled': False})
+
+
+class PasswordResetRequestView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = PasswordResetRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data['email']
+        try:
+            verification.send_password_reset_email(email)
+        except verification.ResendCooldownError as exc:
+            return Response(
+                {'detail': f'Please wait {exc.seconds_left} seconds before requesting again.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response({'detail': 'Reset code sent.'})
+
+
+class PasswordResetConfirmView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = PasswordResetConfirmSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data['email']
+        code = serializer.validated_data['code']
+        password = serializer.validated_data['password']
+
+        if not verification.verify_password_reset_code(email, code):
+            return Response({'detail': 'Invalid or expired code.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        user.set_password(password)
+        user.is_verified = True
+        user.save(update_fields=['password', 'is_verified'])
+
+        verification.delete_password_reset_code(email)
+
+        return Response({'detail': 'Password reset successful.'})
+
+
+class PasswordResetVerifyView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = PasswordResetVerifySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data['email']
+        code = serializer.validated_data['code']
+
+        if not verification.verify_password_reset_code(email, code):
+            return Response({'detail': 'Invalid or expired code.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'detail': 'Code is correct.'})
+
+

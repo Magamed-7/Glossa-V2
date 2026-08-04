@@ -277,6 +277,13 @@ export const tg = {
       currentRank: "Рутбаи ҷорӣ",
       streakRisk: "ИМРӮЗ МЕШАВАД",
       total: "ҷамъ",
+      missionCleanUpDesc: "Имрӯз камаш {n} калимаро такрор кунед",
+      missionNewCipherDesc: "Имрӯз {n} калимаи навро ба колода илова кунед",
+      missionSpeedMarchDesc: "Имрӯз барои такрор/омӯзиш {n} XP ба даст оред",
+      lexiconRecruit: "Рекрути Лексикон",
+      seniorCryptographer: "Криптографи калон",
+      masterDecipherer: "Устоди рамзкушоӣ",
+      directorOfLexicography: "Директори луғатнигорӣ",
     },
   },
   review: {

@@ -757,6 +757,29 @@ export default function WordDeck() {
     const xpPct = xpLevelMax > xpLevelMin
       ? Math.min(100, Math.round(((xpTotal - xpLevelMin) / (xpLevelMax - xpLevelMin)) * 100))
       : 0;
+    const getMissionTitle = (id, fallback) => {
+      if (id === "cleanup") return t("deck.games.missionCleanUp");
+      if (id === "new_cipher") return t("deck.games.missionNewCipher");
+      if (id === "speed_march") return t("deck.games.missionSpeedMarch");
+      return fallback;
+    };
+
+    const getMissionDescription = (id, target, fallback) => {
+      if (id === "cleanup") return t("deck.games.missionCleanUpDesc", { n: target });
+      if (id === "new_cipher") return t("deck.games.missionNewCipherDesc", { n: target });
+      if (id === "speed_march") return t("deck.games.missionSpeedMarchDesc", { n: target });
+      return fallback;
+    };
+
+    const getRankTranslation = (rankStr) => {
+      if (rankStr === "Lexicon Recruit") return t("deck.games.lexiconRecruit");
+      if (rankStr === "Archive Analyst") return t("deck.games.archiveAnalyst");
+      if (rankStr === "Senior Cryptographer") return t("deck.games.seniorCryptographer");
+      if (rankStr === "Master Decipherer") return t("deck.games.masterDecipherer");
+      if (rankStr === "Director of Lexicography") return t("deck.games.directorOfLexicography");
+      return rankStr;
+    };
+
 
     return (
       <div className="max-w-5xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
@@ -830,12 +853,13 @@ export default function WordDeck() {
                         {mission.completed && "✓"}
                       </div>
                       <div className="flex-1">
-                        <p className={`font-body text-base ${mission.completed ? "line-through text-on-surface-variant" : "text-primary"}`}>
-                          {mission.description}
+                        <div className={`font-body text-base ${mission.completed ? "line-through text-on-surface-variant" : "text-primary"}`}>
+                          <strong className="block text-sm uppercase tracking-wider mb-0.5">{getMissionTitle(mission.id, mission.title)}</strong>
+                          <span className="text-sm">{getMissionDescription(mission.id, mission.target, mission.description)}</span>
                           {mission.completed && (
                             <span className="ml-2 text-xs font-bold text-secondary uppercase">({t("deck.games.completed")})</span>
                           )}
-                        </p>
+                        </div>
                         {/* Progress bar */}
                         {!mission.completed && (
                           <div className="mt-2">
@@ -879,7 +903,7 @@ export default function WordDeck() {
                   <Icon name="local_police" className="text-5xl text-secondary" />
                 </div>
                 <div className="font-serif text-xl font-bold uppercase tracking-tight mb-1 text-primary">
-                  {rank}
+                  {getRankTranslation(rank)}
                 </div>
                 <p className="text-xs text-on-surface-variant mb-4">{t("deck.games.currentRank")}</p>
 

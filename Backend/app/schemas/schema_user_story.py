@@ -54,6 +54,7 @@ class UserStoryDetailResponse(BaseModel):
     views_count: int
     created_at: datetime
     body: str | None = None
+    word_dictionary: dict | None = None
     exercises: list | None = None
 
 

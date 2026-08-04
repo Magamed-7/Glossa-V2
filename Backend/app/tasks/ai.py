@@ -66,3 +66,45 @@ def process_ai_event(**kwargs):
         return generate_exercise_task(kwargs['topic'], kwargs['level'])
 
     return kwargs
+
+
+GENERATE_STORY_DICTIONARY_PROMPT = (
+    'Extract all unique English words from the following text. '
+    'For each word, determine its base dictionary form (lemma) based on the context, '
+    'and translate the lemma into Russian and Tajik. '
+    'Respond ONLY with a single JSON object where keys are the lowercase original words from the text, '
+    'and values are objects with keys "lemma", "ru", and "tg". '
+    'Example: {{"apples": {{"lemma": "apple", "ru": "яблоко", "tg": "себ"}}, '
+    '"went": {{"lemma": "go", "ru": "идти", "tg": "рафтан"}}}}. '
+    'Ensure you return a valid JSON object. No markdown formatting or backticks around the json. '
+    'Text:\n{text}'
+)
+
+async def _generate_story_dictionary(story_id: int):
+    from app.models.model_content import Stories
+    async with AsyncSessionLocal() as db:
+        result = await db.execute(select(Stories).where(Stories.id == story_id))
+        story = result.scalar_one_or_none()
+        if not story:
+            return
+
+        prompt = GENERATE_STORY_DICTIONARY_PROMPT.format(text=story.body_en)
+        try:
+            raw = await llm_client.call_llm([{'role': 'user', 'content': prompt}])
+            if raw.startswith('```json'):
+                raw = raw.replace('```json', '', 1)
+            if raw.endswith('```'):
+                raw = raw.rsplit('```', 1)[0]
+            dictionary_data = json.loads(raw.strip())
+            
+            story.word_dictionary = dictionary_data
+            db.add(story)
+            await db.commit()
+            return True
+        except Exception as e:
+            print(f"Error generating dictionary for story {story_id}: {e}")
+            return False
+
+@celery_app.task(name='app.tasks.ai.generate_story_dictionary')
+def generate_story_dictionary_task(story_id: int):
+    return run_async(_generate_story_dictionary(story_id))

@@ -12,6 +12,9 @@ from users.views import (
     Setup2FAView,
     Verify2FALoginView,
     VerifyEmailView,
+    PasswordResetRequestView,
+    PasswordResetConfirmView,
+    PasswordResetVerifyView,
 )
 
 urlpatterns = [
@@ -26,4 +29,7 @@ urlpatterns = [
     path('2fa/setup', Setup2FAView.as_view(), name='2fa-setup'),
     path('2fa/confirm', Confirm2FAView.as_view(), name='2fa-confirm'),
     path('2fa/disable', Disable2FAView.as_view(), name='2fa-disable'),
+    path('password-reset', PasswordResetRequestView.as_view(), name='password-reset'),
+    path('password-reset/verify', PasswordResetVerifyView.as_view(), name='password-reset-verify'),
+    path('password-reset/confirm', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 ]

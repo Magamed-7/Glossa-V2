@@ -97,6 +97,7 @@ class StoryDetailResponse(StoryResponse):
     body: str
     title_translated: str | None
     body_translated: str | None
+    word_dictionary: dict | None = None
     words: list[StoryWordResponse]
     questions: list[StoryQuestionResponse]
 

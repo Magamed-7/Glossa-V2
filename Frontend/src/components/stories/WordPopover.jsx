@@ -1,27 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../ui/Modal.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
 import { addWordToDeck } from "../../lib/api/stories.js";
+import { createCard } from "../../lib/api/deck.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useI18n, useT } from "../../lib/i18n.jsx";
 
-// StoryWordResponse отдаёт только translation_ru/translation_tg (schema_content.py) —
-// своего "en" перевода нет, слово само по себе английское. При интерфейсе на английском
-// показываем русский перевод как наиболее вероятно понятный (тот же дефолт, что был раньше).
 export default function WordPopover({ word, storyId, onClose, onAdded }) {
   const t = useT();
   const { lang } = useI18n();
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
+  const [dynamicTranslation, setDynamicTranslation] = useState(null);
+  const [isTranslating, setIsTranslating] = useState(!word.id);
 
-  const translation = lang === "tg" ? word.translation_tg : word.translation_ru;
+  const targetLang = lang === "tg" ? "tg" : "ru";
+  const translation = word.id 
+    ? (lang === "tg" ? word.translation_tg : word.translation_ru) 
+    : dynamicTranslation;
+
+  useEffect(() => {
+    if (word.id) return;
+    
+    let active = true;
+    setIsTranslating(true);
+    
+    fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word.word)}&langpair=en|${targetLang}`)
+      .then(res => res.json())
+      .then(data => {
+        if (active && data.responseData && data.responseData.translatedText) {
+          setDynamicTranslation(data.responseData.translatedText);
+        }
+      })
+      .catch(() => {
+        if (active) setError("Translation failed");
+      })
+      .finally(() => {
+        if (active) setIsTranslating(false);
+      });
+      
+    return () => { active = false; };
+  }, [word.word, word.id, targetLang]);
 
   async function onAddToDeck() {
     setStatus("saving");
     setError(null);
 
     try {
-      const card = await addWordToDeck(storyId, word.id, { locale: lang });
+      let card;
+      if (word.id) {
+        card = await addWordToDeck(storyId, word.id, { locale: lang });
+      } else {
+        card = await createCard({ word: word.word, translation });
+      }
       setStatus("added");
       onAdded?.(card);
     } catch (err) {
@@ -36,7 +67,13 @@ export default function WordPopover({ word, storyId, onClose, onAdded }) {
         {word.part_of_speech && (
           <p className="font-label text-label-md uppercase text-on-surface-variant">{word.part_of_speech}</p>
         )}
-        <p className="font-headline text-2xl text-secondary">{translation}</p>
+        
+        {isTranslating ? (
+          <div className="animate-pulse h-8 bg-surface-variant rounded w-3/4"></div>
+        ) : (
+          <p className="font-headline text-2xl text-secondary">{translation || "No translation found"}</p>
+        )}
+        
         {word.context && <p className="font-body text-body-md italic opacity-70">&ldquo;{word.context}&rdquo;</p>}
         {error && (
           <p role="alert" className="font-label text-label-md text-error">
@@ -46,7 +83,7 @@ export default function WordPopover({ word, storyId, onClose, onAdded }) {
         <NeoButton
           className="w-full"
           onClick={onAddToDeck}
-          disabled={status === "added"}
+          disabled={status === "added" || isTranslating || (!translation && !word.id)}
           loading={status === "saving"}
         >
           {status === "added" ? t("stories.addedToDeck") : t("stories.addToDeck")}

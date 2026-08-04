@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Badge from "../components/ui/Badge.jsx";
@@ -8,8 +8,9 @@ import Icon from "../components/ui/Icon.jsx";
 import StoryBody from "../components/stories/StoryBody.jsx";
 import StoryQuestions from "../components/stories/StoryQuestions.jsx";
 import { useApi } from "../lib/useApi.js";
-import { getMyProgress, getStory, saveProgress } from "../lib/api/stories.js";
+import { getMyProgress, getStory, getStories, saveProgress } from "../lib/api/stories.js";
 import { useI18n, useT } from "../lib/i18n.jsx";
+import { getBookCoverUrl } from "./StoriesCatalog.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -21,14 +22,26 @@ export default function StoryReader() {
   const { id } = useParams();
   const t = useT();
   const { lang } = useI18n();
-  // Локаль интерфейса уходит в /stories/{id} параметром — сервер иначе умолчает в 'en'
-  // (API_CONTRACT.md §3.3). Этот запрос расходует дневной лимит чтения — вызывается
-  // ровно один раз на открытие страницы, смена языка интерфейса НЕ должна её повторять
-  // (см. задачу 9.6 / 19.6): и story.body_translated уже содержит перевод для lang,
-  // выбранного в момент первой загрузки.
+
   const { data: story, loading, error, reload } = useApi(() => getStory(id, { locale: lang }), [id]);
   const { data: progressList } = useApi(() => getMyProgress(), []);
   const progress = progressList?.find((p) => p.story_id === Number(id));
+
+  const { data: siblingStories } = useApi(
+    () => story ? getStories({ level: story.cefr_level, limit: 100 }) : Promise.resolve(null),
+    [story?.cefr_level]
+  );
+
+  const { currentNumber, totalCount, prevId, nextId } = (siblingStories && story) ? (() => {
+    const idx = siblingStories.findIndex(s => s.id === story.id);
+    if (idx === -1) return { currentNumber: 1, totalCount: 1, prevId: null, nextId: null };
+    return {
+      currentNumber: idx + 1,
+      totalCount: siblingStories.length,
+      prevId: idx > 0 ? siblingStories[idx - 1].id : null,
+      nextId: idx < siblingStories.length - 1 ? siblingStories[idx + 1].id : null,
+    };
+  })() : { currentNumber: 1, totalCount: 12, prevId: null, nextId: null };
 
   const [completed, setCompleted] = useState(false);
   const [showTranslation, setShowTranslation] = useState(false);
@@ -64,18 +77,19 @@ export default function StoryReader() {
     };
   }, [story]);
 
-  async function onMarkComplete() {
-    setCompleted(true);
+  async function onToggleComplete() {
+    const nextState = !completed;
+    setCompleted(nextState);
     try {
-      await saveProgress(story.id, { is_completed: true });
+      await saveProgress(story.id, { is_completed: nextState });
     } catch (e) {
-      setCompleted(false);
+      setCompleted(!nextState);
     }
   }
 
   if (loading) {
     return (
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto mt-12">
         <Skeleton className="h-64 mb-8" />
         <Skeleton className="h-6 w-1/2 mb-4" />
         <Skeleton className="h-40" />
@@ -85,78 +99,173 @@ export default function StoryReader() {
 
   if (error) {
     return (
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto mt-12">
         <ErrorState error={error} onRetry={reload} />
       </div>
     );
   }
 
-  const cover = story.image_url || FALLBACK_COVERS[story.id % FALLBACK_COVERS.length];
+  const cover = getBookCoverUrl(story.id);
   const hasTranslation = !!story.body_translated;
 
   return (
-    <div className={`mx-auto pb-16 ${showTranslation && hasTranslation ? "max-w-5xl" : "max-w-2xl"}`}>
-      <div className="aspect-[16/9] w-full overflow-hidden border-2 border-tertiary mb-8">
-        <img
-          className="w-full h-full object-cover"
-          src={cover}
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          width={640}
-          height={800}
-        />
-      </div>
-      <div className="flex items-center justify-between gap-3 mb-4">
-        <div className="flex items-center gap-3">
-          <Badge level={story.cefr_level} />
-          {story.genre && (
-            <span className="font-label text-label-md text-on-surface-variant uppercase">{story.genre}</span>
-          )}
-        </div>
-        {hasTranslation && (
-          <button
-            type="button"
-            className="font-label text-label-md uppercase text-secondary underline underline-offset-4"
-            onClick={() => setShowTranslation((v) => !v)}
-          >
-            {showTranslation ? t("stories.hideTranslation") : t("stories.showTranslation")}
-          </button>
-        )}
-      </div>
-      <h1 className="font-display text-headline-lg mb-2">{story.title}</h1>
-      {story.title_translated && (
-        <p className="font-body text-body-md italic text-on-surface-variant mb-8">{story.title_translated}</p>
-      )}
-
-      {showTranslation && hasTranslation ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <StoryBody body={story.body} words={story.words} storyId={story.id} />
-          <div className="font-body text-body-lg leading-relaxed whitespace-pre-line italic text-on-surface-variant border-l-2 border-tertiary pl-6">
-            {story.body_translated}
+    <div className="min-h-screen bg-[#fcfbf9] text-on-surface font-body -mt-12">
+      {/* Fake Header to match design */}
+      <header className="border-b-2 border-on-surface flex justify-between items-end pb-3 mb-10 mt-10">
+        <div>
+          <h1 className="font-headline text-3xl font-bold">{story.title}</h1>
+          <div className="flex items-center gap-4 mt-2">
+            <div className="w-12 h-1 bg-primary"></div>
+            <span className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">
+              STORY {currentNumber} OF {totalCount}
+            </span>
           </div>
         </div>
-      ) : (
-        <StoryBody body={story.body} words={story.words} storyId={story.id} />
-      )}
+        <div className="hidden md:flex items-center gap-6 font-label text-[11px] uppercase tracking-widest font-bold">
+          <span className="cursor-pointer hover:text-primary transition-colors">CURRICULUM</span>
+          <span className="cursor-pointer hover:text-primary transition-colors">SALONS</span>
+          <span className="cursor-pointer border-b-2 border-on-surface pb-1">LIBRARY</span>
+          <span className="text-on-surface-variant font-light">|</span>
+          <span className="bg-on-surface text-surface px-4 py-2 hover:opacity-90 cursor-pointer">
+            MASTERY
+          </span>
+        </div>
+      </header>
 
-      <StoryQuestions
-        storyId={story.id}
-        questions={story.questions}
-        onCompleted={() => setCompleted(true)}
-      />
+      <div className="max-w-4xl mx-auto relative pb-24">
+        {/* Hero Image */}
+        <div className="relative w-full aspect-[2/1] border-[3px] border-on-surface shadow-[6px_6px_0_0_#000] mb-8 overflow-hidden bg-surface-variant">
+          <img
+            className="w-full h-full object-cover"
+            src={cover}
+            alt={story.title}
+            aria-hidden="true"
+            loading="eager"
+          />
+          {/* Overlay text on image */}
+          <div className="absolute bottom-6 left-6 z-10 text-white">
+            <div className="bg-primary text-surface font-label text-[10px] uppercase tracking-widest px-2 py-1 inline-block font-bold mb-2">
+              STORY {currentNumber}
+            </div>
+            <h2 className="font-headline text-5xl font-bold drop-shadow-md">The Journey Beyond</h2>
+          </div>
+          {/* subtle dark gradient at bottom for text readability */}
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+        </div>
 
-      <div className="mt-10 pt-6 border-t-2 border-tertiary">
-        <NeoButton
-          variant={completed ? "ghost" : "primary"}
-          disabled={completed}
-          onClick={onMarkComplete}
-          className="flex items-center gap-2"
-        >
-          <Icon name={completed ? "check_circle" : "task_alt"} />
-          {completed ? t("stories.markedAsRead") : t("stories.markAsRead")}
-        </NeoButton>
+        {/* Metadata Row */}
+        <div className="flex justify-between items-center border-b-2 border-on-surface/20 pb-4 mb-10">
+          <div className="flex items-center gap-3">
+            <div className="bg-on-surface text-surface font-label text-xs font-bold px-2 py-1">
+              {story.cefr_level || "A1"}
+            </div>
+            <span className="font-label text-sm font-bold uppercase tracking-widest">
+              {story.genre || "FEEL-GOOD JOURNEY"}
+            </span>
+          </div>
+          {hasTranslation && (
+            <button
+              onClick={() => setShowTranslation((v) => !v)}
+              className="font-label text-xs font-bold uppercase text-primary hover:underline underline-offset-4 tracking-widest"
+            >
+              ПОКАЗАТЬ ПЕРЕВОД
+            </button>
+          )}
+        </div>
+
+        {/* Title Area */}
+        <div className="mb-10">
+          <h1 className="font-headline text-5xl mb-2">{story.title}</h1>
+          <p className="font-headline text-lg italic text-on-surface-variant">
+            {story.title_translated || "Отголоски пустоты"}
+          </p>
+        </div>
+
+        {/* Story Body */}
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-10">
+          {showTranslation ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <StoryBody body={story.body} words={story.words} wordDictionary={story.word_dictionary} storyId={story.id} />
+              <div className="font-headline text-lg leading-[2.5] text-on-surface-variant border-l-2 border-on-surface/20 pl-6">
+                {story.body_translated}
+              </div>
+            </div>
+          ) : (
+            <div className="font-headline text-xl leading-[2.5]">
+              <StoryBody body={story.body} words={story.words} wordDictionary={story.word_dictionary} storyId={story.id} />
+            </div>
+          )}
+        </div>
+
+        <StoryQuestions
+          storyId={story.id}
+          questions={story.questions}
+          onCompleted={() => setCompleted(true)}
+        />
+
+        {/* Footer actions */}
+        <div className="mt-16 pt-10 border-t border-on-surface/30 flex justify-between items-center">
+          <button
+            onClick={onToggleComplete}
+            className={`flex items-center gap-3 px-6 py-3 font-label text-xs uppercase font-bold tracking-widest border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] transition-all hover:-translate-y-0.5 active:translate-y-0
+              ${completed 
+                ? "bg-[#e5dfd9] text-on-surface-variant shadow-[1px_1px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] active:shadow-[0px_0px_0_0_#000]" 
+                : "bg-secondary text-surface hover:shadow-[5px_5px_0_0_#000] active:shadow-[1px_1px_0_0_#000]"
+              }
+            `}
+          >
+            <Icon name={completed ? "restart_alt" : "check_circle"} className="text-lg" />
+            {completed ? "СБРОСИТЬ ОТМЕТКУ О ПРОЧТЕНИИ" : "ОТМЕТИТЬ КАК ПРОЧИТАННОЕ"}
+          </button>
+
+          <div className="flex items-center gap-4">
+            <Link
+              to={prevId ? `/stories/${prevId}` : `/stories?level=${story.cefr_level}`}
+              className={`w-12 h-12 flex items-center justify-center border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-surface hover:bg-surface-variant transition-colors ${!prevId ? "opacity-35 cursor-not-allowed" : ""}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </Link>
+            <span className="font-label text-[10px] font-bold uppercase tracking-widest">STORY {currentNumber} / {totalCount}</span>
+            <Link
+              to={nextId ? `/stories/${nextId}` : `/stories?level=${story.cefr_level}`}
+              className={`flex items-center gap-3 h-12 px-6 border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-surface font-label text-xs uppercase font-bold tracking-widest hover:bg-surface-variant transition-colors ${!nextId ? "opacity-35 cursor-not-allowed" : ""}`}
+            >
+              NEXT STORY
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
       </div>
+
+      {/* Global Footer */}
+      <footer className="w-full bg-[#f3ede4] border-t border-on-surface/20 py-12 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto flex flex-col items-center gap-6">
+          <h2 className="font-headline text-3xl font-bold">Glossa</h2>
+          <div className="flex gap-8 font-headline text-sm text-on-surface-variant">
+            <span className="cursor-pointer hover:text-on-surface transition-colors">The Archives</span>
+            <span className="cursor-pointer hover:text-on-surface transition-colors">Terms of Society</span>
+            <span className="cursor-pointer hover:text-on-surface transition-colors">Privacy Manor</span>
+          </div>
+          <p className="font-headline text-xs text-on-surface-variant mt-4">
+            © 1922 Glossa Language Society. All Rights Reserved.
+          </p>
+        </div>
+
+        {/* Floating Translate View Button */}
+        {hasTranslation && (
+          <button
+            onClick={() => setShowTranslation((v) => !v)}
+            className="fixed bottom-8 right-8 bg-on-surface text-surface flex items-center gap-3 px-5 py-3 font-label text-[11px] font-bold uppercase tracking-widest border-[2px] border-on-surface shadow-[4px_4px_0_0_#C62340] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#C62340] transition-all z-50"
+          >
+            <Icon name="translate" className="text-lg" />
+            TRANSLATE VIEW
+          </button>
+        )}
+      </footer>
     </div>
   );
 }
