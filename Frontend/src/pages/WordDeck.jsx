@@ -1,92 +1,215 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import PageHeader from "../components/layout/PageHeader.jsx";
-import WordCard from "../components/deck/WordCard.jsx";
-import AddWordModal from "../components/deck/AddWordModal.jsx";
-import DeckStats from "../components/deck/DeckStats.jsx";
-import Modal from "../components/ui/Modal.jsx";
-import NeoButton from "../components/ui/NeoButton.jsx";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
-import Tabs from "../components/ui/Tabs.jsx";
+import Modal from "../components/ui/Modal.jsx";
+import NeoButton from "../components/ui/NeoButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
-import { deleteCard, getCards, setCardStatus } from "../lib/api/deck.js";
+import { deleteCard, getCards, setCardStatus, createCard } from "../lib/api/deck.js";
+import { getStats } from "../lib/api/learning.js";
+import { getMySubscription } from "../lib/api/subscriptions.js";
 import { useT } from "../lib/i18n.jsx";
 
-const PAGE_SIZE = 24;
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 
 export default function WordDeck() {
   const t = useT();
-  const STATUS_TABS = [
-    { value: "", label: t("deck.tabs.all") },
-    { value: "learning", label: t("deck.tabs.learning") },
-    { value: "learned", label: t("deck.tabs.learned") },
-    { value: "hard", label: t("deck.tabs.hard") },
-    { value: "skipped", label: t("deck.tabs.skipped") },
-  ];
+  const toast = useToast();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const status = searchParams.get("status") || "";
+  const statusFilter = searchParams.get("status") || "";
+
+  // Page mode: "archive" (default), "setup", "card-flip", "typewriter", "daily-missions"
+  const [gameMode, setGameMode] = useState("archive");
+
+  // Pagination limit
+  const [limit, setLimit] = useState(10);
+
+  // API calls
+  const { data: stats, loading: statsLoading, reload: reloadStats } = useApi(
+    () => getStats(),
+    []
+  );
 
   const { data: fetched, loading, error, reload } = useApi(
-    () => getCards({ status: status || undefined, limit: PAGE_SIZE }),
-    [status]
+    () => getCards({ status: statusFilter === "unlearned" ? undefined : (statusFilter || undefined), limit: 100 }),
+    [statusFilter]
   );
+
+  const { data: subscription } = useApi(
+    () => getMySubscription(),
+    []
+  );
+
   const [items, setItems] = useState([]);
-  const [hasMore, setHasMore] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
-  const [modalOpen, setModalOpen] = useState(searchParams.get("new") === "1");
-  const toast = useToast();
+
+  // New entry form state
+  const [term, setTerm] = useState("");
+  const [translationInput, setTranslationInput] = useState("");
+  const [example, setExample] = useState("");
+  const [adding, setAdding] = useState(false);
+
+  // Revealed card translations state
+  const [revealedCards, setRevealedCards] = useState(new Set());
+
+  // --- GAME SETUP STATES ---
+  const [gameToLaunch, setGameToLaunch] = useState("");
+  const [setupCategory, setSetupCategory] = useState("all");
+  const [setupCount, setSetupCount] = useState(10);
+  const [gameItems, setGameItems] = useState([]);
+  const [gameLoading, setGameLoading] = useState(false);
+
+  const isFreePlan = !subscription || subscription.plan?.code === "free";
+
+  // --- GAME STATES ---
+  // Card Flip Game States
+  const [flipIndex, setFlipIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [flipTimeLeft, setFlipTimeLeft] = useState(10); // 10 seconds per card
+  const [flipCombo, setFlipCombo] = useState(0);
+  const [flipXp, setFlipXp] = useState(0);
+
+  // Typewriter Game States
+  const [typeIndex, setTypeIndex] = useState(0);
+  const [typedText, setTypedText] = useState("");
+  const [typeTimeLeft, setTypeTimeLeft] = useState(15); // 15 seconds per word
+  const [showSuccessStamp, setShowSuccessStamp] = useState(false);
+  const [showErrorStamp, setShowErrorStamp] = useState(false);
+  const typewriterInputRef = useRef(null);
+
+  // --- AUDIO SYNTHESIS / SOUND GENERATORS ---
+  const playTypewriterSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    } catch (e) {}
+  };
+
+  const playBellSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    } catch (e) {}
+  };
+
+  const playBuzzerSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.4);
+    } catch (e) {}
+  };
 
   useEffect(() => {
     if (fetched) {
-      setItems(fetched);
-      setHasMore(fetched.length === PAGE_SIZE);
+      if (statusFilter === "unlearned") {
+        setItems(fetched.filter((c) => c.status !== "learned"));
+      } else {
+        setItems(fetched);
+      }
     }
-  }, [fetched]);
+  }, [fetched, statusFilter]);
 
-  async function loadMore() {
-    setLoadingMore(true);
+  // Handle Game Mode Timers
+  useEffect(() => {
+    let interval = null;
 
-    try {
-      const more = await getCards({ status: status || undefined, limit: PAGE_SIZE, offset: items.length });
-      setItems((current) => [...current, ...more]);
-      setHasMore(more.length === PAGE_SIZE);
-    } catch (err) {
-      toast.error(errorText(err));
-    } finally {
-      setLoadingMore(false);
+    if (gameMode === "card-flip" && gameItems.length > 0) {
+      setFlipTimeLeft(10);
+      interval = setInterval(() => {
+        setFlipTimeLeft((t) => {
+          if (t <= 1) {
+            handleFlipAnswer(false);
+            return 10;
+          }
+          return t - 1;
+        });
+      }, 1000);
+    } else if (gameMode === "typewriter" && gameItems.length > 0) {
+      setTypedText("");
+      setShowSuccessStamp(false);
+      setShowErrorStamp(false);
+      setTypeTimeLeft(15);
+      interval = setInterval(() => {
+        setTypeTimeLeft((t) => {
+          if (t <= 0.1) {
+            handleNextTypewriter(false);
+            return 15;
+          }
+          return Number((t - 0.1).toFixed(1));
+        });
+      }, 100);
     }
-  }
 
-  function onStatusFilterChange(value) {
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [gameMode, flipIndex, typeIndex]);
+
+  function onStatusFilterChange(val) {
     const next = new URLSearchParams(searchParams);
-    if (value) next.set("status", value);
+    if (val) next.set("status", val);
     else next.delete("status");
     setSearchParams(next);
+    setLimit(10); // Reset limit on tab change
   }
 
-  function closeModal() {
-    setModalOpen(false);
-    if (searchParams.get("new")) {
-      const next = new URLSearchParams(searchParams);
-      next.delete("new");
-      setSearchParams(next, { replace: true });
-    }
+  function toggleReveal(cardId) {
+    setRevealedCards((prev) => {
+      const next = new Set(prev);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
   }
 
-  async function onStatusChange(card) {
-    const nextStatus = STATUS_CYCLE[(STATUS_CYCLE.indexOf(card.status) + 1) % STATUS_CYCLE.length];
+  async function onStatusChange(card, nextStatus) {
     const previous = items;
-    setItems((current) => current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c)));
+    setItems((current) =>
+      current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c))
+    );
+    setGameItems((current) =>
+      current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c))
+    );
 
     try {
       const updated = await setCardStatus(card.id, nextStatus);
       setItems((current) => current.map((c) => (c.id === card.id ? updated : c)));
+      setGameItems((current) => current.map((c) => (c.id === card.id ? updated : c)));
+      reloadStats();
     } catch (err) {
       setItems(previous);
       toast.error(errorText(err));
@@ -101,66 +224,938 @@ export default function WordDeck() {
 
     try {
       await deleteCard(card.id);
+      reloadStats();
     } catch (err) {
       setItems(previous);
       toast.error(errorText(err));
     }
   }
 
-  return (
-    <div>
-      <PageHeader
-        eyebrow={t("deck.eyebrow")}
-        title={t("deck.titleLead")}
-        accent={t("deck.titleAccent")}
-        subtitle={t("deck.subtitle")}
-      />
+  async function handleAddEntry(e) {
+    e.preventDefault();
+    if (!term.trim() || !translationInput.trim()) return;
+    setAdding(true);
+    try {
+      await createCard({
+        word: term,
+        translation: translationInput,
+        example
+      });
+      toast.success("Word added to ledger.");
+      setTerm("");
+      setTranslationInput("");
+      setExample("");
+      reload();
+      reloadStats();
+    } catch (err) {
+      toast.error(errorText(err));
+    } finally {
+      setAdding(false);
+    }
+  }
 
-      <div className="mb-8">
-        <Tabs id="deck-status" tabs={STATUS_TABS} value={status} onChange={onStatusFilterChange} />
+  // --- GAME SETUP HANDLERS ---
+  const handleStartGame = async () => {
+    setGameLoading(true);
+    try {
+      // Query cards up to 150 (enough limit to filter client-side)
+      const allCards = await getCards({ limit: 150 });
+      let filtered = [];
+
+      if (setupCategory === "all") {
+        filtered = allCards;
+      } else if (setupCategory === "learning") {
+        filtered = allCards.filter(c => c.status === "learning");
+      } else if (setupCategory === "unlearned") {
+        filtered = allCards.filter(c => c.status !== "learned");
+      } else if (setupCategory === "learned") {
+        filtered = allCards.filter(c => c.status === "learned");
+      } else if (setupCategory === "hard") {
+        filtered = allCards.filter(c => c.status === "hard");
+      } else if (setupCategory === "skipped") {
+        filtered = allCards.filter(c => c.status === "skipped");
+      }
+
+      if (!filtered || filtered.length === 0) {
+        toast.error("В выбранном разделе нет слов для повторения!");
+        setGameLoading(false);
+        return;
+      }
+
+      // Shuffle and slice to setupCount
+      const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+      const selected = shuffled.slice(0, setupCount);
+
+      setGameItems(selected);
+      setFlipIndex(0);
+      setTypeIndex(0);
+      setFlipCombo(0);
+      setFlipXp(0);
+      setIsFlipped(false);
+      setGameMode(gameToLaunch);
+    } catch (err) {
+      toast.error(errorText(err));
+    } finally {
+      setGameLoading(false);
+    }
+  };
+
+  // --- CARD FLIP HANDLERS ---
+  const handleFlipAnswer = async (know) => {
+    const card = gameItems[flipIndex];
+    if (!card) return;
+
+    if (know) {
+      setFlipCombo((c) => c + 1);
+      setFlipXp((x) => x + 20);
+      await onStatusChange(card, "learned");
+    } else {
+      setFlipCombo(0);
+      await onStatusChange(card, "hard");
+    }
+
+    setIsFlipped(false);
+    if (flipIndex + 1 < gameItems.length) {
+      setFlipIndex((i) => i + 1);
+    } else {
+      setFlipIndex(0); // Loop back
+      toast.success("Card Flip deck completed!");
+      setGameMode("archive");
+    }
+  };
+
+  // --- TYPEWRITER HANDLERS ---
+  const handleTypewriterInput = (e) => {
+    const text = e.target.value;
+    playTypewriterSound();
+    setTypedText(text);
+
+    const card = gameItems[typeIndex];
+    if (!card) return;
+
+    if (text.toLowerCase().trim() === card.word.toLowerCase().trim()) {
+      playBellSound();
+      setShowSuccessStamp(true);
+      setTimeout(() => {
+        handleNextTypewriter(true);
+      }, 1200);
+    } else if (text.length === card.word.length) {
+      // Incorrect word completed
+      playBuzzerSound();
+      setShowErrorStamp(true);
+      setTimeout(() => {
+        handleNextTypewriter(false);
+      }, 1200);
+    }
+  };
+
+  const handleNextTypewriter = async (success) => {
+    const card = gameItems[typeIndex];
+    if (card) {
+      await onStatusChange(card, success ? "learned" : "hard");
+    }
+
+    setTypedText("");
+    setShowSuccessStamp(false);
+    setShowErrorStamp(false);
+
+    if (typeIndex + 1 < gameItems.length) {
+      setTypeIndex((i) => i + 1);
+    } else {
+      setTypeIndex(0);
+      toast.success("Typewriter Speed Check complete!");
+      setGameMode("archive");
+    }
+  };
+
+  // Helpers for classes
+  function getCardClasses(status) {
+    const base = "border-[3px] border-on-surface bg-surface p-6 md:p-8 shadow-[5px_5px_0_0_#000] flex flex-col gap-3 relative transition-all group";
+    if (status === "hard") {
+      return `${base} border-secondary border-l-[8px] shadow-[5px_5px_0_0_#000]`;
+    }
+    if (status === "skipped") {
+      return `${base} border-dashed border-on-surface/40 opacity-70`;
+    }
+    return base;
+  }
+
+  function BadgeSelect({ card }) {
+    const selectColorClasses = {
+      learned: "bg-on-surface text-surface border-on-surface",
+      learning: "bg-[#f59e0b] text-black border-on-surface",
+      hard: "bg-[#fce7f3] text-[#be185d] border-on-surface",
+      skipped: "bg-surface-variant text-on-surface-variant border-on-surface-variant/40"
+    };
+
+    return (
+      <select
+        value={card.status}
+        onChange={(e) => onStatusChange(card, e.target.value)}
+        className={`text-xs font-bold tracking-wider uppercase font-mono border-2 px-3 py-1.5 cursor-pointer focus:outline-none transition-colors rounded-none ${selectColorClasses[card.status] || ""}`}
+      >
+        <option value="learning" className="bg-surface text-on-surface text-sm">
+          {t("deck.status.learning").toUpperCase()}
+        </option>
+        <option value="learned" className="bg-surface text-on-surface text-sm">
+          {t("deck.status.learned").toUpperCase()} (MASTERED)
+        </option>
+        <option value="hard" className="bg-surface text-on-surface text-sm">
+          {t("deck.status.hard").toUpperCase()} (DIFFICULT)
+        </option>
+        <option value="skipped" className="bg-surface text-on-surface text-sm">
+          {t("deck.status.skipped").toUpperCase()}
+        </option>
+      </select>
+    );
+  }
+
+  // --- RENDER GAME CONTENT ---
+
+  if (gameMode === "setup") {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 bg-[#fcfbf9] text-on-surface min-h-screen flex items-center justify-center">
+        <div className="w-full border-[3px] border-primary bg-surface p-8 shadow-[8px_8px_0_0_#000] relative">
+          <div className="absolute top-0 right-0 w-8 h-8 border-l-2 border-b-2 border-primary bg-[#ffddb8]"></div>
+          <h2 className="font-serif text-3xl font-bold uppercase tracking-tight text-primary mb-6 border-b-2 border-primary pb-3 flex justify-between items-center">
+            <span>{t("deck.games.setupTitle")}</span>
+            <Icon name="settings_suggest" className="text-secondary text-3xl" />
+          </h2>
+
+          <div className="flex flex-col gap-6">
+            {/* Category Dropdown */}
+            <div>
+              <label className="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                {t("deck.games.categoryLabel")}
+              </label>
+              <select
+                value={setupCategory}
+                onChange={(e) => {
+                  if (isFreePlan && !["all", "unlearned"].includes(e.target.value)) {
+                    toast.error(t("deck.games.freeCategoryError"));
+                    return;
+                  }
+                  setSetupCategory(e.target.value);
+                }}
+                className="w-full bg-surface border-2 border-primary px-4 py-3 font-mono text-sm rounded-none focus:outline-none shadow-[2px_2px_0_0_#000] cursor-pointer"
+              >
+                <option value="all">{t("deck.tabs.all")}</option>
+                <option value="unlearned">{t("deck.tabs.unlearned")}</option>
+                <option value="learning" disabled={isFreePlan}>
+                  {t("deck.tabs.learning")} {isFreePlan ? "🔒 (Premium)" : ""}
+                </option>
+                <option value="learned" disabled={isFreePlan}>
+                  {t("deck.tabs.learned")} {isFreePlan ? "🔒 (Premium)" : ""}
+                </option>
+                <option value="hard" disabled={isFreePlan}>
+                  {t("deck.tabs.hard")} {isFreePlan ? "🔒 (Premium)" : ""}
+                </option>
+                <option value="skipped" disabled={isFreePlan}>
+                  {t("deck.tabs.skipped")} {isFreePlan ? "🔒 (Premium)" : ""}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                {t("deck.games.countLabel")}
+              </label>
+              <input
+                type="number"
+                min={1}
+                max={isFreePlan ? 10 : 100}
+                value={setupCount}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (isFreePlan && val > 10) {
+                    toast.error(t("deck.games.freeLimitError"));
+                    setSetupCount(10);
+                    return;
+                  }
+                  setSetupCount(val);
+                }}
+                className="w-full bg-surface border-2 border-primary px-4 py-3 font-mono text-sm rounded-none focus:outline-none shadow-[2px_2px_0_0_#000]"
+              />
+              <p className="text-[10px] text-on-surface-variant mt-1.5 font-bold uppercase tracking-wider">
+                {isFreePlan 
+                  ? t("deck.games.freeLimitNote") 
+                  : t("deck.games.customCountNote")}
+              </p>
+            </div>
+
+            {isFreePlan && (
+              <div className="border-[2px] border-dashed border-[#b90538] p-3 text-xs bg-[#ffdadb] text-[#b90538] font-semibold flex items-center gap-2">
+                <Icon name="lock" className="text-sm" />
+                <span>
+                  {t("deck.games.freeWarning")}{" "}
+                  <button
+                    onClick={() => navigate("/pricing")}
+                    className="underline font-bold hover:text-black transition-colors cursor-pointer"
+                  >
+                    {t("deck.games.upgradeLink")}
+                  </button>{" "}
+                  {t("deck.games.upgradeSuffix")}
+                </span>
+              </div>
+            )}
+
+            <div className="h-[2px] bg-on-surface/10 my-2" />
+
+            {/* Actions */}
+            <div className="flex gap-4">
+              <button
+                onClick={() => setGameMode("archive")}
+                className="flex-1 bg-surface text-primary border-2 border-primary px-4 py-3.5 font-bold uppercase text-xs tracking-wider shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer text-center"
+              >
+                {t("deck.games.btnCancel")}
+              </button>
+
+              <button
+                onClick={handleStartGame}
+                disabled={gameLoading}
+                className="flex-1 bg-secondary text-surface border-2 border-primary px-4 py-3.5 font-bold uppercase text-xs tracking-wider shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer text-center disabled:opacity-50"
+              >
+                {gameLoading ? "..." : t("deck.games.btnStart")}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+    );
+  }
 
-      {error && <ErrorState error={error} onRetry={reload} />}
-
-      {!error && (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <DeckStats />
+  if (gameMode === "card-flip" && gameItems.length > 0) {
+    const card = gameItems[flipIndex];
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen flex flex-col justify-between">
+        {/* Header */}
+        <header className="w-full flex justify-between items-center border-b-2 border-primary pb-4 mb-8">
+          <div className="flex items-center gap-4">
+            <h1 className="font-serif text-3xl font-bold">{t("deck.games.cardFlipTitle")}</h1>
             <button
-              type="button"
-              className="border-2 border-dashed border-tertiary flex flex-col items-center justify-center gap-2 min-h-[180px] hover:bg-surface-container transition-colors"
-              onClick={() => setModalOpen(true)}
+              onClick={() => setGameMode("archive")}
+              className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
             >
-              <Icon name="add" className="text-4xl text-tertiary" />
-              <span className="font-label text-label-md uppercase">{t("deck.addNewWord")}</span>
+              {t("deck.games.btnStopExit")}
             </button>
+          </div>
+          <div className="flex gap-4 font-mono text-xs uppercase">
+            <div className="bg-[#ffddb8] border-2 border-primary px-3 py-1 shadow-[2px_2px_0_0_#000]">
+              {t("deck.games.combo").toUpperCase()} x{flipCombo}
+            </div>
+            <div className="bg-surface border-2 border-primary px-3 py-1 shadow-[2px_2px_0_0_#000]">
+              {t("deck.games.xp").toUpperCase()}: {flipXp}
+            </div>
+          </div>
+        </header>
 
-            {loading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="min-h-[180px]" />)}
-
-            {!loading &&
-              items.map((card) => (
-                <WordCard
-                  key={card.id}
-                  card={card}
-                  onStatusChange={onStatusChange}
-                  onDelete={setPendingDelete}
-                  onPlayAudio={() => {}}
-                />
-              ))}
+        {/* Game Body */}
+        <div className="flex-grow flex flex-col md:flex-row items-center justify-center gap-12 py-10">
+          {/* Stopwatch Widget */}
+          <div className="flex flex-col items-center justify-center relative w-48 h-48 bg-[#fdfaf5] border-[8px] border-[#8a795d] rounded-full shadow-[5px_5px_0_0_#000]">
+            <div className="absolute top-2 w-1 h-3 bg-primary"></div>
+            <div className="absolute bottom-2 w-1 h-3 bg-primary"></div>
+            <div className="absolute left-2 h-1 w-3 bg-primary"></div>
+            <div className="absolute right-2 h-1 w-3 bg-primary"></div>
+            {/* Tick Hand */}
+            <div
+              className="absolute bottom-1/2 w-0.5 h-16 bg-secondary origin-bottom transition-transform duration-100"
+              style={{ transform: `rotate(${(10 - flipTimeLeft) * 36}deg)` }}
+            ></div>
+            <div className="absolute w-3 h-3 rounded-full bg-primary"></div>
+            <div className="absolute bottom-8 font-mono text-xs border border-primary px-2 py-0.5 bg-surface-container">
+              00:{flipTimeLeft < 10 ? `0${flipTimeLeft}` : flipTimeLeft}
+            </div>
           </div>
 
-          {!loading && hasMore && (
-            <div className="flex justify-center mt-10">
-              <NeoButton variant="ghost" onClick={loadMore} loading={loadingMore}>
-                {t("deck.loadMore")}
-              </NeoButton>
+          {/* Flashcard container */}
+          <div
+            onClick={() => setIsFlipped(!isFlipped)}
+            className="relative w-full max-w-sm aspect-[3/4] cursor-pointer group perspective-1000"
+          >
+            <div
+              className="w-full h-full relative transition-transform duration-500 transform-style-3d shadow-[6px_6px_0_0_#000] border-[3px] border-primary bg-surface"
+              style={{ transform: isFlipped ? "rotateY(180deg)" : "none" }}
+            >
+              {/* Card Perforation */}
+              <div className="w-full h-4 border-b-2 border-primary opacity-50 bg-radial-dots"></div>
+
+              {/* Front Side */}
+              {!isFlipped ? (
+                <div className="absolute inset-0 top-4 p-8 flex flex-col justify-between backface-hidden">
+                  <div className="flex justify-between font-mono text-[10px] text-outline">
+                    <span>REF: GL-{card.id}</span>
+                    <span>{t("deck.games.deptLexicography")}</span>
+                  </div>
+                  <div className="text-center my-auto">
+                    <h2 className="font-serif text-4xl font-black uppercase tracking-tight">
+                      {card.word}
+                    </h2>
+                    <p className="text-outline text-sm mt-3">{t("deck.games.clickToFlip")}</p>
+                  </div>
+                  <div className="border-t-2 border-primary pt-3 text-center text-outline">
+                    <span>{t("deck.games.unverifiedCipher")}</span>
+                  </div>
+                </div>
+              ) : (
+                /* Back Side */
+                <div className="absolute inset-0 top-4 p-8 flex flex-col justify-between backface-hidden [transform:rotateY(180deg)]">
+                  <div className="flex justify-between font-mono text-[10px] text-outline">
+                    <span>{t("deck.games.decryptionSuccess")}</span>
+                    <span>{t("deck.games.glossaLedger")}</span>
+                  </div>
+                  <div className="text-center my-auto">
+                    <p className="font-bold text-2xl text-secondary mb-3">
+                      {card.translation}
+                    </p>
+                    {card.example && (
+                      <p className="text-sm italic text-on-surface-variant">
+                        "{card.example}"
+                      </p>
+                    )}
+                  </div>
+                  <div className="border-t-2 border-primary pt-3 text-center text-secondary font-bold">
+                    <span>{t("deck.games.ledgerVerified")}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-6 mt-6">
+          <button
+            onClick={() => handleFlipAnswer(true)}
+            className="bg-primary text-on-primary font-bold text-base px-8 py-4 border-2 border-primary shadow-[4px_4px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <Icon name="check_circle" />
+            <span>{t("deck.games.btnKnow").toUpperCase()}</span>
+          </button>
+          <button
+            onClick={() => handleFlipAnswer(false)}
+            className="bg-secondary text-on-secondary font-bold text-base px-8 py-4 border-2 border-primary shadow-[4px_4px_0_0_#b90538] hover:translate-y-0.5 active:translate-y-1 transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <Icon name="cancel" />
+            <span>{t("deck.games.btnForget").toUpperCase()}</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (gameMode === "typewriter" && gameItems.length > 0) {
+    const card = gameItems[typeIndex];
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen flex flex-col justify-between">
+        {/* Header */}
+        <header className="w-full flex justify-between items-center border-b-2 border-primary pb-4 mb-8">
+          <div className="flex items-center gap-4">
+            <h1 className="font-serif text-3xl font-bold">{t("deck.games.typewriterTitle")}</h1>
+            <button
+              onClick={() => setGameMode("archive")}
+              className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
+            >
+              {t("deck.games.btnStopExit")}
+            </button>
+          </div>
+          <div className="font-mono text-sm text-secondary uppercase font-bold">
+            {t("deck.games.timeRemaining")}: {typeTimeLeft}s
+          </div>
+        </header>
+
+        {/* Game Card */}
+        <div
+          onClick={() => typewriterInputRef.current?.focus()}
+          className="flex-grow flex flex-col items-center justify-center p-8 md:p-12 border-[3px] border-primary bg-[#f0edea] shadow-[8px_8px_0_0_#000] min-h-[400px] relative overflow-hidden cursor-pointer"
+        >
+          {showSuccessStamp && (
+            <div className="absolute inset-0 m-auto w-max h-max font-serif text-8xl font-black text-emerald-600 border-[8px] border-emerald-600 px-8 py-2 transform -rotate-12 opacity-90 z-20 pointer-events-none tracking-widest select-none bg-surface/95">
+              {t("deck.games.successStamp").toUpperCase()}
             </div>
           )}
-        </>
-      )}
 
-      <AddWordModal open={modalOpen} onClose={closeModal} onCreated={reload} />
+          {showErrorStamp && (
+            <div className="absolute inset-0 m-auto w-max h-max font-serif text-8xl font-black text-secondary border-[8px] border-secondary px-8 py-2 transform -rotate-12 opacity-90 z-20 pointer-events-none tracking-widest select-none bg-surface/95">
+              {t("deck.games.errorStamp").toUpperCase()}
+            </div>
+          )}
 
+          {/* Progress bar */}
+          <div className="w-full border-2 border-primary bg-surface-container h-4 mb-12 relative z-10">
+            <div
+              className="bg-secondary h-full transition-all duration-100"
+              style={{ width: `${(typeTimeLeft / 15) * 100}%` }}
+            ></div>
+          </div>
+
+          {/* Translation Hint */}
+          <div className="text-center max-w-xl mx-auto mb-12 relative z-10">
+            <h2 className="font-serif text-3xl italic text-primary">
+              "{card.translation}"
+            </h2>
+            {card.example && (
+              <p className="text-xs text-on-surface-variant italic mt-3">
+                {t("deck.games.context")}: {card.example}
+              </p>
+            )}
+          </div>
+
+          {/* Typewriter Character Inputs */}
+          <div className="relative z-10 flex justify-center flex-wrap gap-2 text-3xl md:text-5xl font-mono tracking-widest uppercase">
+            {card.word.split("").map((char, index) => {
+              const typedChar = typedText[index];
+              const isFilled = typedChar !== undefined;
+              return (
+                <span
+                  key={index}
+                  className={`border-b-4 pb-2 px-2 font-bold ${
+                    isFilled ? "border-primary text-primary" : "border-outline text-transparent"
+                  }`}
+                >
+                  {isFilled ? typedChar : "_"}
+                </span>
+              );
+            })}
+          </div>
+
+          {/* Hidden input to capture typing */}
+          <input
+            ref={typewriterInputRef}
+            type="text"
+            value={typedText}
+            onChange={handleTypewriterInput}
+            maxLength={card.word.length}
+            className="absolute opacity-0 w-0 h-0"
+            autoFocus
+          />
+        </div>
+
+        {/* Footer info */}
+        <div className="text-center text-outline text-xs mt-6">
+          {t("deck.games.typewriterHint")}
+        </div>
+      </div>
+    );
+  }
+
+  if (gameMode === "daily-missions") {
+    return (
+      <div className="max-w-5xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
+        {/* Header */}
+        <header className="border-b-[2px] border-on-surface pb-4 mb-8 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <h1 className="font-serif text-4xl md:text-5xl">{t("deck.games.missionControlTitle")}</h1>
+            <button
+              onClick={() => setGameMode("archive")}
+              className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
+            >
+              {t("deck.games.btnStopExit")}
+            </button>
+          </div>
+        </header>
+
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          {/* Left Column: Operations Log & Checklist */}
+          <div className="md:col-span-8 flex flex-col gap-10">
+            {/* 7-Day Log */}
+            <section>
+              <h2 className="font-serif text-2xl font-bold text-primary mb-6 border-b-2 border-primary inline-block pb-1">
+                {t("deck.games.operationsLog")}
+              </h2>
+              <div className="grid grid-cols-7 gap-3">
+                {["M", "T", "W", "T", "F", "S", "S"].map((day, index) => {
+                  const isCompleted = index < 5; // Simulating active streak
+                  return (
+                    <div
+                      key={index}
+                      className={`aspect-square border-2 border-primary bg-surface flex flex-col items-center justify-center relative overflow-hidden ${
+                        index === 4 ? "bg-surface-container-high font-bold" : ""
+                      }`}
+                    >
+                      <span className="font-mono text-xs text-outline absolute top-2 left-2">{day}</span>
+                      {isCompleted && (
+                        <div className="stamp absolute inset-0 m-auto w-max h-max font-serif text-[10px] uppercase px-2 py-0.5 border-2 border-secondary text-secondary font-black transform -rotate-12">
+                          {t("deck.games.duty")}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* Daily Missions */}
+            <section className="bg-surface border-2 border-primary p-6 shadow-[5px_5px_0_0_#000] relative">
+              <div className="absolute top-0 right-0 w-8 h-8 border-l-2 border-b-2 border-primary bg-[#ffddb8]"></div>
+              <h2 className="font-serif text-2xl font-bold text-primary mb-6 uppercase tracking-wider">
+                {t("deck.games.dailyMissions")}
+              </h2>
+              <ul className="flex flex-col gap-4">
+                <li className="flex items-center gap-4 p-4 border-2 border-primary hover:bg-surface-container-high transition-all cursor-pointer">
+                  <div className="w-5 h-5 border-2 border-primary bg-primary flex items-center justify-center text-surface text-xs font-bold">✓</div>
+                  <span className="font-body text-base text-primary">
+                    {t("deck.games.missionCleanUp")} ({t("deck.games.completed")})
+                  </span>
+                </li>
+                <li className="flex items-center gap-4 p-4 border-2 border-primary hover:bg-surface-container-high transition-all cursor-pointer">
+                  <div className="w-5 h-5 border-2 border-primary flex items-center justify-center"></div>
+                  <span className="font-body text-base text-primary">{t("deck.games.missionNewCipher")}</span>
+                </li>
+                <li className="flex items-center gap-4 p-4 border-2 border-primary hover:bg-surface-container-high transition-all cursor-pointer">
+                  <div className="w-5 h-5 border-2 border-primary flex items-center justify-center"></div>
+                  <span className="font-body text-base text-primary">{t("deck.games.missionSpeedMarch")}</span>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          {/* Right Column: Streak Card & Dossier Record */}
+          <div className="md:col-span-4 flex flex-col gap-8">
+            {/* Streak Counter */}
+            <div className="bg-[#ffdadb] border-2 border-primary p-6 shadow-[5px_5px_0_0_#000] flex flex-col items-center justify-center text-center">
+              <Icon name="local_fire_department" className="text-secondary text-5xl mb-2" />
+              <h3 className="font-serif text-2xl font-bold uppercase text-primary">
+                {t("deck.games.streakDays", { n: 5 })}
+              </h3>
+              <p className="font-mono text-[10px] text-outline uppercase mt-1 tracking-widest">
+                {t("deck.games.maintained")}
+              </p>
+            </div>
+
+            {/* Service Record */}
+            <div className="bg-surface border-2 border-primary p-6 shadow-[5px_5px_0_0_#000] flex flex-col items-center text-center">
+              <h3 className="font-mono text-xs text-primary uppercase tracking-widest mb-6 w-full text-left border-b-2 border-primary pb-2">
+                {t("deck.games.serviceRecord")}
+              </h3>
+              <div className="w-24 h-24 mb-4 border-2 border-primary rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center">
+                <Icon name="local_police" className="text-5xl text-secondary" />
+              </div>
+              <div className="font-serif text-2xl font-bold uppercase tracking-tight mb-1 text-primary">
+                {t("deck.games.archiveAnalyst")}
+              </div>
+              <p className="text-xs text-on-surface-variant mb-4">{t("deck.games.currentRank")}</p>
+              
+              <div className="w-full border-2 border-primary h-5 relative bg-surface-container-low overflow-hidden mb-2">
+                <div className="absolute top-0 left-0 h-full w-[75%] bg-primary"></div>
+              </div>
+              <div className="w-full flex justify-between font-mono text-[10px] text-outline">
+                <span>750 XP</span>
+                <span>1000 XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- ARCHIVE VIEW (DEFAULT LIST) ---
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
+      {/* Title */}
+      <div className="border-b-[2px] border-on-surface pb-4 mb-6">
+        <h1 className="font-serif text-5xl md:text-6xl font-normal tracking-tight leading-none">
+          {t("deck.titleLead")} {t("deck.titleAccent")}
+        </h1>
+      </div>
+
+      {/* Game Entries Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <button
+          onClick={() => {
+            setGameToLaunch("card-flip");
+            setGameMode("setup");
+          }}
+          className="border-2 border-on-surface bg-surface hover:bg-surface-variant p-4 text-center shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
+        >
+          <Icon name="style" className="text-secondary text-2xl" />
+          <span className="font-label text-xs uppercase font-bold tracking-wider">{t("deck.games.cardFlipTitle")}</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setGameToLaunch("typewriter");
+            setGameMode("setup");
+          }}
+          className="border-2 border-on-surface bg-surface hover:bg-surface-variant p-4 text-center shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
+        >
+          <Icon name="keyboard" className="text-secondary text-2xl" />
+          <span className="font-label text-xs uppercase font-bold tracking-wider">{t("deck.games.typewriterTitle")}</span>
+        </button>
+
+        <button
+          onClick={() => setGameMode("daily-missions")}
+          className="border-2 border-on-surface bg-surface hover:bg-surface-variant p-4 text-center shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
+        >
+          <Icon name="local_police" className="text-secondary text-2xl" />
+          <span className="font-label text-xs uppercase font-bold tracking-wider">{t("deck.games.missionControlTitle")}</span>
+        </button>
+      </div>
+
+      {/* Stats Bar */}
+      <div className="border-y-[2px] border-on-surface py-6 mb-10 grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+        {statsLoading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="h-10 bg-surface-variant rounded w-20 mx-auto"></div>
+              <div className="h-4 bg-surface-variant rounded w-24 mx-auto mt-2"></div>
+            </div>
+          ))
+        ) : stats ? (
+          <>
+            <div>
+              <div className="font-ledger text-4xl md:text-5xl font-bold text-secondary">
+                {stats.cards_total ? stats.cards_total.toLocaleString() : 0}
+              </div>
+              <div className="font-label text-xs text-on-surface-variant font-bold mt-1.5 tracking-widest uppercase">
+                {t("deck.stats.total")}
+              </div>
+            </div>
+            <div>
+              <div className="font-ledger text-4xl md:text-5xl font-bold text-secondary">
+                {stats.due_today || 0}
+              </div>
+              <div className="font-label text-xs text-on-surface-variant font-bold mt-1.5 tracking-widest uppercase">
+                {t("deck.stats.due")}
+              </div>
+            </div>
+            <div>
+              <div className="font-ledger text-4xl md:text-5xl font-bold text-on-surface">
+                {stats.learned_count || 0}
+              </div>
+              <div className="font-label text-xs text-on-surface-variant font-bold mt-1.5 tracking-widest uppercase">
+                {t("deck.stats.learned")}
+              </div>
+            </div>
+            <div>
+              <div className="font-ledger text-4xl md:text-5xl font-bold text-on-surface">
+                {stats.forgotten_count || 0}
+              </div>
+              <div className="font-label text-xs text-on-surface-variant font-bold mt-1.5 tracking-widest uppercase">
+                {t("deck.stats.forgotten")}
+              </div>
+            </div>
+            <div>
+              <div className="font-ledger text-4xl md:text-5xl font-bold text-on-surface">
+                {stats.retention_rate ? Math.round(stats.retention_rate) : 100}%
+              </div>
+              <div className="font-label text-xs text-on-surface-variant font-bold mt-1.5 tracking-widest uppercase">
+                {t("deck.stats.retention")}
+              </div>
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {/* Main Grid: Left List (65%) and Right Entry Card (35%) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Left Side: Filter Tabs and Cards List */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          {/* Tabs */}
+          <div className="flex gap-6 border-b-2 border-on-surface/10 pb-2 font-label text-sm md:text-base uppercase font-bold tracking-wider">
+            <button
+              onClick={() => onStatusFilterChange("")}
+              className={`cursor-pointer pb-2 ${statusFilter === "" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+            >
+              {t("deck.tabs.all")}
+            </button>
+            <button
+              onClick={() => onStatusFilterChange("learning")}
+              className={`cursor-pointer pb-2 ${statusFilter === "learning" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+            >
+              {t("deck.tabs.learning")}
+            </button>
+            <button
+              onClick={() => onStatusFilterChange("unlearned")}
+              className={`cursor-pointer pb-2 ${statusFilter === "unlearned" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+            >
+              {t("deck.tabs.unlearned")}
+            </button>
+            <button
+              onClick={() => onStatusFilterChange("learned")}
+              className={`cursor-pointer pb-2 ${statusFilter === "learned" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+            >
+              {t("deck.tabs.learned")}
+            </button>
+            <button
+              onClick={() => onStatusFilterChange("hard")}
+              className={`cursor-pointer pb-2 ${statusFilter === "hard" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+            >
+              {t("deck.tabs.hard")}
+            </button>
+            <button
+              onClick={() => onStatusFilterChange("skipped")}
+              className={`cursor-pointer pb-2 text-secondary ${statusFilter === "skipped" ? "border-b-[3px] border-secondary font-black" : "opacity-80 hover:opacity-100"}`}
+            >
+              {t("deck.tabs.skipped")}
+            </button>
+          </div>
+
+          {error && <ErrorState error={error} onRetry={reload} />}
+
+          {!error && (
+            <div className="flex flex-col gap-4">
+              {loading && Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-32" />
+              ))}
+
+              {!loading && items.length === 0 ? (
+                <div className="border-3 border-dashed border-on-surface p-12 text-center flex flex-col gap-3 items-center bg-surface/30">
+                  <Icon name="folder_open" className="text-5xl text-on-surface-variant/40" />
+                  <h4 className="font-headline text-xl font-bold">{t("deck.noEntriesTitle")}</h4>
+                  <p className="font-body text-sm text-on-surface-variant max-w-sm">
+                    {t("deck.noEntriesDesc")}
+                  </p>
+                </div>
+              ) : (
+                items.slice(0, limit).map((card) => {
+                  const isRevealed = revealedCards.has(card.id);
+                  return (
+                    <div key={card.id} className={getCardClasses(card.status)}>
+                      {/* Top Header: Always in one line (no wrapping!) */}
+                      <div className="flex flex-row justify-between items-center w-full gap-4">
+                        {/* Term and Styled Dropdown Badge */}
+                        <div className="flex flex-row items-center gap-4">
+                          <h3 className="font-serif text-3xl font-bold uppercase tracking-tight text-on-surface">
+                            {card.word}
+                          </h3>
+                          <div className="flex-shrink-0">
+                            <BadgeSelect card={card} />
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex flex-row items-center gap-6 flex-shrink-0">
+                          {isRevealed ? (
+                            <button
+                              onClick={() => toggleReveal(card.id)}
+                              className="text-on-surface-variant font-label text-xs uppercase font-bold tracking-widest flex items-center gap-2 hover:text-on-surface cursor-pointer select-none py-1"
+                            >
+                              <Icon name="visibility_off" className="text-base" />
+                              <span>{t("stories.hideTranslation") || "HIDE"}</span>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => toggleReveal(card.id)}
+                              className="text-secondary font-label text-xs uppercase font-bold tracking-widest flex items-center gap-2 hover:opacity-85 cursor-pointer select-none py-1"
+                            >
+                              <Icon name="translate" className="text-base" />
+                              <span>{t("stories.showTranslation") || "REVEAL"}</span>
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() => setPendingDelete(card)}
+                            className="text-on-surface-variant hover:text-secondary cursor-pointer transition-colors p-1.5"
+                            title="Delete entry"
+                          >
+                            <Icon name="delete" className="text-xl" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Translation revealed/hidden */}
+                      {isRevealed && (
+                        <p className="font-body text-base font-bold text-secondary mt-1">
+                          {card.translation}
+                        </p>
+                      )}
+
+                      {/* Example sentence */}
+                      {card.example && (
+                        <p className="font-body text-sm italic text-on-surface-variant leading-relaxed mt-1">
+                          {card.example}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+
+              {/* Load More Button */}
+              {!loading && items.length > limit && (
+                <button
+                  onClick={() => setLimit((l) => l + 10)}
+                  className="w-full border-2 border-dashed border-on-surface py-5 flex items-center justify-center gap-3 font-label text-xs uppercase tracking-widest font-bold hover:bg-surface-variant transition-all cursor-pointer mt-4"
+                >
+                  <Icon name="expand_more" className="text-base" />
+                  <span>{t("deck.loadMore") || "LOAD MORE ARCHIVES"}</span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Right Side: New Entry Form Card */}
+        <div className="lg:col-span-1">
+          <div className="border-[3px] border-on-surface bg-surface p-6 md:p-8 shadow-[5px_5px_0_0_#000] sticky top-6 flex flex-col gap-6">
+            <div className="flex justify-between items-center">
+              <h2 className="font-serif text-3xl font-normal text-on-surface">
+                {t("deck.newEntryTitle")}
+              </h2>
+              <Icon name="edit_note" className="text-secondary text-3xl" />
+            </div>
+            
+            <div className="h-[2px] bg-on-surface/10 w-full" />
+
+            <form onSubmit={handleAddEntry} className="flex flex-col gap-6">
+              <div>
+                <label className="font-label text-[11px] uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                  {t("deck.addModal.wordLabel").toUpperCase()}
+                </label>
+                <input
+                  type="text"
+                  value={term}
+                  onChange={(e) => setTerm(e.target.value)}
+                  placeholder={t("deck.wordPlaceholder")}
+                  required
+                  className="w-full bg-transparent border-b-2 border-on-surface py-2 text-base focus:outline-none placeholder-on-surface-variant/40"
+                />
+              </div>
+
+              <div>
+                <label className="font-label text-[11px] uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                  {t("deck.addModal.translationLabel").toUpperCase()}
+                </label>
+                <input
+                  type="text"
+                  value={translationInput}
+                  onChange={(e) => setTranslationInput(e.target.value)}
+                  placeholder={t("deck.translationPlaceholder")}
+                  required
+                  className="w-full bg-transparent border-b-2 border-on-surface py-2 text-base focus:outline-none placeholder-on-surface-variant/40"
+                />
+              </div>
+
+              <div>
+                <label className="font-label text-[11px] uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                  {t("deck.addModal.exampleLabel").toUpperCase()}
+                </label>
+                <textarea
+                  value={example}
+                  onChange={(e) => setExample(e.target.value)}
+                  placeholder={t("deck.examplePlaceholder")}
+                  className="w-full bg-surface-variant border-2 border-on-surface p-4 text-sm min-h-[120px] focus:outline-none placeholder-on-surface-variant/40 shadow-[1.5px_1.5px_0_0_#000]"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={adding}
+                className="w-full bg-secondary text-surface border-[2.5px] border-on-surface shadow-[3.5px_3.5px_0_0_#000] hover:shadow-[5px_5px_0_0_#000] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[1px_1px_0_0_#000] py-4 text-center font-label text-xs uppercase font-bold tracking-widest transition-all cursor-pointer"
+              >
+                {adding ? t("deck.committing") : t("deck.commitToLedger").toUpperCase()}
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Delete Word Confirmation Modal */}
       <Modal open={!!pendingDelete} onClose={() => setPendingDelete(null)} title={t("deck.removeTitle")}>
         <p className="font-body text-body-md mb-6">{t("deck.removeBody", { word: pendingDelete?.word })}</p>
         <div className="flex gap-4">
