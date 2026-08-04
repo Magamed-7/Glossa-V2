@@ -71,12 +71,15 @@ export default function WordDeck() {
   const isFreePlan = !subscription || subscription.plan?.code === "free";
 
   // --- GAME STATES ---
-  // Card Flip Game States
-  const [flipIndex, setFlipIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [flipTimeLeft, setFlipTimeLeft] = useState(10); // 10 seconds per card
-  const [flipCombo, setFlipCombo] = useState(0);
-  const [flipXp, setFlipXp] = useState(0);
+  // Speed Recall Game States
+  const [recallWords, setRecallWords] = useState([]);
+  const [recallTimeLeft, setRecallTimeLeft] = useState(60);
+  const [recallCombo, setRecallCombo] = useState(0);
+  const [recallXp, setRecallXp] = useState(0);
+  const recallXpRef = useRef(0);
+  const recallComboRef = useRef(0);
+  const [showRecallResults, setShowRecallResults] = useState(false);
+  const [recallResultsStats, setRecallResultsStats] = useState({ correct: 0, missed: 0, maxCombo: 0 });
 
   // Typewriter Game States
   const [typeIndex, setTypeIndex] = useState(0);
@@ -145,21 +148,70 @@ export default function WordDeck() {
     }
   }, [fetched, statusFilter]);
 
+  useEffect(() => {
+    recallXpRef.current = recallXp;
+  }, [recallXp]);
+
+  useEffect(() => {
+    recallComboRef.current = recallCombo;
+  }, [recallCombo]);
+
   // Handle Game Mode Timers
   useEffect(() => {
     let interval = null;
+    let secondsTimer = null;
 
-    if (gameMode === "card-flip" && gameItems.length > 0) {
-      setFlipTimeLeft(10);
-      interval = setInterval(() => {
-        setFlipTimeLeft((t) => {
+    if (gameMode === "speed-recall" && gameItems.length > 0) {
+      setRecallTimeLeft(60);
+      setRecallResultsStats({ correct: 0, missed: 0, maxCombo: 0 });
+
+      // 1. Timer for 60 seconds
+      secondsTimer = setInterval(() => {
+        setRecallTimeLeft((t) => {
           if (t <= 1) {
-            handleFlipAnswer(false);
-            return 10;
+            clearInterval(secondsTimer);
+            clearInterval(interval);
+            setGameMode("speed-recall-results");
+            return 0;
           }
           return t - 1;
         });
       }, 1000);
+
+      // 2. Physics loop (run every 30ms for smooth scrolling)
+      interval = setInterval(() => {
+        setRecallWords((prev) => {
+          let allDone = true;
+          const next = prev.map((w) => {
+            const nextY = w.y + 1.8; // speed
+            
+            let missed = w.missed;
+            if (!w.classified && !missed && nextY > 230) {
+              missed = true;
+              setRecallCombo(0);
+              onStatusChange(w, "hard");
+              setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
+            }
+
+            if (nextY < 420) {
+              allDone = false;
+            }
+
+            return { ...w, y: nextY, missed };
+          });
+
+          if (allDone && prev.length > 0) {
+            clearInterval(interval);
+            clearInterval(secondsTimer);
+            setTimeout(() => {
+              setGameMode("speed-recall-results");
+            }, 500);
+          }
+
+          return next;
+        });
+      }, 30);
+
     } else if (gameMode === "typewriter" && gameItems.length > 0) {
       setTypedText("");
       setShowSuccessStamp(false);
@@ -178,8 +230,9 @@ export default function WordDeck() {
 
     return () => {
       if (interval) clearInterval(interval);
+      if (secondsTimer) clearInterval(secondsTimer);
     };
-  }, [gameMode, flipIndex, typeIndex]);
+  }, [gameMode, gameItems]);
 
   function onStatusFilterChange(val) {
     const next = new URLSearchParams(searchParams);
@@ -298,6 +351,20 @@ export default function WordDeck() {
       setFlipCombo(0);
       setFlipXp(0);
       setIsFlipped(false);
+
+      if (gameToLaunch === "speed-recall") {
+        setRecallTimeLeft(60);
+        setRecallCombo(0);
+        setRecallXp(0);
+        const initial = selected.map((item, idx) => ({
+          ...item,
+          y: -idx * 140 - 50,
+          classified: null,
+          missed: false
+        }));
+        setRecallWords(initial);
+      }
+
       setGameMode(gameToLaunch);
     } catch (err) {
       toast.error(errorText(err));
@@ -306,29 +373,73 @@ export default function WordDeck() {
     }
   };
 
-  // --- CARD FLIP HANDLERS ---
-  const handleFlipAnswer = async (know) => {
-    const card = gameItems[flipIndex];
-    if (!card) return;
+  // --- SPEED RECALL HANDLERS ---
+  const handleRecallAction = async (know) => {
+    let activeIndex = -1;
+    let minDistance = 99999;
+
+    recallWords.forEach((w, idx) => {
+      if (w.classified === null && !w.missed && w.y >= 100 && w.y <= 280) {
+        const dist = Math.abs(w.y - 190);
+        if (dist < minDistance) {
+          minDistance = dist;
+          activeIndex = idx;
+        }
+      }
+    });
+
+    if (activeIndex === -1) return;
+
+    const activeWord = recallWords[activeIndex];
+    
+    setRecallWords((prev) => {
+      const next = [...prev];
+      next[activeIndex] = {
+        ...activeWord,
+        classified: know ? "know" : "forgot"
+      };
+      return next;
+    });
+
+    await onStatusChange(activeWord, know ? "learned" : "hard");
 
     if (know) {
-      setFlipCombo((c) => c + 1);
-      setFlipXp((x) => x + 20);
-      await onStatusChange(card, "learned");
+      playBellSound();
+      setRecallCombo((c) => {
+        const nextCombo = c + 1;
+        setRecallResultsStats((s) => ({
+          ...s,
+          correct: s.correct + 1,
+          maxCombo: Math.max(s.maxCombo, nextCombo)
+        }));
+        return nextCombo;
+      });
+      setRecallXp((x) => x + 15 + Math.min(10, recallComboRef.current));
     } else {
-      setFlipCombo(0);
-      await onStatusChange(card, "hard");
-    }
-
-    setIsFlipped(false);
-    if (flipIndex + 1 < gameItems.length) {
-      setFlipIndex((i) => i + 1);
-    } else {
-      setFlipIndex(0); // Loop back
-      toast.success("Card Flip deck completed!");
-      setGameMode("archive");
+      playBuzzerSound();
+      setRecallCombo(0);
+      setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
     }
   };
+
+  useEffect(() => {
+    if (gameMode !== "speed-recall") return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handleRecallAction(true);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleRecallAction(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [gameMode, recallWords, recallCombo]);
 
   // --- TYPEWRITER HANDLERS ---
   const handleTypewriterInput = (e) => {
@@ -530,120 +641,199 @@ export default function WordDeck() {
     );
   }
 
-  if (gameMode === "card-flip" && gameItems.length > 0) {
-    const card = gameItems[flipIndex];
+  if (gameMode === "speed-recall" && gameItems.length > 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen flex flex-col justify-between">
-        {/* Header */}
-        <header className="w-full flex justify-between items-center border-b-2 border-primary pb-4 mb-8">
-          <div className="flex items-center gap-4">
-            <h1 className="font-serif text-3xl font-bold">{t("deck.games.cardFlipTitle")}</h1>
-            <button
-              onClick={() => setGameMode("archive")}
-              className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
-            >
-              {t("deck.games.btnStopExit")}
-            </button>
+      <div 
+        className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 flex flex-col relative overflow-hidden select-none"
+        style={{
+          backgroundColor: "#fcf9f6",
+          backgroundImage: "linear-gradient(#e5e2df 1px, transparent 1px), linear-gradient(90deg, #e5e2df 1px, transparent 1px)",
+          backgroundSize: "20px 20px"
+        }}
+      >
+        {/* Subtle Header */}
+        <header className="w-full flex justify-between items-center mb-6 z-10">
+          <div className="bg-[#fcf9f6] border-2 border-black p-4 flex items-center gap-2 shadow-[4px_4px_0_0_#000] neo-card">
+            <Icon name="warning" className="text-secondary text-2xl" />
+            <h1 className="font-serif text-2xl font-bold uppercase tracking-tight">
+              Speed Recall: Emergency Purge
+            </h1>
           </div>
-          <div className="flex gap-4 font-mono text-xs uppercase">
-            <div className="bg-[#ffddb8] border-2 border-primary px-3 py-1 shadow-[2px_2px_0_0_#000]">
-              {t("deck.games.combo").toUpperCase()} x{flipCombo}
-            </div>
-            <div className="bg-surface border-2 border-primary px-3 py-1 shadow-[2px_2px_0_0_#000]">
-              {t("deck.games.xp").toUpperCase()}: {flipXp}
-            </div>
+          <button
+            onClick={() => setGameMode("archive")}
+            className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase"
+          >
+            {t("deck.games.btnStopExit")}
+          </button>
+          <div className="bg-[#fcf9f6] border-2 border-[#ba1a1a] p-4 flex flex-col items-end shadow-[4px_4px_0_0_#000] neo-card">
+            <span className="text-[10px] text-secondary font-mono uppercase tracking-widest font-bold">Time Remaining</span>
+            <span className="font-serif text-3xl font-black text-secondary">{recallTimeLeft}s</span>
           </div>
         </header>
 
-        {/* Game Body */}
-        <div className="flex-grow flex flex-col md:flex-row items-center justify-center gap-12 py-10">
-          {/* Stopwatch Widget */}
-          <div className="flex flex-col items-center justify-center relative w-48 h-48 bg-[#fdfaf5] border-[8px] border-[#8a795d] rounded-full shadow-[5px_5px_0_0_#000]">
-            <div className="absolute top-2 w-1 h-3 bg-primary"></div>
-            <div className="absolute bottom-2 w-1 h-3 bg-primary"></div>
-            <div className="absolute left-2 h-1 w-3 bg-primary"></div>
-            <div className="absolute right-2 h-1 w-3 bg-primary"></div>
-            {/* Tick Hand */}
-            <div
-              className="absolute bottom-1/2 w-0.5 h-16 bg-secondary origin-bottom transition-transform duration-100"
-              style={{ transform: `rotate(${(10 - flipTimeLeft) * 36}deg)` }}
-            ></div>
-            <div className="absolute w-3 h-3 rounded-full bg-primary"></div>
-            <div className="absolute bottom-8 font-mono text-xs border border-primary px-2 py-0.5 bg-surface-container">
-              00:{flipTimeLeft < 10 ? `0${flipTimeLeft}` : flipTimeLeft}
+        {/* Hazard Wrapper */}
+        <main 
+          className="flex-grow flex flex-col md:flex-row items-stretch gap-6 w-full max-w-5xl mx-auto z-10 p-1"
+          style={{
+            background: "repeating-linear-gradient(45deg, #ba1a1a, #ba1a1a 12px, #fcf9f6 12px, #fcf9f6 24px)"
+          }}
+        >
+          <div className="bg-[#fcf9f6] bg-opacity-95 p-4 flex-grow flex flex-col md:flex-row items-stretch gap-6">
+            
+            {/* Left Indicator */}
+            <div className="hidden md:flex flex-col justify-center items-center w-1/4">
+              <button
+                onClick={() => handleRecallAction(true)}
+                className="bg-[#fcf9f6] border-2 border-black p-6 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer w-full neo-card"
+              >
+                <Icon name="arrow_back" className="text-4xl text-black" />
+                <span className="font-serif text-2xl font-black uppercase text-black">{t("deck.games.btnKnow")}</span>
+                <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Left Arrow</span>
+              </button>
+            </div>
+
+            {/* Central Scrolling Area */}
+            <div className="flex-grow relative overflow-hidden flex flex-col items-center justify-center bg-[#f0edea] border-2 border-black shadow-[4px_4px_0_0_#000] min-h-[400px] neo-card">
+              
+              {/* Combo Indicator */}
+              <div className="absolute top-4 right-4 z-20">
+                <div className="px-4 py-2 bg-[#ffddb8] border-2 border-black shadow-[2px_2px_0_0_#000] transform rotate-2">
+                  <span className="font-mono text-xs font-bold text-black uppercase">{t("deck.games.combo").toUpperCase()} x{recallCombo}</span>
+                </div>
+                <div className="px-4 py-1 bg-white border-2 border-black shadow-[2px_2px_0_0_#000] transform -rotate-1 mt-1 text-center">
+                  <span className="font-mono text-[10px] font-bold text-secondary">+{recallXp} XP</span>
+                </div>
+              </div>
+
+              {/* Target Reticle */}
+              <div className="absolute top-1/2 left-0 right-0 h-[100px] -translate-y-1/2 border-y-4 border-[#ba1a1a] pointer-events-none z-10 flex items-center justify-between px-8">
+                <div className="w-4 h-4 bg-[#ba1a1a] rotate-45"></div>
+                <div className="w-4 h-4 bg-[#ba1a1a] rotate-45"></div>
+              </div>
+
+              {/* Words List */}
+              <div className="absolute inset-0">
+                {recallWords.map((w) => {
+                  const isActive = w.y >= 130 && w.y <= 270;
+                  
+                  let wordClass = "absolute left-0 right-0 text-center font-serif text-3xl font-bold transition-transform duration-75 select-none ";
+                  if (w.classified === "know") {
+                    wordClass += "text-emerald-600 line-through opacity-40 scale-90";
+                  } else if (w.classified === "forgot") {
+                    wordClass += "text-secondary line-through opacity-40 scale-90";
+                  } else if (w.missed) {
+                    wordClass += "text-outline opacity-30 scale-95";
+                  } else if (isActive) {
+                    wordClass += "text-primary scale-110 font-black";
+                  } else {
+                    wordClass += "text-outline opacity-60";
+                  }
+
+                  return (
+                    <div
+                      key={w.id}
+                      className={wordClass}
+                      style={{
+                        transform: `translate3d(0, ${w.y - 20}px, 0)`,
+                        top: 0
+                      }}
+                    >
+                      {isActive && !w.classified && !w.missed ? (
+                        <span className="inline-block bg-[#ffdadb] text-secondary border-2 border-[#b90538] px-6 py-1.5 shadow-[3px_3px_0_0_#000] font-sans text-2xl uppercase tracking-wider font-extrabold">
+                          {w.word}
+                        </span>
+                      ) : (
+                        <span>{w.word}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Gradient Fades */}
+              <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#f0edea] to-transparent pointer-events-none z-20"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f0edea] to-transparent pointer-events-none z-20"></div>
+            </div>
+
+            {/* Right Indicator */}
+            <div className="hidden md:flex flex-col justify-center items-center w-1/4">
+              <button
+                onClick={() => handleRecallAction(false)}
+                className="bg-[#fcf9f6] border-2 border-black p-6 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer w-full neo-card"
+              >
+                <Icon name="arrow_forward" className="text-4xl text-secondary" />
+                <span className="font-serif text-2xl font-black uppercase text-secondary">{t("deck.games.btnForget")}</span>
+                <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Right Arrow</span>
+              </button>
+            </div>
+
+            {/* Mobile Indicators */}
+            <div className="flex md:hidden w-full gap-4 mt-auto">
+              <button
+                onClick={() => handleRecallAction(true)}
+                className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[2px_2px_0_0_#000] active:translate-y-0.5"
+              >
+                <Icon name="arrow_back" className="text-2xl text-black" />
+                <span className="font-bold text-sm uppercase text-black">{t("deck.games.btnKnow")}</span>
+              </button>
+              <button
+                onClick={() => handleRecallAction(false)}
+                className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[2px_2px_0_0_#000] active:translate-y-0.5"
+              >
+                <Icon name="arrow_forward" className="text-2xl text-secondary" />
+                <span className="font-bold text-sm uppercase text-secondary">{t("deck.games.btnForget")}</span>
+              </button>
+            </div>
+
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (gameMode === "speed-recall-results") {
+    return (
+      <div 
+        className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 flex flex-col justify-center items-center select-none"
+        style={{
+          backgroundColor: "#fcf9f6",
+          backgroundImage: "linear-gradient(#e5e2df 1px, transparent 1px), linear-gradient(90deg, #e5e2df 1px, transparent 1px)",
+          backgroundSize: "20px 20px"
+        }}
+      >
+        <div className="bg-[#fcf9f6] border-2 border-black p-8 max-w-md w-full shadow-[6px_6px_0_0_#000] text-center neo-card">
+          <Icon name="verified_user" className="text-secondary text-5xl mb-4" />
+          <h2 className="font-serif text-3xl font-black uppercase tracking-tight mb-2">
+            {t("deck.games.debriefingTitle")}
+          </h2>
+          <p className="text-xs text-on-surface-variant font-mono uppercase tracking-widest mb-6">
+            {t("deck.games.sessionComplete")}
+          </p>
+
+          <div className="border-2 border-black bg-[#f0edea] p-4 flex flex-col gap-3 text-left font-mono text-sm mb-6">
+            <div className="flex justify-between border-b border-black pb-1.5">
+              <span>{t("deck.games.resultsCorrect")}</span>
+              <span className="font-bold text-emerald-600">{recallResultsStats.correct}</span>
+            </div>
+            <div className="flex justify-between border-b border-black pb-1.5">
+              <span>{t("deck.games.resultsMissed")}</span>
+              <span className="font-bold text-secondary">{recallResultsStats.missed}</span>
+            </div>
+            <div className="flex justify-between border-b border-black pb-1.5">
+              <span>{t("deck.games.resultsMaxCombo")}</span>
+              <span className="font-bold">x{recallResultsStats.maxCombo}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>{t("deck.games.resultsXp")}</span>
+              <span className="font-bold text-secondary">+{recallXp} XP</span>
             </div>
           </div>
 
-          {/* Flashcard container */}
-          <div
-            onClick={() => setIsFlipped(!isFlipped)}
-            className="relative w-full max-w-sm aspect-[3/4] cursor-pointer group perspective-1000"
-          >
-            <div
-              className="w-full h-full relative transition-transform duration-500 transform-style-3d shadow-[6px_6px_0_0_#000] border-[3px] border-primary bg-surface"
-              style={{ transform: isFlipped ? "rotateY(180deg)" : "none" }}
-            >
-              {/* Card Perforation */}
-              <div className="w-full h-4 border-b-2 border-primary opacity-50 bg-radial-dots"></div>
-
-              {/* Front Side */}
-              {!isFlipped ? (
-                <div className="absolute inset-0 top-4 p-8 flex flex-col justify-between backface-hidden">
-                  <div className="flex justify-between font-mono text-[10px] text-outline">
-                    <span>REF: GL-{card.id}</span>
-                    <span>{t("deck.games.deptLexicography")}</span>
-                  </div>
-                  <div className="text-center my-auto">
-                    <h2 className="font-serif text-4xl font-black uppercase tracking-tight">
-                      {card.word}
-                    </h2>
-                    <p className="text-outline text-sm mt-3">{t("deck.games.clickToFlip")}</p>
-                  </div>
-                  <div className="border-t-2 border-primary pt-3 text-center text-outline">
-                    <span>{t("deck.games.unverifiedCipher")}</span>
-                  </div>
-                </div>
-              ) : (
-                /* Back Side */
-                <div className="absolute inset-0 top-4 p-8 flex flex-col justify-between backface-hidden [transform:rotateY(180deg)]">
-                  <div className="flex justify-between font-mono text-[10px] text-outline">
-                    <span>{t("deck.games.decryptionSuccess")}</span>
-                    <span>{t("deck.games.glossaLedger")}</span>
-                  </div>
-                  <div className="text-center my-auto">
-                    <p className="font-bold text-2xl text-secondary mb-3">
-                      {card.translation}
-                    </p>
-                    {card.example && (
-                      <p className="text-sm italic text-on-surface-variant">
-                        "{card.example}"
-                      </p>
-                    )}
-                  </div>
-                  <div className="border-t-2 border-primary pt-3 text-center text-secondary font-bold">
-                    <span>{t("deck.games.ledgerVerified")}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-6 mt-6">
           <button
-            onClick={() => handleFlipAnswer(true)}
-            className="bg-primary text-on-primary font-bold text-base px-8 py-4 border-2 border-primary shadow-[4px_4px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all flex items-center gap-2 cursor-pointer"
+            onClick={() => setGameMode("archive")}
+            className="w-full bg-primary text-surface border-2 border-primary py-3.5 font-bold uppercase text-xs tracking-wider shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer text-center"
           >
-            <Icon name="check_circle" />
-            <span>{t("deck.games.btnKnow").toUpperCase()}</span>
-          </button>
-          <button
-            onClick={() => handleFlipAnswer(false)}
-            className="bg-secondary text-on-secondary font-bold text-base px-8 py-4 border-2 border-primary shadow-[4px_4px_0_0_#b90538] hover:translate-y-0.5 active:translate-y-1 transition-all flex items-center gap-2 cursor-pointer"
-          >
-            <Icon name="cancel" />
-            <span>{t("deck.games.btnForget").toUpperCase()}</span>
+            {t("deck.games.btnProceed")}
           </button>
         </div>
       </div>
@@ -940,12 +1130,12 @@ export default function WordDeck() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <button
           onClick={() => {
-            setGameToLaunch("card-flip");
+            setGameToLaunch("speed-recall");
             setGameMode("setup");
           }}
           className="border-2 border-on-surface bg-surface hover:bg-surface-variant p-4 text-center shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
         >
-          <Icon name="style" className="text-secondary text-2xl" />
+          <Icon name="warning" className="text-secondary text-2xl" />
           <span className="font-label text-xs uppercase font-bold tracking-wider">{t("deck.games.cardFlipTitle")}</span>
         </button>
 
