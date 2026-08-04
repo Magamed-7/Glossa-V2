@@ -156,83 +156,88 @@ export default function WordDeck() {
     recallComboRef.current = recallCombo;
   }, [recallCombo]);
 
-  // Handle Game Mode Timers
+  // Speed Recall Game Loop
   useEffect(() => {
-    let interval = null;
-    let secondsTimer = null;
+    if (gameMode !== "speed-recall" || gameItems.length === 0) return;
 
-    if (gameMode === "speed-recall" && gameItems.length > 0) {
-      setRecallTimeLeft(60);
-      setRecallResultsStats({ correct: 0, missed: 0, maxCombo: 0 });
+    setRecallTimeLeft(60);
+    setRecallResultsStats({ correct: 0, missed: 0, maxCombo: 0 });
 
-      // 1. Timer for 60 seconds
-      secondsTimer = setInterval(() => {
-        setRecallTimeLeft((t) => {
-          if (t <= 1) {
-            clearInterval(secondsTimer);
-            clearInterval(interval);
+    // 1. Timer for 60 seconds
+    const secondsTimer = setInterval(() => {
+      setRecallTimeLeft((t) => {
+        if (t <= 1) {
+          clearInterval(secondsTimer);
+          setGameMode("speed-recall-results");
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+
+    // 2. Physics loop (run every 30ms for smooth scrolling)
+    const interval = setInterval(() => {
+      setRecallWords((prev) => {
+        let allDone = true;
+        const next = prev.map((w) => {
+          const nextY = w.y + 1.8; // speed
+          
+          let missed = w.missed;
+          if (!w.classified && !missed && nextY > 230) {
+            missed = true;
+            setRecallCombo(0);
+            setCardStatus(w.id, "hard").catch((err) => console.error(err));
+            setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
+          }
+
+          if (nextY < 420) {
+            allDone = false;
+          }
+
+          return { ...w, y: nextY, missed };
+        });
+
+        if (allDone && prev.length > 0) {
+          clearInterval(interval);
+          clearInterval(secondsTimer);
+          setTimeout(() => {
             setGameMode("speed-recall-results");
-            return 0;
-          }
-          return t - 1;
-        });
-      }, 1000);
+          }, 500);
+        }
 
-      // 2. Physics loop (run every 30ms for smooth scrolling)
-      interval = setInterval(() => {
-        setRecallWords((prev) => {
-          let allDone = true;
-          const next = prev.map((w) => {
-            const nextY = w.y + 1.8; // speed
-            
-            let missed = w.missed;
-            if (!w.classified && !missed && nextY > 230) {
-              missed = true;
-              setRecallCombo(0);
-              onStatusChange(w, "hard");
-              setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
-            }
-
-            if (nextY < 420) {
-              allDone = false;
-            }
-
-            return { ...w, y: nextY, missed };
-          });
-
-          if (allDone && prev.length > 0) {
-            clearInterval(interval);
-            clearInterval(secondsTimer);
-            setTimeout(() => {
-              setGameMode("speed-recall-results");
-            }, 500);
-          }
-
-          return next;
-        });
-      }, 30);
-
-    } else if (gameMode === "typewriter" && gameItems.length > 0) {
-      setTypedText("");
-      setShowSuccessStamp(false);
-      setShowErrorStamp(false);
-      setTypeTimeLeft(15);
-      interval = setInterval(() => {
-        setTypeTimeLeft((t) => {
-          if (t <= 0.1) {
-            handleNextTypewriter(false);
-            return 15;
-          }
-          return Number((t - 0.1).toFixed(1));
-        });
-      }, 100);
-    }
+        return next;
+      });
+    }, 30);
 
     return () => {
-      if (interval) clearInterval(interval);
-      if (secondsTimer) clearInterval(secondsTimer);
+      clearInterval(interval);
+      clearInterval(secondsTimer);
     };
-  }, [gameMode, gameItems]);
+  }, [gameMode]);
+
+  // Typewriter Game Timer
+  useEffect(() => {
+    if (gameMode !== "typewriter" || gameItems.length === 0) return;
+
+    setTypedText("");
+    setShowSuccessStamp(false);
+    setShowErrorStamp(false);
+    setTypeTimeLeft(15);
+
+    const interval = setInterval(() => {
+      setTypeTimeLeft((t) => {
+        if (t <= 0.1) {
+          handleNextTypewriter(false);
+          return 15;
+        }
+        return Number((t - 0.1).toFixed(1));
+      });
+    }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [gameMode, typeIndex]);
 
   function onStatusFilterChange(val) {
     const next = new URLSearchParams(searchParams);
@@ -401,7 +406,7 @@ export default function WordDeck() {
       return next;
     });
 
-    await onStatusChange(activeWord, know ? "learned" : "hard");
+    setCardStatus(activeWord.id, know ? "learned" : "hard").catch((err) => console.error(err));
 
     if (know) {
       playBellSound();
@@ -830,7 +835,11 @@ export default function WordDeck() {
           </div>
 
           <button
-            onClick={() => setGameMode("archive")}
+            onClick={() => {
+              reloadStats();
+              reloadMissions();
+              setGameMode("archive");
+            }}
             className="w-full bg-primary text-surface border-2 border-primary py-3.5 font-bold uppercase text-xs tracking-wider shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer text-center"
           >
             {t("deck.games.btnProceed")}
