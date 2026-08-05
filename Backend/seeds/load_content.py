@@ -112,6 +112,18 @@ async def load_vocabulary(level, dry_run, db):
     return created, skipped
 
 
+GRAMMAR_LEVEL_OVERRIDES = {
+    "have to, don't have to, must, mustn't": "A2",
+    "should": "A2",
+    "quantifiers: too, not enough": "A2",
+    "time sequencers and connectors": "A2",
+    "question tags": "B1",
+    "unreal conditionals (mixed conditionals)": "B2",
+    "wish for present/future situations; wish for past regrets": "B2",
+    "so, neither + auxiliaries": "C1",
+}
+
+
 async def _load_grammar_a1(level, dry_run, db):
     grammar_dir = _level_dir(level) / 'Grammar'
     g_en = _read_json(grammar_dir / 'grammar_extract_en.json')
@@ -142,7 +154,7 @@ async def _load_grammar_a1(level, dry_run, db):
             continue
 
         lesson = GrammarLessons(
-            cefr_level=level,
+            cefr_level=GRAMMAR_LEVEL_OVERRIDES.get(lesson_en['topic'], level),
             unit=str(lesson_en.get('unit')) if lesson_en.get('unit') is not None else None,
             lesson=f"Unit {lesson_en.get('unit')}: {lesson_en['topic']}",
             topic=lesson_en['topic'],
@@ -215,7 +227,7 @@ async def _load_grammar_embedded(level, dry_run, db):
         lesson_tg = g_tg[idx]
 
         lesson = GrammarLessons(
-            cefr_level=level,
+            cefr_level=GRAMMAR_LEVEL_OVERRIDES.get(lesson_en['topic'], level),
             unit=str(lesson_en.get('unit')) if lesson_en.get('unit') is not None else None,
             lesson=lesson_en['lesson'],
             topic=lesson_en['topic'],
