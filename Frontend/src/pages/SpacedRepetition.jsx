@@ -43,9 +43,9 @@ export default function SpacedRepetition() {
   if (cards) {
     cards.forEach((c) => {
       const isOverdue = !c.next_review_date || new Date(c.next_review_date) <= now;
-      const isUnlearned = c.status !== 'learned';
+      const isNeverLearned = (c.repetitions ?? 0) === 0;
       
-      if (isOverdue || isUnlearned) {
+      if (isOverdue || isNeverLearned) {
         dueCards.push(c);
       } else {
         upcomingCards.push(c);
@@ -174,7 +174,8 @@ export default function SpacedRepetition() {
   };
 
   const getDueLabel = (card) => {
-    if (card.status !== 'learned') {
+    const isNeverLearned = (card.repetitions ?? 0) === 0;
+    if (card.status !== 'learned' && isNeverLearned) {
       return t("review.learningActive");
     }
     if (!card.next_review_date) return t("review.dueNow");
@@ -195,7 +196,9 @@ export default function SpacedRepetition() {
   const getLeftIcon = (card) => {
     const isOverdue = !card.next_review_date || new Date(card.next_review_date) <= now;
     if (isOverdue) return "warning";
-    if (card.status !== 'learned') return "school";
+    
+    const isNeverLearned = (card.repetitions ?? 0) === 0;
+    if (card.status !== 'learned' && isNeverLearned) return "school";
     
     const dueDate = new Date(card.next_review_date);
     const diffTime = dueDate - now;
