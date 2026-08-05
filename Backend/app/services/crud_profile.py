@@ -31,8 +31,8 @@ async def get_profile(user_id: int, db: AsyncSession):
 async def update_profile(user_id: int, data: ProfileUpdate, db: AsyncSession):
     profile = await get_profile(user_id, db)
 
-    profile.bio = data.bio or profile.bio
-    profile.interests = data.interests or profile.interests
+    profile.bio = data.bio if data.bio is not None else profile.bio
+    profile.interests = data.interests if data.interests is not None else profile.interests
 
     await db.commit()
     await db.refresh(profile)
