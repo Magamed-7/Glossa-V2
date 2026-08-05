@@ -188,22 +188,23 @@ export default function SpacedRepetition() {
 
   return (
     <div 
-      className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 relative select-none"
+      className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 relative select-none animate-fadeIn"
       style={{
         backgroundColor: "#fcf9f6",
         backgroundImage: "linear-gradient(#e5e2df 1px, transparent 1px), linear-gradient(90deg, #e5e2df 1px, transparent 1px)",
         backgroundSize: "20px 20px"
       }}
     >
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start gap-12 pt-6">
+      {/* Grid container with balanced widths on desktop to prevent overlaps */}
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 pt-6">
         
         {/* Left Column: Title & Stats Panel */}
-        <div className="w-full md:w-[35%] flex flex-col gap-8">
+        <div className="md:col-span-5 flex flex-col gap-8 w-full">
           <div>
-            <h1 className="font-serif text-5xl md:text-6xl font-black uppercase tracking-tight leading-none text-primary">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight leading-tight text-primary">
               {t("review.archivalTitle")}
             </h1>
-            <p className="text-xs text-on-surface-variant font-mono uppercase tracking-wider mt-4 leading-relaxed">
+            <p className="text-xs text-on-surface-variant font-mono uppercase tracking-wider mt-4 leading-relaxed max-w-sm">
               {t("review.archivalSubtitle")}
             </p>
           </div>
@@ -239,37 +240,51 @@ export default function SpacedRepetition() {
         </div>
 
         {/* Right Column: Active Cases Folder List */}
-        <div className="w-full md:w-[65%] flex flex-col mt-10 md:mt-0">
+        <div className="md:col-span-7 flex flex-col mt-6 md:mt-0 w-full">
           
-          {/* Top Folder Tab Shape */}
-          <div className="z-10 flex justify-between items-end max-w-lg">
-            <div className="border-t-2 border-x-2 border-black bg-[#ffddb8] px-6 py-2.5 font-mono text-xs font-bold uppercase tracking-wider shadow-[2px_-2px_0_0_rgba(0,0,0,0.15)] z-20">
+          {/* Top Folder Tab Shape (Clean and un-overlapped) */}
+          <div className="z-10 flex">
+            <div className="border-t-2 border-x-2 border-black bg-[#ffddb8] px-6 py-2.5 font-mono text-xs font-bold uppercase tracking-wider shadow-[2px_-2px_0_0_rgba(0,0,0,0.05)] z-20">
               {t("review.activeCases")} ({dueCards.length + upcomingCards.length})
             </div>
-            
-            {dueCards.length > 0 && (
-              <button
-                onClick={handleReviewAllDue}
-                className="bg-[#ffb054] hover:bg-[#ffa034] text-black border-2 border-black font-mono text-xs font-black uppercase px-4 py-2 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer mb-1"
-              >
-                {t("review.reviewAllBtn")} ({dueCards.length})
-              </button>
-            )}
           </div>
 
           {/* Folder Body Container */}
           <div 
-            className="w-full bg-[#ffddb8] border-2 border-black shadow-[6px_6px_0_0_#000] p-6 flex flex-col gap-6 relative min-h-[400px] z-10"
+            className="w-full bg-[#ffddb8] border-2 border-black shadow-[6px_6px_0_0_#000] flex flex-col relative min-h-[400px] z-10"
             style={{ backgroundImage: "radial-gradient(#e5a260 1px, transparent 1px)", backgroundSize: "16px 16px" }}
           >
-            {/* Scrollable list inside the folder to prevent page stretching */}
-            <div className="max-h-[620px] overflow-y-auto pr-2 pl-0 sm:pl-12 flex flex-col gap-6">
+            {/* Vertical binder/divider line running through the folder */}
+            <div className="hidden sm:block absolute left-[60px] top-0 bottom-0 w-[2px] bg-black/10 border-l border-dashed border-black/35 pointer-events-none z-20" />
+
+            {/* Scrollable list inside the folder to prevent page stretching, with top/bottom/left padding to prevent clips */}
+            <div className="max-h-[640px] overflow-y-auto pt-6 pb-6 pl-4 sm:pl-[68px] pr-4 flex flex-col gap-6 w-full relative">
               
+              {/* Optional Header Banner for reviewing all due cards at once */}
+              {dueCards.length > 0 && (
+                <div className="bg-surface border-2 border-black p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2 shadow-[3px_3px_0_0_#000] w-full">
+                  <div>
+                    <span className="font-mono text-xs font-bold text-black block uppercase tracking-wider">
+                      {t("review.activeCases")}
+                    </span>
+                    <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider">
+                      {dueCards.length} {t("review.dueNow").toLowerCase()}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleReviewAllDue}
+                    className="bg-[#ffb054] hover:bg-[#ffa034] text-black border-2 border-black font-mono text-xs font-black uppercase px-4 py-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer whitespace-nowrap"
+                  >
+                    {t("review.reviewAllBtn")} ({dueCards.length})
+                  </button>
+                </div>
+              )}
+
               {/* Due Cards (Active) */}
               {dueCards.map((c) => (
                 <div key={c.id} className="relative w-full">
                   
-                  {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop */}
+                  {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop, safe from scroll clips */}
                   <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-[#ba1a1a] text-white items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20">
                     <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
                   </div>
@@ -285,7 +300,7 @@ export default function SpacedRepetition() {
                       {c.word}
                     </h3>
                     
-                    <p className="text-xs italic text-on-surface-variant font-mono leading-none">
+                    <p className="text-xs italic text-on-surface-variant font-mono leading-none font-semibold">
                       {c.translation}
                     </p>
                     
@@ -329,7 +344,7 @@ export default function SpacedRepetition() {
                 return (
                   <div key={c.id} className="relative w-full opacity-90">
                     
-                    {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop */}
+                    {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop, safe from scroll clips */}
                     <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-white text-black items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20">
                       <span className="material-symbols-outlined text-lg">{icon}</span>
                     </div>
