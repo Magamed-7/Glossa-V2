@@ -11,6 +11,7 @@ import { useApi } from "../lib/useApi.js";
 import { getMyProgress, getStory, getStories, saveProgress } from "../lib/api/stories.js";
 import { useI18n, useT } from "../lib/i18n.jsx";
 import { getBookCoverUrl } from "./StoriesCatalog.jsx";
+import { useAuth } from "../lib/auth/AuthContext.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -22,6 +23,10 @@ export default function StoryReader() {
   const { id } = useParams();
   const t = useT();
   const { lang } = useI18n();
+  const { languages } = useAuth();
+  
+  const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  const targetLevel = rawLevel === "native" ? "C2" : rawLevel;
 
   const { data: story, loading, error, reload } = useApi(() => getStory(id, { locale: lang }), [id]);
   const { data: progressList } = useApi(() => getMyProgress(), []);
@@ -101,6 +106,30 @@ export default function StoryReader() {
     return (
       <div className="max-w-2xl mx-auto mt-12">
         <ErrorState error={error} onRetry={reload} />
+      </div>
+    );
+  }
+
+  if (story && story.cefr_level !== targetLevel) {
+    return (
+      <div className="max-w-md mx-auto my-24 border-[3px] border-on-surface bg-surface p-8 shadow-[8px_8px_0_0_#000] text-center neo-card flex flex-col items-center gap-6">
+        <Icon name="lock" className="text-secondary text-5xl" />
+        <h2 className="font-serif text-3xl font-black uppercase tracking-tight">
+          {lang === "ru" ? "Архив Заблокирован" : lang === "tg" ? "Бойгонӣ Маҳкам Аст" : "Level Locked"}
+        </h2>
+        <p className="font-body text-sm text-on-surface-variant leading-relaxed">
+          {lang === "ru" 
+            ? `Эта история предназначена для уровня ${story.cefr_level}. Ваш текущий уровень: ${targetLevel}. Пожалуйста, повысьте свой уровень в профиле, чтобы разблокировать.`
+            : lang === "tg"
+              ? `Ин ҳикоя барои сатҳи ${story.cefr_level} аст. Сатҳи ҷории шумо: ${targetLevel}. Лутфан сатҳи худро дар профил баланд кунед.`
+              : `This story is designed for level ${story.cefr_level}. Your current level is ${targetLevel}. Please level up your target language in settings.`}
+        </p>
+        <Link
+          to="/stories"
+          className="bg-primary text-surface border-[2.5px] border-on-surface px-6 py-3 font-label text-xs uppercase font-bold tracking-widest shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer"
+        >
+          {lang === "ru" ? "Вернуться в каталог" : lang === "tg" ? "Бозгашт ба каталог" : "Back to catalog"}
+        </Link>
       </div>
     );
   }

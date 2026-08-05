@@ -5,6 +5,8 @@ import Icon from "../components/ui/Icon.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyProgress, getStories } from "../lib/api/stories.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
+import { useAuth } from "../lib/auth/AuthContext.jsx";
+import { useToast } from "../lib/toast.jsx";
 
 export function getBookCoverUrl(storyId) {
   const COLOR_COVERS = [
@@ -111,8 +113,14 @@ const LEVEL_LABELS = {
 export default function StoriesCatalog() {
   const t = useT();
   const { lang } = useI18n();
+  const toast = useToast();
+  const { languages } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const level = searchParams.get("level") || "A1";
+  
+  const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  const targetLevel = rawLevel === "native" ? "C2" : rawLevel;
+  
+  const level = searchParams.get("level") || targetLevel;
   const activeGenre = searchParams.get("genre") || "";
   const [filterTab, setFilterTab] = useState("all"); // 'all' | 'progress' | 'completed'
 
@@ -335,20 +343,38 @@ export default function StoriesCatalog() {
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
             {LEVEL_TABS.map((lvl) => {
               const isActive = level === lvl;
+              const isLocked = lvl !== targetLevel;
               return (
                 <button
                   key={lvl}
-                  onClick={() => onLevelChange(lvl)}
-                  className={`border-[2px] border-on-surface font-headline font-bold py-2.5 text-center transition-all cursor-pointer select-none
+                  onClick={() => {
+                    if (isLocked) {
+                      toast.error(
+                        lang === "ru"
+                          ? `Этот уровень заблокирован. Ваш текущий уровень: ${targetLevel}`
+                          : lang === "tg"
+                            ? `Ин сатҳ маҳкам аст. Сатҳи ҷории шумо: ${targetLevel}`
+                            : `This level is locked. Your current level is: ${targetLevel}`
+                      );
+                      return;
+                    }
+                    onLevelChange(lvl);
+                  }}
+                  className={`border-[2px] border-on-surface font-headline font-bold py-2.5 text-center transition-all select-none
                     ${isActive 
-                      ? "bg-secondary text-surface shadow-[2px_2px_0_0_#000] -translate-x-[1px] -translate-y-[1px]" 
-                      : "bg-[#fcfbf9] text-on-surface shadow-[3px_3px_0_0_#000] hover:bg-surface-variant"
+                      ? "bg-secondary text-surface shadow-[2px_2px_0_0_#000] -translate-x-[1px] -translate-y-[1px] cursor-pointer" 
+                      : isLocked
+                        ? "bg-[#e5dfd9] text-on-surface-variant opacity-60 cursor-not-allowed border-dashed"
+                        : "bg-[#fcfbf9] text-on-surface shadow-[3px_3px_0_0_#000] hover:bg-surface-variant cursor-pointer"
                     }
                   `}
                 >
-                  <div className="text-base leading-tight">{lvl}</div>
+                  <div className="text-base leading-tight flex items-center justify-center gap-1">
+                    {isLocked && <Icon name="lock" className="text-xs" />}
+                    <span>{lvl}</span>
+                  </div>
                   <div className="text-[7px] uppercase tracking-wider font-label opacity-75 mt-0.5 font-bold">
-                    {levelText[lvl]}
+                    {isLocked ? (lang === "ru" ? "ЗАКРЫТО" : lang === "tg" ? "МАҲКАМ" : "LOCKED") : levelText[lvl]}
                   </div>
                 </button>
               );

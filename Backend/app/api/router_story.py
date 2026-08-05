@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
+from app.models.model_profile import UserLanguages
 from app.core.errors import AppError
 from app.core.limits import enforce_deck_word_limit, enforce_story_limit
 from app.db.database import get_db
@@ -26,8 +28,17 @@ async def get_stories(
     limit: int = 20,
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
 ):
-    stories = await crud_story.get_stories(db, level=level, genre=genre, limit=limit, offset=offset)
+    result = await db.execute(
+        select(UserLanguages).where(UserLanguages.user_id == current_user.id, UserLanguages.is_target.is_(True))
+    )
+    user_lang = result.scalar_one_or_none()
+    user_level = user_lang.level if user_lang is not None else 'A1'
+    if user_level == 'native':
+        user_level = 'C2'
+
+    stories = await crud_story.get_stories(db, level=user_level, genre=genre, limit=limit, offset=offset)
     return [crud_story.story_to_response(story) for story in stories]
 
 
@@ -46,10 +57,25 @@ async def get_story(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(enforce_story_limit),
 ):
+    result = await db.execute(
+        select(UserLanguages).where(UserLanguages.user_id == current_user.id, UserLanguages.is_target.is_(True))
+    )
+    user_lang = result.scalar_one_or_none()
+    user_level = user_lang.level if user_lang is not None else 'A1'
+    if user_level == 'native':
+        user_level = 'C2'
+
     detail = await crud_story.get_story_detail(story_id, locale, db)
 
     if detail is None:
         raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    if detail['cefr_level'] != user_level:
+        raise AppError(
+            code='STORY_LEVEL_LOCKED',
+            message='This story is locked for your current level',
+            status_code=403,
+        )
 
     return detail
 
