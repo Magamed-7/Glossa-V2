@@ -41,6 +41,7 @@ export const ru = {
     themeLight: "Светлая",
     themeDark: "Тёмная",
     themeSystem: "Системная",
+    logOut: "Выйти",
   },
   errorBoundary: {
     title: "Что-то пошло не так",

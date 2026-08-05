@@ -41,6 +41,7 @@ export const tg = {
     themeLight: "Равшан",
     themeDark: "Торик",
     themeSystem: "Системавӣ",
+    logOut: "Баромадан",
   },
   errorBoundary: {
     title: "Хатогӣ рӯй дод",

@@ -41,6 +41,7 @@ export const en = {
     themeLight: "Light",
     themeDark: "Dark",
     themeSystem: "System",
+    logOut: "Log Out",
   },
   errorBoundary: {
     title: "Something went wrong",
