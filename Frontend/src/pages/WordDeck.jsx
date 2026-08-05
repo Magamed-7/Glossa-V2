@@ -1471,22 +1471,30 @@ export default function WordDeck() {
               ) : (
                 items.slice(0, limit).map((card) => {
                   const isRevealed = revealedCards.has(card.id);
-                  const sourceText = card.source_story_id > 0 
-                    ? (lang === "tg" ? "Аз ҳикоя" : lang === "ru" ? "Из истории" : "From Story")
-                    : card.source_story_id < 0
-                      ? `${lang === "tg" ? "Бахши омода" : lang === "ru" ? "Готовый раздел" : "Leveled Vocab"} (${
-                          card.source_story_id === -1 ? "A1" :
-                          card.source_story_id === -2 ? "A2" :
-                          card.source_story_id === -3 ? "B1" :
-                          card.source_story_id === -4 ? "B2" : "C1"
-                        })`
-                      : (lang === "tg" ? "Иловашуда" : lang === "ru" ? "Своё слово" : "Personal Word");
-
-                  const sourceBg = card.source_story_id > 0
-                    ? "bg-[#ffdadb] text-[#ba1a1a] border-[#ba1a1a]"
-                    : card.source_story_id < 0
-                      ? "bg-[#e0f2fe] text-[#0369a1] border-[#0369a1]"
-                      : "bg-[#f0fdf4] text-[#15803d] border-[#15803d]";
+                   const sourceText = card.source_story_id > 0 
+                     ? (lang === "tg" ? "Аз ҳикоя" : lang === "ru" ? "Из истории" : "From Story")
+                     : card.source_story_id < 0
+                       ? card.source_story_id === -100
+                         ? (lang === "tg" ? "Аз чати ИИ" : lang === "ru" ? "Из чата с ИИ" : "From AI Chat")
+                         : card.source_story_id === -200
+                           ? (lang === "tg" ? "Аз грамматика" : lang === "ru" ? "Из грамматики" : "From Grammar")
+                           : `${lang === "tg" ? "Бахши омода" : lang === "ru" ? "Готовый раздел" : "Leveled Vocab"} (${
+                               card.source_story_id === -1 ? "A1" :
+                               card.source_story_id === -2 ? "A2" :
+                               card.source_story_id === -3 ? "B1" :
+                               card.source_story_id === -4 ? "B2" : "C1"
+                             })`
+                       : (lang === "tg" ? "Иловашуда" : lang === "ru" ? "Своё слово" : "Personal Word");
+ 
+                   const sourceBg = card.source_story_id > 0
+                     ? "bg-[#ffdadb] text-[#ba1a1a] border-[#ba1a1a]"
+                     : card.source_story_id < 0
+                       ? card.source_story_id === -100
+                         ? "bg-[#f3e8ff] text-[#7e22ce] border-[#7e22ce]"
+                         : card.source_story_id === -200
+                           ? "bg-[#fef3c7] text-[#d97706] border-[#d97706]"
+                           : "bg-[#e0f2fe] text-[#0369a1] border-[#0369a1]"
+                       : "bg-[#f0fdf4] text-[#15803d] border-[#15803d]";
 
                   return (
                     <div key={card.id} className={getCardClasses(card.status)}>

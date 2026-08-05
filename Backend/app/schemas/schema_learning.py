@@ -29,6 +29,7 @@ class CardResponse(BaseModel):
     repetitions: int
     next_review_date: datetime | None
     created_at: datetime
+    source_story_id: int | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
