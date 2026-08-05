@@ -60,6 +60,18 @@ async def update_card_status(card_id: int, user_id: int, data: CardStatusUpdate,
     became_learned = data.status == 'learned' and card.status != 'learned'
     card.status = data.status
 
+    if became_learned:
+        from datetime import datetime, timedelta, timezone
+        card.repetitions = 1
+        card.interval = 6
+        card.ease_factor = 2.5
+        card.next_review_date = datetime.now(timezone.utc) + timedelta(days=6)
+    elif data.status == 'learning':
+        card.repetitions = 0
+        card.interval = 0
+        card.ease_factor = 2.5
+        card.next_review_date = None
+
     await db.commit()
     await db.refresh(card)
 

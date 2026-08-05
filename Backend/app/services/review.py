@@ -34,6 +34,12 @@ async def submit_review(card_id: int, user_id: int, quality: int, db: AsyncSessi
     card.next_review_date = result['next_review_date']
     card.last_quality = quality
 
+    # Synchronize card status with reviews: quality >= 3 is learned, < 3 is learning
+    if quality >= 3:
+        card.status = 'learned'
+    else:
+        card.status = 'learning'
+
     review_log = ReviewLogs(card_id=card.id, quality=quality)
     db.add(review_log)
 
