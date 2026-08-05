@@ -186,20 +186,21 @@ export default function WordDeck() {
         const next = prev.map((w) => {
           const nextY = w.y + recallSpeedRef.current;
           
-          let missed = w.missed;
-          if (!w.classified && !missed && !processedWordIdsRef.current.has(w.id) && nextY > 250) {
-            missed = true;
-            processedWordIdsRef.current.add(w.id);
+          let currentY = nextY;
+          if (!w.classified && !w.missed && !processedWordIdsRef.current.has(w.id) && nextY > 250) {
+            playBuzzerSound();
             setRecallCombo(0);
             submitReview(w.id, 0).catch((err) => console.error(err));
             setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
+            // Recycle word to the top of the screen
+            currentY = -250;
           }
 
-          if (nextY < 420) {
+          if (currentY < 420) {
             allDone = false;
           }
 
-          return { ...w, y: nextY, missed };
+          return { ...w, y: currentY };
         });
 
         if (allDone && prev.length > 0) {
