@@ -249,6 +249,7 @@ export const tg = {
       freeCategoryError: "Ин бахш танҳо дар тарифи Premium дастрас аст!",
       cardFlipTitle: "Суръат ва Наҷот",
       typewriterTitle: "Санҷиши мошинкаи навишт",
+      spacedRepetitionTitle: "Кортҳои SM-2 (Фосилаҳо)",
       missionControlTitle: "Маркази назорати вазифаҳо",
       btnStopExit: "Ист / Луғат",
       btnBackArchive: "Бозгашт ба луғат",

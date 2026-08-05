@@ -249,6 +249,7 @@ export const ru = {
       freeCategoryError: "Этот раздел доступен только на Premium тарифе!",
       cardFlipTitle: "Выживание: Скорость",
       typewriterTitle: "Печатная машинка",
+      spacedRepetitionTitle: "Карточки SM-2 (Интервалы)",
       missionControlTitle: "Панель управления миссиями",
       btnStopExit: "Остановить игру / Словарь",
       btnBackArchive: "Назад / Словарь",

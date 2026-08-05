@@ -249,6 +249,7 @@ export const en = {
       freeCategoryError: "This section is only available on Premium subscription!",
       cardFlipTitle: "Speed Recall Survival",
       typewriterTitle: "Typewriter Speed Check",
+      spacedRepetitionTitle: "SM-2 Spaced Repetition",
       missionControlTitle: "Daily Mission Control",
       btnStopExit: "Stop Game / Dictionary",
       btnBackArchive: "Back to Dictionary",

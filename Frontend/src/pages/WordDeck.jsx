@@ -1177,7 +1177,7 @@ export default function WordDeck() {
       </div>
 
       {/* Game Entries Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
         <button
           onClick={() => {
             setGameToLaunch("speed-recall");
@@ -1198,6 +1198,14 @@ export default function WordDeck() {
         >
           <Icon name="keyboard" className="text-secondary text-2xl" />
           <span className="font-label text-xs uppercase font-bold tracking-wider">{t("deck.games.typewriterTitle")}</span>
+        </button>
+
+        <button
+          onClick={() => navigate("/review")}
+          className="border-2 border-on-surface bg-surface hover:bg-surface-variant p-4 text-center shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
+        >
+          <Icon name="calendar_month" className="text-secondary text-2xl" />
+          <span className="font-label text-xs uppercase font-bold tracking-wider">{t("deck.games.spacedRepetitionTitle")}</span>
         </button>
 
         <button
