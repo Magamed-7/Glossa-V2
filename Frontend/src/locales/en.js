@@ -291,6 +291,11 @@ export const en = {
       resultsMaxCombo: "Max Combo:",
       resultsXp: "XP Gained:",
       btnProceed: "Proceed to Archives",
+      difficultyLabel: "Speed & Difficulty",
+      difficultyEasy: "Easy (Slow)",
+      difficultyNormal: "Normal (Standard)",
+      difficultyHard: "Hard (Fast)",
+      difficultyExpert: "Expert (Adrenaline)",
     },
   },
   review: {

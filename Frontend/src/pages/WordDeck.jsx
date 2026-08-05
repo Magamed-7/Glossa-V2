@@ -65,6 +65,7 @@ export default function WordDeck() {
   const [gameToLaunch, setGameToLaunch] = useState("");
   const [setupCategory, setSetupCategory] = useState("all");
   const [setupCount, setSetupCount] = useState(10);
+  const [gameDifficulty, setGameDifficulty] = useState("normal");
   const [gameItems, setGameItems] = useState([]);
   const [gameLoading, setGameLoading] = useState(false);
 
@@ -78,6 +79,7 @@ export default function WordDeck() {
   const [recallXp, setRecallXp] = useState(0);
   const recallXpRef = useRef(0);
   const recallComboRef = useRef(0);
+  const recallSpeedRef = useRef(3.2);
   const [showRecallResults, setShowRecallResults] = useState(false);
   const [recallResultsStats, setRecallResultsStats] = useState({ correct: 0, missed: 0, maxCombo: 0 });
 
@@ -180,7 +182,7 @@ export default function WordDeck() {
       setRecallWords((prev) => {
         let allDone = true;
         const next = prev.map((w) => {
-          const nextY = w.y + 3.2; // speed increased
+          const nextY = w.y + recallSpeedRef.current;
           
           let missed = w.missed;
           if (!w.classified && !missed && nextY > 250) {
@@ -357,9 +359,28 @@ export default function WordDeck() {
         setRecallTimeLeft(60);
         setRecallCombo(0);
         setRecallXp(0);
+        
+        let spacing = 200;
+        let speed = 3.2;
+        if (gameDifficulty === "easy") {
+          spacing = 160;
+          speed = 1.8;
+        } else if (gameDifficulty === "normal") {
+          spacing = 200;
+          speed = 3.2;
+        } else if (gameDifficulty === "hard") {
+          spacing = 245;
+          speed = 4.8;
+        } else if (gameDifficulty === "expert") {
+          spacing = 290;
+          speed = 6.5;
+        }
+        
+        recallSpeedRef.current = speed;
+
         const initial = selected.map((item, idx) => ({
           ...item,
-          y: -idx * 200 - 100,
+          y: -idx * spacing - 100,
           classified: null,
           missed: false
         }));
@@ -600,6 +621,24 @@ export default function WordDeck() {
                   : t("deck.games.customCountNote")}
               </p>
             </div>
+
+            {gameToLaunch === "speed-recall" && (
+              <div>
+                <label className="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                  {t("deck.games.difficultyLabel")}
+                </label>
+                <select
+                  value={gameDifficulty}
+                  onChange={(e) => setGameDifficulty(e.target.value)}
+                  className="w-full bg-surface border-2 border-primary px-4 py-3 font-mono text-sm rounded-none focus:outline-none shadow-[2px_2px_0_0_#000] cursor-pointer"
+                >
+                  <option value="easy">{t("deck.games.difficultyEasy")}</option>
+                  <option value="normal">{t("deck.games.difficultyNormal")}</option>
+                  <option value="hard">{t("deck.games.difficultyHard")}</option>
+                  <option value="expert">{t("deck.games.difficultyExpert")}</option>
+                </select>
+              </div>
+            )}
 
             {isFreePlan && (
               <div className="border-[2px] border-dashed border-[#b90538] p-3 text-xs bg-[#ffdadb] text-[#b90538] font-semibold flex items-center gap-2">

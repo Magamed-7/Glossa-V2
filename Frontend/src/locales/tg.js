@@ -291,6 +291,11 @@ export const tg = {
       resultsMaxCombo: "Силсилаи калонтарин:",
       resultsXp: "XP ба даст омада:",
       btnProceed: "Бозгашт ба луғат",
+      difficultyLabel: "Суръат ва душворӣ",
+      difficultyEasy: "Осон (Оҳиста)",
+      difficultyNormal: "Миёна (Стандартӣ)",
+      difficultyHard: "Душвор (Тез)",
+      difficultyExpert: "Коршинос (Адраналин)",
     },
   },
   review: {

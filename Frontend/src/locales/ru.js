@@ -291,6 +291,11 @@ export const ru = {
       resultsMaxCombo: "Макс. серия:",
       resultsXp: "Получено XP:",
       btnProceed: "Вернуться в архив",
+      difficultyLabel: "Скорость и сложность",
+      difficultyEasy: "Легко (Медленно)",
+      difficultyNormal: "Средне (Стандарт)",
+      difficultyHard: "Сложно (Быстро)",
+      difficultyExpert: "Эксперт (Молниеносно)",
     },
   },
   review: {
