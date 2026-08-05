@@ -86,22 +86,31 @@ export default function SpacedRepetition() {
     try {
       await submitReview(sessionCard.id, quality);
       
+      const isSingle = activeReviewSession.queue.length === 1;
       const isLast = activeReviewSession.index + 1 >= activeReviewSession.queue.length;
       
-      setActiveReviewSession(prev => ({
-        ...prev,
-        completed: prev.completed + 1,
-        againCount: quality === 0 ? prev.againCount + 1 : prev.againCount,
-        index: prev.index + 1
-      }));
-
-      setFlipped(false);
-      
-      if (isLast) {
-        toast.success(t("review.sessionCompleteTitle"));
+      if (isSingle) {
+        // Close modal immediately for single card reviews
+        setActiveReviewSession(null);
+        toast.success(t("review.singleCardSuccess", { word: sessionCard.word }));
         reloadCards();
         reloadStats();
         refreshStreak();
+      } else {
+        // Multi-card session updates
+        setActiveReviewSession(prev => ({
+          ...prev,
+          completed: prev.completed + 1,
+          againCount: quality === 0 ? prev.againCount + 1 : prev.againCount,
+          index: prev.index + 1
+        }));
+        setFlipped(false);
+        
+        if (isLast) {
+          reloadCards();
+          reloadStats();
+          refreshStreak();
+        }
       }
     } catch (err) {
       toast.error(errorText(err));
@@ -405,8 +414,8 @@ export default function SpacedRepetition() {
 
       {/* --- REVIEW MODAL OVERLAY --- */}
       {activeReviewSession && sessionCard && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none">
-          <div className="w-full max-w-xl bg-[#fcfbf9] border-[3px] border-black p-6 md:p-8 shadow-[8px_8px_0_0_#000] relative flex flex-col gap-6 neo-card">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none overflow-y-auto">
+          <div className="w-full max-w-xl bg-[#fcfbf9] border-[3px] border-black p-5 sm:p-8 shadow-[8px_8px_0_0_#000] relative flex flex-col gap-4 sm:gap-6 neo-card my-8 max-h-[90vh] overflow-y-auto">
             
             {/* Close Button */}
             <button 
@@ -427,7 +436,7 @@ export default function SpacedRepetition() {
             </div>
 
             {/* Active Card Content */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <Flashcard card={sessionCard} flipped={flipped} onFlip={() => setFlipped((f) => !f)} />
               
               <div className="flex justify-center">
@@ -453,15 +462,15 @@ export default function SpacedRepetition() {
 
       {/* --- SESSION COMPLETION VIEW OVERLAY --- */}
       {activeReviewSession && !sessionCard && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none">
-          <div className="w-full max-w-md bg-[#fcfbf9] border-[3px] border-black p-8 shadow-[8px_8px_0_0_#000] text-center relative neo-card">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none overflow-y-auto">
+          <div className="w-full max-w-md bg-[#fcfbf9] border-[3px] border-black p-6 sm:p-8 shadow-[8px_8px_0_0_#000] text-center relative neo-card my-8 max-h-[90vh] overflow-y-auto">
             
             <span className="material-symbols-outlined text-secondary text-5xl mb-4" style={{ fontVariationSettings: "'FILL' 1" }}>celebration</span>
             
-            <h2 className="font-serif text-3xl font-black uppercase tracking-tight mb-2">
+            <h2 className="font-serif text-2xl sm:text-3xl font-black uppercase tracking-tight mb-2 leading-tight">
               {t("review.sessionCompleteTitle")}
             </h2>
-            <p className="text-xs text-on-surface-variant font-mono uppercase tracking-widest mb-6">
+            <p className="text-xs sm:text-sm text-on-surface-variant font-mono uppercase tracking-wide mb-6 leading-relaxed">
               {t("review.reviewedSummary", { n: activeReviewSession.completed })}
               {activeReviewSession.againCount > 0 && ` (${activeReviewSession.againCount} ${t("review.quality.again").toLowerCase()})`}.
             </p>
