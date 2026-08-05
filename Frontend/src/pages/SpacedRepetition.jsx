@@ -96,7 +96,6 @@ export default function SpacedRepetition() {
         if (isAgain) {
           // Keep modal open, flip back to front to try again
           setFlipped(false);
-          toast.warning(t("review.againRetry"));
           reloadCards();
           reloadStats();
         } else {
@@ -121,7 +120,6 @@ export default function SpacedRepetition() {
             };
           });
           setFlipped(false);
-          toast.warning(t("review.againRetry"));
         } else {
           // Passed: advance to next card
           const isLast = activeReviewSession.index + 1 >= activeReviewSession.queue.length;
