@@ -32,7 +32,7 @@ export default function SpacedRepetition() {
   const [flipped, setFlipped] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const loading = loadingCards || loadingStats;
+  const loading = (loadingCards && !cards) || (loadingStats && !stats);
   const error = errorCards || errorStats;
 
   // Process cards list
@@ -96,8 +96,6 @@ export default function SpacedRepetition() {
         if (isAgain) {
           // Keep modal open, flip back to front to try again
           setFlipped(false);
-          reloadCards();
-          reloadStats();
         } else {
           // Passed: close modal immediately
           setActiveReviewSession(null);
