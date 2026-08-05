@@ -80,6 +80,7 @@ export default function WordDeck() {
   const recallXpRef = useRef(0);
   const recallComboRef = useRef(0);
   const recallSpeedRef = useRef(3.2);
+  const processedWordIdsRef = useRef(new Set());
   const [showRecallResults, setShowRecallResults] = useState(false);
   const [recallResultsStats, setRecallResultsStats] = useState({ correct: 0, missed: 0, maxCombo: 0 });
 
@@ -185,8 +186,9 @@ export default function WordDeck() {
           const nextY = w.y + recallSpeedRef.current;
           
           let missed = w.missed;
-          if (!w.classified && !missed && nextY > 250) {
+          if (!w.classified && !missed && !processedWordIdsRef.current.has(w.id) && nextY > 250) {
             missed = true;
+            processedWordIdsRef.current.add(w.id);
             setRecallCombo(0);
             setCardStatus(w.id, "hard").catch((err) => console.error(err));
             setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
@@ -359,6 +361,7 @@ export default function WordDeck() {
         setRecallTimeLeft(60);
         setRecallCombo(0);
         setRecallXp(0);
+        processedWordIdsRef.current = new Set();
         
         let spacing = 200;
         let speed = 3.2;
@@ -401,7 +404,7 @@ export default function WordDeck() {
     let minDistance = 99999;
 
     recallWords.forEach((w, idx) => {
-      if (w.classified === null && !w.missed && w.y >= 100 && w.y <= 280) {
+      if (w.classified === null && !w.missed && !processedWordIdsRef.current.has(w.id) && w.y >= 100 && w.y <= 280) {
         const dist = Math.abs(w.y - 200);
         if (dist < minDistance) {
           minDistance = dist;
@@ -413,6 +416,7 @@ export default function WordDeck() {
     if (activeIndex === -1) return;
 
     const activeWord = recallWords[activeIndex];
+    processedWordIdsRef.current.add(activeWord.id);
     
     setRecallWords((prev) => {
       const next = [...prev];
