@@ -353,7 +353,8 @@ export default function WordDeck() {
 
       // Shuffle and slice to setupCount
       const shuffled = [...filtered].sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, setupCount);
+      const count = Math.max(1, setupCount || 10);
+      const selected = shuffled.slice(0, count);
 
       setGameItems(selected);
       setTypeIndex(0);
@@ -638,9 +639,15 @@ export default function WordDeck() {
                 type="number"
                 min={1}
                 max={isFreePlan ? 10 : 100}
-                value={setupCount}
+                value={setupCount === 0 ? "" : setupCount}
                 onChange={(e) => {
-                  const val = Number(e.target.value);
+                  const raw = e.target.value;
+                  if (raw === "") {
+                    setSetupCount(0);
+                    return;
+                  }
+                  const val = parseInt(raw, 10);
+                  if (isNaN(val)) return;
                   if (isFreePlan && val > 10) {
                     toast.error(t("deck.games.freeLimitError"));
                     setSetupCount(10);
