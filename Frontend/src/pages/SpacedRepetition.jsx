@@ -263,50 +263,59 @@ export default function SpacedRepetition() {
             style={{ backgroundImage: "radial-gradient(#e5a260 1px, transparent 1px)", backgroundSize: "16px 16px" }}
           >
             {/* Scrollable list inside the folder to prevent page stretching */}
-            <div className="max-h-[620px] overflow-y-auto pr-2 flex flex-col gap-6">
+            <div className="max-h-[620px] overflow-y-auto pr-2 pl-0 sm:pl-12 flex flex-col gap-6">
               
               {/* Due Cards (Active) */}
               {dueCards.map((c) => (
-                <div key={c.id} className="flex gap-4 items-start">
+                <div key={c.id} className="relative w-full">
                   
-                  {/* Margin Badge Indicator */}
-                  <div className="w-9 h-9 rounded-full bg-[#ba1a1a] text-white flex items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] flex-shrink-0 mt-3">
+                  {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop */}
+                  <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-[#ba1a1a] text-white items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20">
                     <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
                   </div>
 
                   {/* Card Content */}
-                  <div className="flex-grow bg-surface border-2 border-black p-5 shadow-[4px_4px_0_0_#000] relative neo-card">
-                    {/* Retro Stamp */}
-                    <div className="absolute top-4 right-4 bg-[#ffdadb] text-[#ba1a1a] border border-[#ba1a1a] px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider transform rotate-1 select-none">
+                  <div className="w-full bg-surface border-2 border-black p-6 shadow-[4px_4px_0_0_#000] flex flex-col gap-3 relative neo-card">
+                    {/* Stamp at top-left inside card */}
+                    <div className="w-fit bg-[#ffdadb] text-[#ba1a1a] border border-dashed border-[#ba1a1a] px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none select-none">
                       {getDueLabel(c)}
                     </div>
 
-                    <h3 className="font-serif text-2xl font-black text-[#1c1c1a] tracking-tight pr-24">
+                    <h3 className="font-serif text-3xl font-black text-[#1c1c1a] tracking-tight leading-tight" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>
                       {c.word}
                     </h3>
-                    <p className="text-xs italic text-on-surface-variant font-mono mt-1 font-semibold">
+                    
+                    <p className="text-xs italic text-on-surface-variant font-mono leading-none">
                       {c.translation}
                     </p>
+                    
                     {c.example && (
-                      <p className="text-[11px] text-[#45464d] mt-2 font-serif border-l border-black/20 pl-2 max-w-md">
+                      <p className="text-[11px] text-[#45464d] font-serif border-l-2 border-black/25 pl-2.5 max-w-md italic mt-1" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>
                         {c.example}
                       </p>
                     )}
 
                     {/* Info Bar */}
-                    <div className="mt-4 bg-[#f0edea] border border-black p-2 flex gap-4 text-[10px] font-mono uppercase tracking-wider font-semibold w-fit">
-                      <span>{t("review.masteryLvl")}: <strong className="text-[#ba1a1a]">LVL {c.repetitions}</strong></span>
-                      <span className="border-l border-black/30 pl-4">{t("review.nextInterval")}: <strong>{c.interval}D</strong></span>
+                    <div className="bg-[#f6f3f0] border-2 border-black p-3.5 flex gap-6 text-[10px] font-mono uppercase tracking-wider font-bold w-full max-w-md mt-2">
+                      <span>MASTERY: <strong className="text-[#ba1a1a]">LVL {c.repetitions}</strong></span>
+                      <span className="border-l border-black/35 pl-6">NEXT INTERVAL: <strong className="text-black">{c.interval}D</strong></span>
                     </div>
 
                     {/* Action buttons */}
-                    <div className="mt-4 flex gap-3">
+                    <div className="mt-2 flex gap-3 items-center">
                       <button
                         onClick={() => handleReviewSingleCard(c)}
-                        className="bg-[#ffb054] hover:bg-[#ffa034] text-black border-2 border-black font-mono text-xs font-black uppercase px-5 py-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex items-center gap-1.5"
+                        className="bg-[#ffb054] hover:bg-[#ffa034] text-black border-2 border-black font-mono text-xs font-black uppercase px-6 py-3 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex items-center gap-1.5"
                       >
                         <span className="material-symbols-outlined text-sm font-black">rate_review</span>
                         {t("review.reviewCardBtn")}
+                      </button>
+
+                      <button
+                        onClick={() => toast.info(`${t("review.nextReview")}: ${c.next_review_date ? formatDate(c.next_review_date) : t("review.now")}`)}
+                        className="bg-white hover:bg-surface-variant text-black border-2 border-black p-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex items-center justify-center"
+                      >
+                        <span className="material-symbols-outlined text-base font-bold">calendar_month</span>
                       </button>
                     </div>
                   </div>
@@ -318,43 +327,44 @@ export default function SpacedRepetition() {
               {upcomingCards.map((c) => {
                 const icon = getLeftIcon(c);
                 return (
-                  <div key={c.id} className="flex gap-4 items-start opacity-85">
+                  <div key={c.id} className="relative w-full opacity-90">
                     
-                    {/* Gutter Icon Circle */}
-                    <div className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] flex-shrink-0 mt-3">
+                    {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop */}
+                    <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-white text-black items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20">
                       <span className="material-symbols-outlined text-lg">{icon}</span>
                     </div>
 
                     {/* Card Container */}
-                    <div className="flex-grow bg-surface border-2 border-black p-5 shadow-[4px_4px_0_0_#000] relative neo-card">
-                      {/* Push pin decorative icon to match mockup's bulletin board style */}
-                      <div className="absolute top-2 right-2 transform rotate-12 opacity-40 select-none pointer-events-none">
+                    <div className="w-full bg-surface border-2 border-black p-6 shadow-[4px_4px_0_0_#000] flex flex-col gap-3 relative neo-card">
+                      {/* Push pin decorative icon */}
+                      <div className="absolute top-3 right-3 transform rotate-12 opacity-30 select-none pointer-events-none">
                         <span className="material-symbols-outlined text-lg text-primary">push_pin</span>
                       </div>
 
-                      {/* Locked status Stamp */}
-                      <div className="absolute top-4 right-8 bg-[#f0edea] text-on-surface-variant border border-black/40 px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider transform -rotate-1 select-none">
+                      {/* Stamp at top-left */}
+                      <div className="w-fit bg-[#f0edea] text-on-surface-variant/80 border border-dashed border-black/40 px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none select-none">
                         {getDueLabel(c)}
                       </div>
 
-                      <h3 className="font-serif text-2xl font-bold text-on-surface-variant/70 tracking-tight pr-24">
+                      <h3 className="font-serif text-3xl font-bold text-on-surface-variant/70 tracking-tight leading-tight" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>
                         {c.word}
                       </h3>
-                      <p className="text-xs italic text-on-surface-variant opacity-60 font-mono mt-1">
+                      
+                      <p className="text-xs italic text-on-surface-variant opacity-60 font-mono leading-none">
                         {c.translation}
                       </p>
 
                       {/* Info Bar */}
-                      <div className="mt-4 bg-[#f0edea] opacity-70 border border-black/60 p-2 flex gap-4 text-[10px] font-mono uppercase tracking-wider font-semibold w-fit">
-                        <span>{t("review.masteryLvl")}: <strong>LVL {c.repetitions}</strong></span>
-                        <span className="border-l border-black/30 pl-4">{t("review.nextInterval")}: <strong>{c.interval}D</strong></span>
+                      <div className="bg-[#f6f3f0] border-2 border-black/30 p-3.5 flex gap-6 text-[10px] font-mono uppercase tracking-wider font-bold w-full max-w-md opacity-70 mt-2">
+                        <span>MASTERY: <strong className="text-black/60">LVL {c.repetitions}</strong></span>
+                        <span className="border-l border-black/20 pl-6">NEXT INTERVAL: <strong className="text-black/60">{c.interval}D</strong></span>
                       </div>
 
                       {/* Action buttons (Locked) */}
-                      <div className="mt-4 flex gap-3">
+                      <div className="mt-2 flex gap-3">
                         <button
                           onClick={() => toast.error(t("review.previewLockedWarning"))}
-                          className="bg-[#f0edea] text-on-surface-variant/40 border-2 border-black/20 font-mono text-xs font-bold uppercase px-5 py-2.5 cursor-not-allowed flex items-center gap-1.5 opacity-60"
+                          className="bg-white/40 text-on-surface-variant/40 border-2 border-black/20 font-mono text-xs font-black uppercase px-6 py-3 cursor-not-allowed flex items-center gap-1.5 opacity-60"
                         >
                           <span className="material-symbols-outlined text-sm">lock</span>
                           {t("review.lockedBtn")}
