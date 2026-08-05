@@ -12,6 +12,7 @@ import { deleteCard, getCards, setCardStatus, createCard } from "../lib/api/deck
 import { getStats, getDailyMissions } from "../lib/api/learning.js";
 import { getMySubscription } from "../lib/api/subscriptions.js";
 import { useT } from "../lib/i18n.jsx";
+import { submitReview } from "../lib/api/reviews.js";
 
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 
@@ -190,7 +191,7 @@ export default function WordDeck() {
             missed = true;
             processedWordIdsRef.current.add(w.id);
             setRecallCombo(0);
-            setCardStatus(w.id, "hard").catch((err) => console.error(err));
+            submitReview(w.id, 0).catch((err) => console.error(err));
             setRecallResultsStats((s) => ({ ...s, missed: s.missed + 1 }));
           }
 
@@ -427,7 +428,17 @@ export default function WordDeck() {
       return next;
     });
 
-    setCardStatus(activeWord.id, know ? "learned" : "hard").catch((err) => console.error(err));
+    let quality = 0;
+    if (know) {
+      if (activeWord.y <= 185) {
+        quality = 5; // Easy / Fast reaction
+      } else if (activeWord.y <= 220) {
+        quality = 4; // Good / Medium reaction
+      } else {
+        quality = 3; // Hard / Slow reaction
+      }
+    }
+    submitReview(activeWord.id, quality).catch((err) => console.error(err));
 
     if (know) {
       playBellSound();
@@ -493,7 +504,29 @@ export default function WordDeck() {
   const handleNextTypewriter = async (success) => {
     const card = gameItems[typeIndex];
     if (card) {
-      await onStatusChange(card, success ? "learned" : "hard");
+      let quality = 0;
+      if (success) {
+        if (typeTimeLeft >= 11) quality = 5;
+        else if (typeTimeLeft >= 6) quality = 4;
+        else quality = 3;
+      }
+      try {
+        const nextStatus = success ? "learned" : "hard";
+        // Optimistic UI updates
+        setItems((current) =>
+          current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c))
+        );
+        setGameItems((current) =>
+          current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c))
+        );
+        
+        await submitReview(card.id, quality);
+        
+        reloadStats();
+        reloadMissions();
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     setTypedText("");
@@ -877,6 +910,7 @@ export default function WordDeck() {
 
           <button
             onClick={() => {
+              reload();
               reloadStats();
               reloadMissions();
               setGameMode("archive");
