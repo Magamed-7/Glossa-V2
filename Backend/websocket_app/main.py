@@ -1,6 +1,9 @@
 import asyncio
+import json
+import logging
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from openai import APITimeoutError, RateLimitError
 
 from app.core.errors import AppError
 from app.core.limits import add_ai_seconds, check_ai_access
@@ -8,9 +11,22 @@ from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
 from app.services import ai_chat, crud_user
 
+logger = logging.getLogger(__name__)
+
 app = FastAPI(title='Glossa WebSocket AI Chat')
 
 TICK_SECONDS = 1
+
+
+def _assistant_error_frame(exc: Exception):
+    if isinstance(exc, RateLimitError):
+        code = 'AI_RATE_LIMITED'
+    elif isinstance(exc, APITimeoutError):
+        code = 'AI_TIMEOUT'
+    else:
+        code = 'AI_TEMPORARILY_UNAVAILABLE'
+
+    return {'type': 'assistant_error', 'code': code}
 
 
 async def authenticate(websocket: WebSocket, db):
@@ -83,11 +99,21 @@ async def ai_chat_ws(websocket: WebSocket):
 
     try:
         while True:
-            data = await websocket.receive_json()
+            try:
+                data = await websocket.receive_json()
+            except json.JSONDecodeError:
+                await websocket.send_json({'type': 'assistant_error', 'code': 'BAD_MESSAGE'})
+                continue
+
             text = data.get('text', '')
 
-            async with AsyncSessionLocal() as db:
-                result = await ai_chat.send_message(session.id, text, db)
+            try:
+                async with AsyncSessionLocal() as db:
+                    result = await ai_chat.send_message(session.id, text, db)
+            except Exception as exc:
+                logger.exception('AI chat send_message failed for session %s', session.id)
+                await websocket.send_json(_assistant_error_frame(exc))
+                continue
 
             await websocket.send_json({
                 'type': 'message',
