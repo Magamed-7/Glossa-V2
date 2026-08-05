@@ -15,17 +15,39 @@ export default function ProfileEditor({ profile, onUpdated }) {
   const [interests, setInterests] = useState(profile.interests || []);
   const [interestInput, setInterestInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [savingInterests, setSavingInterests] = useState(false);
+
+  // Интересы сохраняются сразу при добавлении/удалении плашки, а не только по клику на
+  // "Сохранить изменения" — иначе Enter (добавляет плашку локально) легко принять за
+  // сохранение и потерять список при обновлении страницы, так и не нажав кнопку ниже.
+  async function persistInterests(previous, next) {
+    setSavingInterests(true);
+    try {
+      const updated = await updateMyProfile({ bio, interests: next });
+      onUpdated(updated);
+    } catch (err) {
+      setInterests(previous);
+      toast.error(errorText(err));
+    } finally {
+      setSavingInterests(false);
+    }
+  }
 
   function addInterest(e) {
     if (e.key !== "Enter") return;
     e.preventDefault();
     const value = interestInput.trim();
-    if (value && !interests.includes(value)) setInterests([...interests, value]);
+    if (!value || interests.includes(value)) return;
+    const next = [...interests, value];
+    setInterests(next);
     setInterestInput("");
+    persistInterests(interests, next);
   }
 
   function removeInterest(value) {
-    setInterests(interests.filter((i) => i !== value));
+    const next = interests.filter((i) => i !== value);
+    setInterests(next);
+    persistInterests(interests, next);
   }
 
   async function onSave() {
