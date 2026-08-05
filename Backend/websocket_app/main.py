@@ -91,7 +91,8 @@ async def ai_chat_ws(websocket: WebSocket):
 
         scenario = websocket.query_params.get('scenario', 'casual')
         language = websocket.query_params.get('language', 'English')
-        session = await ai_chat.create_session(user.id, scenario, language, db)
+        native_language = websocket.query_params.get('native_language')
+        session = await ai_chat.create_session(user.id, scenario, language, db, native_language=native_language)
 
         await websocket.send_json({'type': 'session_started', 'session_id': session.id})
 
@@ -118,6 +119,7 @@ async def ai_chat_ws(websocket: WebSocket):
             await websocket.send_json({
                 'type': 'message',
                 'reply': result['assistant_message'].text,
+                'encouragement': result['assistant_message'].encouragement,
                 'corrections': result['user_message'].corrections,
             })
     except WebSocketDisconnect:

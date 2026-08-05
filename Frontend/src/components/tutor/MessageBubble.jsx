@@ -19,6 +19,11 @@ export default function MessageBubble({ message }) {
         <p className={`font-body text-body-md whitespace-pre-line ${message.isError ? "italic text-on-surface-variant" : ""}`}>
           {message.text}
         </p>
+        {!isUser && message.encouragement && (
+          <p className="mt-2 pt-2 border-t border-outline-variant font-body text-body-md text-secondary italic">
+            {message.encouragement}
+          </p>
+        )}
         {isUser && <Corrections corrections={message.corrections} />}
       </div>
     </div>

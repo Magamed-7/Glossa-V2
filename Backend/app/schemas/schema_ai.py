@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-SCENARIOS = Literal['casual', 'interview', 'restaurant', 'airport']
+SCENARIOS = Literal['casual', 'interview', 'restaurant', 'airport', 'telegram']
 
 
 class ChatSessionCreate(BaseModel):
@@ -29,6 +29,7 @@ class Correction(BaseModel):
     what: str
     why: str
     better: str
+    severity: Literal['minor', 'worth_fixing', 'blocks_meaning'] = 'worth_fixing'
 
 
 class ChatMessageResponse(BaseModel):
@@ -36,6 +37,7 @@ class ChatMessageResponse(BaseModel):
     role: str
     text: str
     corrections: list[Correction] | None
+    encouragement: str | None = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)

@@ -1,4 +1,5 @@
 import json
+import logging
 
 from sqlalchemy import select
 
@@ -8,13 +9,30 @@ from app.db.database import AsyncSessionLocal
 from app.models.model_content import GrammarLessons, GrammarQuestions
 from app.services import llm_client
 
-GENERATE_EXERCISE_PROMPT = (
-    'Generate one fill-in-the-blank grammar exercise for CEFR level {level} '
-    'about the topic "{topic}". Respond with a single JSON object, no other text, '
-    'in exactly this shape: {{"text_en": "sentence with a blank", '
-    '"options": ["choice1", "choice2"] or null, "answer": "the correct answer", '
-    '"explanation_en": "short explanation"}}.'
-)
+logger = logging.getLogger(__name__)
+
+GENERATE_EXERCISE_PROMPT = """
+You are a language teacher writing one fill-in-the-blank exercise for a CEFR {level}
+learner on the topic "{topic}".
+
+Requirements:
+- The sentence must be something a person would actually say, in a realistic
+  everyday situation — not a textbook specimen.
+- Vocabulary must not exceed {level}. The exercise tests "{topic}", nothing else;
+  do not make it hard for an unrelated reason.
+- Exactly one blank, written as ___ .
+- Provide 3-4 options. The distractors must be plausible — the specific forms a
+  {level} learner really confuses, not obviously silly words.
+- "explanation_en" must teach the rule in one or two warm sentences, so a learner
+  who got it wrong understands WHY rather than just seeing the right answer.
+  Never use the words wrong, incorrect, mistake or error.
+
+Reply with a single JSON object and nothing else, in exactly this shape:
+{{"text_en": "sentence with ___ in it",
+  "options": ["option1", "option2", "option3"],
+  "answer": "the correct option, exactly as written in options",
+  "explanation_en": "warm explanation that teaches the rule"}}
+"""
 
 
 async def _get_or_create_lesson(topic: str, level: str, db):
@@ -72,6 +90,9 @@ GENERATE_STORY_DICTIONARY_PROMPT = (
     'Extract all unique English words from the following text. '
     'For each word, determine its base dictionary form (lemma) based on the context, '
     'and translate the lemma into Russian and Tajik. '
+    'If a word appears in a form whose base form is ambiguous, choose the lemma that '
+    'fits THIS text\'s meaning (e.g. "left" as past of "leave", not the direction). '
+    'Skip proper names, numbers and words shorter than 3 letters. '
     'Respond ONLY with a single JSON object where keys are the lowercase original words from the text, '
     'and values are objects with keys "lemma", "ru", and "tg". '
     'Example: {{"apples": {{"lemma": "apple", "ru": "яблоко", "tg": "себ"}}, '
@@ -80,30 +101,60 @@ GENERATE_STORY_DICTIONARY_PROMPT = (
     'Text:\n{text}'
 )
 
+WORDS_PER_DICTIONARY_CHUNK = 1500
+
+
+def _chunk_words(text: str, words_per_chunk: int = WORDS_PER_DICTIONARY_CHUNK):
+    words = text.split()
+
+    for i in range(0, len(words), words_per_chunk):
+        yield ' '.join(words[i:i + words_per_chunk])
+
+
+def _strip_code_fence(raw: str):
+    raw = raw.strip()
+
+    if raw.startswith('```json'):
+        raw = raw[len('```json'):]
+    elif raw.startswith('```'):
+        raw = raw[len('```'):]
+
+    if raw.endswith('```'):
+        raw = raw[:-len('```')]
+
+    return raw.strip()
+
+
 async def _generate_story_dictionary(story_id: int):
     from app.models.model_content import Stories
+
     async with AsyncSessionLocal() as db:
         result = await db.execute(select(Stories).where(Stories.id == story_id))
         story = result.scalar_one_or_none()
-        if not story:
-            return
 
-        prompt = GENERATE_STORY_DICTIONARY_PROMPT.format(text=story.body_en)
-        try:
-            raw = await llm_client.call_llm([{'role': 'user', 'content': prompt}])
-            if raw.startswith('```json'):
-                raw = raw.replace('```json', '', 1)
-            if raw.endswith('```'):
-                raw = raw.rsplit('```', 1)[0]
-            dictionary_data = json.loads(raw.strip())
-            
-            story.word_dictionary = dictionary_data
-            db.add(story)
-            await db.commit()
-            return True
-        except Exception as e:
-            print(f"Error generating dictionary for story {story_id}: {e}")
+        if not story:
             return False
+
+        # Длинная история в одном запросе легко упирается в лимит вывода модели и обрывает
+        # JSON на середине — режем на куски, склеиваем словари; при сбое любого куска не
+        # сохраняем частично собранный словарь (лучше пусто, чем тихо неполно).
+        dictionary_data = {}
+
+        for chunk in _chunk_words(story.body_en):
+            prompt = GENERATE_STORY_DICTIONARY_PROMPT.format(text=chunk)
+
+            try:
+                raw = await llm_client.call_llm([{'role': 'user', 'content': prompt}])
+                dictionary_data.update(json.loads(_strip_code_fence(raw)))
+            except Exception:
+                logger.exception('Failed to generate word dictionary chunk for story %s', story_id)
+                return False
+
+        story.word_dictionary = dictionary_data
+        db.add(story)
+        await db.commit()
+        return True
+
 
 @celery_app.task(name='app.tasks.ai.generate_story_dictionary')
 def generate_story_dictionary_task(story_id: int):

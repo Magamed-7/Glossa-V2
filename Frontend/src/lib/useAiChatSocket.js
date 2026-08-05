@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { WS_URL } from "./config.js";
 import { getAccessToken } from "./auth/tokens.js";
 import { refreshAccessToken } from "./api/client.js";
-import { useT } from "./i18n.jsx";
+import { LANGS, useI18n, useT } from "./i18n.jsx";
 
 const MAX_RECONNECT_ATTEMPTS = 5;
 const RECONNECT_BASE_DELAY_MS = 1000;
@@ -23,6 +23,10 @@ const ASSISTANT_ERROR_KEYS = {
 // сокета (сеть, деплой) — переподключаемся с экспоненциальной паузой, а не сразу сдаёмся.
 export function useAiChatSocket({ scenario, language }) {
   const t = useT();
+  const { lang } = useI18n();
+  // Родной/интерфейсный язык ученика — на сервере его больше неоткуда взять (lang живёт
+  // только в localStorage фронта), а он нужен наставнику, чтобы объяснять правила понятно.
+  const nativeLanguage = LANGS.find((l) => l.code === lang)?.name || "Russian";
   const [status, setStatus] = useState("connecting");
   const [messages, setMessages] = useState([]);
   const [denyReason, setDenyReason] = useState(null);
@@ -57,7 +61,7 @@ export function useAiChatSocket({ scenario, language }) {
       if (reconnectAttemptsRef.current === 0) setStatus("connecting");
 
       const token = getAccessToken();
-      const params = new URLSearchParams({ token: token || "", scenario, language });
+      const params = new URLSearchParams({ token: token || "", scenario, language, native_language: nativeLanguage });
       const socket = new WebSocket(`${WS_URL}/ws/ai/chat?${params}`);
       socketRef.current = socket;
 
@@ -79,7 +83,7 @@ export function useAiChatSocket({ scenario, language }) {
                 break;
               }
             }
-            updated.push({ role: "assistant", text: data.reply, corrections: null });
+            updated.push({ role: "assistant", text: data.reply, corrections: null, encouragement: data.encouragement });
             return updated;
           });
         } else if (data.type === "assistant_error") {
@@ -124,7 +128,7 @@ export function useAiChatSocket({ scenario, language }) {
       socketRef.current?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scenario, language]);
+  }, [scenario, language, nativeLanguage]);
 
   function sendMessage(text) {
     if (socketRef.current?.readyState !== WebSocket.OPEN) return;

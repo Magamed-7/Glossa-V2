@@ -134,8 +134,11 @@ async def handle_ai(message: Message, command: CommandObject | None = None):
         )
         language = result.scalar_one_or_none()
         language_name = language.language if language is not None else 'English'
+        # Родной язык Telegram-пользователя нигде не хранится (в отличие от WS-чата, где его
+        # шлёт фронт из интерфейсного языка) — по умолчанию русский, самая частая аудитория бота.
+        level = language.level if language is not None else None
 
-        session = await ai_chat.get_or_create_open_session(user_id, 'telegram', language_name, db)
+        session = await ai_chat.get_or_create_open_session(user_id, 'telegram', language_name, db, level=level)
 
         started = time.monotonic()
         reply = await ai_chat.send_message(session.id, text, db)
