@@ -72,6 +72,21 @@ export function useAiChatSocket({ scenario, language }) {
           reconnectAttemptsRef.current = 0;
           setSessionId(data.session_id);
           setStatus("open");
+          // Сервер переиспользует свежую (в пределах суток) сессию и присылает её историю —
+          // подставляем только на холодном старте (F5), не поверх уже идущего в этой вкладке
+          // разговора при транзитном переподключении.
+          if (data.messages && data.messages.length > 0) {
+            setMessages((current) =>
+              current.length > 0
+                ? current
+                : data.messages.map((m) => ({
+                    role: m.role,
+                    text: m.text,
+                    corrections: m.corrections,
+                    encouragement: m.encouragement,
+                  }))
+            );
+          }
         } else if (data.type === "message") {
           setMessages((current) => {
             // corrections относятся к предыдущей реплике пользователя, а не к ответу

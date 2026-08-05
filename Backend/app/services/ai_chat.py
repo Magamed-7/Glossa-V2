@@ -1,5 +1,6 @@
 import json
 import re
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -179,6 +180,9 @@ GENERATE_EXERCISE_PROMPT = (
 
 DEFAULT_LEVEL = 'A2'
 DEFAULT_NATIVE_LANGUAGE = 'Russian'
+MAX_MESSAGE_LENGTH = 2000
+HISTORY_WINDOW_MESSAGES = 20
+SESSION_FRESHNESS = timedelta(hours=24)
 
 
 def _sanitize_language(language: str):
@@ -251,6 +255,13 @@ async def get_session(session_id: int, db: AsyncSession):
     return result.scalar_one_or_none()
 
 
+async def get_user_sessions(user_id: int, db: AsyncSession):
+    result = await db.execute(
+        select(ChatSessions).where(ChatSessions.user_id == user_id).order_by(ChatSessions.started_at.desc())
+    )
+    return result.scalars().all()
+
+
 async def get_or_create_open_session(
     user_id: int,
     scenario: str,
@@ -266,7 +277,10 @@ async def get_or_create_open_session(
     )
     session = result.scalars().first()
 
-    if session is not None:
+    # "Открытая" — только если реально свежая. Раньше сессия переиспользовалась бессрочно,
+    # так что у Telegram-пользователя одна и та же сессия росла годами, а send_message
+    # каждый раз тянул в LLM всю историю с начала времён.
+    if session is not None and datetime.now(timezone.utc) - session.started_at < SESSION_FRESHNESS:
         return session
 
     return await create_session(user_id, scenario, language, db, level=level, native_language=native_language)
@@ -279,6 +293,16 @@ async def get_session_messages(session_id: int, db: AsyncSession):
     return result.scalars().all()
 
 
+async def get_recent_session_messages(session_id: int, db: AsyncSession, limit: int = HISTORY_WINDOW_MESSAGES):
+    result = await db.execute(
+        select(ChatMessages)
+        .where(ChatMessages.session_id == session_id)
+        .order_by(ChatMessages.id.desc())
+        .limit(limit)
+    )
+    return list(reversed(result.scalars().all()))
+
+
 async def get_user_errors(user_id: int, db: AsyncSession):
     result = await db.execute(
         select(UserErrors).where(UserErrors.user_id == user_id).order_by(UserErrors.created_at.desc())
@@ -287,8 +311,13 @@ async def get_user_errors(user_id: int, db: AsyncSession):
 
 
 async def send_message(session_id: int, text: str, db: AsyncSession):
+    text = text[:MAX_MESSAGE_LENGTH]
+
     session = await get_session(session_id, db)
-    history = await get_session_messages(session_id, db)
+    # Только последние N сообщений — не вся история сессии. Без окна длинный разговор рано
+    # или поздно упирается в лимит контекста модели, обрывается ошибкой, и (до фикса A2)
+    # ронял весь сокет; и стоимость токенов иначе растёт линейно с каждым сообщением.
+    history = await get_recent_session_messages(session_id, db)
 
     user_message = ChatMessages(session_id=session_id, role='user', text=text)
     db.add(user_message)

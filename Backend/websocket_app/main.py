@@ -15,7 +15,11 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title='Glossa WebSocket AI Chat')
 
-TICK_SECONDS = 1
+TICK_SECONDS = 10
+# DB-запись seconds_spent и проверка лимита — не каждый тик (было 4 обращения к БД/Redis в
+# секунду на каждое открытое соединение), а раз в ~DB_SYNC_EVERY_N_TICKS * TICK_SECONDS секунд.
+# Сам счётчик в Redis (add_ai_seconds) остаётся точным каждый тик — лимит проверяется по нему.
+DB_SYNC_EVERY_N_TICKS = 6
 
 
 def _assistant_error_frame(exc: Exception):
@@ -53,23 +57,72 @@ async def authenticate(websocket: WebSocket, db):
     return user
 
 
+def _log_ticker_exception(task: asyncio.Task):
+    if task.cancelled():
+        return
+
+    exc = task.exception()
+    if exc is not None:
+        logger.error('AI chat ticker task ended with an unhandled exception', exc_info=exc)
+
+
 async def tick_session_time(websocket: WebSocket, user_id: int, session_id: int):
-    while True:
-        await asyncio.sleep(TICK_SECONDS)
+    tick_count = 0
+    accumulated_seconds = 0
 
-        async with AsyncSessionLocal() as db:
-            await add_ai_seconds(user_id, TICK_SECONDS)
+    async def flush(seconds: int):
+        if seconds <= 0:
+            return
 
-            session = await ai_chat.get_session(session_id, db)
-            session.seconds_spent += TICK_SECONDS
-            await db.commit()
+        try:
+            async with AsyncSessionLocal() as db:
+                session = await ai_chat.get_session(session_id, db)
+                if session is not None:
+                    session.seconds_spent += seconds
+                    await db.commit()
+        except Exception:
+            logger.exception('Failed to flush AI chat seconds for session %s', session_id)
+
+    try:
+        while True:
+            await asyncio.sleep(TICK_SECONDS)
+            tick_count += 1
+            accumulated_seconds += TICK_SECONDS
 
             try:
-                await check_ai_access(user_id, db)
-            except AppError as exc:
-                await websocket.send_json({'type': 'limit_reached', 'message': exc.message})
-                await websocket.close(code=4403, reason=exc.message)
-                return
+                await add_ai_seconds(user_id, TICK_SECONDS)
+            except Exception:
+                logger.exception('Failed to add AI seconds for user %s', user_id)
+
+            if tick_count % DB_SYNC_EVERY_N_TICKS != 0:
+                continue
+
+            try:
+                async with AsyncSessionLocal() as db:
+                    session = await ai_chat.get_session(session_id, db)
+
+                    # Раньше это было AttributeError на следующей строке, тихо убивавший
+                    # тикер — билинг времени переставал списываться навсегда, никто не видел.
+                    if session is None:
+                        logger.warning('AI chat session %s vanished mid-tick, stopping ticker', session_id)
+                        return
+
+                    session.seconds_spent += accumulated_seconds
+                    await db.commit()
+                    accumulated_seconds = 0
+
+                    try:
+                        await check_ai_access(user_id, db)
+                    except AppError as exc:
+                        await websocket.send_json({'type': 'limit_reached', 'message': exc.message})
+                        await websocket.close(code=4403, reason=exc.message)
+                        return
+            except Exception:
+                logger.exception('AI chat ticker DB sync failed for session %s', session_id)
+    finally:
+        # Финальная синхронизация ещё не сброшенных секунд при закрытии сокета — иначе до
+        # DB_SYNC_EVERY_N_TICKS * TICK_SECONDS последних секунд разговора потерялись бы.
+        await flush(accumulated_seconds)
 
 
 @app.websocket('/ws/ai/chat')
@@ -92,11 +145,29 @@ async def ai_chat_ws(websocket: WebSocket):
         scenario = websocket.query_params.get('scenario', 'casual')
         language = websocket.query_params.get('language', 'English')
         native_language = websocket.query_params.get('native_language')
-        session = await ai_chat.create_session(user.id, scenario, language, db, native_language=native_language)
+        # Свежую (в пределах SESSION_FRESHNESS) сессию переиспользуем вместо новой на каждый
+        # коннект — иначе история чата живёт только в React-state и пропадает на F5.
+        session = await ai_chat.get_or_create_open_session(
+            user.id, scenario, language, db, native_language=native_language
+        )
+        history = await ai_chat.get_session_messages(session.id, db)
 
-        await websocket.send_json({'type': 'session_started', 'session_id': session.id})
+        await websocket.send_json({
+            'type': 'session_started',
+            'session_id': session.id,
+            'messages': [
+                {
+                    'role': message.role,
+                    'text': message.text,
+                    'corrections': message.corrections,
+                    'encouragement': message.encouragement,
+                }
+                for message in history
+            ],
+        })
 
     ticker = asyncio.create_task(tick_session_time(websocket, user.id, session.id))
+    ticker.add_done_callback(_log_ticker_exception)
 
     try:
         while True:
