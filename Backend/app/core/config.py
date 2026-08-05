@@ -46,6 +46,14 @@ class Settings:
     LLM_BASE_URL: str = os.getenv('LLM_BASE_URL', 'https://api.groq.com/openai/v1')
     LLM_MODEL: str = os.getenv('LLM_MODEL', 'llama-3.3-70b-versatile')
 
+    # Второй провайдер — call_llm пробует его, только если первый упал (сеть/лимит/просроченный
+    # ключ), а не в норме. Необязателен: если не задан, работает только основной провайдер.
+    LLM_FALLBACK_API_KEY: str = os.getenv('LLM_FALLBACK_API_KEY', '')
+    LLM_FALLBACK_BASE_URL: str = os.getenv(
+        'LLM_FALLBACK_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta/openai/'
+    )
+    LLM_FALLBACK_MODEL: str = os.getenv('LLM_FALLBACK_MODEL', 'gemini-flash-latest')
+
     ELASTICSEARCH_URL: str = os.getenv('ELASTICSEARCH_URL', 'http://localhost:9200')
     ELASTIC_PASSWORD: str = os.getenv('ELASTIC_PASSWORD', '')
 
