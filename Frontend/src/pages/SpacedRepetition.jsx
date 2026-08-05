@@ -101,7 +101,10 @@ export default function SpacedRepetition() {
         } else {
           // Passed: close modal immediately
           setActiveReviewSession(null);
-          toast.success(t("review.singleCardSuccess", { word: sessionCard.word }));
+          const successMsg = quality === 3
+            ? t("review.singleCardHardSuccess", { word: sessionCard.word })
+            : t("review.singleCardSuccess", { word: sessionCard.word });
+          toast.success(successMsg);
           reloadCards();
           reloadStats();
           refreshStreak();

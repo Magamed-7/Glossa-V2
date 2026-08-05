@@ -316,6 +316,7 @@ export const en = {
       other: "You successfully reviewed {n} words! Your memory is getting sharper and your mind grows stronger. Keep it up!",
     },
     singleCardSuccess: "Magnificent! The word \"{word}\" has been successfully integrated into your long-term memory. Your mind grows sharper!",
+    singleCardHardSuccess: "The word \"{word}\" was a bit challenging, but you nailed it! A few more repeats and it will feel like second nature.",
     againRetry: "Let's try again! Try to recall the translation of the word.",
     learningActive: "MEMORIZING",
     deck: "Deck",
