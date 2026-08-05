@@ -21,7 +21,7 @@ export default function MyProfile() {
       <div className="flex items-center gap-6 mb-section-gap">
         <PhotoUpload photoUrl={profile?.photo_url} name={account.username} onUploaded={refreshUser} />
         <div>
-          <h1 className="font-display text-headline-lg">{account.username}</h1>
+          <h1 className="font-headline italic text-headline-lg text-secondary">{account.username}</h1>
           {profile?.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
       </div>
