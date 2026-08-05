@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from openai import APITimeoutError, RateLimitError
@@ -9,11 +10,22 @@ from app.core.errors import AppError
 from app.core.limits import add_ai_seconds, check_ai_access
 from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
-from app.services import ai_chat, crud_user
+from app.services import ai_chat, ai_mcp, crud_user
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title='Glossa WebSocket AI Chat')
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ai_chat.send_message зовёт MCP-инструменты (реальная колода/прогресс ученика) — это
+    # отдельный процесс от app.main (там свой ai_mcp.connect() в своём lifespan), поэтому
+    # у websocket_app должен быть свой собственный подключённый клиент, не общий с ним.
+    await ai_mcp.connect()
+    yield
+    await ai_mcp.disconnect()
+
+
+app = FastAPI(title='Glossa WebSocket AI Chat', lifespan=lifespan)
 
 TICK_SECONDS = 10
 # DB-запись seconds_spent и проверка лимита — не каждый тик (было 4 обращения к БД/Redis в
