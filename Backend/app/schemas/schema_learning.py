@@ -10,6 +10,7 @@ class CardCreate(BaseModel):
     word: str
     translation: str
     example: str | None = None
+    source_story_id: int | None = None
 
 
 class CardStatusUpdate(BaseModel):

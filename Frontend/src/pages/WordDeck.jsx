@@ -11,8 +11,9 @@ import { errorText } from "../lib/api/errorText.js";
 import { deleteCard, getCards, setCardStatus, createCard } from "../lib/api/deck.js";
 import { getStats, getDailyMissions } from "../lib/api/learning.js";
 import { getMySubscription } from "../lib/api/subscriptions.js";
-import { useT } from "../lib/i18n.jsx";
+import { useT, useI18n } from "../lib/i18n.jsx";
 import { submitReview } from "../lib/api/reviews.js";
+import leveledVocab from "../data/leveled_vocab.json";
 
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 
@@ -26,8 +27,15 @@ export default function WordDeck() {
   // Page mode: "archive" (default), "setup", "card-flip", "typewriter", "daily-missions"
   const [gameMode, setGameMode] = useState("archive");
 
-  // Pagination limit
   const [limit, setLimit] = useState(10);
+  const { lang } = useI18n();
+
+  // Leveled vocab import states
+  const [importLevel, setImportLevel] = useState("A1");
+  const [importRandomCount, setImportRandomCount] = useState(5);
+  const [showManualImportModal, setShowManualImportModal] = useState(false);
+  const [selectedImportWords, setSelectedImportWords] = useState(new Set());
+  const [importing, setImporting] = useState(false);
 
   // API calls
   const { data: stats, loading: statsLoading, reload: reloadStats } = useApi(
@@ -322,6 +330,91 @@ export default function WordDeck() {
     } finally {
       setAdding(false);
     }
+  }
+
+  // Leveled vocab import handlers
+  async function handleImportRandom() {
+    const list = leveledVocab[importLevel] || [];
+    if (list.length === 0) return;
+    
+    setImporting(true);
+    // Shuffle and pick
+    const shuffled = [...list].sort(() => 0.5 - Math.random());
+    const count = Math.min(importRandomCount, shuffled.length);
+    const toImport = shuffled.slice(0, count);
+    
+    // Level code mapping to negative source_story_id
+    const levelMap = { A1: -1, A2: -2, B1: -3, B2: -4, C1: -5 };
+    const sourceId = levelMap[importLevel] || -1;
+    
+    let addedCount = 0;
+    let skippedCount = 0;
+    
+    for (const item of toImport) {
+      try {
+        await createCard({
+          word: item.word,
+          translation: lang === "tg" ? item.translation_tg : item.translation_ru,
+          example: item.example_en,
+          source_story_id: sourceId
+        });
+        addedCount++;
+      } catch (err) {
+        skippedCount++;
+      }
+    }
+    
+    toast.success(`${addedCount} words added. ${skippedCount} skipped (already in deck).`);
+    setImporting(false);
+    reload();
+    reloadStats();
+  }
+
+  async function handleImportSelected() {
+    const list = leveledVocab[importLevel] || [];
+    const toImport = list.filter(w => selectedImportWords.has(w.word));
+    
+    if (toImport.length === 0) return;
+    
+    setImporting(true);
+    const levelMap = { A1: -1, A2: -2, B1: -3, B2: -4, C1: -5 };
+    const sourceId = levelMap[importLevel] || -1;
+    
+    let addedCount = 0;
+    let skippedCount = 0;
+    
+    for (const item of toImport) {
+      try {
+        await createCard({
+          word: item.word,
+          translation: lang === "tg" ? item.translation_tg : item.translation_ru,
+          example: item.example_en,
+          source_story_id: sourceId
+        });
+        addedCount++;
+      } catch (err) {
+        skippedCount++;
+      }
+    }
+    
+    toast.success(`${addedCount} words added. ${skippedCount} skipped.`);
+    setImporting(false);
+    setShowManualImportModal(false);
+    setSelectedImportWords(new Set());
+    reload();
+    reloadStats();
+  }
+
+  function handleToggleWordSelection(wordStr) {
+    setSelectedImportWords(prev => {
+      const next = new Set(prev);
+      if (next.has(wordStr)) {
+        next.delete(wordStr);
+      } else {
+        next.add(wordStr);
+      }
+      return next;
+    });
   }
 
   // --- GAME SETUP HANDLERS ---
@@ -1378,17 +1471,37 @@ export default function WordDeck() {
               ) : (
                 items.slice(0, limit).map((card) => {
                   const isRevealed = revealedCards.has(card.id);
+                  const sourceText = card.source_story_id > 0 
+                    ? (lang === "tg" ? "Аз ҳикоя" : lang === "ru" ? "Из истории" : "From Story")
+                    : card.source_story_id < 0
+                      ? `${lang === "tg" ? "Бахши омода" : lang === "ru" ? "Готовый раздел" : "Leveled Vocab"} (${
+                          card.source_story_id === -1 ? "A1" :
+                          card.source_story_id === -2 ? "A2" :
+                          card.source_story_id === -3 ? "B1" :
+                          card.source_story_id === -4 ? "B2" : "C1"
+                        })`
+                      : (lang === "tg" ? "Иловашуда" : lang === "ru" ? "Своё слово" : "Personal Word");
+
+                  const sourceBg = card.source_story_id > 0
+                    ? "bg-[#ffdadb] text-[#ba1a1a] border-[#ba1a1a]"
+                    : card.source_story_id < 0
+                      ? "bg-[#e0f2fe] text-[#0369a1] border-[#0369a1]"
+                      : "bg-[#f0fdf4] text-[#15803d] border-[#15803d]";
+
                   return (
                     <div key={card.id} className={getCardClasses(card.status)}>
                       {/* Top Header: Always in one line (no wrapping!) */}
                       <div className="flex flex-row justify-between items-center w-full gap-4">
                         {/* Term and Styled Dropdown Badge */}
-                        <div className="flex flex-row items-center gap-4">
+                        <div className="flex flex-row items-center gap-4 flex-wrap">
                           <h3 className="font-serif text-3xl font-bold uppercase tracking-tight text-on-surface">
                             {card.word}
                           </h3>
                           <div className="flex-shrink-0">
                             <BadgeSelect card={card} />
+                          </div>
+                          <div className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 border shadow-[1.5px_1.5px_0_0_#000] rounded-none ${sourceBg}`}>
+                            {sourceText}
                           </div>
                         </div>
 
@@ -1454,9 +1567,10 @@ export default function WordDeck() {
           )}
         </div>
 
-        {/* Right Side: New Entry Form Card */}
-        <div className="lg:col-span-1">
-          <div className="border-[3px] border-on-surface bg-surface p-6 md:p-8 shadow-[5px_5px_0_0_#000] sticky top-6 flex flex-col gap-6">
+        {/* Right Side: New Entry Form & Import Cards */}
+        <div className="lg:col-span-1 flex flex-col gap-6">
+          {/* Form Card */}
+          <div className="border-[3px] border-on-surface bg-surface p-6 md:p-8 shadow-[5px_5px_0_0_#000] flex flex-col gap-6">
             <div className="flex justify-between items-center">
               <h2 className="font-serif text-3xl font-normal text-on-surface">
                 {t("deck.newEntryTitle")}
@@ -1516,6 +1630,81 @@ export default function WordDeck() {
               </button>
             </form>
           </div>
+
+          {/* Leveled Vocab Import Card */}
+          <div className="border-[3px] border-on-surface bg-surface p-6 md:p-8 shadow-[5px_5px_0_0_#000] flex flex-col gap-6">
+            <div className="flex justify-between items-center">
+              <h2 className="font-serif text-3xl font-normal text-on-surface">
+                {lang === "tg" ? "Импорти луғат" : lang === "ru" ? "Импорт лексики" : "Import Leveled Vocab"}
+              </h2>
+              <Icon name="download" className="text-secondary text-3xl" />
+            </div>
+
+            <div className="h-[2px] bg-on-surface/10 w-full" />
+
+            <div className="space-y-4">
+              {/* CEFR Level Select */}
+              <div>
+                <label className="font-label text-[11px] uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                  {lang === "tg" ? "Сатҳро интихоб кунед" : lang === "ru" ? "Выбрать уровень" : "Select Level"}
+                </label>
+                <div className="grid grid-cols-5 gap-1 border-2 border-on-surface p-1">
+                  {["A1", "A2", "B1", "B2", "C1"].map((lvl) => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => setImportLevel(lvl)}
+                      className={`py-1.5 text-xs font-bold font-mono transition-colors cursor-pointer text-center ${
+                        importLevel === lvl
+                          ? "bg-secondary text-surface"
+                          : "hover:bg-surface-variant"
+                      }`}
+                    >
+                      {lvl}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Random count entry */}
+              <div>
+                <label className="font-label text-[11px] uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
+                  {lang === "tg" ? "Шумораи калимаҳо барои илова" : lang === "ru" ? "Количество случайных слов" : "Number of random words"}
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    min={1}
+                    max={30}
+                    value={importRandomCount}
+                    onChange={(e) => setImportRandomCount(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="w-20 bg-transparent border-2 border-on-surface px-3 py-2 text-center font-mono text-base focus:outline-none"
+                  />
+                  <button
+                    onClick={handleImportRandom}
+                    disabled={importing}
+                    className="flex-1 bg-primary text-surface border-[2.5px] border-on-surface shadow-[2.5px_2.5px_0_0_#000] hover:shadow-none hover:translate-x-[2.5px] hover:translate-y-[2.5px] transition-all font-label text-[10px] uppercase font-bold tracking-widest cursor-pointer text-center"
+                  >
+                    {importing ? "..." : (lang === "tg" ? "Иловаи тасодуфӣ" : lang === "ru" ? "Добавить случайно" : "Add Randomly")}
+                  </button>
+                </div>
+              </div>
+
+              <div className="h-[1px] bg-on-surface/10 w-full my-2" />
+
+              {/* Manual selection entry */}
+              <button
+                onClick={() => {
+                  setSelectedImportWords(new Set());
+                  setShowManualImportModal(true);
+                }}
+                className="w-full bg-surface text-primary border-[2.5px] border-on-surface shadow-[2.5px_2.5px_0_0_#000] hover:shadow-none hover:translate-x-[2.5px] hover:translate-y-[2.5px] transition-all py-3 font-label text-[10px] uppercase font-bold tracking-widest cursor-pointer text-center flex items-center justify-center gap-2"
+              >
+                <Icon name="checklist" className="text-sm" />
+                <span>{lang === "tg" ? "Интихоби дастӣ" : lang === "ru" ? "Выбрать вручную" : "Select Words Manually"}</span>
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -1528,6 +1717,89 @@ export default function WordDeck() {
             {t("common.cancel")}
           </NeoButton>
           <NeoButton onClick={confirmDelete}>{t("deck.remove")}</NeoButton>
+        </div>
+      </Modal>
+
+      {/* Manual Word Import Modal */}
+      <Modal
+        open={showManualImportModal}
+        onClose={() => setShowManualImportModal(false)}
+        title={`${lang === "tg" ? "Интихоби дастӣ барои сатҳи" : lang === "ru" ? "Выбор слов для уровня" : "Select Words for"} ${importLevel}`}
+      >
+        <div className="space-y-6 max-h-[70vh] flex flex-col">
+          {/* Controls */}
+          <div className="flex justify-between items-center gap-4 flex-shrink-0">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const list = leveledVocab[importLevel] || [];
+                  setSelectedImportWords(new Set(list.map(w => w.word)));
+                }}
+                className="text-[10px] uppercase font-bold tracking-wider underline hover:text-secondary cursor-pointer"
+              >
+                {lang === "tg" ? "Ҳамаро интихоб кардан" : lang === "ru" ? "Выбрать все" : "Select All"}
+              </button>
+              <span className="text-on-surface-variant font-light">|</span>
+              <button
+                type="button"
+                onClick={() => setSelectedImportWords(new Set())}
+                className="text-[10px] uppercase font-bold tracking-wider underline hover:text-secondary cursor-pointer"
+              >
+                {lang === "tg" ? "Тоза кардани интихоб" : lang === "ru" ? "Сбросить выбор" : "Clear Selection"}
+              </button>
+            </div>
+            <span className="font-mono text-xs font-bold text-secondary bg-[#ffdadb] border border-secondary px-2 py-0.5 shadow-[1.5px_1.5px_0_0_#b90538]">
+              {selectedImportWords.size} {lang === "tg" ? "интихобшуда" : lang === "ru" ? "выбрано" : "selected"}
+            </span>
+          </div>
+
+          {/* Words List Scroll Container */}
+          <div className="flex-1 overflow-y-auto border-2 border-on-surface p-4 bg-surface-variant/20 divide-y divide-on-surface/10 max-h-[400px]">
+            {(leveledVocab[importLevel] || []).map((w) => {
+              const isChecked = selectedImportWords.has(w.word);
+              const transText = lang === "tg" ? w.translation_tg : w.translation_ru;
+              return (
+                <div
+                  key={w.word}
+                  onClick={() => handleToggleWordSelection(w.word)}
+                  className="flex items-center gap-4 py-3 cursor-pointer hover:bg-surface-variant/40 transition-colors px-2 select-none"
+                >
+                  {/* Fake Checkbox */}
+                  <div className={`w-5 h-5 border-2 border-on-surface flex items-center justify-center flex-shrink-0 rounded-none ${isChecked ? "bg-secondary text-surface" : "bg-surface"}`}>
+                    {isChecked && <span className="font-bold text-xs text-white">✓</span>}
+                  </div>
+                  
+                  {/* Word Details */}
+                  <div className="flex-1 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
+                    <div>
+                      <span className="font-serif text-lg font-bold uppercase text-primary mr-2">{w.word}</span>
+                      <span className="font-mono text-xs text-outline italic">/{w.transcription}/</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-label text-xs uppercase font-bold text-on-surface-variant bg-surface px-2 py-0.5 border border-on-surface/20 mr-2">{w.part_of_speech}</span>
+                      <span className="font-body text-sm font-bold text-secondary">{transText}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Import Action Buttons */}
+          <div className="flex gap-4 flex-shrink-0">
+            <NeoButton variant="ghost" className="flex-1" onClick={() => setShowManualImportModal(false)}>
+              {t("common.cancel")}
+            </NeoButton>
+            <NeoButton
+              className="flex-1"
+              disabled={selectedImportWords.size === 0 || importing}
+              loading={importing}
+              onClick={handleImportSelected}
+            >
+              {lang === "tg" ? `Импорти калимаҳо (${selectedImportWords.size})` : lang === "ru" ? `Импортировать (${selectedImportWords.size})` : `Import (${selectedImportWords.size})`}
+            </NeoButton>
+          </div>
         </div>
       </Modal>
     </div>

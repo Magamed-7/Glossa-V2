@@ -28,7 +28,7 @@ async def create_card(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(enforce_deck_word_limit),
 ):
-    return await crud_card.create_card(data, current_user.id, db)
+    return await crud_card.create_card(data, current_user.id, db, source_story_id=data.source_story_id)
 
 
 @router_deck.get('/', response_model=list[CardResponse])
