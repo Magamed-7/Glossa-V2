@@ -44,15 +44,34 @@ class Settings:
 
     LLM_API_KEY: str = os.getenv('LLM_API_KEY', '')
     LLM_BASE_URL: str = os.getenv('LLM_BASE_URL', 'https://api.groq.com/openai/v1')
-    LLM_MODEL: str = os.getenv('LLM_MODEL', 'llama-3.3-70b-versatile')
+    # Список через запятую — call_llm идёт по нему по порядку и берёт первую модель этого
+    # провайдера, которая реально ответила, а не падает на первой же перегруженной/снятой модели.
+    LLM_MODELS: list[str] = [
+        m.strip()
+        for m in os.getenv(
+            'LLM_MODELS',
+            'llama-3.3-70b-versatile,openai/gpt-oss-120b,qwen/qwen3.6-27b,'
+            'openai/gpt-oss-20b,llama-3.1-8b-instant',
+        ).split(',')
+        if m.strip()
+    ]
 
-    # Второй провайдер — call_llm пробует его, только если первый упал (сеть/лимит/просроченный
-    # ключ), а не в норме. Необязателен: если не задан, работает только основной провайдер.
+    # Второй провайдер (тоже со своим списком моделей) — call_llm переходит на него, только
+    # если ВСЕ модели основного провайдера подряд отказали, а не в норме. Необязателен: если
+    # ключ не задан, работает только основной провайдер.
     LLM_FALLBACK_API_KEY: str = os.getenv('LLM_FALLBACK_API_KEY', '')
     LLM_FALLBACK_BASE_URL: str = os.getenv(
         'LLM_FALLBACK_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta/openai/'
     )
-    LLM_FALLBACK_MODEL: str = os.getenv('LLM_FALLBACK_MODEL', 'gemini-flash-latest')
+    LLM_FALLBACK_MODELS: list[str] = [
+        m.strip()
+        for m in os.getenv(
+            'LLM_FALLBACK_MODELS',
+            'gemini-flash-latest,gemini-3.6-flash,gemini-3.5-flash,'
+            'gemini-3.5-flash-lite,gemini-flash-lite-latest',
+        ).split(',')
+        if m.strip()
+    ]
 
     ELASTICSEARCH_URL: str = os.getenv('ELASTICSEARCH_URL', 'http://localhost:9200')
     ELASTIC_PASSWORD: str = os.getenv('ELASTIC_PASSWORD', '')
