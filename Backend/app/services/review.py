@@ -34,9 +34,14 @@ async def submit_review(card_id: int, user_id: int, quality: int, db: AsyncSessi
     card.next_review_date = result['next_review_date']
     card.last_quality = quality
 
-    # Synchronize card status with reviews: quality >= 3 is learned, < 3 is learning
-    if quality >= 3:
+    # Synchronize card status with reviews:
+    # - quality >= 4 (Good/Easy) is learned (Mastered)
+    # - quality == 3 (Hard) is hard (Difficult)
+    # - quality < 3 (Again) is learning (Unlearned)
+    if quality >= 4:
         card.status = 'learned'
+    elif quality == 3:
+        card.status = 'hard'
     else:
         card.status = 'learning'
 
