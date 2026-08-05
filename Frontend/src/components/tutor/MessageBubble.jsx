@@ -9,10 +9,16 @@ export default function MessageBubble({ message }) {
       {!isUser && <Avatar name="AI" size="sm" />}
       <div
         className={`max-w-[75%] px-4 py-3 border-2 border-tertiary ${
-          isUser ? "bg-secondary-container text-on-secondary-container" : "bg-surface"
+          isUser
+            ? "bg-secondary-container text-on-secondary-container"
+            : message.isError
+              ? "bg-surface-container-low"
+              : "bg-surface"
         }`}
       >
-        <p className="font-body text-body-md whitespace-pre-line">{message.text}</p>
+        <p className={`font-body text-body-md whitespace-pre-line ${message.isError ? "italic text-on-surface-variant" : ""}`}>
+          {message.text}
+        </p>
         {isUser && <Corrections corrections={message.corrections} />}
       </div>
     </div>

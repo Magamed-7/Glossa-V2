@@ -15,6 +15,7 @@ export default function TutorChat() {
 
   const { status, messages, sessionId, denyReason, sendMessage } = useAiChatSocket({ scenario, language });
   const waitingForReply = messages.length > 0 && messages[messages.length - 1].role === "user";
+  const showHistory = status === "open" || status === "reconnecting" || status === "closed";
 
   return (
     <div>
@@ -32,17 +33,22 @@ export default function TutorChat() {
           {status === "denied" && (
             <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center">
               <p className="font-body text-body-md text-on-surface-variant max-w-sm">
-                {denyReason || t("tutor.denyReasonDefault")}
+                {denyReason === "limit_reached" ? t("tutor.limitReachedSoft") : t("tutor.denyReasonDefault")}
               </p>
               <Link to="/pricing">
                 <NeoButton variant="ghost">{t("common.viewPlans")}</NeoButton>
               </Link>
             </div>
           )}
-          {(status === "open" || status === "closed") && <MessageList messages={messages} />}
+          {showHistory && <MessageList messages={messages} typing={status === "open" && waitingForReply} />}
+          {status === "reconnecting" && (
+            <p className="px-6 py-3 font-label text-label-md uppercase text-on-surface-variant border-t-2 border-tertiary">
+              {t("tutor.reconnecting")}
+            </p>
+          )}
           {status === "closed" && (
             <p className="px-6 py-3 font-label text-label-md uppercase text-error border-t-2 border-tertiary">
-              {t("tutor.closed")}
+              {t("tutor.reconnectFailed")}
             </p>
           )}
           <div className="border-t-2 border-tertiary p-4">
