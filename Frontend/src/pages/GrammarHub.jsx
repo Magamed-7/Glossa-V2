@@ -14,7 +14,10 @@ export default function GrammarHub() {
   const t = useT();
   const navigate = useNavigate();
   const { languages } = useAuth();
-  const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  // Контент существует только в диапазоне A1-C2 — у "native" нет своего контента,
+  // ищем как для C2 (ближайший реальный уровень).
+  const targetLevel = rawLevel === "native" ? "C2" : rawLevel;
 
   // Ищем реальный урок, соответствующий самой слабой теме, чтобы кнопка вела к настоящему
   // полезному действию, а не была декорацией.

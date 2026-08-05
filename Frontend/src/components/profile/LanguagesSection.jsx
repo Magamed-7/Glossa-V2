@@ -7,12 +7,14 @@ import Select from "../ui/Select.jsx";
 import { addLanguage } from "../../lib/api/profile.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
-import { useT } from "../../lib/i18n.jsx";
+import { LANGS, useI18n, useT } from "../../lib/i18n.jsx";
 
-const CEFR_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const CEFR_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2", "native"];
 
 export default function LanguagesSection({ languages, onAdded }) {
   const t = useT();
+  const { lang } = useI18n();
+  const nativeLanguageName = LANGS.find((l) => l.code === lang)?.name;
   const toast = useToast();
   const [adding, setAdding] = useState(false);
   const [language, setLanguage] = useState("");
@@ -47,10 +49,16 @@ export default function LanguagesSection({ languages, onAdded }) {
     <NeoCard>
       <h3 className="font-headline text-headline-md mb-4">{t("profile.languages")}</h3>
       <div className="flex flex-wrap gap-3 mb-4">
-        {(languages || []).map((lang) => (
-          <span key={lang.id} className="flex items-center gap-2 border-2 border-tertiary px-3 py-1">
-            <span className="font-body text-body-md">{lang.language}</span>
-            <Badge level={lang.level} className="text-[10px] px-2 py-0.5" />
+        {nativeLanguageName && (
+          <span className="flex items-center gap-2 border-2 border-tertiary px-3 py-1">
+            <span className="font-body text-body-md">{nativeLanguageName}</span>
+            <Badge className="text-[10px] px-2 py-0.5">{t("profile.nativeLanguage")}</Badge>
+          </span>
+        )}
+        {(languages || []).map((l) => (
+          <span key={l.id} className="flex items-center gap-2 border-2 border-tertiary px-3 py-1">
+            <span className="font-body text-body-md">{l.language}</span>
+            <Badge level={l.level} className="text-[10px] px-2 py-0.5" />
           </span>
         ))}
       </div>
@@ -61,7 +69,7 @@ export default function LanguagesSection({ languages, onAdded }) {
           <Select label={t("profile.levelLabel")} value={level} onChange={(e) => setLevel(e.target.value)}>
             {CEFR_LEVELS.map((l) => (
               <option key={l} value={l}>
-                {l}
+                {l === "native" ? t("profile.levelNative") : l}
               </option>
             ))}
           </Select>

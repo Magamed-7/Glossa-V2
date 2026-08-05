@@ -10,7 +10,10 @@ export default function FeaturedLesson() {
   const t = useT();
   const { languages } = useAuth();
   const navigate = useNavigate();
-  const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  // Контент существует только в диапазоне A1-C2 — у "native" нет своего контента,
+  // ищем как для C2 (ближайший реальный уровень).
+  const targetLevel = rawLevel === "native" ? "C2" : rawLevel;
 
   const { data: lessons, loading } = useApi(() => getLessons({ level: targetLevel, limit: 1 }), [targetLevel]);
 

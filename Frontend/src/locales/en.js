@@ -147,6 +147,7 @@ export const en = {
       B2: "Discussing complex topics fluently.",
       C1: "Precise, flexible expression on most subjects.",
       C2: "Near-native, effortless mastery.",
+      native: "This is your native language.",
     },
   },
   dashboard: {
@@ -542,8 +543,10 @@ export const en = {
     follow: "Follow",
     unfollow: "Following",
     languages: "Languages",
+    nativeLanguage: "Native language",
     languageLabel: "Language",
     levelLabel: "Level",
+    levelNative: "Native speaker",
     alreadyHaveLanguage: "You already have this language — remove it first to change its level.",
     add: "Add",
     cancel: "Cancel",

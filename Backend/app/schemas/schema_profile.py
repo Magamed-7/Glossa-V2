@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-CEFR_LEVELS = Literal['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+CEFR_LEVELS = Literal['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'native']
 
 
 class ProfileUpdate(BaseModel):

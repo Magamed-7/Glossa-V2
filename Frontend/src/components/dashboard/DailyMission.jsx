@@ -15,7 +15,10 @@ export default function DailyMission() {
   const { languages } = useAuth();
   const { streak } = useAppData();
   const navigate = useNavigate();
-  const targetLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
+  // Контент существует только в диапазоне A1-C2 — у "native" нет своего контента,
+  // ищем как для C2 (ближайший реальный уровень).
+  const targetLevel = rawLevel === "native" ? "C2" : rawLevel;
 
   const { data, loading, error, reload } = useApi(async () => {
     // GET /stories/{id} расходует дневной лимит — искать незавершённую историю в уже

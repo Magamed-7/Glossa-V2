@@ -1,6 +1,6 @@
 import { useT } from "../../lib/i18n.jsx";
 
-const LEVEL_CODES = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const LEVEL_CODES = ["A1", "A2", "B1", "B2", "C1", "C2", "native"];
 
 export default function LevelPicker({ value, onChange }) {
   const t = useT();
@@ -19,7 +19,9 @@ export default function LevelPicker({ value, onChange }) {
             onClick={() => onChange(code)}
             aria-pressed={selected}
           >
-            <span className={`font-display text-2xl ${selected ? "text-secondary" : ""}`}>{code}</span>
+            <span className={`font-display text-2xl ${selected ? "text-secondary" : ""}`}>
+              {code === "native" ? t("profile.levelNative") : code}
+            </span>
             <p className="font-body text-body-md text-on-surface-variant mt-1">{t(`onboarding.levels.${code}`)}</p>
           </button>
         );

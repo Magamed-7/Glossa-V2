@@ -30,7 +30,7 @@ async def require_writer_level(
     language = result.scalar_one_or_none()
     level = language.level if language is not None else 'A1'
 
-    if CEFR_ORDER.index(level) < CEFR_ORDER.index('B2'):
+    if level != 'native' and CEFR_ORDER.index(level) < CEFR_ORDER.index('B2'):
         raise AppError(
             code='WRITER_LEVEL_REQUIRED',
             message='Writing stories requires Upper-Intermediate level',

@@ -38,7 +38,10 @@ export default function StoryEditor() {
   // Писать истории может только пользователь с целевым языком уровня B2+
   // (require_writer_level на бэкенде) — проверяем до показа формы, а не после заполнения
   // (см. API_CONTRACT.md §3.7). Правка уже существующей истории этой проверке не подлежит.
-  const canWrite = isEditing || (targetLevel && CEFR_ORDER.indexOf(targetLevel) >= CEFR_ORDER.indexOf("B2"));
+  const canWrite =
+    isEditing ||
+    targetLevel === "native" ||
+    (targetLevel && CEFR_ORDER.indexOf(targetLevel) >= CEFR_ORDER.indexOf("B2"));
 
   const { data: existing, loading, error } = useApi(
     () => (isEditing ? getUserStory(id) : Promise.resolve(null)),
