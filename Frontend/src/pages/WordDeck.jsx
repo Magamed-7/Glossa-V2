@@ -431,16 +431,14 @@ export default function WordDeck() {
 
     if (know) {
       playBellSound();
-      setRecallCombo((c) => {
-        const nextCombo = c + 1;
-        setRecallResultsStats((s) => ({
-          ...s,
-          correct: s.correct + 1,
-          maxCombo: Math.max(s.maxCombo, nextCombo)
-        }));
-        return nextCombo;
-      });
-      setRecallXp((x) => x + 15 + Math.min(10, recallComboRef.current));
+      const nextCombo = recallCombo + 1;
+      setRecallCombo(nextCombo);
+      setRecallResultsStats((s) => ({
+        ...s,
+        correct: s.correct + 1,
+        maxCombo: Math.max(s.maxCombo, nextCombo)
+      }));
+      setRecallXp((x) => x + 15 + Math.min(10, nextCombo));
     } else {
       playBuzzerSound();
       setRecallCombo(0);
