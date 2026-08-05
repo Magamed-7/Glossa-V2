@@ -154,3 +154,44 @@ async def require_ai_access(
 ):
     await check_ai_access(current_user.id, db)
     return current_user
+
+
+async def check_leveled_vocab_limit(user_id: int, db: AsyncSession):
+    from app.services import crud_subscription
+    from app.models.model_card import Cards
+    from sqlalchemy import select, func
+    import datetime as dt
+
+    subscription = await crud_subscription.get_active_subscription(user_id, db)
+    plan_code = subscription['plan'].code
+
+    if plan_code == 'free':
+        stmt = select(func.count()).select_from(Cards).where(
+            Cards.user_id == user_id,
+            Cards.source_story_id < 0
+        )
+        res = await db.execute(stmt)
+        total_count = res.scalar() or 0
+        if total_count >= 5:
+            raise AppError(
+                code='LEVELED_VOCAB_LIMIT_REACHED',
+                message='Free plan can only add up to 5 ready-made words in total',
+                status_code=403
+            )
+            
+    elif plan_code == 'premium':
+        today_start = dt.datetime.now(dt.timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        stmt = select(func.count()).select_from(Cards).where(
+            Cards.user_id == user_id,
+            Cards.source_story_id < 0,
+            Cards.created_at >= today_start
+        )
+        res = await db.execute(stmt)
+        daily_count = res.scalar() or 0
+        if daily_count >= 55:
+            raise AppError(
+                code='LEVELED_VOCAB_LIMIT_REACHED',
+                message='Premium plan can only add up to 55 ready-made words per day',
+                status_code=403
+            )
+

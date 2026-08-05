@@ -28,6 +28,10 @@ async def create_card(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(enforce_deck_word_limit),
 ):
+    if data.source_story_id is not None and data.source_story_id < 0:
+        from app.core.limits import check_leveled_vocab_limit
+        await check_leveled_vocab_limit(current_user.id, db)
+
     return await crud_card.create_card(data, current_user.id, db, source_story_id=data.source_story_id)
 
 

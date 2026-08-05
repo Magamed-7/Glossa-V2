@@ -100,3 +100,39 @@ async def test_ai_access_allowed_for_premium_until_time_limit_reached(client, pr
 
     assert after_limit.status_code == 403
     assert after_limit.json()['error']['code'] == 'AI_LIMIT_REACHED'
+
+
+async def test_leveled_vocab_limit_free_plan_caps_at_five(client, user, token):
+    for i in range(5):
+        response = await client.post(
+            '/deck/',
+            json={'word': f'ready_{i}', 'translation': f'перевод_{i}', 'source_story_id': -1},
+            headers={'Authorization': f'Bearer {token}'},
+        )
+        assert response.status_code == 200
+
+    sixth = await client.post(
+        '/deck/',
+        json={'word': 'ready_5', 'translation': 'перевод_5', 'source_story_id': -1},
+        headers={'Authorization': f'Bearer {token}'},
+    )
+    assert sixth.status_code == 403
+    assert sixth.json()['error']['code'] == 'LEVELED_VOCAB_LIMIT_REACHED'
+
+
+async def test_leveled_vocab_limit_premium_plan_caps_at_fifty_five(client, premium_user, premium_token):
+    for i in range(55):
+        response = await client.post(
+            '/deck/',
+            json={'word': f'ready_prem_{i}', 'translation': f'перевод_{i}', 'source_story_id': -1},
+            headers={'Authorization': f'Bearer {premium_token}'},
+        )
+        assert response.status_code == 200
+
+    fifty_sixth = await client.post(
+        '/deck/',
+        json={'word': 'ready_prem_55', 'translation': 'перевод_55', 'source_story_id': -1},
+        headers={'Authorization': f'Bearer {premium_token}'},
+    )
+    assert fifty_sixth.status_code == 403
+    assert fifty_sixth.json()['error']['code'] == 'LEVELED_VOCAB_LIMIT_REACHED'
