@@ -42,7 +42,10 @@ export default function SpacedRepetition() {
 
   if (cards) {
     cards.forEach((c) => {
-      if (!c.next_review_date || new Date(c.next_review_date) <= now) {
+      const isOverdue = !c.next_review_date || new Date(c.next_review_date) <= now;
+      const isUnlearned = c.status !== 'learned';
+      
+      if (isOverdue || isUnlearned) {
         dueCards.push(c);
       } else {
         upcomingCards.push(c);
@@ -172,6 +175,9 @@ export default function SpacedRepetition() {
   };
 
   const getDueLabel = (card) => {
+    if (card.status !== 'learned') {
+      return t("review.learningActive");
+    }
     if (!card.next_review_date) return t("review.dueNow");
     
     const dueDate = new Date(card.next_review_date);
@@ -188,10 +194,11 @@ export default function SpacedRepetition() {
   };
 
   const getLeftIcon = (card) => {
-    if (!card.next_review_date) return "warning";
-    const dueDate = new Date(card.next_review_date);
-    if (dueDate <= now) return "warning";
+    const isOverdue = !card.next_review_date || new Date(card.next_review_date) <= now;
+    if (isOverdue) return "warning";
+    if (card.status !== 'learned') return "school";
     
+    const dueDate = new Date(card.next_review_date);
     const diffTime = dueDate - now;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays <= 1) return "calendar_month";
@@ -315,20 +322,22 @@ export default function SpacedRepetition() {
               )}
 
               {/* Due Cards (Active) */}
-              {dueCards.map((c) => (
-                <div key={c.id} className="relative w-full">
-                  
-                  {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop, safe from scroll clips */}
-                  <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-[#ba1a1a] text-white items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20">
-                    <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="w-full bg-surface border-2 border-black p-6 shadow-[4px_4px_0_0_#000] flex flex-col gap-3 relative neo-card">
-                    {/* Stamp at top-left inside card */}
-                    <div className="w-fit bg-[#ffdadb] text-[#ba1a1a] border border-dashed border-[#ba1a1a] px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none select-none">
-                      {getDueLabel(c)}
+              {dueCards.map((c) => {
+                const isOverdue = !c.next_review_date || new Date(c.next_review_date) <= now;
+                return (
+                  <div key={c.id} className="relative w-full">
+                    
+                    {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop, safe from scroll clips */}
+                    <div className={`hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20 ${isOverdue ? "bg-[#ba1a1a] text-white" : "bg-[#f59e0b] text-black"}`}>
+                      <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>{getLeftIcon(c)}</span>
                     </div>
+
+                    {/* Card Content */}
+                    <div className="w-full bg-surface border-2 border-black p-6 shadow-[4px_4px_0_0_#000] flex flex-col gap-3 relative neo-card">
+                      {/* Stamp at top-left inside card */}
+                      <div className={`w-fit border border-dashed px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none select-none ${isOverdue ? "bg-[#ffdadb] text-[#ba1a1a] border-[#ba1a1a]" : "bg-[#fef3c7] text-[#d97706] border-[#d97706]"}`}>
+                        {getDueLabel(c)}
+                      </div>
 
                     <h3 className="font-serif text-3xl font-black text-[#1c1c1a] tracking-tight leading-tight" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>
                       {c.word}
@@ -368,9 +377,9 @@ export default function SpacedRepetition() {
                       </button>
                     </div>
                   </div>
-
                 </div>
-              ))}
+              );
+            })}
 
               {/* Upcoming Cards (Locked) */}
               {upcomingCards.map((c) => {
