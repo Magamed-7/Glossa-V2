@@ -575,7 +575,11 @@ export const en = {
     imageTooLarge: "Image must be under 5 MB.",
     changePhoto: "Change Photo",
     privacy: {
-      title: "Privacy",
+      title: "Privacy & Archival Security",
+      subtitle: "Manage the visibility of your learning dossier. Public archives are accessible to the collective.",
+      classifiedStamp: "CLASSIFIED\nDATA",
+      commit: "Commit Changes",
+      committed: "Changes committed",
       storiesRead: { label: "Stories read count", description: "How many stories you've completed." },
       achievements: { label: "Achievements", description: "Badges you've earned." },
       currentStreak: { label: "Current streak", description: "Your active daily streak." },
