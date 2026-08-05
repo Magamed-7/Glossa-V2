@@ -87,29 +87,54 @@ export default function SpacedRepetition() {
       await submitReview(sessionCard.id, quality);
       
       const isSingle = activeReviewSession.queue.length === 1;
-      const isLast = activeReviewSession.index + 1 >= activeReviewSession.queue.length;
+      const isAgain = quality < 3;
       
       if (isSingle) {
-        // Close modal immediately for single card reviews
-        setActiveReviewSession(null);
-        toast.success(t("review.singleCardSuccess", { word: sessionCard.word }));
-        reloadCards();
-        reloadStats();
-        refreshStreak();
-      } else {
-        // Multi-card session updates
-        setActiveReviewSession(prev => ({
-          ...prev,
-          completed: prev.completed + 1,
-          againCount: quality === 0 ? prev.againCount + 1 : prev.againCount,
-          index: prev.index + 1
-        }));
-        setFlipped(false);
-        
-        if (isLast) {
+        if (isAgain) {
+          // Keep modal open, flip back to front to try again
+          setFlipped(false);
+          toast.warning(t("review.againRetry"));
+          reloadCards();
+          reloadStats();
+        } else {
+          // Passed: close modal immediately
+          setActiveReviewSession(null);
+          toast.success(t("review.singleCardSuccess", { word: sessionCard.word }));
           reloadCards();
           reloadStats();
           refreshStreak();
+        }
+      } else {
+        // Multi-card session updates
+        if (isAgain) {
+          // Push card to the end of the queue to repeat later
+          setActiveReviewSession(prev => {
+            const updatedQueue = [...prev.queue, sessionCard];
+            return {
+              ...prev,
+              queue: updatedQueue,
+              againCount: prev.againCount + 1,
+              index: prev.index + 1
+            };
+          });
+          setFlipped(false);
+          toast.warning(t("review.againRetry"));
+        } else {
+          // Passed: advance to next card
+          const isLast = activeReviewSession.index + 1 >= activeReviewSession.queue.length;
+          
+          setActiveReviewSession(prev => ({
+            ...prev,
+            completed: prev.completed + 1,
+            index: prev.index + 1
+          }));
+          setFlipped(false);
+          
+          if (isLast) {
+            reloadCards();
+            reloadStats();
+            refreshStreak();
+          }
         }
       }
     } catch (err) {
