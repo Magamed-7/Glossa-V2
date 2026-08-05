@@ -193,3 +193,48 @@ async def get_weak_topics(user_id: int, db: AsyncSession):
 
     topics.sort(key=lambda t: t['error_rate'], reverse=True)
     return topics
+
+
+async def get_grammar_progress(user_id: int, db: AsyncSession):
+    """Return how many distinct lessons the user has completed (submitted at least once)."""
+    # Get all lesson IDs that the user has attempted at least one question for
+    from sqlalchemy import distinct, func as sqlfunc
+    # Count all lessons per level
+    all_lessons_q = select(GrammarLessons.cefr_level, sqlfunc.count(GrammarLessons.id).label('total')).\
+        group_by(GrammarLessons.cefr_level)
+    all_rows = (await db.execute(all_lessons_q)).all()
+    totals_by_level = {row.cefr_level: row.total for row in all_rows}
+    total_all = sum(totals_by_level.values())
+
+    # Count lessons with at least one attempt by this user
+    attempted_q = (
+        select(GrammarLessons.cefr_level, sqlfunc.count(distinct(GrammarLessons.id)).label('done'))
+        .select_from(GrammarAttempts)
+        .join(GrammarQuestions, GrammarQuestions.id == GrammarAttempts.question_id)
+        .join(GrammarLessons, GrammarLessons.id == GrammarQuestions.lesson_id)
+        .where(GrammarAttempts.user_id == user_id)
+        .group_by(GrammarLessons.cefr_level)
+    )
+    done_rows = (await db.execute(attempted_q)).all()
+    done_by_level = {row.cefr_level: row.done for row in done_rows}
+    done_all = sum(done_by_level.values())
+
+    by_level = []
+    for level in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']:
+        total = totals_by_level.get(level, 0)
+        done = done_by_level.get(level, 0)
+        pct = round((done / total) * 100, 1) if total > 0 else 0.0
+        by_level.append({
+            'level': level,
+            'total_lessons': total,
+            'completed_lessons': done,
+            'percent': pct,
+        })
+
+    return {
+        'total_lessons': total_all,
+        'completed_lessons': done_all,
+        'percent': round((done_all / total_all) * 100, 1) if total_all > 0 else 0.0,
+        'by_level': by_level,
+    }
+

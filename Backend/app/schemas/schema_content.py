@@ -69,6 +69,20 @@ class WeakTopicResponse(BaseModel):
     error_rate: float
 
 
+class GrammarLevelProgress(BaseModel):
+    level: str
+    total_lessons: int
+    completed_lessons: int
+    percent: float
+
+
+class GrammarProgressResponse(BaseModel):
+    total_lessons: int
+    completed_lessons: int
+    percent: float
+    by_level: list[GrammarLevelProgress]
+
+
 class StoryWordResponse(BaseModel):
     id: int
     word: str

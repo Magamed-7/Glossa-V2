@@ -7,6 +7,7 @@ from app.db.database import get_db
 from app.schemas.schema_content import (
     GrammarLessonDetailResponse,
     GrammarLessonResponse,
+    GrammarProgressResponse,
     GrammarSubmitResult,
     QuestionSubmit,
     VocabResponse,
@@ -58,6 +59,14 @@ async def get_grammar_lessons(
 ):
     lessons = await crud_content.get_grammar_lessons(db, level=level, unit=unit, limit=limit, offset=offset)
     return [crud_content.lesson_to_response(lesson) for lesson in lessons]
+
+
+@router_grammar.get('/progress', response_model=GrammarProgressResponse)
+async def get_grammar_progress(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_content.get_grammar_progress(current_user.id, db)
 
 
 @router_grammar.get('/weak-topics', response_model=list[WeakTopicResponse])

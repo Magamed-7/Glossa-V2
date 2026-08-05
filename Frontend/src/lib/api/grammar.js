@@ -11,6 +11,10 @@ export function getWeakTopics() {
   return api.get("/grammar/weak-topics");
 }
 
+export function getGrammarProgress() {
+  return api.get("/grammar/progress");
+}
+
 export function getLesson(lessonId) {
   return api.get(`/grammar/${lessonId}`);
 }
