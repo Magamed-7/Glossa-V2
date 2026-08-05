@@ -36,7 +36,11 @@ async def call_llm_message(messages: list[dict], tools: list[dict] | None = None
     last_error = None
 
     for api_key, base_url, models in providers:
-        client = AsyncOpenAI(api_key=api_key, base_url=base_url, timeout=REQUEST_TIMEOUT, max_retries=2)
+        # max_retries=0 — не давать SDK самому ретраить упавшую модель (по умолчанию 2 ретрая
+        # с бэкоффом до 8с каждый — SDK честно не уважает Retry-After дольше 60с, но и 60с на
+        # одну упавшую модель, прежде чем самим перейти к следующей в фолбэк-цепочке, всё равно
+        # ощутимая задержка, особенно если Groq рвёт лимит на нескольких моделях подряд).
+        client = AsyncOpenAI(api_key=api_key, base_url=base_url, timeout=REQUEST_TIMEOUT, max_retries=0)
 
         for model in models:
             # Не передавать tools/tool_choice/response_format вообще, когда они не нужны —

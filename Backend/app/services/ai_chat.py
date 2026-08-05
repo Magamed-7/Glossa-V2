@@ -78,7 +78,11 @@ USING YOUR TOOLS
   them "Want me to add [word] to your deck?" earlier in this same conversation and
   they said yes. If you are not sure they want it saved, ask first instead of
   calling the tool — asking costs nothing, an unwanted addition erodes trust.
-- After using any tools, still reply in the exact JSON format described below.
+- Most messages need NO tool at all — plain small talk, a question you can already
+  answer, a correction-only message. In that case do not call any function: reply
+  immediately with the final JSON object described below, in this same turn. Only
+  call a tool when you genuinely need the learner's real data to answer well.
+- After using any tools, reply in the exact JSON format described below.
 """
 
 LEVEL_GUIDANCE = {
@@ -167,7 +171,7 @@ text before or after the JSON.
 
 {{
   "reply": "your in-character reply in {language}, 1-3 sentences, normally ending with a question",
-  "encouragement": "one specific, warm sentence to the learner about THIS message, written in {native_language}",
+  "encouragement": "one specific, warm sentence to the learner about THIS message, {encouragement_language}",
   "corrections": [
     {{
       "what": "the learner's exact phrase, copied verbatim",
@@ -228,6 +232,19 @@ def _sanitize_level(level: str | None):
     return level if level in LEVEL_GUIDANCE else DEFAULT_LEVEL
 
 
+# До A2 включительно ученик может ещё не читать на изучаемом языке достаточно, чтобы понять
+# похвалу — encouragement на родном. С B1 ученик уже читает на изучаемом языке, но текст
+# должен звучать на его уровне, а не как обычная (native-speaker) сложность reply/why.
+def _encouragement_language(level: str, language: str, native_language: str):
+    if level in ('A1', 'A2'):
+        return f'written in {native_language} — at this level praise in {language} would not land'
+
+    return (
+        f'written in {language}, simple enough for a {level} learner to read comfortably — '
+        f'not the same complexity as your in-character "reply"'
+    )
+
+
 def _system_prompt(scenario: str, language: str, level: str | None, native_language: str | None):
     safe_language = _sanitize_language(language)
     safe_native = _sanitize_language(native_language or DEFAULT_NATIVE_LANGUAGE)
@@ -236,7 +253,11 @@ def _system_prompt(scenario: str, language: str, level: str | None, native_langu
     core = MENTOR_CORE.format(language=safe_language, level=safe_level)
     guidance = LEVEL_GUIDANCE[safe_level].format(language=safe_language, native_language=safe_native)
     scenario_text = SCENARIO_PROMPTS.get(scenario, SCENARIO_PROMPTS['casual']).format(language=safe_language)
-    output_format = RESPONSE_INSTRUCTIONS.format(language=safe_language, native_language=safe_native)
+    output_format = RESPONSE_INSTRUCTIONS.format(
+        language=safe_language,
+        native_language=safe_native,
+        encouragement_language=_encouragement_language(safe_level, safe_language, safe_native),
+    )
 
     return f'{core}\nLEARNER LEVEL\n{guidance}\n\n{scenario_text}\n\n{output_format}'
 
@@ -344,16 +365,28 @@ async def get_user_errors(user_id: int, db: AsyncSession):
     return result.scalars().all()
 
 
+_tool_schemas_cache: list[dict] | None = None
+
+
 async def _allowed_tool_schemas():
+    # Список инструментов статичен — не ходим в MCP-подпроцесс за ним на каждое сообщение,
+    # это отдельный IPC-round-trip, который ничего не даёт: набор функций не меняется.
+    global _tool_schemas_cache
+
+    if _tool_schemas_cache is not None:
+        return _tool_schemas_cache
+
     try:
         schemas = await ai_mcp.get_tool_schemas()
     except RuntimeError:
         # MCP-клиент не подключён в этом процессе (например, в тестовом харнессе, который не
-        # поднимал lifespan) — наставник просто работает без инструментов, а не падает.
+        # поднимал lifespan) — наставник просто работает без инструментов, а не падает. Не
+        # кэшируем это как "инструментов нет" — при следующем реальном подключении подтянутся.
         logger.warning('MCP client not connected, continuing without tools')
         return []
 
-    return [schema for schema in schemas if schema['function']['name'] in ALLOWED_TOOL_NAMES]
+    _tool_schemas_cache = [schema for schema in schemas if schema['function']['name'] in ALLOWED_TOOL_NAMES]
+    return _tool_schemas_cache
 
 
 async def _run_tool_loop(llm_messages: list[dict], user_id: int):
@@ -366,10 +399,11 @@ async def _run_tool_loop(llm_messages: list[dict], user_id: int):
         message = await llm_client.call_llm_message(llm_messages, tools=tools, json_mode=False)
 
         if not message.tool_calls:
-            # Модель ответила напрямую, инструмент не понадобился — но текст мог прийти не в
-            # нужном JSON-формате (мы просили tools без forced json_object). Возвращаем как
-            # есть, финальный запрос ниже всё равно переспросит в правильном формате.
-            break
+            # Модель сама решила, что инструмент не нужен, и по инструкции в промпте (USING
+            # YOUR TOOLS) сразу отвечает в требуемом JSON-формате — не тратим второй проход
+            # LLM на каждое простое сообщение, которое раньше (до tool-calling) стоило один
+            # вызов, а стало два. _parse_llm_response переживёт неидеальный формат.
+            return message.content
 
         llm_messages.append({
             'role': 'assistant',
