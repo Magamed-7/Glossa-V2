@@ -134,6 +134,31 @@ function TheoryCard({ lesson, examples, lang, onStartPractice, hasQuestions }) {
   );
 }
 
+// ── Helper: strip instruction prefix from question text ─────────────────────
+// Many DB questions are stored as "Choose the correct form: He ___ a student."
+// We split on the FIRST colon so the instruction goes to the header
+// and only the sentence stays in the sentence card.
+function parseQuestionText(raw) {
+  if (!raw) return { instruction: "", sentence: "" };
+
+  // Common instruction patterns that precede a colon:
+  // "Choose the correct form:", "Fill in the blank:", "Complete the sentence:", etc.
+  const colonIdx = raw.indexOf(":");
+
+  // Only split if the part before ":" looks like an instruction
+  // (no more than ~60 chars and doesn't contain sentence-ending punctuation)
+  if (colonIdx > 0 && colonIdx < 80) {
+    const before = raw.slice(0, colonIdx).trim();
+    const after  = raw.slice(colonIdx + 1).trim();
+    // If the before-part has no period/exclamation it's likely an instruction
+    if (!before.includes(".") && !before.includes("!") && after.length > 0) {
+      return { instruction: before, sentence: after };
+    }
+  }
+
+  return { instruction: "", sentence: raw };
+}
+
 // ── Card 2: Quiz ──────────────────────────────────────────────────────────────
 function QuizCard({ questions, lang, onFinish }) {
   const [currentQ, setCurrentQ] = useState(0);
@@ -225,33 +250,44 @@ function QuizCard({ questions, lang, onFinish }) {
         </div>
 
         {/* Exercise header */}
-        <div className="flex justify-between items-start border-b-2 border-on-surface pb-4 mb-8">
-          <div>
-            <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant block mb-1">
-              {lang === "ru" ? "Упражнение" : lang === "tg" ? "Машқ" : "Exercise No."}{" "}
-              {String(currentQ + 1).padStart(3, "0")}
-            </span>
-            <p className="font-body text-lg italic text-on-surface-variant">
-              {lang === "ru"
-                ? "Задание: выберите правильный вариант."
-                : lang === "tg"
-                  ? "Вазифа: вариантро интихоб кунед."
-                  : "Task: Choose the correct answer."}
-            </p>
-          </div>
-          <span className="font-label text-[9px] font-bold uppercase tracking-widest text-secondary bg-[#ffdadb] px-2 py-1 border border-secondary shadow-[2px_2px_0px_0px_#b90538] shrink-0 ml-4">
-            {currentQ + 1}/{total}
-          </span>
-        </div>
+        {(() => {
+          const { instruction, sentence } = parseQuestionText(q.text);
+          // What to show in the task description line:
+          // If the text had an explicit instruction prefix, use it verbatim.
+          // Otherwise fall back to a generic label per question type.
+          const taskLine = instruction
+            || (q.options?.length > 0
+              ? (lang === "ru" ? "Выберите правильный вариант" : lang === "tg" ? "Вариантро интихоб кунед" : "Choose the correct answer")
+              : (lang === "ru" ? "Заполните пропуск" : lang === "tg" ? "Холиро пур кунед" : "Fill in the blank"));
 
-        {/* Question text sentence display */}
-        {q.text && (
-          <div className="flex items-center justify-center mb-10 px-4 py-8 bg-surface-container border-2 border-on-surface shadow-[4px_4px_0px_0px_#000]">
-            <span className="font-headline text-3xl md:text-5xl text-on-surface leading-none text-center">
-              {q.text}
-            </span>
-          </div>
-        )}
+          return (
+            <>
+              <div className="flex justify-between items-start border-b-2 border-on-surface pb-4 mb-8">
+                <div>
+                  <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant block mb-1">
+                    {lang === "ru" ? "Упражнение" : lang === "tg" ? "Машқ" : "Exercise No."}{" "}
+                    {String(currentQ + 1).padStart(3, "0")}
+                  </span>
+                  <p className="font-body text-lg italic text-on-surface-variant">
+                    {taskLine}
+                  </p>
+                </div>
+                <span className="font-label text-[9px] font-bold uppercase tracking-widest text-secondary bg-[#ffdadb] px-2 py-1 border border-secondary shadow-[2px_2px_0px_0px_#b90538] shrink-0 ml-4">
+                  {currentQ + 1}/{total}
+                </span>
+              </div>
+
+              {/* Sentence card — only the actual sentence, no instruction prefix */}
+              {sentence && (
+                <div className="flex items-center justify-center mb-10 px-4 py-8 bg-surface-container border-2 border-on-surface shadow-[4px_4px_0px_0px_#000]">
+                  <span className="font-headline text-3xl md:text-5xl text-on-surface leading-none text-center">
+                    {sentence}
+                  </span>
+                </div>
+              )}
+            </>
+          );
+        })()}
 
         {/* MCQ options — click auto-advances */}
         {q.options && q.options.length > 0 ? (
