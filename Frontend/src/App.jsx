@@ -14,6 +14,7 @@ import Login from "./pages/Login.jsx";
 import Login2fa from "./pages/Login2fa.jsx";
 import Marketplace from "./pages/Marketplace.jsx";
 import MarketplaceStory from "./pages/MarketplaceStory.jsx";
+import MarketplaceStories from "./pages/MarketplaceStories.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Notifications from "./pages/Notifications.jsx";
@@ -118,6 +119,7 @@ export default function App() {
 
         <Route element={<MarketplaceLayout />}>
           <Route path="/marketplace" element={page(Marketplace)} />
+          <Route path="/marketplace/stories" element={page(MarketplaceStories)} />
           <Route path="/marketplace/inbox" element={page(MarketplaceInbox)} />
           <Route path="/marketplace/analytics" element={page(MarketplaceAnalytics)} />
           <Route path="/marketplace/services" element={page(MarketplaceServices)} />

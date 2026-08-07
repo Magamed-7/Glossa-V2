@@ -63,7 +63,26 @@ export default function MarketplaceSideNavBar() {
           {({ isActive }) => (
             <>
               <Icon name="storefront" filled={isActive} className={isActive ? "text-white" : "text-black dark:text-stone-300"} />
-              {t("market.directory") || "Marketplace"}
+              {t("market.directory") || "Services"}
+            </>
+          )}
+        </NavLink>
+
+        {/* Stories Directory */}
+        <NavLink
+          to="/marketplace/stories"
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-4 py-3 font-label text-xs uppercase font-bold tracking-wider transition-all border ${
+              isActive
+                ? "bg-[#E32652] text-white border-black shadow-[3px_3px_0px_#000000]"
+                : "text-black dark:text-stone-300 border-transparent hover:border-black dark:hover:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800"
+            }`
+          }
+        >
+          {({ isActive }) => (
+            <>
+              <Icon name="auto_stories" filled={isActive} className={isActive ? "text-white" : "text-black dark:text-stone-300"} />
+              {t("market.storiesNav") || "Stories"}
             </>
           )}
         </NavLink>

@@ -935,7 +935,8 @@ export const tg = {
     titleAccent: "Market",
     subtitle: "Забоншиносони ботаҷриба, омӯзгорони касбӣ ва хидматҳои тарҷумаро барои ҳар як забон пайдо кунед.",
     filters: "Филтрҳо",
-    directory: "Бозор",
+    directory: "Хидматҳо",
+    storiesNav: "Ҳикояҳо",
     analytics: "Таҳлилҳо",
     myServices: "Хидматҳои ман",
     inbox: "Паёмҳо",
@@ -1048,5 +1049,17 @@ export const tg = {
     proposalStatusActive: "фаъол",
     proposalStatusCompleted: "анҷомёфта",
     proposalStatusDeclined: "рад шуда",
+
+    // Story marketplace directory page
+    storiesEyebrow: "Феҳристи бозор",
+    storiesTitleLead: "Бозори",
+    storiesTitleAccent: "ҳикояҳо",
+    storiesSubtitle: "Ҳикояҳои интихобшуда барои баланд бардоштани малакаҳои забонии шумо. Интихоби беҳтарин ва маҳбубтарини ҷомеа.",
+    topPicks: "Интихоби беҳтарин",
+    searchStoriesPlaceholder: "Ҷустуҷӯи ҳикояҳо...",
+    allPrices: "Ҳамаи нархҳо",
+    allLevels: "Ҳама",
+    buy: "Харидан",
+    read: "Хондан",
   },
 };

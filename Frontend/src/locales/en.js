@@ -935,7 +935,8 @@ export const en = {
     titleAccent: "Market",
     subtitle: "Find expert linguists, tutoring professionals, and translation services for any language.",
     filters: "Filters",
-    directory: "Marketplace",
+    directory: "Services",
+    storiesNav: "Stories",
     analytics: "Analytics",
     myServices: "My Services",
     inbox: "Inbox",
@@ -1048,5 +1049,17 @@ export const en = {
     proposalStatusActive: "active",
     proposalStatusCompleted: "completed",
     proposalStatusDeclined: "declined",
+
+    // Story marketplace directory page
+    storiesEyebrow: "Marketplace Directory",
+    storiesTitleLead: "Story",
+    storiesTitleAccent: "Marketplace",
+    storiesSubtitle: "Curated stories to elevate your language skills. Hand-picked selections and community favorites.",
+    topPicks: "Top Picks",
+    searchStoriesPlaceholder: "Search stories...",
+    allPrices: "All Prices",
+    allLevels: "All",
+    buy: "Buy",
+    read: "Read",
   },
 };

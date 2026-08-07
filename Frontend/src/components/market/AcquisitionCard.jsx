@@ -52,9 +52,18 @@ export default function AcquisitionCard({ story }) {
         <p className="font-body text-body-md text-on-surface-variant mb-3">
           {t("market.by", { name: author?.username || "…" })}
         </p>
-        <p className="font-ledger text-secondary">
-          {story.price ? formatMoney(story.price) : t("market.free")}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="font-ledger text-secondary">
+            {story.price ? formatMoney(story.price) : t("market.free")}
+          </p>
+          <span
+            className={`font-label text-label-md uppercase tracking-widest px-3 py-1.5 border-2 border-tertiary ${
+              story.price ? "bg-secondary text-on-secondary" : "bg-surface-container text-on-surface"
+            }`}
+          >
+            {story.price ? t("market.buy") : t("market.read")}
+          </span>
+        </div>
       </div>
     </Link>
   );

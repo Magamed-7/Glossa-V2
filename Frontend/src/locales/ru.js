@@ -935,7 +935,8 @@ export const ru = {
     titleAccent: "Market",
     subtitle: "Найдите опытных лингвистов, профессиональных репетиторов и услуги перевода для любого языка.",
     filters: "Фильтры",
-    directory: "Маркетплейс",
+    directory: "Услуги",
+    storiesNav: "Истории",
     analytics: "Аналитика",
     myServices: "Мои услуги",
     inbox: "Сообщения",
@@ -1048,5 +1049,17 @@ export const ru = {
     proposalStatusActive: "активно",
     proposalStatusCompleted: "завершено",
     proposalStatusDeclined: "отклонено",
+
+    // Story marketplace directory page
+    storiesEyebrow: "Каталог маркетплейса",
+    storiesTitleLead: "Маркетплейс",
+    storiesTitleAccent: "историй",
+    storiesSubtitle: "Отобранные истории для развития языковых навыков. Лучшие подборки и фавориты сообщества.",
+    topPicks: "Топ подборка",
+    searchStoriesPlaceholder: "Поиск историй...",
+    allPrices: "Все цены",
+    allLevels: "Все",
+    buy: "Купить",
+    read: "Читать",
   },
 };
