@@ -40,6 +40,7 @@ class LingoServiceResponse(BaseModel):
     id: int
     provider_id: int
     provider_name: str | None = None
+    provider_photo_url: str | None = None
     title: str
     description: str
     title_en: str | None = None

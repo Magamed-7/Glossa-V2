@@ -6,6 +6,7 @@ import json
 from app.api.auth import get_current_user
 from app.db.database import get_db
 from app.models.model_user import Users
+from app.models.model_profile import UserProfiles
 from app.models.model_lingo import LingoServices
 from app.schemas.schema_lingo import (
     LingoServiceCreate,
@@ -28,6 +29,17 @@ from app.services.llm_client import call_llm
 router_lingo = APIRouter(prefix='/lingo', tags=['Lingo Marketplace'])
 
 
+async def _get_provider_info(provider_id: int, db: AsyncSession):
+    query = (
+        select(Users.username, UserProfiles.photo_url)
+        .select_from(Users)
+        .outerjoin(UserProfiles, UserProfiles.user_id == Users.id)
+        .where(Users.id == provider_id)
+    )
+    row = (await db.execute(query)).first()
+    return (row.username, row.photo_url) if row else (None, None)
+
+
 @router_lingo.post('/services', response_model=LingoServiceResponse)
 async def create_service(
     data: LingoServiceCreate,
@@ -35,10 +47,12 @@ async def create_service(
     current_user=Depends(get_current_user)
 ):
     service = await crud_lingo.create_lingo_service(data, current_user.id, db)
+    _, provider_photo_url = await _get_provider_info(service.provider_id, db)
     return LingoServiceResponse(
         id=service.id,
         provider_id=service.provider_id,
         provider_name=current_user.username,
+        provider_photo_url=provider_photo_url,
         title=service.title,
         description=service.description,
         title_en=service.title_en,
@@ -73,13 +87,13 @@ async def list_services(
     
     res = []
     for s in services:
-        provider_query = await db.execute(select(Users.username).where(Users.id == s.provider_id))
-        prov_name = provider_query.scalar_one_or_none()
+        prov_name, prov_photo_url = await _get_provider_info(s.provider_id, db)
         res.append(
             LingoServiceResponse(
                 id=s.id,
                 provider_id=s.provider_id,
                 provider_name=prov_name,
+                provider_photo_url=prov_photo_url,
                 title=s.title,
                 description=s.description,
                 title_en=s.title_en,
@@ -108,12 +122,12 @@ async def get_service(
     current_user=Depends(get_current_user)
 ):
     s = await crud_lingo.get_lingo_service(id, db)
-    provider_query = await db.execute(select(Users.username).where(Users.id == s.provider_id))
-    prov_name = provider_query.scalar_one_or_none()
+    prov_name, prov_photo_url = await _get_provider_info(s.provider_id, db)
     return LingoServiceResponse(
         id=s.id,
         provider_id=s.provider_id,
         provider_name=prov_name,
+        provider_photo_url=prov_photo_url,
         title=s.title,
         description=s.description,
         title_en=s.title_en,
@@ -141,12 +155,12 @@ async def update_service(
     current_user=Depends(get_current_user)
 ):
     s = await crud_lingo.update_lingo_service(id, current_user.id, data, db)
-    provider_query = await db.execute(select(Users.username).where(Users.id == s.provider_id))
-    prov_name = provider_query.scalar_one_or_none()
+    prov_name, prov_photo_url = await _get_provider_info(s.provider_id, db)
     return LingoServiceResponse(
         id=s.id,
         provider_id=s.provider_id,
         provider_name=prov_name,
+        provider_photo_url=prov_photo_url,
         title=s.title,
         description=s.description,
         title_en=s.title_en,
