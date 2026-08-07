@@ -8,38 +8,23 @@ export default function MarketplaceInbox() {
   const t = useT();
   const { user } = useAuth();
   const [proposals, setProposals] = useState([]);
+  const [loadingProposals, setLoadingProposals] = useState(true);
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [loadingProposals, setLoadingProposals] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const [activeTab, setActiveTab] = useState("NEGOTIATIONS"); // 'NEGOTIATIONS' or 'ANNOUNCEMENTS'
-  
+  const [newMessage, setNewMessage] = useState("");
+  const [activeTab, setActiveTab] = useState("NEGOTIATIONS"); // NEGOTIATIONS or ANNOUNCEMENTS
+
   const chatEndRef = useRef(null);
 
   const fetchProposals = async () => {
     try {
       const res = await api.get("/lingo/proposals");
       setProposals(res || []);
-      if (res && res.length > 0 && !selectedProposal) {
-        setSelectedProposal(res[0]);
-      }
     } catch (err) {
-      console.error("Error fetching proposals:", err);
+      console.error("Error loading proposals:", err);
     } finally {
       setLoadingProposals(false);
-    }
-  };
-
-  const fetchMessages = async (proposalId) => {
-    setLoadingMessages(true);
-    try {
-      const res = await api.get(`/lingo/proposals/${proposalId}/messages`);
-      setMessages(res || []);
-    } catch (err) {
-      console.error("Error fetching messages:", err);
-    } finally {
-      setLoadingMessages(false);
     }
   };
 
@@ -47,12 +32,25 @@ export default function MarketplaceInbox() {
     fetchProposals();
   }, []);
 
+  // Fetch messages thread when selection changes
   useEffect(() => {
-    if (selectedProposal) {
-      fetchMessages(selectedProposal.id);
-    }
+    if (!selectedProposal) return;
+
+    const fetchMessages = async () => {
+      setLoadingMessages(true);
+      try {
+        const res = await api.get(`/lingo/proposals/${selectedProposal.id}/messages`);
+        setMessages(res || []);
+      } catch (err) {
+        console.error("Error loading chat messages:", err);
+      } finally {
+        setLoadingMessages(false);
+      }
+    };
+    fetchMessages();
   }, [selectedProposal]);
 
+  // Scroll to bottom on new messages
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -81,10 +79,8 @@ export default function MarketplaceInbox() {
         `/lingo/proposals/${selectedProposal.id}/action`,
         { action }
       );
-      // Update selected proposal state
       setSelectedProposal(res);
       fetchProposals();
-      // Reload page balance widget via window event or refetch
       window.dispatchEvent(new Event("balance_update"));
     } catch (err) {
       alert(err.message || "Action failed");
@@ -100,10 +96,10 @@ export default function MarketplaceInbox() {
         {/* Hub Header & Tabs */}
         <div>
           <span className="text-[10px] tracking-widest font-black uppercase text-[#E32652] dark:text-[#f43f5e] font-label">
-            COMMUNICATIONS HUB
+            {t("market.providerDashboard")}
           </span>
           <h2 className="font-serif text-3xl font-black text-black dark:text-white lowercase mt-1">
-            Inbox
+            {t("market.inbox")}
           </h2>
 
           {/* Negotiations vs Announcements Tabs Selector */}
@@ -141,7 +137,9 @@ export default function MarketplaceInbox() {
             </div>
           ) : proposals.length === 0 ? (
             <div className="text-center p-8 border border-dashed border-gray-300 dark:border-stone-700">
-              <span className="text-xs text-gray-400 uppercase tracking-wide">No conversations yet</span>
+              <span className="text-xs text-gray-400 uppercase tracking-wide">
+                {t("market.noListings")}
+              </span>
             </div>
           ) : (
             proposals.map((p) => {
@@ -164,7 +162,6 @@ export default function MarketplaceInbox() {
                 >
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex gap-3 min-w-0">
-                      {/* Contact Circle Initials Avatar */}
                       <div className="w-8 h-8 rounded-full border border-black bg-yellow-200 dark:bg-stone-800 flex items-center justify-center font-bold text-xs shrink-0 text-black dark:text-stone-300 uppercase">
                         {contactName ? contactName.substring(0, 2) : "LN"}
                       </div>
@@ -179,7 +176,6 @@ export default function MarketplaceInbox() {
                       </div>
                     </div>
 
-                    {/* Proposal Status Badge */}
                     <span 
                       className={`text-[8px] font-black tracking-wider uppercase px-1.5 py-0.5 border ${
                         p.status === "pending"
@@ -205,7 +201,6 @@ export default function MarketplaceInbox() {
       <div className="lg:col-span-8 flex flex-col min-h-[500px]">
         {selectedProposal ? (
           <>
-            {/* Active negotiation header panel */}
             <div className="border-b-2 border-black dark:border-stone-800 pb-4 mb-4 flex justify-between items-center gap-4">
               <div>
                 <h3 className="font-serif text-lg font-black text-black dark:text-stone-100">
@@ -220,7 +215,7 @@ export default function MarketplaceInbox() {
               
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-black dark:text-stone-300 font-mono">
-                  CONTRACT VALUE: {selectedProposal.price} TJS
+                  {t("market.price").toUpperCase()}: {selectedProposal.price} TJS
                 </span>
               </div>
             </div>
@@ -240,7 +235,6 @@ export default function MarketplaceInbox() {
                       key={msg.id}
                       className={`flex ${isMine ? "justify-end" : "justify-start"} animate-fade-in`}
                     >
-                      {/* Neubrutalist paper sticker message layout */}
                       <div 
                         className={`relative max-w-sm px-5 py-4 border-2 border-black shadow-[3px_3px_0px_#000000] dark:shadow-[3px_3px_0px_#3a3a3a] transition-all hover:scale-[1.01] ${
                           isMine 
@@ -282,7 +276,7 @@ export default function MarketplaceInbox() {
                     onClick={() => handleProposalAction("decline")}
                     className="flex-1 sm:flex-initial px-4 py-2 border-2 border-black bg-white hover:bg-stone-100 text-black font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000000]"
                   >
-                    Decline
+                    {t("market.cancel")}
                   </button>
                   <button
                     onClick={() => handleProposalAction("confirm")}

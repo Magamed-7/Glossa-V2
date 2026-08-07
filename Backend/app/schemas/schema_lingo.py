@@ -101,3 +101,16 @@ class LingoAnalyticsResponse(BaseModel):
     average_rating: float
     top_services: list[TopServiceItem]
     revenue_history: list[RevenueMonthItem]
+
+
+class LingoTranslateRequest(BaseModel):
+    title: str
+    description: str
+
+
+class LingoTranslateResponse(BaseModel):
+    title_translations: dict[str, str]
+    description_translations: dict[str, str]
+    daily_count: int
+    daily_limit: int | None
+

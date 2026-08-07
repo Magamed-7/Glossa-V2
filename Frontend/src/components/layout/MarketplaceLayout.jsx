@@ -6,8 +6,10 @@ import Icon from "../ui/Icon.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api/client.js";
+import { useT } from "../../lib/i18n.jsx";
 
 export default function MarketplaceLayout() {
+  const t = useT();
   const { user } = useAuth();
   const [balance, setBalance] = useState("0.00");
 
@@ -63,7 +65,7 @@ export default function MarketplaceLayout() {
 
           <div className="hidden md:flex items-center gap-4">
             <span className="text-xs font-bold font-sans uppercase tracking-widest text-gray-500 dark:text-stone-400">
-              Glossa Lingo Services Hub
+              {t("market.providerDashboard")}
             </span>
           </div>
 

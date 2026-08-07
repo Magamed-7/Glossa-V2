@@ -10,11 +10,12 @@ export default function MarketplaceAnalytics() {
 
   useEffect(() => {
     const fetchAnalytics = async () => {
+      setLoading(true);
       try {
         const res = await api.get("/lingo/analytics");
         setAnalytics(res);
       } catch (err) {
-        console.error("Error fetching analytics:", err);
+        console.error("Error loading analytics:", err);
       } finally {
         setLoading(false);
       }
@@ -22,7 +23,7 @@ export default function MarketplaceAnalytics() {
     fetchAnalytics();
   }, []);
 
-  if (loading) {
+  if (loading || !analytics) {
     return (
       <div className="flex justify-center items-center py-12">
         <Icon name="sync" className="animate-spin text-4xl text-[#E32652]" />
@@ -30,35 +31,29 @@ export default function MarketplaceAnalytics() {
     );
   }
 
-  const { total_earnings, active_jobs, average_rating, top_services, revenue_history } = analytics || {
-    total_earnings: "0.00",
-    active_jobs: 0,
-    average_rating: 5.0,
-    top_services: [],
-    revenue_history: []
-  };
+  const { total_earnings, active_jobs, average_rating, top_services, revenue_history } = analytics;
 
   return (
     <div className="space-y-8 animate-fade-in">
       
-      {/* Page Header */}
+      {/* Editorial Header */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-end border-b-2 border-black dark:border-stone-800 pb-6 gap-4">
         <div>
           <span className="text-[10px] tracking-widest font-black uppercase text-[#E32652] dark:text-[#f43f5e] font-label">
-            PROVIDER DASHBOARD
+            {t("market.providerDashboard")}
           </span>
           <h1 className="font-display text-4xl md:text-5xl font-black text-black dark:text-white uppercase leading-none tracking-tighter mt-1">
-            Analytics Overview
+            {t("market.analyticsOverview")}
           </h1>
           <p className="text-gray-500 dark:text-stone-400 text-sm mt-2 max-w-xl font-sans font-medium">
-            Track your translation metrics, earnings, and engagement across all Glossa Market services.
+            {t("market.analyticsDesc")}
           </p>
         </div>
 
-        {/* Filter Period selector */}
-        <button className="flex items-center gap-2 px-4 py-2 border-2 border-black bg-white dark:bg-stone-800 text-black dark:text-stone-200 font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000]">
+        {/* Date scope picker */}
+        <button className="px-4 py-2 border-2 border-black dark:border-stone-750 bg-white dark:bg-stone-800 text-black dark:text-stone-100 font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000000] flex items-center gap-2 hover:bg-[#FAF8F5]">
           <Icon name="calendar_month" className="text-sm" />
-          Last 30 Days <Icon name="arrow_drop_down" />
+          {t("market.last30Days")} <Icon name="arrow_drop_down" />
         </button>
       </div>
 
@@ -69,7 +64,7 @@ export default function MarketplaceAnalytics() {
         <div className="relative bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#FDE2B6] dark:shadow-[4px_4px_0px_#8f7a5d] overflow-hidden">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              Total Earnings
+              {t("market.price")}
             </span>
             <div className="w-8 h-8 rounded-full bg-[#FDE2B6] dark:bg-stone-800 flex items-center justify-center border border-black">
               <Icon name="payments" className="text-black dark:text-stone-300 text-sm" />
@@ -78,16 +73,13 @@ export default function MarketplaceAnalytics() {
           <h2 className="text-3xl font-black text-black dark:text-stone-100 font-mono mt-4">
             {total_earnings} TJS
           </h2>
-          <span className="text-[9px] text-[#E32652] dark:text-[#f43f5e] font-bold block mt-2">
-            +12.5% from last month
-          </span>
         </div>
 
         {/* Active Jobs */}
         <div className="relative bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#E32652] dark:shadow-[4px_4px_0px_#b11c42] overflow-hidden">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              Active Jobs
+              {t("market.activeJobs")}
             </span>
             <div className="w-8 h-8 rounded-full bg-[#E32652] flex items-center justify-center border border-black">
               <Icon name="work" className="text-white text-sm" />
@@ -97,7 +89,7 @@ export default function MarketplaceAnalytics() {
             {active_jobs}
           </h2>
           <span className="text-[9px] text-gray-500 dark:text-stone-400 font-bold block mt-2">
-            3 awaiting delivery
+            {t("market.awaitingDelivery")}
           </span>
         </div>
 
@@ -105,7 +97,7 @@ export default function MarketplaceAnalytics() {
         <div className="relative bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] overflow-hidden">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              Lingo Rating
+              {t("market.lingoRating")}
             </span>
             <div className="w-8 h-8 rounded-full bg-yellow-300 flex items-center justify-center border border-black">
               <Icon name="star" className="text-black text-sm" />
@@ -115,7 +107,7 @@ export default function MarketplaceAnalytics() {
             {Number(average_rating).toFixed(1)}
           </h2>
           <span className="text-[9px] text-gray-500 dark:text-stone-400 font-bold block mt-2">
-            Based on 128 reviews
+            {t("market.basedOnReviews")}
           </span>
         </div>
       </div>
@@ -127,13 +119,17 @@ export default function MarketplaceAnalytics() {
         <div className="lg:col-span-2 bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] flex flex-col gap-6">
           <div className="flex justify-between items-center border-b-2 border-black dark:border-stone-800 pb-3">
             <h3 className="font-label text-xs uppercase font-bold tracking-wider text-black dark:text-stone-200">
-              Revenue History
+              {t("market.revenueHistory")}
             </h3>
             
             {/* Monthly / Weekly toggle */}
             <div className="flex border-2 border-black text-xs font-bold">
-              <span className="px-3 py-1 bg-black text-white dark:bg-stone-200 dark:text-black">MONTHLY</span>
-              <span className="px-3 py-1 bg-white dark:bg-stone-800 text-gray-400 dark:text-stone-600 border-l-2 border-black">WEEKLY</span>
+              <span className="px-3 py-1 bg-black text-white dark:bg-stone-200 dark:text-black">
+                {t("market.monthly")}
+              </span>
+              <span className="px-3 py-1 bg-white dark:bg-stone-800 text-gray-400 dark:text-stone-650 border-l-2 border-black">
+                {t("market.weekly")}
+              </span>
             </div>
           </div>
 
@@ -173,7 +169,7 @@ export default function MarketplaceAnalytics() {
         <div className="bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] flex flex-col justify-between gap-6">
           <div className="border-b-2 border-black dark:border-stone-800 pb-3">
             <h3 className="font-label text-xs uppercase font-bold tracking-wider text-black dark:text-stone-200">
-              Top Services
+              {t("market.topServices")}
             </h3>
           </div>
 
@@ -205,7 +201,7 @@ export default function MarketplaceAnalytics() {
 
           {/* VIEW FULL REPORT button */}
           <button className="w-full py-3 border-2 border-black bg-[#E32652] hover:bg-[#c11c42] text-white font-label text-xs uppercase font-bold shadow-[3px_3px_0px_#000] transition-transform hover:-translate-y-0.5 active:translate-y-0 shadow-[3px_3px_0px_#000000]">
-            View Full Report
+            {t("market.viewFullReport")}
           </button>
         </div>
       </div>

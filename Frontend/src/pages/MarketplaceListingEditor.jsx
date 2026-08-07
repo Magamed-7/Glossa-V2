@@ -18,6 +18,8 @@ export default function MarketplaceListingEditor() {
   const [pricingType, setPricingType] = useState("hr");
   const [status, setStatus] = useState("active");
   const [loading, setLoading] = useState(false);
+  const [translating, setTranslating] = useState(false);
+  const [translationStats, setTranslationStats] = useState(null);
 
   useEffect(() => {
     if (isEdit) {
@@ -41,6 +43,38 @@ export default function MarketplaceListingEditor() {
       fetchService();
     }
   }, [id, isEdit]);
+
+  const handleAiTranslate = async () => {
+    if (!title.trim() || !description.trim()) {
+      alert("Please fill in both the Title and Description before auto-translating.");
+      return;
+    }
+
+    setTranslating(true);
+    try {
+      const res = await api.post("/lingo/ai-translate", { title, description });
+      const currentLang = localStorage.getItem("i18n_lang") || "en";
+
+      if (res.title_translations && res.title_translations[currentLang]) {
+        setTitle(res.title_translations[currentLang]);
+      }
+      if (res.description_translations && res.description_translations[currentLang]) {
+        setDescription(res.description_translations[currentLang]);
+      }
+
+      setTranslationStats({
+        daily_count: res.daily_count,
+        daily_limit: res.daily_limit
+      });
+
+      alert("AI Auto-translation completed! Feel free to review and adjust the text.");
+    } catch (err) {
+      console.error("AI translation error:", err);
+      alert(err.message || "Failed to auto-translate. Upgrade plan to access.");
+    } finally {
+      setTranslating(false);
+    }
+  };
 
   const handleSubmit = async (targetStatus) => {
     if (!title.trim() || !description.trim()) {
@@ -86,13 +120,13 @@ export default function MarketplaceListingEditor() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-end border-b-2 border-black dark:border-stone-800 pb-6 gap-4">
         <div>
           <span className="text-[10px] tracking-widest font-black uppercase text-[#E32652] dark:text-[#f43f5e] font-label">
-            LISTINGS COMPOSER
+            {t("market.listingsComposer")}
           </span>
           <h1 className="font-display text-4xl md:text-5xl font-black text-black dark:text-white uppercase leading-none tracking-tighter mt-1">
-            {isEdit ? "Edit Listing" : "Create Listing"}
+            {isEdit ? t("market.editListing") : t("market.createListing")}
           </h1>
           <p className="text-gray-500 dark:text-stone-400 text-sm mt-2 max-w-xl font-sans font-medium">
-            Detail your linguistic service, tutoring structure, or translation packages for the marketplace.
+            {t("market.listingsComposerDesc")}
           </p>
         </div>
 
@@ -102,19 +136,19 @@ export default function MarketplaceListingEditor() {
             to="/marketplace/services"
             className="px-4 py-2 border-2 border-black bg-white dark:bg-stone-800 text-black dark:text-stone-200 font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000]"
           >
-            Cancel
+            {t("market.cancel")}
           </Link>
           <button
             onClick={() => handleSubmit("draft")}
             className="px-4 py-2 border-2 border-black bg-[#FAF8F5] dark:bg-stone-800 text-black dark:text-stone-200 font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000] hover:bg-[#FDE2B6] transition-colors"
           >
-            Save Draft
+            {t("market.saveDraft")}
           </button>
           <button
             onClick={() => handleSubmit("active")}
             className="px-4 py-2 border-2 border-black bg-[#E32652] hover:bg-[#c11c42] text-white font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000]"
           >
-            Publish
+            {t("market.publish")}
           </button>
         </div>
       </div>
@@ -128,7 +162,7 @@ export default function MarketplaceListingEditor() {
           {/* Listing Title field */}
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-xs font-black uppercase text-black dark:text-stone-200 font-label">
-              <span className="w-1.5 h-1.5 bg-[#E32652]" /> Listing Title
+              <span className="w-1.5 h-1.5 bg-[#E32652]" /> {t("market.listingTitle")}
             </label>
             <input
               type="text"
@@ -142,20 +176,42 @@ export default function MarketplaceListingEditor() {
           {/* Description Markdown editor area */}
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-xs font-black uppercase text-black dark:text-stone-200 font-label">
-              <span className="w-1.5 h-1.5 bg-[#E32652]" /> Detailed Description
+              <span className="w-1.5 h-1.5 bg-[#E32652]" /> {t("market.detailedDescription")}
             </label>
             <textarea
               rows="8"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe your methodology, experience, translation credentials, and what client requirements are..."
+              placeholder="Describe your methodology, experience, translation credentials..."
               maxLength="2000"
               className="w-full px-4 py-3 bg-[#FAF8F5] dark:bg-stone-850 border-2 border-black dark:border-stone-700 text-black dark:text-stone-100 font-sans text-xs focus:outline-none focus:ring-1 focus:ring-[#E32652]"
             />
             <div className="flex justify-between items-center text-[10px] text-gray-400 dark:text-stone-500 font-medium">
-              <span>Supports basic Markdown formatting</span>
-              <span>{description.length}/2000 characters</span>
+              <span>{t("market.supportsMarkdown")}</span>
+              <span>{description.length}/2000 {t("market.charCounter")}</span>
             </div>
+
+            {/* AI Auto-Translate Action trigger */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 border-t border-gray-150 dark:border-stone-800">
+              <button
+                type="button"
+                onClick={handleAiTranslate}
+                disabled={translating}
+                className="px-4 py-2 border-2 border-black bg-[#FDE2B6] hover:bg-[#ebd0a5] disabled:opacity-50 text-black font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000] flex items-center gap-1.5 transition-transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-[1px_1px_0px_#000]"
+              >
+                <Icon name="translate" className={translating ? "animate-spin text-sm" : "text-sm"} />
+                {translating ? "Translating..." : t("market.aiTranslateBtn")}
+              </button>
+
+              {translationStats && (
+                <span className="text-[10px] font-bold text-gray-500 font-mono">
+                  {t("market.aiTranslateUsage")
+                    .replace("{count}", translationStats.daily_count)
+                    .replace("{limit}", translationStats.daily_limit === null ? "∞" : translationStats.daily_limit)}
+                </span>
+              )}
+            </div>
+
           </div>
         </div>
 
@@ -165,7 +221,7 @@ export default function MarketplaceListingEditor() {
           {/* Category Dropdown */}
           <div className="space-y-2">
             <label className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest block">
-              Category
+              {t("market.category")}
             </label>
             <select
               value={category}
@@ -183,7 +239,7 @@ export default function MarketplaceListingEditor() {
           {/* CEFR Level selection */}
           <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-stone-800">
             <label className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest block">
-              CEFR Level
+              {t("market.cefrLevel")}
             </label>
             <select
               value={cefrLevel}
@@ -202,7 +258,7 @@ export default function MarketplaceListingEditor() {
           {/* Pricing parameters */}
           <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-stone-800">
             <label className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest block">
-              Base Price & Rate Type
+              {t("market.basePrice")}
             </label>
             <div className="flex gap-2">
               <div className="flex-1 flex border-2 border-black dark:border-stone-750 bg-[#FAF8F5] dark:bg-stone-850">
@@ -232,17 +288,17 @@ export default function MarketplaceListingEditor() {
           {/* Portfolio Cover Upload drag zone */}
           <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-stone-800">
             <label className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest block">
-              Portfolio Media
+              {t("market.portfolioMedia")}
             </label>
             <div className="border-2 border-dashed border-black dark:border-stone-700 p-6 text-center bg-[#FAF8F5] dark:bg-stone-950/20 cursor-pointer hover:bg-stone-100/50 dark:hover:bg-stone-850/30 transition-all flex flex-col items-center gap-1.5">
               <div className="w-10 h-10 rounded-full bg-[#FDE2B6] border border-black flex items-center justify-center">
                 <Icon name="upload" className="text-black" />
               </div>
               <span className="text-[11px] font-bold text-black dark:text-stone-200 uppercase">
-                Upload Covers or Samples
+                {t("market.uploadCovers")}
               </span>
               <span className="text-[9px] text-gray-400 dark:text-stone-500">
-                JPG, PNG, PDF up to 10MB
+                {t("market.uploadDesc")}
               </span>
             </div>
           </div>

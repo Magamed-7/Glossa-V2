@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+import json
 
 from app.api.auth import get_current_user
 from app.db.database import get_db
@@ -15,9 +16,14 @@ from app.schemas.schema_lingo import (
     LingoProposalAction,
     LingoMessageCreate,
     LingoMessageResponse,
-    LingoAnalyticsResponse
+    LingoAnalyticsResponse,
+    LingoTranslateRequest,
+    LingoTranslateResponse
 )
 from app.services import crud_lingo
+from app.services.crud_subscription import get_active_subscription
+from app.core.limits import get_daily, incr_daily
+from app.services.llm_client import call_llm
 
 router_lingo = APIRouter(prefix='/lingo', tags=['Lingo Marketplace'])
 
@@ -288,3 +294,70 @@ async def get_analytics(
     current_user=Depends(get_current_user)
 ):
     return await crud_lingo.get_lingo_analytics(current_user.id, db)
+
+
+@router_lingo.post('/ai-translate', response_model=LingoTranslateResponse)
+async def ai_translate(
+    data: LingoTranslateRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    # 1. Fetch user subscription details
+    sub = await get_active_subscription(current_user.id, db)
+    plan_code = sub['plan'].code if sub else 'free'
+
+    # 2. Gate check: Free tier is forbidden
+    if plan_code == 'free':
+        raise HTTPException(
+            status_code=403,
+            detail="AI Auto-translate is not available on the Free plan. Upgrade to access."
+        )
+
+    # 3. Check level 2 (pro) daily limit
+    limit = 15 if plan_code == 'pro' else None
+    daily_usage = await get_daily(current_user.id, 'ai_translate')
+
+    if limit is not None and daily_usage >= limit:
+        raise HTTPException(
+            status_code=403,
+            detail="Daily AI Translation limit reached. Upgrade to Level 3 for infinite translations."
+        )
+
+    # 4. Invoke LLM client to translate
+    system_prompt = (
+        "You are an expert translator. Translate the given Title and Description into Russian, English, and Tajik. "
+        "Return the output strictly in JSON format matching this schema: "
+        "{\"title_translations\": {\"ru\": \"...\", \"en\": \"...\", \"tg\": \"...\"}, "
+        "\"description_translations\": {\"ru\": \"...\", \"en\": \"...\", \"tg\": \"...\"}}. "
+        "Do not include any extra text, codeblocks or markdown formatting."
+    )
+    user_prompt = f"Title:\n{data.title}\n\nDescription:\n{data.description}"
+
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
+    ]
+
+    try:
+        response_content = await call_llm(messages, json_mode=True)
+        translation_result = json.loads(response_content)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"AI translation service error: {str(exc)}"
+        )
+
+    # 5. Increment daily count for pro plan users
+    if limit is not None:
+        daily_usage = await incr_daily(current_user.id, 'ai_translate')
+    else:
+        # Just increment for stats tracking
+        await incr_daily(current_user.id, 'ai_translate')
+        daily_usage += 1
+
+    return LingoTranslateResponse(
+        title_translations=translation_result.get("title_translations", {}),
+        description_translations=translation_result.get("description_translations", {}),
+        daily_count=daily_usage,
+        daily_limit=limit
+    )

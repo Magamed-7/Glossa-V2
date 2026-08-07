@@ -2,45 +2,45 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
-import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { api } from "../lib/api/client.js";
 
 export default function MarketplaceServices() {
   const t = useT();
-  const { user } = useAuth();
-  const [myServices, setMyServices] = useState([]);
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
 
-  const fetchMyServices = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get(`/lingo/services?provider_id=${user?.id}`);
-      setMyServices(res || []);
-    } catch (err) {
-      console.error("Error fetching provider services:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
-    if (user) {
-      fetchMyServices();
-    }
-  }, [user]);
+    const fetchMyServices = async () => {
+      setLoading(true);
+      try {
+        // Fetch only current user's services (provider_id handled by current_user token on backend list view)
+        const res = await api.get("/lingo/services");
+        setServices(res || []);
+      } catch (err) {
+        console.error("Error fetching provider services:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMyServices();
+  }, []);
 
-  // Filter listings by search input
-  const filtered = myServices.filter((s) => 
-    s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter listings by search query
+  const filtered = services.filter((svc) => {
+    const term = searchQuery.toLowerCase();
+    return (
+      svc.title.toLowerCase().includes(term) ||
+      svc.description.toLowerCase().includes(term) ||
+      svc.category.toLowerCase().includes(term)
+    );
+  });
 
-  // Pagination calculations
+  // Calculate pagination
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
   const paginated = filtered.slice(
     (currentPage - 1) * itemsPerPage,
@@ -50,17 +50,17 @@ export default function MarketplaceServices() {
   return (
     <div className="space-y-8 animate-fade-in">
       
-      {/* Page Header block */}
+      {/* Editorial Header */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-end border-b-2 border-black dark:border-stone-800 pb-6 gap-4">
         <div>
           <span className="text-[10px] tracking-widest font-black uppercase text-[#E32652] dark:text-[#f43f5e] font-label">
-            PROVIDER WORKSPACE
+            {t("market.providerWorkspace")}
           </span>
           <h1 className="font-display text-4xl md:text-5xl font-black text-black dark:text-white uppercase leading-none tracking-tighter mt-1">
-            My Listings & Services
+            {t("market.myListings")}
           </h1>
           <p className="text-gray-500 dark:text-stone-400 text-sm mt-2 max-w-xl font-sans font-medium">
-            Manage your offerings, track performance, and update pricing from your central hub.
+            {t("market.myListingsDesc")}
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export default function MarketplaceServices() {
           className="px-5 py-3 border-2 border-black bg-[#E32652] hover:bg-[#c11c42] text-white font-label text-xs uppercase font-bold shadow-[3px_3px_0px_#000] transition-transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-1 shadow-[3px_3px_0px_#000000]"
         >
           <Icon name="add" className="text-sm text-white" />
-          Create New
+          {t("market.createNew")}
         </Link>
       </div>
 
@@ -86,7 +86,7 @@ export default function MarketplaceServices() {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search titles, descriptions..."
+            placeholder={t("market.searchPlaceholder")}
             className="w-full pl-10 pr-4 py-2 bg-[#FAF8F5] dark:bg-stone-850 border-2 border-black dark:border-stone-700 text-black dark:text-stone-100 font-sans text-xs focus:outline-none focus:ring-1 focus:ring-[#E32652]"
           />
           <Icon name="search" className="absolute left-3.5 top-3.5 text-gray-400 dark:text-stone-500" />
@@ -94,10 +94,10 @@ export default function MarketplaceServices() {
 
         <div className="flex gap-2 w-full md:w-auto">
           <select className="flex-1 md:flex-initial text-xs font-bold bg-[#FAF8F5] dark:bg-stone-800 border-2 border-black dark:border-stone-700 p-2 text-black dark:text-stone-200">
-            <option>All Types</option>
+            <option>{t("market.allTypes")}</option>
           </select>
           <select className="flex-1 md:flex-initial text-xs font-bold bg-[#FAF8F5] dark:bg-stone-800 border-2 border-black dark:border-stone-700 p-2 text-black dark:text-stone-200">
-            <option>All Statuses</option>
+            <option>{t("market.allStatuses")}</option>
           </select>
         </div>
       </div>
@@ -110,19 +110,19 @@ export default function MarketplaceServices() {
           <thead>
             <tr className="border-b-2 border-black dark:border-stone-800 bg-[#FAF8F5] dark:bg-stone-950/40">
               <th className="p-4 text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-                Title & Details
+                {t("market.titleDetails")}
               </th>
               <th className="p-4 text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-                Type
+                {t("market.type")}
               </th>
               <th className="p-4 text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-                Status
+                {t("market.status")}
               </th>
               <th className="p-4 text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-                Price
+                {t("market.price")}
               </th>
               <th className="p-4 text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest text-center">
-                Actions
+                {t("market.actions")}
               </th>
             </tr>
           </thead>
@@ -137,8 +137,8 @@ export default function MarketplaceServices() {
               ))
             ) : paginated.length === 0 ? (
               <tr>
-                <td colSpan="5" className="p-12 text-center text-gray-400 uppercase tracking-wide text-xs">
-                  No listings created yet. Create one!
+                <td colSpan="5" className="p-12 text-center text-gray-450 uppercase tracking-wide text-xs">
+                  {t("market.noListings")}
                 </td>
               </tr>
             ) : (
@@ -157,7 +157,7 @@ export default function MarketplaceServices() {
                           {svc.title}
                         </span>
                         <span className="text-[9px] text-gray-400 dark:text-stone-500 font-mono block mt-0.5">
-                          Last edited: {new Date(svc.created_at).toLocaleDateString()}
+                          {t("market.lastEdited")}: {new Date(svc.created_at).toLocaleDateString()}
                         </span>
                       </div>
                     </div>
@@ -181,7 +181,7 @@ export default function MarketplaceServices() {
                           : "bg-stone-400"
                       }`} />
                       <span className="text-black dark:text-stone-200 uppercase text-[10px]">
-                        {svc.status}
+                        {svc.status === "active" ? t("market.activeStatus") : svc.status === "draft" ? t("market.draftStatus") : t("market.hiddenStatus")}
                       </span>
                     </div>
                   </td>
@@ -189,7 +189,7 @@ export default function MarketplaceServices() {
                   {/* Price Rate */}
                   <td className="p-4">
                     <span className="font-mono text-xs font-bold text-black dark:text-stone-200">
-                      {svc.price == 0 ? "FREE" : `${svc.price} TJS/${svc.pricing_type}`}
+                      {svc.price == 0 ? t("market.priceFree") : `${svc.price} TJS/${svc.pricing_type}`}
                     </span>
                   </td>
 
@@ -200,7 +200,7 @@ export default function MarketplaceServices() {
                       className="px-3 py-1.5 border border-black bg-[#FAF8F5] dark:bg-stone-800 text-black dark:text-stone-200 font-label text-[10px] uppercase font-black shadow-[1.5px_1.5px_0px_#000000] hover:bg-stone-100 transition-all inline-flex items-center gap-1"
                     >
                       <Icon name="edit" className="text-xs" />
-                      Edit
+                      {t("market.edit")}
                     </Link>
                   </td>
                 </tr>
