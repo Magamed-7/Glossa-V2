@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
-import axios from "axios";
+import { api } from "../lib/api/client.js";
 
 export default function MarketplaceServices() {
   const t = useT();
@@ -19,12 +19,8 @@ export default function MarketplaceServices() {
   const fetchMyServices = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:8000/lingo/services", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { provider_id: user?.id }
-      });
-      setMyServices(res.data);
+      const res = await api.get(`/lingo/services?provider_id=${user?.id}`);
+      setMyServices(res || []);
     } catch (err) {
       console.error("Error fetching provider services:", err);
     } finally {

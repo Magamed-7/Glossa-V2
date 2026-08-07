@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
-import axios from "axios";
+import { api } from "../lib/api/client.js";
 
 export default function MarketplaceAnalytics() {
   const t = useT();
@@ -11,11 +11,8 @@ export default function MarketplaceAnalytics() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:8000/lingo/analytics", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setAnalytics(res.data);
+        const res = await api.get("/lingo/analytics");
+        setAnalytics(res);
       } catch (err) {
         console.error("Error fetching analytics:", err);
       } finally {

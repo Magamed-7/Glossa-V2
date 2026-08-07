@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
-import axios from "axios";
+import { api } from "../lib/api/client.js";
 
 export default function Marketplace() {
   const t = useT();
@@ -20,16 +20,13 @@ export default function Marketplace() {
   const fetchServices = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:8000/lingo/services", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          category: category || undefined,
-          cefr_group: levelGroup !== "ALL" ? levelGroup : undefined,
-          price_group: priceGroup || undefined,
-        }
-      });
-      setServices(res.data);
+      const q = new URLSearchParams();
+      if (category) q.append("category", category);
+      if (levelGroup !== "ALL") q.append("cefr_group", levelGroup);
+      if (priceGroup) q.append("price_group", priceGroup);
+
+      const res = await api.get(`/lingo/services?${q.toString()}`);
+      setServices(res || []);
       setCurrentPage(1); // Reset page on filter changes
     } catch (err) {
       console.error("Error fetching services:", err);
@@ -45,17 +42,10 @@ export default function Marketplace() {
   // Handle proposal message initiation
   const handleInitiateProposal = async (service) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:8000/lingo/proposals",
-        {
-          service_id: service.id,
-          price: service.price
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await api.post("/lingo/proposals", {
+        service_id: service.id,
+        price: service.price
+      });
       // Redirect to Inbox
       navigate("/marketplace/inbox");
     } catch (err) {

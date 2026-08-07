@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
-import axios from "axios";
+import { api } from "../lib/api/client.js";
 
 export default function MarketplaceListingEditor() {
   const t = useT();
@@ -24,17 +24,14 @@ export default function MarketplaceListingEditor() {
       const fetchService = async () => {
         setLoading(true);
         try {
-          const token = localStorage.getItem("token");
-          const res = await axios.get(`http://localhost:8000/lingo/services/${id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setTitle(res.data.title);
-          setDescription(res.data.description);
-          setCategory(res.data.category);
-          setCefrLevel(res.data.cefr_level || "B1");
-          setPrice(res.data.price);
-          setPricingType(res.data.pricing_type);
-          setStatus(res.data.status);
+          const res = await api.get(`/lingo/services/${id}`);
+          setTitle(res.title);
+          setDescription(res.description);
+          setCategory(res.category);
+          setCefrLevel(res.cefr_level || "B1");
+          setPrice(res.price);
+          setPricingType(res.pricing_type);
+          setStatus(res.status);
         } catch (err) {
           console.error("Error loading service listing:", err);
         } finally {
@@ -52,7 +49,6 @@ export default function MarketplaceListingEditor() {
     }
 
     try {
-      const token = localStorage.getItem("token");
       const payload = {
         title,
         description,
@@ -64,13 +60,9 @@ export default function MarketplaceListingEditor() {
       };
 
       if (isEdit) {
-        await axios.patch(`http://localhost:8000/lingo/services/${id}`, payload, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await api.patch(`/lingo/services/${id}`, payload);
       } else {
-        await axios.post("http://localhost:8000/lingo/services", payload, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await api.post("/lingo/services", payload);
       }
       navigate("/marketplace/services");
     } catch (err) {

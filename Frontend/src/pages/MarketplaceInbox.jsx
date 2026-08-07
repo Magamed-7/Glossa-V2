@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
-import axios from "axios";
+import { api } from "../lib/api/client.js";
 
 export default function MarketplaceInbox() {
   const t = useT();
@@ -19,13 +19,10 @@ export default function MarketplaceInbox() {
 
   const fetchProposals = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:8000/lingo/proposals", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setProposals(res.data);
-      if (res.data.length > 0 && !selectedProposal) {
-        setSelectedProposal(res.data[0]);
+      const res = await api.get("/lingo/proposals");
+      setProposals(res || []);
+      if (res && res.length > 0 && !selectedProposal) {
+        setSelectedProposal(res[0]);
       }
     } catch (err) {
       console.error("Error fetching proposals:", err);
@@ -37,11 +34,8 @@ export default function MarketplaceInbox() {
   const fetchMessages = async (proposalId) => {
     setLoadingMessages(true);
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:8000/lingo/proposals/${proposalId}/messages`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setMessages(res.data);
+      const res = await api.get(`/lingo/proposals/${proposalId}/messages`);
+      setMessages(res || []);
     } catch (err) {
       console.error("Error fetching messages:", err);
     } finally {
@@ -68,13 +62,11 @@ export default function MarketplaceInbox() {
     if (!newMessage.trim() || !selectedProposal) return;
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post(
-        `http://localhost:8000/lingo/proposals/${selectedProposal.id}/messages`,
-        { text: newMessage },
-        { headers: { Authorization: `Bearer ${token}` } }
+      const res = await api.post(
+        `/lingo/proposals/${selectedProposal.id}/messages`,
+        { text: newMessage }
       );
-      setMessages((prev) => [...prev, res.data]);
+      setMessages((prev) => [...prev, res]);
       setNewMessage("");
       fetchProposals(); // Refresh last message in list
     } catch (err) {
@@ -85,19 +77,17 @@ export default function MarketplaceInbox() {
   const handleProposalAction = async (action) => {
     if (!selectedProposal) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post(
-        `http://localhost:8000/lingo/proposals/${selectedProposal.id}/action`,
-        { action },
-        { headers: { Authorization: `Bearer ${token}` } }
+      const res = await api.post(
+        `/lingo/proposals/${selectedProposal.id}/action`,
+        { action }
       );
       // Update selected proposal state
-      setSelectedProposal(res.data);
+      setSelectedProposal(res);
       fetchProposals();
       // Reload page balance widget via window event or refetch
       window.dispatchEvent(new Event("balance_update"));
     } catch (err) {
-      alert(err.response?.data?.detail || "Action failed");
+      alert(err.message || "Action failed");
     }
   };
 

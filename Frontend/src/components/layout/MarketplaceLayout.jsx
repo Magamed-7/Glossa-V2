@@ -5,26 +5,29 @@ import ThemeToggle from "./ThemeToggle.jsx";
 import Icon from "../ui/Icon.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../../lib/api/client.js";
 
 export default function MarketplaceLayout() {
   const { user } = useAuth();
   const [balance, setBalance] = useState("0.00");
 
+  const fetchBalance = async () => {
+    try {
+      const res = await api.get("/wallet/balance");
+      setBalance(res?.balance || "0.00");
+    } catch (err) {
+      console.error("Error fetching balance:", err);
+    }
+  };
+
   useEffect(() => {
-    // Fetch wallet balance
-    const fetchBalance = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:8000/wallet/balance", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setBalance(res.data.balance || "0.00");
-      } catch (err) {
-        console.error("Error fetching balance:", err);
-      }
-    };
     fetchBalance();
+    
+    // Add event listener to refresh balance on payment confirmations
+    window.addEventListener("balance_update", fetchBalance);
+    return () => {
+      window.removeEventListener("balance_update", fetchBalance);
+    };
   }, []);
 
   return (
