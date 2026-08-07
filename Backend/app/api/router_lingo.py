@@ -358,8 +358,8 @@ async def ai_translate(
             detail="AI Auto-translate is not available on the Free plan. Upgrade to access."
         )
 
-    # 3. Check level 2 (pro) daily limit
-    limit = 15 if plan_code == 'pro' else None
+    # 3. Check level 2 (premium) daily limit — pro is the top tier and stays unlimited
+    limit = 15 if plan_code == 'premium' else None
     daily_usage = await get_daily(current_user.id, 'ai_translate')
 
     if limit is not None and daily_usage >= limit:
