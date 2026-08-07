@@ -1014,7 +1014,7 @@ export const tg = {
     hiddenStatus: "пинҳон",
 
     // Феҳристи хидматҳо
-    directoryHeadline: "Феҳрист",
+    directoryHeadline: "Хизматрасониҳо",
     directoryIssue: "Шумораи 04 — Пайванди полиглотҳо",
     servicesFound: "{n} хидмат ёфт шуд",
     sortBy: "Тартиб:",

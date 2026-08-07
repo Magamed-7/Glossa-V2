@@ -1014,7 +1014,7 @@ export const ru = {
     hiddenStatus: "скрыто",
 
     // Витрина услуг (Services directory)
-    directoryHeadline: "Директория",
+    directoryHeadline: "Услуги",
     directoryIssue: "Выпуск №04 — Полиглот-связь",
     servicesFound: "{n} услуг найдено",
     sortBy: "Сортировка:",

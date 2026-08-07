@@ -1014,7 +1014,7 @@ export const en = {
     hiddenStatus: "hidden",
 
     // Services directory
-    directoryHeadline: "Directory",
+    directoryHeadline: "Services",
     directoryIssue: "Issue no. 04 — Polyglot Connect",
     servicesFound: "{n} services found",
     sortBy: "Sort by:",
