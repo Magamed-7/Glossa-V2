@@ -10,8 +10,17 @@ export default function MarketplaceListingEditor() {
   const { id } = useParams();
   const isEdit = !!id;
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  // Active translation input tab
+  const [activeInputTab, setActiveInputTab] = useState("ru"); // "ru" | "en" | "tg"
+
+  // 3-Language Explicit States
+  const [titleRu, setTitleRu] = useState("");
+  const [descRu, setDescRu] = useState("");
+  const [titleEn, setTitleEn] = useState("");
+  const [descEn, setDescEn] = useState("");
+  const [titleTg, setTitleTg] = useState("");
+  const [descTg, setDescTg] = useState("");
+
   const [category, setCategory] = useState("TRANSLATION");
   const [cefrLevel, setCefrLevel] = useState("B1");
   const [price, setPrice] = useState("0.00");
@@ -27,8 +36,13 @@ export default function MarketplaceListingEditor() {
         setLoading(true);
         try {
           const res = await api.get(`/lingo/services/${id}`);
-          setTitle(res.title);
-          setDescription(res.description);
+          setTitleRu(res.title_ru || res.title || "");
+          setDescRu(res.description_ru || res.description || "");
+          setTitleEn(res.title_en || "");
+          setDescEn(res.description_en || "");
+          setTitleTg(res.title_tg || "");
+          setDescTg(res.description_tg || "");
+
           setCategory(res.category);
           setCefrLevel(res.cefr_level || "B1");
           setPrice(res.price);
@@ -45,21 +59,43 @@ export default function MarketplaceListingEditor() {
   }, [id, isEdit]);
 
   const handleAiTranslate = async () => {
-    if (!title.trim() || !description.trim()) {
-      alert("Please fill in both the Title and Description before auto-translating.");
+    // Determine active input text to translate
+    let sourceTitle = "";
+    let sourceDesc = "";
+
+    if (activeInputTab === "ru") {
+      sourceTitle = titleRu;
+      sourceDesc = descRu;
+    } else if (activeInputTab === "en") {
+      sourceTitle = titleEn;
+      sourceDesc = descEn;
+    } else {
+      sourceTitle = titleTg;
+      sourceDesc = descTg;
+    }
+
+    if (!sourceTitle.trim() || !sourceDesc.trim()) {
+      alert("Please fill in both the Title and Description in the current active tab before auto-translating.");
       return;
     }
 
     setTranslating(true);
     try {
-      const res = await api.post("/lingo/ai-translate", { title, description });
-      const currentLang = localStorage.getItem("i18n_lang") || "en";
+      const res = await api.post("/lingo/ai-translate", { 
+        title: sourceTitle, 
+        description: sourceDesc 
+      });
 
-      if (res.title_translations && res.title_translations[currentLang]) {
-        setTitle(res.title_translations[currentLang]);
+      // Write translations to state
+      if (res.title_translations) {
+        setTitleRu(res.title_translations.ru || "");
+        setTitleEn(res.title_translations.en || "");
+        setTitleTg(res.title_translations.tg || "");
       }
-      if (res.description_translations && res.description_translations[currentLang]) {
-        setDescription(res.description_translations[currentLang]);
+      if (res.description_translations) {
+        setDescRu(res.description_translations.ru || "");
+        setDescEn(res.description_translations.en || "");
+        setDescTg(res.description_translations.tg || "");
       }
 
       setTranslationStats({
@@ -67,7 +103,7 @@ export default function MarketplaceListingEditor() {
         daily_limit: res.daily_limit
       });
 
-      alert("AI Auto-translation completed! Feel free to review and adjust the text.");
+      alert("AI Auto-translation completed! Check other language tabs to review and edit.");
     } catch (err) {
       console.error("AI translation error:", err);
       alert(err.message || "Failed to auto-translate. Upgrade plan to access.");
@@ -77,15 +113,25 @@ export default function MarketplaceListingEditor() {
   };
 
   const handleSubmit = async (targetStatus) => {
-    if (!title.trim() || !description.trim()) {
-      alert("Please fill in the title and description fields.");
+    // Fallbacks
+    const baseTitle = titleRu || titleEn || titleTg;
+    const baseDesc = descRu || descEn || descTg;
+
+    if (!baseTitle.trim() || !baseDesc.trim()) {
+      alert("Please fill in the title and description fields on at least one language tab.");
       return;
     }
 
     try {
       const payload = {
-        title,
-        description,
+        title: baseTitle,
+        description: baseDesc,
+        title_ru: titleRu || baseTitle,
+        description_ru: descRu || baseDesc,
+        title_en: titleEn || baseTitle,
+        description_en: descEn || baseDesc,
+        title_tg: titleTg || baseTitle,
+        description_tg: descTg || baseDesc,
         category,
         cefr_level: cefrLevel || null,
         price: parseFloat(price) || 0.0,
@@ -112,6 +158,22 @@ export default function MarketplaceListingEditor() {
       </div>
     );
   }
+
+  // Active state selectors
+  const activeTitle = activeInputTab === "ru" ? titleRu : activeInputTab === "en" ? titleEn : titleTg;
+  const activeDesc = activeInputTab === "ru" ? descRu : activeInputTab === "en" ? descEn : descTg;
+
+  const handleTitleChange = (val) => {
+    if (activeInputTab === "ru") setTitleRu(val);
+    else if (activeInputTab === "en") setTitleEn(val);
+    else setTitleTg(val);
+  };
+
+  const handleDescChange = (val) => {
+    if (activeInputTab === "ru") setDescRu(val);
+    else if (activeInputTab === "en") setDescEn(val);
+    else setDescTg(val);
+  };
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -159,15 +221,37 @@ export default function MarketplaceListingEditor() {
         {/* Left Column: Core Description fields (8 cols) */}
         <div className="lg:col-span-8 bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] space-y-6">
           
+          {/* Neobrutalist language tab selectors */}
+          <div className="flex gap-2 border-b-2 border-black pb-2">
+            {[
+              { code: "ru", label: "Русский" },
+              { code: "en", label: "English" },
+              { code: "tg", label: "Тоҷикӣ" }
+            ].map((tab) => (
+              <button
+                key={tab.code}
+                type="button"
+                onClick={() => setActiveInputTab(tab.code)}
+                className={`px-4 py-1.5 text-xs font-black uppercase border-2 border-black shadow-[1.5px_1.5px_0px_#000] transition-transform ${
+                  activeInputTab === tab.code 
+                    ? "bg-[#E32652] text-white -translate-y-0.5" 
+                    : "bg-[#FAF8F5] dark:bg-stone-800 text-black dark:text-stone-200 hover:bg-stone-100"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
           {/* Listing Title field */}
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-xs font-black uppercase text-black dark:text-stone-200 font-label">
-              <span className="w-1.5 h-1.5 bg-[#E32652]" /> {t("market.listingTitle")}
+              <span className="w-1.5 h-1.5 bg-[#E32652]" /> {t("market.listingTitle")} ({activeInputTab.toUpperCase()})
             </label>
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={activeTitle}
+              onChange={(e) => handleTitleChange(e.target.value)}
               placeholder="e.g., Professional Technical Translation EN to FR"
               className="w-full px-4 py-3 bg-[#FAF8F5] dark:bg-stone-850 border-2 border-black dark:border-stone-700 text-black dark:text-stone-100 font-sans text-xs focus:outline-none focus:ring-1 focus:ring-[#E32652]"
             />
@@ -176,23 +260,23 @@ export default function MarketplaceListingEditor() {
           {/* Description Markdown editor area */}
           <div className="space-y-2">
             <label className="flex items-center gap-1.5 text-xs font-black uppercase text-black dark:text-stone-200 font-label">
-              <span className="w-1.5 h-1.5 bg-[#E32652]" /> {t("market.detailedDescription")}
+              <span className="w-1.5 h-1.5 bg-[#E32652]" /> {t("market.detailedDescription")} ({activeInputTab.toUpperCase()})
             </label>
             <textarea
               rows="8"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={activeDesc}
+              onChange={(e) => handleDescChange(e.target.value)}
               placeholder="Describe your methodology, experience, translation credentials..."
               maxLength="2000"
               className="w-full px-4 py-3 bg-[#FAF8F5] dark:bg-stone-850 border-2 border-black dark:border-stone-700 text-black dark:text-stone-100 font-sans text-xs focus:outline-none focus:ring-1 focus:ring-[#E32652]"
             />
             <div className="flex justify-between items-center text-[10px] text-gray-400 dark:text-stone-500 font-medium">
               <span>{t("market.supportsMarkdown")}</span>
-              <span>{description.length}/2000 {t("market.charCounter")}</span>
+              <span>{activeDesc.length}/2000 {t("market.charCounter")}</span>
             </div>
 
             {/* AI Auto-Translate Action trigger */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 border-t border-gray-150 dark:border-stone-800">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-gray-150 dark:border-stone-800">
               <button
                 type="button"
                 onClick={handleAiTranslate}

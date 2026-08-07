@@ -154,7 +154,7 @@ export default function MarketplaceServices() {
                       
                       <div className="min-w-0">
                         <span className="font-serif font-black text-sm text-black dark:text-stone-100 block hover:text-[#E32652] cursor-pointer">
-                          {svc.title}
+                          {svc[`title_${localStorage.getItem("i18n_lang") || "en"}`] || svc.title}
                         </span>
                         <span className="text-[9px] text-gray-400 dark:text-stone-500 font-mono block mt-0.5">
                           {t("market.lastEdited")}: {new Date(svc.created_at).toLocaleDateString()}

@@ -210,7 +210,7 @@ export default function Marketplace() {
                     <div>
                       <div className="flex justify-between items-start">
                         <h2 className="font-serif font-black text-xl text-black dark:text-stone-100 hover:text-[#E32652] transition-colors leading-tight">
-                          {svc.title}
+                          {svc[`title_${localStorage.getItem("i18n_lang") || "en"}`] || svc.title}
                         </h2>
                         
                         {/* Rating Display */}
@@ -222,7 +222,7 @@ export default function Marketplace() {
                         </div>
                       </div>
                       <p className="text-xs text-gray-500 dark:text-stone-400 font-sans mt-2 leading-relaxed">
-                        {svc.description}
+                        {svc[`description_${localStorage.getItem("i18n_lang") || "en"}`] || svc.description}
                       </p>
                     </div>
 

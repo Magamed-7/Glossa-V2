@@ -35,13 +35,18 @@ async def create_service(
     current_user=Depends(get_current_user)
 ):
     service = await crud_lingo.create_lingo_service(data, current_user.id, db)
-    # Return response with provider name loaded
     return LingoServiceResponse(
         id=service.id,
         provider_id=service.provider_id,
         provider_name=current_user.username,
         title=service.title,
         description=service.description,
+        title_en=service.title_en,
+        title_ru=service.title_ru,
+        title_tg=service.title_tg,
+        description_en=service.description_en,
+        description_ru=service.description_ru,
+        description_tg=service.description_tg,
         category=service.category,
         cefr_level=service.cefr_level,
         price=service.price,
@@ -66,7 +71,6 @@ async def list_services(
         db, category, cefr_group, price_group, provider_id
     )
     
-    # Load provider names
     res = []
     for s in services:
         provider_query = await db.execute(select(Users.username).where(Users.id == s.provider_id))
@@ -78,6 +82,12 @@ async def list_services(
                 provider_name=prov_name,
                 title=s.title,
                 description=s.description,
+                title_en=s.title_en,
+                title_ru=s.title_ru,
+                title_tg=s.title_tg,
+                description_en=s.description_en,
+                description_ru=s.description_ru,
+                description_tg=s.description_tg,
                 category=s.category,
                 cefr_level=s.cefr_level,
                 price=s.price,
@@ -106,6 +116,12 @@ async def get_service(
         provider_name=prov_name,
         title=s.title,
         description=s.description,
+        title_en=s.title_en,
+        title_ru=s.title_ru,
+        title_tg=s.title_tg,
+        description_en=s.description_en,
+        description_ru=s.description_ru,
+        description_tg=s.description_tg,
         category=s.category,
         cefr_level=s.cefr_level,
         price=s.price,
@@ -133,6 +149,12 @@ async def update_service(
         provider_name=prov_name,
         title=s.title,
         description=s.description,
+        title_en=s.title_en,
+        title_ru=s.title_ru,
+        title_tg=s.title_tg,
+        description_en=s.description_en,
+        description_ru=s.description_ru,
+        description_tg=s.description_tg,
         category=s.category,
         cefr_level=s.cefr_level,
         price=s.price,

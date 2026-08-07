@@ -7,6 +7,12 @@ from pydantic import BaseModel, ConfigDict
 class LingoServiceCreate(BaseModel):
     title: str
     description: str
+    title_en: str | None = None
+    title_ru: str | None = None
+    title_tg: str | None = None
+    description_en: str | None = None
+    description_ru: str | None = None
+    description_tg: str | None = None
     category: str
     cefr_level: str | None = None
     price: Decimal
@@ -17,6 +23,12 @@ class LingoServiceCreate(BaseModel):
 class LingoServiceUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
+    title_en: str | None = None
+    title_ru: str | None = None
+    title_tg: str | None = None
+    description_en: str | None = None
+    description_ru: str | None = None
+    description_tg: str | None = None
     category: str | None = None
     cefr_level: str | None = None
     price: Decimal | None = None
@@ -30,6 +42,12 @@ class LingoServiceResponse(BaseModel):
     provider_name: str | None = None
     title: str
     description: str
+    title_en: str | None = None
+    title_ru: str | None = None
+    title_tg: str | None = None
+    description_en: str | None = None
+    description_ru: str | None = None
+    description_tg: str | None = None
     category: str
     cefr_level: str | None = None
     price: Decimal

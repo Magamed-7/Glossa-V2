@@ -13,6 +13,15 @@ class LingoServices(Base):
     provider_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
+    
+    # 3-Language explicit translations
+    title_en: Mapped[str | None] = mapped_column(String, nullable=True)
+    title_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    title_tg: Mapped[str | None] = mapped_column(String, nullable=True)
+    description_en: Mapped[str | None] = mapped_column(String, nullable=True)
+    description_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    description_tg: Mapped[str | None] = mapped_column(String, nullable=True)
+
     category: Mapped[str] = mapped_column(String, nullable=False) # e.g. KOREAN, SPANISH, FRENCH, TRANSLATION, EDITING
     cefr_level: Mapped[str | None] = mapped_column(String, nullable=True) # e.g. A1, A2, B1, B2, C1, C2
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
