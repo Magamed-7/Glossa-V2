@@ -44,12 +44,6 @@ async def submit_review(card_id: int, user_id: int, quality: int, db: AsyncSessi
         card.status = 'hard'
     else:
         card.status = 'learning'
-        # Reset SM-2 schedule to the initial learned state (repetitions = 1, interval = 6, next_review = 6 days)
-        from datetime import timedelta
-        card.repetitions = 1
-        card.interval = 6
-        card.ease_factor = 2.5
-        card.next_review_date = datetime.now(timezone.utc) + timedelta(days=6)
 
     review_log = ReviewLogs(card_id=card.id, quality=quality)
     db.add(review_log)
