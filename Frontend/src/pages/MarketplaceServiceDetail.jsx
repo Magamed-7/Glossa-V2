@@ -8,7 +8,19 @@ import { getLingoService, createLingoProposal } from "../lib/api/lingo.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
 
 function avatarUrl(service) {
+  if (!service) return "/img/avatars/user-default.webp";
   if (service.provider_photo_url) return service.provider_photo_url;
+
+  const name = (service.provider_name || "").toLowerCase();
+
+  if (name.includes("yuki")) return "/img/yuki_tanaka.png";
+  if (name.includes("carlos")) return "/img/carlos_m.png";
+  if (name.includes("jean-luc") || name.includes("jean luc")) return "/img/jean_luc.png";
+  if (name.includes("ji-yoon") || name.includes("ji yoon")) return "/img/ji_yoon.png";
+  if (name.includes("yunus") || name.includes("юнус")) return "/img/Yunus.png";
+  if (name.includes("ruslan") || name.includes("руслан")) return "/img/Ruslan.jpg";
+  if (name.includes("osaf") || name.includes("осаф")) return "/img/Osaf.jpg";
+
   const index = service.provider_id % 100;
   const gender = service.provider_id % 2 === 0 ? "men" : "women";
   return `https://randomuser.me/api/portraits/${gender}/${index}.jpg`;
