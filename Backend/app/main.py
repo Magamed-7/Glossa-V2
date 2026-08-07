@@ -8,6 +8,7 @@ from app.api.router_ai import router_ai
 from app.api.router_content import router_grammar, router_vocabulary
 from app.api.router_deck import router_deck, router_learning, router_reviews
 from app.api.router_export import router_export
+from app.api.router_lingo import router_lingo
 from app.api.router_notification import router_notification
 from app.api.router_payment import router_payment, router_payments_history, router_stripe
 from app.api.router_profile import router_profile
@@ -77,6 +78,7 @@ app.include_router(router_user_story)
 app.include_router(router_notification)
 app.include_router(router_telegram)
 app.include_router(router_export)
+app.include_router(router_lingo)
 app.include_router(router_search)
 
 

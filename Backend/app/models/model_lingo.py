@@ -14,6 +14,7 @@ class LingoServices(Base):
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
     category: Mapped[str] = mapped_column(String, nullable=False) # e.g. KOREAN, SPANISH, FRENCH, TRANSLATION, EDITING
+    cefr_level: Mapped[str | None] = mapped_column(String, nullable=True) # e.g. A1, A2, B1, B2, C1, C2
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     pricing_type: Mapped[str] = mapped_column(String, nullable=False, default='hr') # 'hr' or 'doc' or 'word'
     status: Mapped[str] = mapped_column(String, nullable=False, default='active') # 'active', 'draft', 'hidden'
