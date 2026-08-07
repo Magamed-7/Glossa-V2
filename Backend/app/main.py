@@ -25,6 +25,7 @@ from app.models import (
     model_ai_chat,
     model_card,
     model_content,
+    model_lingo,
     model_notification,
     model_payment,
     model_profile,
