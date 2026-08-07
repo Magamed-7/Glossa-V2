@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.router_achievement import router_achievement
 from app.api.router_ai import router_ai
 from app.api.router_content import router_grammar, router_vocabulary
+from app.api.router_course import router_course
 from app.api.router_deck import router_deck, router_learning, router_reviews
 from app.api.router_export import router_export
 from app.api.router_lingo import router_lingo
@@ -61,6 +62,7 @@ register_exception_handlers(app)
 app.include_router(router_deck)
 app.include_router(router_reviews)
 app.include_router(router_learning)
+app.include_router(router_course)
 app.include_router(router_profile)
 app.include_router(router_settings)
 app.include_router(router_vocabulary)
