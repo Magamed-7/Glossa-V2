@@ -175,7 +175,7 @@ async def perform_proposal_action(proposal_id: int, user_id: int, action: str, d
             raise AppError(code='INVALID_STATUS', message='Proposal is not in pending status', status_code=400)
 
         # Process billing / wallet deduction
-        balance_query = await db.execute(select(UserBalances).where(UserBalances.user_id == client_id_helper := proposal.client_id))
+        balance_query = await db.execute(select(UserBalances).where(UserBalances.user_id == proposal.client_id))
         user_balance = balance_query.scalar_one_or_none()
 
         if not user_balance or user_balance.balance < proposal.price:
