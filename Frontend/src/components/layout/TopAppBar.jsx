@@ -13,7 +13,7 @@ export default function TopAppBar({ streak, hasUnread, user }) {
 
   function onLogout() {
     logout();
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   }
 
   return (

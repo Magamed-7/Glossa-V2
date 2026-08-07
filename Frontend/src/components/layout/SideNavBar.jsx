@@ -6,11 +6,11 @@ import { useAuth } from "../../lib/auth/AuthContext.jsx";
 
 export default function SideNavBar() {
   const t = useT();
-  const { user, profile } = useAuth();
+  const { user, profile, logout } = useAuth();
 
   const handleLogout = () => {
-    // If logout is available in auth context, call it
-    window.location.href = "/login";
+    logout();
+    window.location.href = "/";
   };
 
   const username = user?.username || "Polyglot Pro";
