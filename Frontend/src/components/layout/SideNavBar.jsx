@@ -30,7 +30,7 @@ export default function SideNavBar() {
         />
         <div className="flex flex-col min-w-0">
           <span className="text-[10px] text-gray-500 dark:text-stone-400 font-label uppercase tracking-widest leading-none">
-            {t("nav.welcomeBack") || "Welcome back"}
+            {t("market.welcomeBack") || "Welcome back"}
           </span>
           <span className="text-sm font-bold text-black dark:text-stone-100 font-sans truncate uppercase tracking-tight">
             {username}
@@ -75,10 +75,20 @@ export default function SideNavBar() {
       <div className="mt-auto pt-4 border-t border-gray-300 dark:border-stone-800 flex flex-col gap-2">
         <NavLink
           to="/settings"
-          className="flex items-center gap-3 px-4 py-2 font-label text-xs uppercase font-bold tracking-wider text-black dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-4 py-2 font-label text-xs uppercase font-bold tracking-wider transition-all border ${
+              isActive
+                ? "bg-[#E32652] text-white border-black shadow-[2px_2px_0px_#000000]"
+                : "text-black dark:text-stone-300 border-transparent hover:border-black dark:hover:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800"
+            }`
+          }
         >
-          <Icon name="settings" className="text-black dark:text-stone-300" />
-          {t("nav.settings")}
+          {({ isActive }) => (
+            <>
+              <Icon name="settings" className={isActive ? "text-white" : "text-black dark:text-stone-300"} />
+              {t("nav.settings")}
+            </>
+          )}
         </NavLink>
         
         <button
@@ -86,7 +96,7 @@ export default function SideNavBar() {
           className="flex items-center gap-3 px-4 py-2 font-label text-xs uppercase font-bold tracking-wider text-[#E32652] hover:bg-stone-100 dark:hover:bg-stone-800 text-left transition-colors"
         >
           <Icon name="logout" className="text-[#E32652]" />
-          {t("nav.logout") || "Log Out"}
+          {t("nav.logOut") || "Log Out"}
         </button>
       </div>
     </aside>

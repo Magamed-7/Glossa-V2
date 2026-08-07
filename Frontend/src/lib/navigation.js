@@ -6,5 +6,4 @@ export const NAV_ITEMS = [
   { to: "/tutor", labelKey: "nav.tutor", icon: "smart_toy" },
   { to: "/marketplace", labelKey: "nav.market", icon: "storefront" },
   { to: "/leaderboard", labelKey: "nav.ranking", icon: "leaderboard" },
-  { to: "/settings", labelKey: "nav.settings", icon: "settings" },
 ];

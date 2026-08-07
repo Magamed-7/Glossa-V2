@@ -38,7 +38,7 @@ export default function MarketplaceSideNavBar() {
         />
         <div className="flex flex-col min-w-0">
           <span className="text-[10px] text-gray-500 dark:text-stone-400 font-label uppercase tracking-widest leading-none">
-            {t("nav.welcomeBack") || "Welcome back"}
+            {t("market.welcomeBack") || "Welcome back"}
           </span>
           <span className="text-sm font-bold text-black dark:text-stone-100 font-sans truncate uppercase tracking-tight">
             {username}
