@@ -7,6 +7,7 @@ export const en = {
     tryAgain: "Try again",
     viewPlans: "View Plans",
     reload: "Reload",
+    goBack: "Go Back",
     close: "Close",
     dismissNotification: "Dismiss notification",
     loading: "…",
@@ -55,8 +56,6 @@ export const en = {
     eyebrow: "Error 404",
     title: "Page Not Found",
     description: "This page doesn't exist in the archive. Let's get you back on track.",
-    action: "Back to Dashboard",
-    actionGuest: "Back to Home",
   },
   auth: {
     layoutNotice:

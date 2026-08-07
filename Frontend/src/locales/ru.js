@@ -7,6 +7,7 @@ export const ru = {
     tryAgain: "Повторить",
     viewPlans: "Смотреть тарифы",
     reload: "Обновить",
+    goBack: "Назад",
     close: "Закрыть",
     dismissNotification: "Закрыть уведомление",
     loading: "…",
@@ -55,8 +56,6 @@ export const ru = {
     eyebrow: "Ошибка 404",
     title: "Страница не найдена",
     description: "Такой страницы нет в архиве. Вернём вас на верный путь.",
-    action: "На главную",
-    actionGuest: "На главную",
   },
   auth: {
     layoutNotice:

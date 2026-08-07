@@ -7,6 +7,7 @@ export const tg = {
     tryAgain: "Аз нав кӯшиш кунед",
     viewPlans: "Тарифҳоро дидан",
     reload: "Аз нав бор кардан",
+    goBack: "Бозгашт",
     close: "Пӯшидан",
     dismissNotification: "Огоҳиномаро пӯшидан",
     loading: "…",
@@ -55,8 +56,6 @@ export const tg = {
     eyebrow: "Хатогии 404",
     title: "Саҳифа ёфт нашуд",
     description: "Ин саҳифа дар бойгонӣ вуҷуд надорад. Биёед шуморо ба роҳи дуруст баргардонем.",
-    action: "Ба саҳифаи асосӣ",
-    actionGuest: "Ба саҳифаи асосӣ",
   },
   auth: {
     layoutNotice:
