@@ -14,16 +14,11 @@ from app.schemas.schema_course import (
     LevelTestGenerateResponse,
     OnboardingRequest,
     OnboardingStatus,
-    SwipeGameSubmit,
     TodayQueueResponse,
-    TypingGameSubmit,
 )
-from app.schemas.schema_learning import ReviewResponse
-from app.services import course_today, crud_course, review
+from app.services import course_today, crud_course
 
 router_course = APIRouter(prefix='/learning', tags=['Course'])
-
-SWIPE_QUALITY = {'right': 4, 'left': 2}
 
 
 @router_course.get('/onboarding/status', response_model=OnboardingStatus)
@@ -125,28 +120,3 @@ async def generate_test(
 
     attempt = await crud_course.create_test_attempt(current_user.id, level, test_type, db)
     return {'status': 'not_yet_generated', 'attempt_id': attempt.id}
-
-
-@router_course.post('/review-games/typing/submit', response_model=ReviewResponse)
-async def submit_typing_game(
-    data: TypingGameSubmit,
-    db: AsyncSession = Depends(get_db),
-    current_user=Depends(get_current_user),
-):
-    card = await review.submit_review(data.card_id, current_user.id, data.quality, db)
-    if card is None:
-        raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
-    return card
-
-
-@router_course.post('/review-games/swipe/submit', response_model=ReviewResponse)
-async def submit_swipe_game(
-    data: SwipeGameSubmit,
-    db: AsyncSession = Depends(get_db),
-    current_user=Depends(get_current_user),
-):
-    quality = SWIPE_QUALITY[data.direction]
-    card = await review.submit_review(data.card_id, current_user.id, quality, db)
-    if card is None:
-        raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
-    return card

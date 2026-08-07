@@ -106,13 +106,3 @@ class LevelTestAvailability(BaseModel):
 class LevelTestGenerateResponse(BaseModel):
     status: str
     attempt_id: int | None = None
-
-
-class TypingGameSubmit(BaseModel):
-    card_id: int
-    quality: int = Field(ge=0, le=5)
-
-
-class SwipeGameSubmit(BaseModel):
-    card_id: int
-    direction: Literal['right', 'left']
