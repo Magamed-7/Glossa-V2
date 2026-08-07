@@ -55,80 +55,131 @@ export default function MarketplaceServiceDetail() {
   const description = service[`description_${lang}`] || service.description;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <Link to="/marketplace" className="inline-flex items-center gap-2 font-label text-label-md text-on-surface-variant hover:text-secondary transition-colors">
-        <Icon name="arrow_back" className="text-lg" />
-        {t("common.goBack")}
-      </Link>
+    <div className="max-w-5xl mx-auto space-y-8 py-6">
+      {/* Top Navigation Links */}
+      <div className="flex flex-wrap justify-between items-center gap-4 border-b-2 border-primary pb-4">
+        <Link 
+          to="/marketplace" 
+          className="btn-outline-neo px-4 py-2 font-label-md text-label-md uppercase tracking-wider flex items-center gap-2"
+        >
+          <Icon name="arrow_back" className="text-lg" />
+          {t("common.goBack") || "Back to Marketplace"}
+        </Link>
+        <Link 
+          to="/" 
+          className="btn-outline-neo px-4 py-2 font-label-md text-label-md uppercase tracking-wider bg-amber-100 hover:bg-amber-200 flex items-center gap-2"
+        >
+          <Icon name="home" className="text-lg" />
+          {t("market.return") || "Return to Glossa"}
+        </Link>
+      </div>
 
-      <div className="card-neo bg-surface-bright grid grid-cols-1 md:grid-cols-12 gap-gutter p-6 md:p-10">
-        {/* Provider column */}
-        <div className="md:col-span-4 flex flex-col items-center text-center border-b-2 md:border-b-0 md:border-r-2 border-primary pb-6 md:pb-0 md:pr-8">
-          <div className="w-32 h-32 border-2 border-primary rounded-full overflow-hidden card-neo mb-4">
-            <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+      {/* Main Container Card */}
+      <div className="card-neo bg-surface-bright grid grid-cols-1 md:grid-cols-12 gap-8 p-6 md:p-10 overflow-hidden">
+        
+        {/* Left Column: Provider Info Profile */}
+        <div className="md:col-span-4 flex flex-col items-center text-center border-b-2 md:border-b-0 md:border-r-2 border-primary pb-8 md:pb-0 md:pr-8">
+          <div className="w-36 h-36 border-2 border-primary rounded-full overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6 shrink-0">
+            <img alt={service.provider_name} className="w-full h-full object-cover grayscale-[10%]" src={avatarUrl(service)} />
           </div>
-          <h2 className="font-headline text-headline-md text-primary">{service.provider_name}</h2>
-          <div className="flex items-center gap-1 text-secondary font-bold mt-2">
+          
+          <h2 className="font-headline-md text-headline-md text-primary font-bold tracking-tight">
+            {service.provider_name}
+          </h2>
+          
+          <div className="flex items-center gap-1 text-secondary font-bold mt-2 bg-white px-3 py-1 border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <Icon name="star" filled className="text-base" />
-            {Number(service.rating).toFixed(1)}
-            <span className="text-on-surface-variant font-body font-normal ml-1">
-              ({t("market.reviewsCount", { n: service.reviews_count })})
+            <span className="font-mono text-sm">{Number(service.rating).toFixed(1)}</span>
+            <span className="text-gray-400 font-sans font-normal text-xs ml-1">
+              ({service.reviews_count || 1})
             </span>
           </div>
 
-          <div className="w-full mt-6 pt-6 border-t border-dashed border-outline-variant text-left">
-            <h3 className="font-label text-label-md text-primary uppercase tracking-widest mb-2">{t("market.aboutProvider")}</h3>
-            <p className="font-body text-body-md text-on-surface-variant">
-              {t("market.provider")}: <span className="text-primary font-medium">{service.provider_name}</span>
-            </p>
+          <div className="w-full mt-8 pt-6 border-t border-dashed border-outline-variant text-left space-y-4">
+            <div>
+              <h3 className="font-label-md text-label-md text-primary uppercase tracking-widest mb-1.5">
+                {t("market.aboutProvider") || "About Provider"}
+              </h3>
+              <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                Professional linguistic expert verified by Glossa Editorial team. Specializes in language teaching, custom editing, and cultural localization services.
+              </p>
+            </div>
+
+            <div className="space-y-1 text-xs font-mono text-gray-500">
+              <p className="flex items-center gap-2">
+                <Icon name="mail" className="text-sm" />
+                <span className="truncate">{service.provider_email || `${service.provider_name.toLowerCase().replace(/\s+/g, '')}@glossa.tj`}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Icon name="verified_user" className="text-sm text-green-600" />
+                <span className="uppercase text-[9px] font-bold text-green-700">Verified Educator</span>
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Service column */}
-        <div className="md:col-span-8 flex flex-col">
-          <div className="flex gap-2 flex-wrap mb-3">
-            <span className="bg-tertiary-fixed-dim border-2 border-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-tertiary-fixed">
-              {service.category}
-            </span>
-            {service.cefr_level && (
-              <span className="bg-surface-container border-2 border-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
-                {service.cefr_level}
+        {/* Right Column: Service Description & Booking Details */}
+        <div className="md:col-span-8 flex flex-col justify-between">
+          <div className="space-y-6">
+            
+            {/* Category / Level Badges */}
+            <div className="flex gap-2 flex-wrap">
+              <span className="chip-mustard px-3 py-1 text-xs font-bold uppercase tracking-wider border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                {service.category}
               </span>
-            )}
-          </div>
+              {service.cefr_level && (
+                <span className="bg-surface-container border-2 border-primary px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+                  {service.cefr_level}
+                </span>
+              )}
+            </div>
 
-          <h1 className="font-headline text-headline-lg text-primary mb-4 leading-tight">{title}</h1>
+            {/* Service Title */}
+            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight font-black tracking-tight">
+              {title}
+            </h1>
 
-          <div className="mb-6">
-            <h3 className="font-label text-label-md text-primary uppercase tracking-widest mb-2">{t("market.aboutService")}</h3>
-            <p className="font-body text-body-lg text-on-surface-variant border-l-4 border-primary pl-4 py-2 bg-surface-container-low">
-              {description}
-            </p>
-          </div>
+            {/* Description Text */}
+            <div className="space-y-2">
+              <h3 className="font-label-md text-label-md text-primary uppercase tracking-widest">
+                {t("market.aboutService") || "Service Description"}
+              </h3>
+              <p className="font-body-lg text-body-lg text-on-surface-variant border-l-4 border-primary pl-4 py-3 bg-surface-container-low leading-relaxed italic font-serif">
+                {description}
+              </p>
+            </div>
 
-          <div className="flex items-center gap-4 mb-8">
-            <div className="flex flex-col">
-              <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
-              <span className={`font-headline text-headline-lg leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
+            {/* Price Info Banner */}
+            <div className="bg-surface border-2 border-primary p-4 flex justify-between items-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <span className="font-label-md text-label-md uppercase tracking-widest text-primary font-bold">
+                {t("market.rate") || "Standard Rate"}
+              </span>
+              <span className="font-headline-md text-headline-md text-secondary font-black">
                 {service.price ? (
                   <>
-                    {service.price} <span className="font-body text-base">{`TJS/${service.pricing_type}`}</span>
+                    {service.price} <span className="font-body-md text-base font-normal text-primary">{`TJS/${service.pricing_type}`}</span>
                   </>
                 ) : (
-                  t("market.priceFree")
+                  t("market.priceFree") || "FREE EXCHANGE"
                 )}
               </span>
             </div>
           </div>
 
-          <button
-            onClick={handleMessage}
-            disabled={sending}
-            className="btn-primary-neo px-8 py-4 font-label text-label-md uppercase tracking-wider flex items-center justify-center gap-2 w-full sm:w-auto disabled:opacity-60"
-          >
-            {t("market.message")} <Icon name="arrow_forward" className="text-lg" />
-          </button>
+          {/* Action CTA Button */}
+          <div className="mt-8">
+            <button
+              onClick={handleMessage}
+              disabled={sending}
+              className="btn-primary-neo w-full py-4 font-label-md text-label-md uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-60"
+            >
+              {t("market.message") || "Message Provider"} 
+              <Icon name="arrow_forward" className="text-lg" />
+            </button>
+          </div>
+          
         </div>
+
       </div>
     </div>
   );

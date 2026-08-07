@@ -39,15 +39,15 @@ function FeaturedCard({ service, lang, t, onMessage }) {
 
   return (
     <article className="md:col-span-2 card-neo bg-surface-bright flex flex-col md:flex-row relative overflow-hidden">
-      <div className="absolute top-0 right-0 bg-secondary text-on-secondary px-3 py-1 font-label text-label-md border-b-2 border-l-2 border-primary z-20">
+      <div className="absolute top-0 right-0 bg-secondary text-on-secondary px-3 py-1 font-label-md text-label-md border-b-2 border-l-2 border-primary z-20">
         {t("market.topRated")}
       </div>
       <Link to={`/marketplace/services/${service.id}`} className="w-full md:w-2/5 border-b-2 md:border-b-0 md:border-r-2 border-primary relative h-64 md:h-auto block">
-        <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+        <img alt="" className="w-full h-full object-cover grayscale-[20%]" src={avatarUrl(service)} />
         <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/60 to-transparent flex items-end">
           <div className="text-white">
-            <p className="font-headline text-headline-md leading-tight drop-shadow-md">{service.provider_name}</p>
-            <p className="font-label text-label-md opacity-90 flex items-center gap-1">
+            <p className="font-headline-md text-headline-md leading-tight drop-shadow-md">{service.provider_name}</p>
+            <p className="font-label-md text-label-md opacity-90 flex items-center gap-1">
               <Icon name="star" filled className="text-sm" /> {Number(service.rating).toFixed(1)} ({t("market.reviewsCount", { n: service.reviews_count })})
             </p>
           </div>
@@ -55,37 +55,44 @@ function FeaturedCard({ service, lang, t, onMessage }) {
       </Link>
       <div className="w-full md:w-3/5 p-6 flex flex-col justify-between">
         <div>
-          <div className="mb-3">
-            <ServiceChips service={service} />
+          <div className="flex gap-2 mb-3 flex-wrap">
+            <span className="chip-mustard px-2 py-0.5 text-xs font-bold uppercase tracking-wider border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              {service.category}
+            </span>
+            {service.cefr_level && (
+              <span className="bg-surface-container border-2 border-primary px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-primary">
+                {service.cefr_level}
+              </span>
+            )}
           </div>
           <Link to={`/marketplace/services/${service.id}`}>
-            <h3 className="font-headline text-headline-lg text-primary mb-2 leading-tight hover:text-secondary transition-colors">
+            <h3 className="font-headline-lg text-headline-lg text-primary mb-2 leading-tight hover:text-secondary transition-colors">
               {title}
             </h3>
           </Link>
-          <p className="font-body text-body-md text-on-surface-variant mb-4 line-clamp-2">{description}</p>
+          <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">{description}</p>
           <div className="flex items-center gap-4">
             <div className="flex flex-col">
-              <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
+              <span className="font-label-md text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
               {service.price ? (
-                <span className="font-headline text-headline-md text-primary leading-tight">
-                  {service.price} <span className="font-body text-base">{`TJS/${service.pricing_type}`}</span>
+                <span className="font-headline-md text-headline-md text-primary leading-tight">
+                  {service.price} <span className="font-body-md text-base">{`TJS/${service.pricing_type}`}</span>
                 </span>
               ) : (
-                <span className="font-headline text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
+                <span className="font-headline-md text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
               )}
             </div>
             <div className="w-px h-10 bg-primary" />
             <div className="flex flex-col">
-              <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.provider")}</span>
-              <span className="font-body text-body-md text-primary font-medium">{service.provider_name}</span>
+              <span className="font-label-md text-label-md text-on-surface-variant uppercase text-xs">{t("market.provider")}</span>
+              <span className="font-body-md text-body-md text-primary font-medium">{service.provider_name}</span>
             </div>
           </div>
         </div>
         <div className="mt-6 flex justify-end">
           <button
             onClick={() => onMessage(service)}
-            className="btn-primary-neo px-6 py-3 font-label text-label-md uppercase tracking-wider flex items-center gap-2"
+            className="btn-primary-neo px-6 py-3 font-label-md text-label-md uppercase tracking-wider flex items-center gap-2"
           >
             {t("market.message")} <Icon name="arrow_forward" className="text-lg" />
           </button>
@@ -104,7 +111,7 @@ function StandardCard({ service, lang, t, onMessage }) {
       <Link to={`/marketplace/services/${service.id}`} className="h-48 border-b-2 border-primary relative overflow-hidden block">
         <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
         <div className="absolute top-4 left-4">
-          <span className="bg-tertiary-fixed-dim border-2 border-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-tertiary-fixed">
+          <span className="chip-mustard px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             {service.category}
           </span>
         </div>
@@ -112,7 +119,7 @@ function StandardCard({ service, lang, t, onMessage }) {
       <div className="p-5 flex-grow flex flex-col">
         <div className="flex justify-between items-start gap-2 mb-2">
           <Link to={`/marketplace/services/${service.id}`} className="min-w-0">
-            <h3 className="font-headline text-headline-md text-primary leading-tight line-clamp-2 hover:text-secondary transition-colors">
+            <h3 className="font-headline-md text-headline-md text-primary leading-tight line-clamp-2 hover:text-secondary transition-colors">
               {title}
             </h3>
           </Link>
@@ -120,20 +127,20 @@ function StandardCard({ service, lang, t, onMessage }) {
             <Icon name="star" filled className="text-sm" /> {Number(service.rating).toFixed(1)}
           </div>
         </div>
-        <p className="font-body text-body-md text-on-surface-variant mb-4 text-sm line-clamp-2 flex-grow">{description}</p>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-4 text-sm line-clamp-2 flex-grow">{description}</p>
         <div className="flex items-end justify-between mt-auto pt-4 border-t border-dashed border-outline-variant">
           <div>
-            <p className="font-label text-label-md text-on-surface-variant uppercase text-[10px] mb-1">{t("market.provider")}</p>
-            <p className="font-body text-body-md font-medium text-primary">{service.provider_name}</p>
+            <p className="font-label-md text-label-md text-on-surface-variant uppercase text-[10px] mb-1">{t("market.provider")}</p>
+            <p className="font-body-md text-body-md font-medium text-primary">{service.provider_name}</p>
           </div>
           <div className="text-right">
-            <p className={`font-headline text-headline-md leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
+            <p className={`font-headline-md text-headline-md leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
               {service.price ? service.price : t("market.priceFree")}{" "}
-              {service.price ? <span className="font-body text-xs">{`TJS/${service.pricing_type}`}</span> : null}
+              {service.price ? <span className="font-body-md text-xs">{`TJS/${service.pricing_type}`}</span> : null}
             </p>
           </div>
         </div>
-        <button onClick={() => onMessage(service)} className="btn-outline-neo w-full mt-4 py-2 font-label text-label-md uppercase tracking-wider">
+        <button onClick={() => onMessage(service)} className="btn-outline-neo w-full mt-4 py-2 font-label-md text-label-md uppercase tracking-wider">
           {t("market.requestQuote")}
         </button>
       </div>
@@ -156,19 +163,26 @@ function FreeExchangeCard({ service, lang, t, onMessage }) {
             <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
           </div>
           <div>
-            <h4 className="font-body text-body-lg font-bold text-primary">{service.provider_name}</h4>
-            <div className="mt-1">
-              <ServiceChips service={service} />
+            <h4 className="font-body-lg text-body-lg font-bold text-primary">{service.provider_name}</h4>
+            <div className="mt-1 flex gap-1 flex-wrap">
+              <span className="chip-mustard px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-primary shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                {service.category}
+              </span>
+              {service.cefr_level && (
+                <span className="bg-surface-container border border-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary">
+                  {service.cefr_level}
+                </span>
+              )}
             </div>
           </div>
         </Link>
-        <h3 className="font-headline text-headline-md text-primary mb-2 leading-tight">{title}</h3>
-        <p className="font-body text-body-md text-on-surface-variant mb-6 text-sm flex-grow">{description}</p>
+        <h3 className="font-headline-md text-headline-md text-primary mb-2 leading-tight">{title}</h3>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-6 text-sm flex-grow">{description}</p>
         <div className="bg-surface border-2 border-primary p-3 flex justify-between items-center mb-4">
-          <span className="font-label text-label-md uppercase tracking-widest text-primary">{t("market.rate")}</span>
-          <span className="font-headline text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
+          <span className="font-label-md text-label-md uppercase tracking-widest text-primary">{t("market.rate")}</span>
+          <span className="font-headline-md text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
         </div>
-        <button onClick={() => onMessage(service)} className="btn-primary-neo w-full py-2 font-label text-label-md uppercase tracking-wider">
+        <button onClick={() => onMessage(service)} className="btn-primary-neo w-full py-2 font-label-md text-label-md uppercase tracking-wider">
           {t("market.message")}
         </button>
       </div>
@@ -180,11 +194,11 @@ function OfferSkillCard({ t }) {
   return (
     <article className="card-neo bg-inverse-surface text-surface flex flex-col justify-center items-center p-8 text-center">
       <Icon name="post_add" className="text-4xl text-tertiary-fixed mb-4" />
-      <h3 className="font-headline text-headline-lg mb-2">{t("market.offerASkill")}</h3>
-      <p className="font-body text-body-md text-surface-variant mb-6 opacity-80">{t("market.offerASkillDesc")}</p>
+      <h3 className="font-headline-lg text-headline-lg mb-2">{t("market.offerASkill")}</h3>
+      <p className="font-body-md text-body-md text-surface-variant mb-6 opacity-80">{t("market.offerASkillDesc")}</p>
       <Link
         to="/marketplace/services/new"
-        className="border-2 border-surface bg-transparent text-surface hover:bg-surface hover:text-inverse-surface px-6 py-2 font-label text-label-md uppercase tracking-wider transition-colors"
+        className="border-2 border-surface bg-transparent text-surface hover:bg-surface hover:text-inverse-surface px-6 py-2 font-label-md text-label-md uppercase tracking-wider transition-colors"
       >
         {t("market.createListing")}
       </Link>
@@ -243,26 +257,25 @@ export default function Marketplace() {
 
   return (
     <div className="relative">
-      <div className="absolute inset-0 -m-6 md:-m-10 ray-pattern opacity-60 pointer-events-none" aria-hidden="true" />
       <div className="relative flex flex-col md:flex-row gap-gutter">
       {/* Index / Filter sidebar */}
       <aside className="w-full md:w-1/4 flex flex-col gap-8 shrink-0">
         <div className="md:sticky md:top-24">
           <div className="mb-8">
-            <h1 className="font-display text-display-lg-mobile md:text-display-lg text-primary mb-2 uppercase tracking-tighter">
+            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2 uppercase tracking-tighter">
               {t("market.directoryHeadline")}
             </h1>
-            <p className="font-body text-body-lg text-on-surface-variant italic font-headline">{t("market.directoryIssue")}</p>
+            <p className="font-body-lg text-body-lg text-on-surface-variant italic font-serif">{t("market.directoryIssue")}</p>
           </div>
 
           <div className="card-neo bg-surface-container-lowest p-6 mb-8">
-            <h2 className="font-label text-label-md text-primary uppercase border-b-2 border-primary pb-2 mb-4 tracking-widest flex items-center gap-2">
+            <h2 className="font-label-md text-label-md text-primary uppercase border-b-2 border-primary pb-2 mb-4 tracking-widest flex items-center gap-2">
               <Icon name="filter_list" className="text-sm" />
               {t("market.indexFilter")}
             </h2>
 
             <div className="mb-6">
-              <h3 className="font-label text-label-md text-primary mb-3">{t("market.serviceType")}</h3>
+              <h3 className="font-label-md text-label-md text-primary mb-3">{t("market.serviceType")}</h3>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -276,8 +289,8 @@ export default function Marketplace() {
             </div>
 
             <div>
-              <h3 className="font-label text-label-md text-primary mb-3">{t("market.rateCompensation")}</h3>
-              <div className="space-y-3 font-body text-body-md">
+              <h3 className="font-label-md text-label-md text-primary mb-3">{t("market.rateCompensation")}</h3>
+              <div className="space-y-3 font-body-md text-body-md">
                 {[
                   { label: t("market.anyRate"), val: "" },
                   { label: t("market.priceFree"), val: "free" },
@@ -298,13 +311,13 @@ export default function Marketplace() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-dashed border-outline-variant">
-              <h3 className="font-label text-label-md text-primary mb-3">{t("market.cefrLevel")}</h3>
+              <h3 className="font-label-md text-label-md text-primary mb-3">{t("market.cefrLevel")}</h3>
               <div className="flex flex-wrap gap-1.5">
                 {["ALL", "A1-A2", "B1-B2", "C1-C2"].map((lvl) => (
                   <button
                     key={lvl}
                     onClick={() => setLevelGroup(lvl)}
-                    className={`px-3 py-1 border-2 border-primary font-label text-[10px] uppercase transition-colors ${
+                    className={`px-3 py-1 border-2 border-primary font-label-md text-[10px] uppercase transition-colors ${
                       levelGroup === lvl ? "bg-secondary text-on-secondary" : "bg-surface hover:bg-surface-container-high text-primary"
                     }`}
                   >
@@ -317,7 +330,7 @@ export default function Marketplace() {
 
           <div className="hidden md:block w-full h-32 border-2 border-primary relative overflow-hidden bg-surface-container">
             <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-secondary opacity-20" />
-            <div className="absolute bottom-4 left-4 font-headline text-headline-md text-primary opacity-30">**</div>
+            <div className="absolute bottom-4 left-4 font-headline-md text-headline-md text-primary opacity-30">**</div>
           </div>
         </div>
       </aside>
@@ -325,8 +338,8 @@ export default function Marketplace() {
       {/* Directory content */}
       <div className="w-full md:w-3/4">
         <div className="flex justify-between items-end border-b-2 border-primary pb-4 mb-8">
-          <p className="font-body text-body-md text-on-surface-variant">{t("market.servicesFound", { n: services.length })}</p>
-          <div className="flex items-center gap-2 font-label text-label-md">
+          <p className="font-body-md text-body-md text-on-surface-variant">{t("market.servicesFound", { n: services.length })}</p>
+          <div className="flex items-center gap-2 font-label-md text-label-md">
             <span className="text-on-surface-variant">{t("market.sortBy")}</span>
             <span className="text-primary font-bold border-b border-primary border-dashed pb-0.5">{t("market.relevance")}</span>
           </div>
@@ -341,7 +354,7 @@ export default function Marketplace() {
         ) : pageItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 bg-surface-bright border-2 border-dashed border-primary text-center">
             <Icon name="search_off" className="text-4xl text-on-surface-variant mb-2" />
-            <p className="font-label text-label-md text-primary uppercase">{t("market.noListings")}</p>
+            <p className="font-label-md text-label-md text-primary uppercase">{t("market.noListings")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter lg:gap-8">
@@ -367,7 +380,7 @@ export default function Marketplace() {
             >
               <Icon name="arrow_back" />
             </button>
-            <div className="flex gap-2 font-label text-label-md">
+            <div className="flex gap-2 font-label-md text-label-md">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                 <button
                   key={p}
