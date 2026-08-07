@@ -8,7 +8,10 @@ import { getLingoService, createLingoProposal } from "../lib/api/lingo.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
 
 function avatarUrl(service) {
-  return service.provider_photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${service.provider_id}`;
+  if (service.provider_photo_url) return service.provider_photo_url;
+  const index = service.provider_id % 100;
+  const gender = service.provider_id % 2 === 0 ? "men" : "women";
+  return `https://randomuser.me/api/portraits/${gender}/${index}.jpg`;
 }
 
 export default function MarketplaceServiceDetail() {
@@ -106,13 +109,13 @@ export default function MarketplaceServiceDetail() {
           <div className="flex items-center gap-4 mb-8">
             <div className="flex flex-col">
               <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
-              <span className="font-headline text-headline-lg text-primary leading-none">
+              <span className={`font-headline text-headline-lg leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
                 {service.price ? (
                   <>
                     {service.price} <span className="font-body text-base">{`TJS/${service.pricing_type}`}</span>
                   </>
                 ) : (
-                  <span className="text-secondary">{t("market.priceFree")}</span>
+                  t("market.priceFree")
                 )}
               </span>
             </div>

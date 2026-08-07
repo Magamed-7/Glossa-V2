@@ -7,8 +7,15 @@ import { getLingoServices, createLingoProposal } from "../lib/api/lingo.js";
 const CATEGORIES = ["KOREAN", "FRENCH", "SPANISH", "TRANSLATION", "EDITING"];
 const ITEMS_PER_PAGE = 5;
 
+// randomuser.me — реальные фотопортреты (не иллюстрации и не роботы), сервис специально
+// создан для плейсхолдер-профилей в разработке: набор из 100 мужских и 100 женских фото,
+// стабильно привязанных к номеру. Реальное фото исполнителя (provider_photo_url) всегда
+// в приоритете — это лишь резервный вариант, пока пользователь не загрузил своё.
 function avatarUrl(service) {
-  return service.provider_photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${service.provider_id}`;
+  if (service.provider_photo_url) return service.provider_photo_url;
+  const index = service.provider_id % 100;
+  const gender = service.provider_id % 2 === 0 ? "men" : "women";
+  return `https://randomuser.me/api/portraits/${gender}/${index}.jpg`;
 }
 
 function ServiceChips({ service }) {
@@ -60,10 +67,13 @@ function FeaturedCard({ service, lang, t, onMessage }) {
           <div className="flex items-center gap-4">
             <div className="flex flex-col">
               <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
-              <span className="font-headline text-headline-md text-primary leading-none">
-                {service.price ? `${service.price} ` : ""}
-                {service.price ? <span className="font-body text-base">{`TJS/${service.pricing_type}`}</span> : t("market.priceFree")}
-              </span>
+              {service.price ? (
+                <span className="font-headline text-headline-md text-primary leading-tight">
+                  {service.price} <span className="font-body text-base">{`TJS/${service.pricing_type}`}</span>
+                </span>
+              ) : (
+                <span className="font-headline text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
+              )}
             </div>
             <div className="w-px h-10 bg-primary" />
             <div className="flex flex-col">
@@ -101,8 +111,8 @@ function StandardCard({ service, lang, t, onMessage }) {
       </Link>
       <div className="p-5 flex-grow flex flex-col">
         <div className="flex justify-between items-start gap-2 mb-2">
-          <Link to={`/marketplace/services/${service.id}`}>
-            <h3 className="font-headline text-headline-md text-primary leading-tight hover:text-secondary transition-colors">
+          <Link to={`/marketplace/services/${service.id}`} className="min-w-0">
+            <h3 className="font-headline text-headline-md text-primary leading-tight line-clamp-2 hover:text-secondary transition-colors">
               {title}
             </h3>
           </Link>
@@ -117,7 +127,7 @@ function StandardCard({ service, lang, t, onMessage }) {
             <p className="font-body text-body-md font-medium text-primary">{service.provider_name}</p>
           </div>
           <div className="text-right">
-            <p className="font-headline text-headline-md text-primary leading-none">
+            <p className={`font-headline text-headline-md leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
               {service.price ? service.price : t("market.priceFree")}{" "}
               {service.price ? <span className="font-body text-xs">{`TJS/${service.pricing_type}`}</span> : null}
             </p>
@@ -156,7 +166,7 @@ function FreeExchangeCard({ service, lang, t, onMessage }) {
         <p className="font-body text-body-md text-on-surface-variant mb-6 text-sm flex-grow">{description}</p>
         <div className="bg-surface border-2 border-primary p-3 flex justify-between items-center mb-4">
           <span className="font-label text-label-md uppercase tracking-widest text-primary">{t("market.rate")}</span>
-          <span className="font-headline text-headline-md text-secondary leading-none">{t("market.priceFree")}</span>
+          <span className="font-headline text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
         </div>
         <button onClick={() => onMessage(service)} className="btn-primary-neo w-full py-2 font-label text-label-md uppercase tracking-wider">
           {t("market.message")}
@@ -232,7 +242,9 @@ export default function Marketplace() {
   }, [pageItems, currentPage]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-gutter">
+    <div className="relative">
+      <div className="absolute inset-0 -m-6 md:-m-10 ray-pattern opacity-60 pointer-events-none" aria-hidden="true" />
+      <div className="relative flex flex-col md:flex-row gap-gutter">
       {/* Index / Filter sidebar */}
       <aside className="w-full md:w-1/4 flex flex-col gap-8 shrink-0">
         <div className="md:sticky md:top-24">
@@ -377,6 +389,7 @@ export default function Marketplace() {
             </button>
           </div>
         )}
+      </div>
       </div>
     </div>
   );
