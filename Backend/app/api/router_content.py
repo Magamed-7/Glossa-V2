@@ -24,13 +24,16 @@ async def get_vocabulary(
     level: str | None = None,
     unit: str | None = None,
     search: str | None = None,
+    ids: str | None = None,
     locale: str = 'en',
     limit: int = 20,
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
 ):
+    id_list = [int(x) for x in ids.split(',')] if ids else None
     entries = await crud_content.get_vocab_entries(
-        db, level=level, unit=unit, search=search, limit=limit, offset=offset
+        db, level=level, unit=unit, search=search, ids=id_list,
+        limit=limit if id_list is None else len(id_list), offset=offset,
     )
     return [crud_content.vocab_to_response(entry, locale) for entry in entries]
 

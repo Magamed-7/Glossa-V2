@@ -32,7 +32,7 @@ def vocab_to_response(entry: VocabEntries, locale: str):
     }
 
 
-async def get_vocab_entries(db: AsyncSession, level=None, unit=None, search=None, limit=20, offset=0):
+async def get_vocab_entries(db: AsyncSession, level=None, unit=None, search=None, ids=None, limit=20, offset=0):
     query = select(VocabEntries)
 
     if level:
@@ -41,6 +41,8 @@ async def get_vocab_entries(db: AsyncSession, level=None, unit=None, search=None
         query = query.where(VocabEntries.unit == unit)
     if search:
         query = query.where(VocabEntries.word.ilike(f'%{search}%'))
+    if ids:
+        query = query.where(VocabEntries.id.in_(ids))
 
     query = query.order_by(VocabEntries.word).limit(limit).offset(offset)
     result = await db.execute(query)
