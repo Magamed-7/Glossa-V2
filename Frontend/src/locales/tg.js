@@ -46,8 +46,14 @@ export const tg = {
     support: "Дастгирӣ",
   },
   errorBoundary: {
+    eyebrow: "Нокомии система",
     title: "Хатогӣ рӯй дод",
     description: "Хатогии ногаҳонӣ боркунии саҳифаро қатъ кард.",
+    technicalNotes: "Ёддоштҳои техникӣ",
+    logInit: "ОҒОЗИ ПРОТОКОЛ...",
+    logAccess: "ДАСТРАСӢ БА МОДУЛИ САҲИФА...",
+    logFault: "ХАТОГИИ РЕНДЕРИ ҚИСМ",
+    logShutdown: "КӮШИШИ БАРҚАРОРСОЗӢ...",
   },
   loadingScreen: {
     brand: "Glossa",
@@ -55,7 +61,12 @@ export const tg = {
   notFound: {
     eyebrow: "Хатогии 404",
     title: "Саҳифа ёфт нашуд",
+    subheading: "Дар роҳ гумшуда",
     description: "Ин саҳифа дар бойгонӣ вуҷуд надорад. Биёед шуморо ба роҳи дуруст баргардонем.",
+    statusLabel: "Ҳолат",
+    voidStamp: "ХОЛӢ",
+    fileRef: "СУРОҒА",
+    lastSeen: "ДАРХОСТШУДА",
   },
   auth: {
     layoutNotice:

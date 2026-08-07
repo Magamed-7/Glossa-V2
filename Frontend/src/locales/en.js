@@ -46,8 +46,14 @@ export const en = {
     support: "Support",
   },
   errorBoundary: {
+    eyebrow: "System Failure",
     title: "Something went wrong",
     description: "An unexpected error interrupted this page.",
+    technicalNotes: "Technical Notes",
+    logInit: "INITIATING PROTOCOL...",
+    logAccess: "ACCESSING PAGE MODULE...",
+    logFault: "COMPONENT RENDER FAULT",
+    logShutdown: "ATTEMPTING RECOVERY...",
   },
   loadingScreen: {
     brand: "Glossa",
@@ -55,7 +61,12 @@ export const en = {
   notFound: {
     eyebrow: "Error 404",
     title: "Page Not Found",
+    subheading: "Lost in Translation",
     description: "This page doesn't exist in the archive. Let's get you back on track.",
+    statusLabel: "Status",
+    voidStamp: "VOID",
+    fileRef: "FILE_REF",
+    lastSeen: "REQUESTED",
   },
   auth: {
     layoutNotice:

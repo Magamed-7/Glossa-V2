@@ -46,8 +46,14 @@ export const ru = {
     support: "Поддержка",
   },
   errorBoundary: {
+    eyebrow: "Сбой системы",
     title: "Что-то пошло не так",
     description: "Непредвиденная ошибка прервала загрузку страницы.",
+    technicalNotes: "Тех. заметки",
+    logInit: "ЗАПУСК ПРОТОКОЛА...",
+    logAccess: "ОБРАЩЕНИЕ К МОДУЛЮ СТРАНИЦЫ...",
+    logFault: "ОШИБКА ОТРИСОВКИ КОМПОНЕНТА",
+    logShutdown: "ПОПЫТКА ВОССТАНОВЛЕНИЯ...",
   },
   loadingScreen: {
     brand: "Glossa",
@@ -55,7 +61,12 @@ export const ru = {
   notFound: {
     eyebrow: "Ошибка 404",
     title: "Страница не найдена",
+    subheading: "Затеряно в переводе",
     description: "Такой страницы нет в архиве. Вернём вас на верный путь.",
+    statusLabel: "Статус",
+    voidStamp: "ПУСТО",
+    fileRef: "ССЫЛКА",
+    lastSeen: "ЗАПРОШЕНО",
   },
   auth: {
     layoutNotice:
