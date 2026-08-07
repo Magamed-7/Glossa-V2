@@ -282,32 +282,6 @@ export default function Marketplace() {
 
   return (
     <div className="relative">
-      {/* Sunburst ray background — точная копия дизайн-референса */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: "none",
-          background: `
-            repeating-linear-gradient(
-              -45deg,
-              transparent 0px,
-              transparent 18px,
-              rgba(0,0,0,0.028) 18px,
-              rgba(0,0,0,0.028) 19px
-            ),
-            repeating-linear-gradient(
-              45deg,
-              transparent 0px,
-              transparent 18px,
-              rgba(0,0,0,0.018) 18px,
-              rgba(0,0,0,0.018) 19px
-            )
-          `,
-        }}
-      />
       {/* Header section spanning full width to prevent overlaps and line intersections */}
       <div className="border-b-2 border-primary pb-6 mb-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
