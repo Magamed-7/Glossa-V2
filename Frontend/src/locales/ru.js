@@ -26,6 +26,7 @@ export const ru = {
     grammar: "Грамматика",
     market: "Маркет",
     ranking: "Рейтинг",
+    roadmap: "Роадмап",
     settings: "Настройки",
     addNewWord: "Добавить новое слово",
     currentStreak: "Текущая серия",

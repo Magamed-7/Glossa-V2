@@ -26,6 +26,7 @@ export const en = {
     grammar: "Grammar",
     market: "Market",
     ranking: "Ranking",
+    roadmap: "Roadmap",
     settings: "Settings",
     addNewWord: "Add new word",
     currentStreak: "Current streak",

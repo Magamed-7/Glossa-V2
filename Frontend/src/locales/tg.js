@@ -26,6 +26,7 @@ export const tg = {
     grammar: "Грамматика",
     market: "Бозор",
     ranking: "Рейтинг",
+    roadmap: "Нақшаи роҳ",
     settings: "Танзимот",
     addNewWord: "Илова кардани калимаи нав",
     currentStreak: "Силсилаи ҷорӣ",

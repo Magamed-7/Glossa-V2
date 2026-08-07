@@ -248,6 +248,47 @@ body {
   box-shadow: 0 0 0 0 var(--color-tertiary);
 }
 
+/* --- Кнопки в стиле Neo-Retro Editorial --- */
+.btn-primary-neo,
+.btn-outline-neo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-tertiary);
+  box-shadow: 4px 4px 0 0 var(--color-tertiary);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-primary-neo {
+  background-color: var(--color-secondary);
+  color: var(--color-surface);
+}
+
+.btn-outline-neo {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+}
+
+@media (hover: hover) {
+  .btn-primary-neo:hover,
+  .btn-outline-neo:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--color-tertiary);
+  }
+}
+
+.btn-primary-neo:active,
+.btn-outline-neo:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 var(--color-tertiary);
+}
+
+.btn-primary-neo:disabled,
+.btn-outline-neo:disabled {
+  cursor: not-allowed;
+}
+
 /* --- Сетки --- */
 .editorial-grid {
   display: grid;

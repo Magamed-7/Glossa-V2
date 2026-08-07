@@ -15,3 +15,10 @@ export function getVocabularyEntry(entryId, { locale } = {}) {
   const query = params.toString();
   return api.get(`/vocabulary/${entryId}${query ? `?${query}` : ""}`);
 }
+
+export function getVocabularyByIds(ids, { locale } = {}) {
+  if (!ids || ids.length === 0) return Promise.resolve([]);
+  const params = new URLSearchParams({ ids: ids.join(",") });
+  if (locale) params.set("locale", locale);
+  return api.get(`/vocabulary/?${params}`);
+}
