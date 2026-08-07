@@ -52,97 +52,88 @@ export default function MarketplaceStories() {
   const rest = useMemo(() => filtered.filter((s) => !topPickIds.has(s.id)), [filtered, topPickIds]);
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-section-gap">
       {/* Search bar */}
       <div className="relative max-w-md">
+        <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t("market.searchStoriesPlaceholder")}
-          className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-700 text-black dark:text-stone-100 font-sans text-sm focus:outline-none focus:ring-1 focus:ring-[#E32652]"
+          className="w-full pl-10 pr-4 py-2 border-2 border-primary bg-surface focus:outline-none focus:border-secondary transition-colors font-body text-body-md placeholder:text-on-surface-variant"
         />
-        <Icon name="search" className="absolute left-3.5 top-3 text-gray-400 dark:text-stone-500" />
       </div>
 
       {/* Header */}
-      <div>
-        <p className="text-sm text-gray-600 dark:text-stone-400 font-sans">
+      <section className="relative">
+        <div className="absolute -top-10 -left-10 w-32 h-32 bg-tertiary-fixed rounded-full mix-blend-multiply opacity-50 blur-xl" />
+        <h1 className="font-display text-display-lg-mobile md:text-display-lg text-primary mb-4 relative z-10">
           {t("market.storiesEyebrow")}
-        </p>
-        <p className="text-sm text-gray-500 dark:text-stone-500 font-sans mt-1 max-w-xl leading-relaxed">
+        </h1>
+        <p className="font-body text-body-lg text-on-surface-variant max-w-2xl relative z-10">
           {t("market.storiesSubtitle")}
         </p>
-      </div>
+      </section>
 
-      {/* Filters row */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-            {t("market.level")}
-          </span>
-          <div className="flex gap-1.5">
-            {Object.keys(LEVEL_GROUPS).map((lvl) => (
-              <button
-                key={lvl}
-                onClick={() => setLevelGroup(lvl)}
-                className={`px-3 py-1.5 text-[10px] font-black uppercase border-2 border-black dark:border-stone-700 shadow-[2px_2px_0px_#000000] dark:shadow-[2px_2px_0px_#3a3a3a] transition-all ${
-                  levelGroup === lvl
-                    ? "bg-[#E32652] text-white -translate-y-0.5"
-                    : "bg-white dark:bg-stone-900 text-black dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800"
-                }`}
-              >
-                {lvl === "ALL" ? t("market.allLevels") : lvl}
-              </button>
-            ))}
-          </div>
+      {/* Filters */}
+      <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-2 border-primary pb-6">
+        <div className="flex flex-wrap gap-4 items-center">
+          <span className="font-label text-label-md text-on-surface-variant uppercase mr-2">{t("market.level")}</span>
+          {Object.keys(LEVEL_GROUPS).map((lvl) => (
+            <button
+              key={lvl}
+              onClick={() => setLevelGroup(lvl)}
+              className={`px-4 py-1 border-2 border-primary font-label text-label-md uppercase transition-colors ${
+                levelGroup === lvl
+                  ? "bg-secondary text-on-secondary hard-shadow"
+                  : "bg-surface hover:bg-surface-container-high text-on-surface"
+              }`}
+            >
+              {lvl === "ALL" ? t("market.allLevels") : lvl}
+            </button>
+          ))}
         </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-            {t("market.price")}
-          </span>
+        <div className="flex flex-wrap gap-4 items-center">
+          <span className="font-label text-label-md text-on-surface-variant uppercase mr-2">{t("market.price")}</span>
           <select
             value={priceFilter}
             onChange={(e) => setPriceFilter(e.target.value)}
-            className="text-xs font-bold bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-700 p-2 text-black dark:text-stone-200 focus:outline-none"
+            className="border-2 border-primary bg-surface px-4 py-2 font-label text-label-md focus:outline-none focus:border-secondary hard-shadow uppercase text-on-surface"
           >
             <option value="ALL">{t("market.allPrices")}</option>
             <option value="FREE">{t("market.priceFree")}</option>
             <option value="PAID">{t("market.pricePaid")}</option>
           </select>
         </div>
-      </div>
+      </section>
 
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
           {[1, 2, 3].map((n) => (
             <Skeleton key={n} className="aspect-[4/5]" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-stone-900 border-2 border-dashed border-black dark:border-stone-800 text-center">
-          <Icon name="auto_stories" className="text-4xl text-gray-400 dark:text-stone-500 mb-2" />
-          <p className="text-sm font-bold text-black dark:text-stone-200 uppercase tracking-wide">
-            {t("market.noListings")}
-          </p>
+        <div className="flex flex-col items-center justify-center p-12 bg-surface-bright border-2 border-dashed border-primary text-center">
+          <Icon name="auto_stories" className="text-4xl text-on-surface-variant mb-2" />
+          <p className="font-label text-label-md text-on-surface uppercase">{t("market.noListings")}</p>
         </div>
       ) : (
         <>
           {topPicks.length > 0 && (
-            <div>
-              <div className="flex items-center gap-4 mb-6">
-                <h2 className="font-serif font-black text-xl text-black dark:text-stone-100 whitespace-nowrap">
-                  {t("market.topPicks")}
-                </h2>
-                <div className="h-px bg-black dark:bg-stone-700 flex-1" />
+            <section>
+              <div className="flex items-center gap-4 mb-8">
+                <h2 className="font-headline text-headline-md text-primary whitespace-nowrap">{t("market.topPicks")}</h2>
+                <div className="flex-1 h-[2px] bg-primary" />
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                {topPicks.map((story) => (
-                  <AcquisitionCard key={story.id} story={story} />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                {topPicks.map((story, i) => (
+                  <AcquisitionCard key={story.id} story={story} variant={i} />
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
           <CommunityGrid stories={rest} />

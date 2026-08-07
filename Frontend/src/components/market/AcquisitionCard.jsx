@@ -11,7 +11,36 @@ const FALLBACK_COVERS = [
   "/img/covers/echoes-void.webp",
 ];
 
-export default function AcquisitionCard({ story }) {
+// Бейдж уровня циклится по трём вариантам (янтарный / кремовый / малиновый) для
+// визуального ритма, как в макете — не привязан к конкретному CEFR-уровню.
+const BADGE_VARIANTS = [
+  "bg-tertiary-fixed-dim border-2 border-primary text-on-tertiary-fixed",
+  "bg-surface-bright border-2 border-primary text-primary",
+  "bg-secondary border-2 border-primary text-on-secondary",
+];
+
+const CLIP_ROTATIONS = ["rotate-12", "-rotate-6", "rotate-[20deg]"];
+
+function StarRating({ rating }) {
+  const full = Math.floor(rating);
+  const hasHalf = rating - full >= 0.5;
+  const empty = 5 - full - (hasHalf ? 1 : 0);
+
+  return (
+    <div className="flex items-center gap-1 mb-6 text-tertiary-fixed-dim">
+      {Array.from({ length: full }, (_, i) => (
+        <Icon key={`f${i}`} name="star" filled className="text-base" />
+      ))}
+      {hasHalf && <Icon name="star_half" filled className="text-base" />}
+      {Array.from({ length: empty }, (_, i) => (
+        <Icon key={`e${i}`} name="star" className="text-base" />
+      ))}
+      <span className="font-label text-label-md text-on-surface ml-2">{rating.toFixed(1)}</span>
+    </div>
+  );
+}
+
+export default function AcquisitionCard({ story, variant = 0 }) {
   const t = useT();
   const [author, setAuthor] = useState(null);
 
@@ -20,20 +49,20 @@ export default function AcquisitionCard({ story }) {
   }, [story.author_id]);
 
   const cover = story.image_url || FALLBACK_COVERS[story.id % FALLBACK_COVERS.length];
+  const badgeClass = BADGE_VARIANTS[variant % BADGE_VARIANTS.length];
+  const clipRotation = CLIP_ROTATIONS[variant % CLIP_ROTATIONS.length];
 
   return (
-    <Link
-      to={`/marketplace/${story.id}`}
-      className="group relative block border-2 border-black dark:border-stone-800 bg-white dark:bg-stone-900 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] hover:-translate-y-1 transition-all"
-    >
-      <Icon
-        name="attach_file"
-        className="absolute -top-3 left-6 text-2xl text-black dark:text-stone-300 rotate-[-25deg] z-10 pointer-events-none"
-      />
+    <Link to={`/marketplace/${story.id}`} className="bg-surface-bright border-2 border-primary p-6 hard-shadow relative group block">
+      <div
+        className={`absolute -top-3 left-6 w-8 h-12 border-2 border-primary rounded-full bg-outline-variant/30 flex justify-center items-start pt-1 ${clipRotation}`}
+      >
+        <div className="w-4 h-8 border-2 border-primary rounded-full" />
+      </div>
 
-      <div className="relative aspect-[4/3] w-full overflow-hidden border-b-2 border-black dark:border-stone-800">
+      <div className="aspect-[4/3] mb-4 border-2 border-primary overflow-hidden bg-surface-container relative">
         <img
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           src={cover}
           alt=""
           aria-hidden="true"
@@ -41,49 +70,29 @@ export default function AcquisitionCard({ story }) {
           width={480}
           height={360}
         />
-        <span className="absolute top-3 right-3 px-2 py-1 text-[9px] font-black tracking-wider text-white border border-black bg-[#E32652] uppercase shadow-[2px_2px_0px_#000000]">
+        <div className={`absolute top-2 right-2 px-2 py-1 font-label text-label-md font-bold uppercase ${badgeClass}`}>
           {story.cefr_level}
-        </span>
+        </div>
       </div>
 
-      <div className="p-5">
-        <h3 className="font-serif font-black text-xl text-black dark:text-stone-100 leading-tight mb-1">
-          {story.title}
-        </h3>
-        <p className="text-xs text-gray-500 dark:text-stone-400 font-sans mb-2">
-          {t("market.by", { name: author?.username || "…" })}
-        </p>
+      <h3 className="font-headline text-headline-lg text-primary mb-2 leading-tight">{story.title}</h3>
+      <p className="font-label text-label-md text-on-surface-variant mb-4">
+        {t("market.by", { name: author?.username || "…" })}
+      </p>
 
-        {story.average_rating != null && (
-          <div className="flex items-center gap-1 mb-3">
-            {Array.from({ length: 5 }, (_, i) => (
-              <Icon
-                key={i}
-                name="star"
-                filled={i < Math.round(story.average_rating)}
-                className={`text-sm ${i < Math.round(story.average_rating) ? "text-amber-500" : "text-gray-300 dark:text-stone-700"}`}
-              />
-            ))}
-            <span className="text-xs font-bold text-black dark:text-stone-200 font-sans ml-1">
-              {story.average_rating.toFixed(1)}
-            </span>
-          </div>
-        )}
+      {story.average_rating != null && <StarRating rating={story.average_rating} />}
 
-        <div className="flex items-center justify-between gap-2 pt-3 border-t border-gray-100 dark:border-stone-800">
-          <span className={`font-mono text-sm font-black ${story.price ? "text-black dark:text-stone-100" : "text-[#E32652]"}`}>
-            {story.price ? formatMoney(story.price) : t("market.free")}
-          </span>
-          <span
-            className={`px-4 py-1.5 border-2 border-black dark:border-stone-700 font-label text-[10px] uppercase font-bold shadow-[2px_2px_0px_#000000] dark:shadow-[2px_2px_0px_#3a3a3a] transition-colors ${
-              story.price
-                ? "bg-[#E32652] group-hover:bg-[#c11c42] text-white"
-                : "bg-white dark:bg-stone-800 text-black dark:text-stone-200 group-hover:bg-stone-100 dark:group-hover:bg-stone-700"
-            }`}
-          >
-            {story.price ? t("market.buy") : t("market.read")}
-          </span>
-        </div>
+      <div className="flex justify-between items-center border-t-2 border-primary pt-4">
+        <span className={`font-body text-body-md font-bold ${story.price ? "text-on-surface" : "text-secondary"}`}>
+          {story.price ? formatMoney(story.price) : t("market.free")}
+        </span>
+        <span
+          className={`px-6 py-2 border-2 border-primary font-label text-label-md uppercase hard-shadow transition-all group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:[box-shadow:2px_2px_0_0_var(--color-tertiary)] ${
+            story.price ? "bg-secondary text-on-secondary" : "bg-surface-container-highest text-primary"
+          }`}
+        >
+          {story.price ? t("market.buy") : t("market.read")}
+        </span>
       </div>
     </Link>
   );
