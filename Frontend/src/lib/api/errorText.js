@@ -1,5 +1,6 @@
 const MESSAGES = {
   NETWORK: "No connection to the server. Check your connection and try again.",
+  INTERNAL_ERROR: "Something went wrong on our end. Please try again.",
   ACCOUNT_DEACTIVATED: "This account has been deactivated.",
   VALIDATION_ERROR: "Some of the entered data is invalid.",
   LIMIT_REACHED: "You've reached your plan's daily limit.",

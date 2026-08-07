@@ -125,11 +125,20 @@ def _strip_code_fence(raw: str):
     return raw.strip()
 
 
-async def _generate_story_dictionary(story_id: int):
+async def _generate_story_dictionary(story_id: int, story_type: str = 'system'):
     from app.models.model_content import Stories
+    from app.models.model_user_story import UserStories
+
+    # story_type distingue две независимые таблицы с одинаковым по смыслу полем
+    # word_dictionary — system 'stories' (тексты платформы) и 'user_stories' (истории
+    # авторов из Author Studio). Раньше эта задача всегда лезла в Stories по id,
+    # который мог принадлежать user_stories — совпадение id тихо портило чужую
+    # системную историю, а несовпадение просто оставляло словарь пустым навсегда.
+    model = Stories if story_type == 'system' else UserStories
+    text_field = 'body_en' if story_type == 'system' else 'body'
 
     async with AsyncSessionLocal() as db:
-        result = await db.execute(select(Stories).where(Stories.id == story_id))
+        result = await db.execute(select(model).where(model.id == story_id))
         story = result.scalar_one_or_none()
 
         if not story:
@@ -140,7 +149,7 @@ async def _generate_story_dictionary(story_id: int):
         # сохраняем частично собранный словарь (лучше пусто, чем тихо неполно).
         dictionary_data = {}
 
-        for chunk in _chunk_words(story.body_en):
+        for chunk in _chunk_words(getattr(story, text_field)):
             prompt = GENERATE_STORY_DICTIONARY_PROMPT.format(text=chunk)
 
             try:
@@ -157,5 +166,5 @@ async def _generate_story_dictionary(story_id: int):
 
 
 @celery_app.task(name='app.tasks.ai.generate_story_dictionary')
-def generate_story_dictionary_task(story_id: int):
-    return run_async(_generate_story_dictionary(story_id))
+def generate_story_dictionary_task(story_id: int, story_type: str = 'system'):
+    return run_async(_generate_story_dictionary(story_id, story_type))

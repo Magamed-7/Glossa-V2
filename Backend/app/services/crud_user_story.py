@@ -45,7 +45,7 @@ async def create_user_story(data: UserStoryCreate, author_id: int, db: AsyncSess
     await db.refresh(story)
 
     from app.tasks.ai import generate_story_dictionary_task
-    generate_story_dictionary_task.delay(story.id)
+    generate_story_dictionary_task.delay(story.id, story_type='user')
 
     return story
 
@@ -84,7 +84,7 @@ async def update_user_story(story_id: int, author_id: int, data: UserStoryUpdate
 
     if body_changed:
         from app.tasks.ai import generate_story_dictionary_task
-        generate_story_dictionary_task.delay(story.id)
+        generate_story_dictionary_task.delay(story.id, story_type='user')
 
     if story.status == 'published':
         await publish_event(
