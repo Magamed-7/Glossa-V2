@@ -2,6 +2,33 @@ import { useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT } from "../lib/i18n.jsx";
 
+// Оригинальная line-art иллюстрация "призрачной книги" — внешнего файла из макета
+// у нас нет (он был на чужом хостинге), поэтому рисуем свою в том же неоретро-стиле:
+// раскрытая книга линиями текста + капля малиновых чернил, стекающая с корешка.
+function GhostedBook() {
+  return (
+    <svg viewBox="0 0 200 200" className="w-full h-full max-w-[260px] mix-blend-multiply" aria-hidden="true">
+      <g className="text-primary opacity-80" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round">
+        <path d="M100,158 L100,58 Q60,38 20,53 L20,148 Q60,173 100,158 Z" />
+        <path d="M100,158 L100,58 Q140,38 180,53 L180,148 Q140,173 100,158 Z" />
+        <path d="M35,74 L84,68" />
+        <path d="M35,94 L84,88" />
+        <path d="M35,114 L80,109" />
+        <path d="M35,134 L74,130" />
+        <path d="M116,68 L165,74" />
+        <path d="M116,88 L165,94" />
+        <path d="M120,109 L165,114" />
+        <path d="M126,130 L165,134" />
+      </g>
+      <path
+        className="text-secondary"
+        fill="currentColor"
+        d="M94,150 Q88,172 98,192 Q108,172 102,150 Q98,158 94,150 Z"
+      />
+    </svg>
+  );
+}
+
 export default function NotFound() {
   const t = useT();
   const navigate = useNavigate();
@@ -75,11 +102,7 @@ export default function NotFound() {
 
         {/* Визуальная колонка */}
         <div className="md:col-span-5 relative h-64 md:h-full min-h-[300px] flex items-center justify-center border-t-2 md:border-t-0 md:border-l-2 border-primary border-dashed pt-8 md:pt-0">
-          <Icon
-            name="auto_stories"
-            className="text-[220px] text-primary opacity-10 mix-blend-multiply"
-            aria-hidden="true"
-          />
+          <GhostedBook />
         </div>
       </div>
     </div>
