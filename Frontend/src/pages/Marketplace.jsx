@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
-import { useT } from "../lib/i18n.jsx";
+import { useT, useI18n } from "../lib/i18n.jsx";
 import { api } from "../lib/api/client.js";
 
 export default function Marketplace() {
   const t = useT();
+  const { lang } = useI18n();
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -210,7 +211,7 @@ export default function Marketplace() {
                     <div>
                       <div className="flex justify-between items-start">
                         <h2 className="font-serif font-black text-xl text-black dark:text-stone-100 hover:text-[#E32652] transition-colors leading-tight">
-                          {svc[`title_${localStorage.getItem("i18n_lang") || "en"}`] || svc.title}
+                          {svc[`title_${lang}`] || svc.title}
                         </h2>
                         
                         {/* Rating Display */}
@@ -222,7 +223,7 @@ export default function Marketplace() {
                         </div>
                       </div>
                       <p className="text-xs text-gray-500 dark:text-stone-400 font-sans mt-2 leading-relaxed">
-                        {svc[`description_${localStorage.getItem("i18n_lang") || "en"}`] || svc.description}
+                        {svc[`description_${lang}`] || svc.description}
                       </p>
                     </div>
 

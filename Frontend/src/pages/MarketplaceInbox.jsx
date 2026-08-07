@@ -1,11 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "../components/ui/Icon.jsx";
-import { useT } from "../lib/i18n.jsx";
+import { useT, useI18n } from "../lib/i18n.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { api } from "../lib/api/client.js";
 
+function localizedServiceTitle(proposal, lang) {
+  return proposal?.[`service_title_${lang}`] || proposal?.service_title;
+}
+
+const STATUS_KEY = {
+  pending: "proposalStatusPending",
+  active: "proposalStatusActive",
+  completed: "proposalStatusCompleted",
+  declined: "proposalStatusDeclined",
+};
+
 export default function MarketplaceInbox() {
   const t = useT();
+  const { lang } = useI18n();
   const { user } = useAuth();
   const [proposals, setProposals] = useState([]);
   const [loadingProposals, setLoadingProposals] = useState(true);
@@ -112,7 +124,7 @@ export default function MarketplaceInbox() {
                   : "bg-gray-100 dark:bg-stone-950 text-gray-400 dark:text-stone-600 border-gray-300 dark:border-stone-800"
               }`}
             >
-              Negotiations
+              {t("market.negotiations")}
             </button>
             <button
               onClick={() => setActiveTab("ANNOUNCEMENTS")}
@@ -122,7 +134,7 @@ export default function MarketplaceInbox() {
                   : "bg-gray-100 dark:bg-stone-950 text-gray-400 dark:text-stone-600 border-gray-300 dark:border-stone-800"
               }`}
             >
-              Announcements
+              {t("market.announcements")}
             </button>
           </div>
         </div>
@@ -171,7 +183,7 @@ export default function MarketplaceInbox() {
                           {contactName}
                         </h4>
                         <p className="text-[10px] text-[#E32652] dark:text-[#f43f5e] font-sans font-semibold truncate">
-                          {p.service_title}
+                          {localizedServiceTitle(p, lang)}
                         </p>
                       </div>
                     </div>
@@ -187,7 +199,7 @@ export default function MarketplaceInbox() {
                           : "bg-red-100 text-red-700 border-red-400"
                       }`}
                     >
-                      {p.status}
+                      {t(`market.${STATUS_KEY[p.status] || "proposalStatusPending"}`)}
                     </span>
                   </div>
                 </div>
@@ -209,7 +221,7 @@ export default function MarketplaceInbox() {
                     : selectedProposal.provider_name}
                 </h3>
                 <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest font-mono">
-                  Re: {selectedProposal.service_title}
+                  {t("market.reLabel")} {localizedServiceTitle(selectedProposal, lang)}
                 </span>
               </div>
               
@@ -263,14 +275,14 @@ export default function MarketplaceInbox() {
                   <Icon name="info" className="text-amber-600 shrink-0" />
                   <div>
                     <h5 className="text-xs font-black uppercase text-amber-800 dark:text-amber-400">
-                      Proposal Pending Acceptance
+                      {t("market.proposalPendingAcceptance")}
                     </h5>
                     <p className="text-[10px] text-amber-700 dark:text-stone-300 font-medium">
-                      Accept this proposal to freeze {selectedProposal.price} TJS and start the contract.
+                      {t("market.acceptProposalHint", { price: selectedProposal.price })}
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-2 w-full sm:w-auto shrink-0">
                   <button
                     onClick={() => handleProposalAction("decline")}
@@ -282,7 +294,7 @@ export default function MarketplaceInbox() {
                     onClick={() => handleProposalAction("confirm")}
                     className="flex-1 sm:flex-initial px-4 py-2 border-2 border-black bg-[#E32652] hover:bg-[#c11c42] text-white font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000000] flex items-center justify-center gap-1"
                   >
-                    Confirm Terms & Pay <Icon name="arrow_forward" className="text-sm" />
+                    {t("market.confirmTermsAndPay")} <Icon name="arrow_forward" className="text-sm" />
                   </button>
                 </div>
               </div>
@@ -301,7 +313,7 @@ export default function MarketplaceInbox() {
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message, offer terms..."
+                placeholder={t("market.messagePlaceholder")}
                 className="flex-1 px-4 py-2 bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-700 text-black dark:text-stone-100 font-sans text-xs focus:outline-none focus:ring-1 focus:ring-[#E32652]"
               />
 
@@ -318,10 +330,10 @@ export default function MarketplaceInbox() {
           <div className="flex-1 flex flex-col justify-center items-center border-2 border-dashed border-gray-300 dark:border-stone-700 p-8 text-center text-gray-400">
             <Icon name="chat" className="text-5xl mb-2" />
             <h4 className="text-sm font-bold uppercase tracking-wider text-black dark:text-stone-300">
-              No Conversation Selected
+              {t("market.noConversationSelected")}
             </h4>
             <p className="text-xs text-gray-500 dark:text-stone-400 mt-1">
-              Select an item from the queue list on the left to start negotiation.
+              {t("market.selectConversationHint")}
             </p>
           </div>
         )}

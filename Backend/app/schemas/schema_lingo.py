@@ -73,6 +73,9 @@ class LingoProposalResponse(BaseModel):
     provider_name: str | None = None
     service_id: int
     service_title: str | None = None
+    service_title_en: str | None = None
+    service_title_ru: str | None = None
+    service_title_tg: str | None = None
     service_category: str | None = None
     price: Decimal
     status: str
