@@ -7,21 +7,37 @@ import { getLingoServices, createLingoProposal } from "../lib/api/lingo.js";
 const CATEGORIES = ["KOREAN", "FRENCH", "SPANISH", "TRANSLATION", "EDITING"];
 const ITEMS_PER_PAGE = 5;
 
-// Map specific educators/teachers to high-quality 4k generated images or design assets
+// Маппинг по реальным именам из БД → высококачественные фото
+const PHOTO_MAP = {
+  // Реальные тестовые провайдеры
+  "ji-yoon k.": "/img/ji_yoon.png",
+  "ji-yoon":    "/img/ji_yoon.png",
+  "carlos s.":  "/img/carlos_m.png",
+  "carlos m.":  "/img/carlos_m.png",
+  "carlos":     "/img/carlos_m.png",
+  "marc dubois":"/img/jean_luc.png",
+  "jean-luc":   "/img/jean_luc.png",
+  "jean luc":   "/img/jean_luc.png",
+  "elena rossi":"/img/ji_yoon.png",
+  "yunus":      "/img/Yunus.png",
+  "ruslan":     "/img/Ruslan.jpg",
+  "ruslanjon":  "/img/Ruslan.jpg",
+  "osaf":       "/img/Osaf.jpg",
+  "dilshod":    "/img/yuki_tanaka.png",
+  "amir":       "/img/jean_luc.png",
+  "bahriddin a.":"/img/carlos_m.png",
+  "global tech inc.": "/img/ji_yoon.png",
+};
+
 function avatarUrl(service) {
   if (!service) return "/img/avatars/user-default.webp";
   if (service.provider_photo_url) return service.provider_photo_url;
-
-  const name = (service.provider_name || "").toLowerCase();
-
-  if (name.includes("yuki")) return "/img/yuki_tanaka.png";
-  if (name.includes("carlos")) return "/img/carlos_m.png";
-  if (name.includes("jean-luc") || name.includes("jean luc")) return "/img/jean_luc.png";
-  if (name.includes("ji-yoon") || name.includes("ji yoon")) return "/img/ji_yoon.png";
-  if (name.includes("yunus") || name.includes("юнус")) return "/img/Yunus.png";
-  if (name.includes("ruslan") || name.includes("руслан")) return "/img/Ruslan.jpg";
-  if (name.includes("osaf") || name.includes("осаф")) return "/img/Osaf.jpg";
-
+  const name = (service.provider_name || "").toLowerCase().trim();
+  if (PHOTO_MAP[name]) return PHOTO_MAP[name];
+  // partial match fallback
+  for (const [key, url] of Object.entries(PHOTO_MAP)) {
+    if (name.includes(key) || key.includes(name)) return url;
+  }
   const index = service.provider_id % 100;
   const gender = service.provider_id % 2 === 0 ? "men" : "women";
   return `https://randomuser.me/api/portraits/${gender}/${index}.jpg`;
@@ -266,6 +282,32 @@ export default function Marketplace() {
 
   return (
     <div className="relative">
+      {/* Sunburst ray background — точная копия дизайн-референса */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          background: `
+            repeating-linear-gradient(
+              -45deg,
+              transparent 0px,
+              transparent 18px,
+              rgba(0,0,0,0.028) 18px,
+              rgba(0,0,0,0.028) 19px
+            ),
+            repeating-linear-gradient(
+              45deg,
+              transparent 0px,
+              transparent 18px,
+              rgba(0,0,0,0.018) 18px,
+              rgba(0,0,0,0.018) 19px
+            )
+          `,
+        }}
+      />
       {/* Header section spanning full width to prevent overlaps and line intersections */}
       <div className="border-b-2 border-primary pb-6 mb-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
