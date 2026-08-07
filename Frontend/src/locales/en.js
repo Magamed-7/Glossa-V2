@@ -42,6 +42,7 @@ export const en = {
     themeDark: "Dark",
     themeSystem: "System",
     logOut: "Log Out",
+    support: "Support",
   },
   errorBoundary: {
     title: "Something went wrong",
@@ -936,7 +937,7 @@ export const en = {
     subtitle: "Find expert linguists, tutoring professionals, and translation services for any language.",
     filters: "Filters",
     directory: "Services",
-    storiesNav: "Stories",
+    storiesNav: "Books",
     analytics: "Analytics",
     myServices: "My Services",
     inbox: "Inbox",
@@ -1052,11 +1053,10 @@ export const en = {
 
     // Story marketplace directory page
     storiesEyebrow: "Marketplace Directory",
-    storiesTitleLead: "Story",
-    storiesTitleAccent: "Marketplace",
-    storiesSubtitle: "Curated stories to elevate your language skills. Hand-picked selections and community favorites.",
+    storiesSubtitle: "Curated books to elevate your language skills. Hand-picked selections and community favorites.",
     topPicks: "Top Picks",
-    searchStoriesPlaceholder: "Search stories...",
+    allBooks: "All Books",
+    searchStoriesPlaceholder: "Search books...",
     allPrices: "All Prices",
     allLevels: "All",
     buy: "Buy",

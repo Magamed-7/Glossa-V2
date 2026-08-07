@@ -20,9 +20,6 @@ export default function MarketplaceSideNavBar() {
             Glossa <span className="italic font-serif font-normal text-black dark:text-white lowercase">Market</span>
           </h1>
         </div>
-        <p className="font-label text-[10px] text-gray-500 uppercase tracking-widest mt-2">
-          Lingo Services Hub
-        </p>
         <hr className="mt-4 border-black dark:border-stone-800" />
       </div>
 

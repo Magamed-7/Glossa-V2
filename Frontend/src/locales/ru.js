@@ -42,6 +42,7 @@ export const ru = {
     themeDark: "Тёмная",
     themeSystem: "Системная",
     logOut: "Выйти",
+    support: "Поддержка",
   },
   errorBoundary: {
     title: "Что-то пошло не так",
@@ -936,7 +937,7 @@ export const ru = {
     subtitle: "Найдите опытных лингвистов, профессиональных репетиторов и услуги перевода для любого языка.",
     filters: "Фильтры",
     directory: "Услуги",
-    storiesNav: "Истории",
+    storiesNav: "Книги",
     analytics: "Аналитика",
     myServices: "Мои услуги",
     inbox: "Сообщения",
@@ -1052,11 +1053,10 @@ export const ru = {
 
     // Story marketplace directory page
     storiesEyebrow: "Каталог маркетплейса",
-    storiesTitleLead: "Маркетплейс",
-    storiesTitleAccent: "историй",
-    storiesSubtitle: "Отобранные истории для развития языковых навыков. Лучшие подборки и фавориты сообщества.",
+    storiesSubtitle: "Отобранные книги для развития языковых навыков. Лучшие подборки и фавориты сообщества.",
     topPicks: "Топ подборка",
-    searchStoriesPlaceholder: "Поиск историй...",
+    allBooks: "Все книги",
+    searchStoriesPlaceholder: "Поиск книг...",
     allPrices: "Все цены",
     allLevels: "Все",
     buy: "Купить",

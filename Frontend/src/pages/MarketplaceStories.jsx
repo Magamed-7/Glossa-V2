@@ -65,18 +65,12 @@ export default function MarketplaceStories() {
         <Icon name="search" className="absolute left-3.5 top-3 text-gray-400 dark:text-stone-500" />
       </div>
 
-      {/* Editorial Header */}
-      <div className="border-b-2 border-black dark:border-stone-800 pb-6">
-        <span className="text-[10px] tracking-widest font-black uppercase text-[#E32652] dark:text-[#f43f5e] font-label">
+      {/* Header */}
+      <div>
+        <p className="text-sm text-gray-600 dark:text-stone-400 font-sans">
           {t("market.storiesEyebrow")}
-        </span>
-        <h1 className="font-display text-4xl md:text-5xl font-black text-black dark:text-white uppercase leading-none tracking-tighter mt-1">
-          {t("market.storiesTitleLead")}{" "}
-          <span className="italic font-serif font-normal text-stone-600 dark:text-stone-400 lowercase">
-            {t("market.storiesTitleAccent")}
-          </span>
-        </h1>
-        <p className="text-gray-500 dark:text-stone-400 text-sm mt-2 max-w-xl font-sans font-medium">
+        </p>
+        <p className="text-sm text-gray-500 dark:text-stone-500 font-sans mt-1 max-w-xl leading-relaxed">
           {t("market.storiesSubtitle")}
         </p>
       </div>
@@ -138,7 +132,9 @@ export default function MarketplaceStories() {
           {topPicks.length > 0 && (
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <h2 className="font-display text-headline-lg whitespace-nowrap">{t("market.topPicks")}</h2>
+                <h2 className="font-serif font-black text-xl text-black dark:text-stone-100 whitespace-nowrap">
+                  {t("market.topPicks")}
+                </h2>
                 <div className="h-px bg-black dark:bg-stone-700 flex-1" />
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">

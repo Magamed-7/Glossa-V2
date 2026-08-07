@@ -42,6 +42,7 @@ export const tg = {
     themeDark: "Торик",
     themeSystem: "Системавӣ",
     logOut: "Баромадан",
+    support: "Дастгирӣ",
   },
   errorBoundary: {
     title: "Хатогӣ рӯй дод",
@@ -936,7 +937,7 @@ export const tg = {
     subtitle: "Забоншиносони ботаҷриба, омӯзгорони касбӣ ва хидматҳои тарҷумаро барои ҳар як забон пайдо кунед.",
     filters: "Филтрҳо",
     directory: "Хидматҳо",
-    storiesNav: "Ҳикояҳо",
+    storiesNav: "Китобҳо",
     analytics: "Таҳлилҳо",
     myServices: "Хидматҳои ман",
     inbox: "Паёмҳо",
@@ -1052,11 +1053,10 @@ export const tg = {
 
     // Story marketplace directory page
     storiesEyebrow: "Феҳристи бозор",
-    storiesTitleLead: "Бозори",
-    storiesTitleAccent: "ҳикояҳо",
-    storiesSubtitle: "Ҳикояҳои интихобшуда барои баланд бардоштани малакаҳои забонии шумо. Интихоби беҳтарин ва маҳбубтарини ҷомеа.",
+    storiesSubtitle: "Китобҳои интихобшуда барои баланд бардоштани малакаҳои забонии шумо. Интихоби беҳтарин ва маҳбубтарини ҷомеа.",
     topPicks: "Интихоби беҳтарин",
-    searchStoriesPlaceholder: "Ҷустуҷӯи ҳикояҳо...",
+    allBooks: "Ҳамаи китобҳо",
+    searchStoriesPlaceholder: "Ҷустуҷӯи китобҳо...",
     allPrices: "Ҳамаи нархҳо",
     allLevels: "Ҳама",
     buy: "Харидан",
