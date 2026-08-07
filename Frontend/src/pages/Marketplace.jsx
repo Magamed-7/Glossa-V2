@@ -257,16 +257,34 @@ export default function Marketplace() {
 
   return (
     <div className="relative">
-      <div className="relative flex flex-col md:flex-row gap-gutter">
-      {/* Index / Filter sidebar */}
-      <aside className="w-full md:w-1/4 flex flex-col gap-8 shrink-0">
-        <div className="md:sticky md:top-24">
-          <div className="mb-8">
-            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2 uppercase tracking-tighter">
+      {/* Header section spanning full width to prevent overlaps and line intersections */}
+      <div className="border-b-2 border-primary pb-6 mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary uppercase tracking-tighter leading-none">
               {t("market.directoryHeadline")}
             </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant italic font-serif">{t("market.directoryIssue")}</p>
+            <p className="font-body-lg text-body-lg text-on-surface-variant italic font-serif mt-2">
+              {t("market.directoryIssue")}
+            </p>
           </div>
+          <div className="flex justify-between items-center w-full md:w-auto md:gap-8 grow md:grow-0 border-t-2 md:border-t-0 border-primary pt-4 md:pt-0">
+            <span className="font-body-md text-body-md text-on-surface-variant">
+              {t("market.servicesFound", { n: services.length })}
+            </span>
+            <div className="flex items-center gap-2 font-label-md text-label-md">
+              <span className="text-on-surface-variant">{t("market.sortBy")}</span>
+              <span className="text-primary font-bold border-b border-primary border-dashed pb-0.5">{t("market.relevance")}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative flex flex-col md:flex-row gap-gutter">
+        {/* Index / Filter sidebar */}
+        <aside className="w-full md:w-1/4 flex flex-col gap-8 shrink-0">
+          <div className="md:sticky md:top-24">
+
 
           <div className="card-neo bg-surface-container-lowest p-6 mb-8">
             <h2 className="font-label-md text-label-md text-primary uppercase border-b-2 border-primary pb-2 mb-4 tracking-widest flex items-center gap-2">
@@ -337,13 +355,6 @@ export default function Marketplace() {
 
       {/* Directory content */}
       <div className="w-full md:w-3/4">
-        <div className="flex justify-between items-end border-b-2 border-primary pb-4 mb-8">
-          <p className="font-body-md text-body-md text-on-surface-variant">{t("market.servicesFound", { n: services.length })}</p>
-          <div className="flex items-center gap-2 font-label-md text-label-md">
-            <span className="text-on-surface-variant">{t("market.sortBy")}</span>
-            <span className="text-primary font-bold border-b border-primary border-dashed pb-0.5">{t("market.relevance")}</span>
-          </div>
-        </div>
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
