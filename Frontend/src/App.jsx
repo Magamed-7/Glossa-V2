@@ -39,6 +39,7 @@ import MarketplaceLayout from "./components/layout/MarketplaceLayout.jsx";
 import MarketplaceInbox from "./pages/MarketplaceInbox.jsx";
 import MarketplaceAnalytics from "./pages/MarketplaceAnalytics.jsx";
 import MarketplaceServices from "./pages/MarketplaceServices.jsx";
+import MarketplaceServiceDetail from "./pages/MarketplaceServiceDetail.jsx";
 import MarketplaceListingEditor from "./pages/MarketplaceListingEditor.jsx";
 import PublicLayout from "./components/layout/PublicLayout.jsx";
 import LoadingScreen from "./components/LoadingScreen.jsx";
@@ -125,6 +126,7 @@ export default function App() {
           <Route path="/marketplace/services" element={page(MarketplaceServices)} />
           <Route path="/marketplace/services/new" element={page(MarketplaceListingEditor)} />
           <Route path="/marketplace/services/:id/edit" element={page(MarketplaceListingEditor)} />
+          <Route path="/marketplace/services/:id" element={page(MarketplaceServiceDetail)} />
         </Route>
       </Route>
 

@@ -1,8 +1,186 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT, useI18n } from "../lib/i18n.jsx";
-import { api } from "../lib/api/client.js";
+import { getLingoServices, createLingoProposal } from "../lib/api/lingo.js";
+
+const CATEGORIES = ["KOREAN", "FRENCH", "SPANISH", "TRANSLATION", "EDITING"];
+const ITEMS_PER_PAGE = 5;
+
+function avatarUrl(service) {
+  return service.provider_photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${service.provider_id}`;
+}
+
+function ServiceChips({ service }) {
+  return (
+    <div className="flex gap-2 flex-wrap">
+      <span className="bg-tertiary-fixed-dim border-2 border-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-tertiary-fixed">
+        {service.category}
+      </span>
+      {service.cefr_level && (
+        <span className="bg-surface-container border-2 border-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+          {service.cefr_level}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function FeaturedCard({ service, lang, t, onMessage }) {
+  const title = service[`title_${lang}`] || service.title;
+  const description = service[`description_${lang}`] || service.description;
+
+  return (
+    <article className="md:col-span-2 card-neo bg-surface-bright flex flex-col md:flex-row relative overflow-hidden">
+      <div className="absolute top-0 right-0 bg-secondary text-on-secondary px-3 py-1 font-label text-label-md border-b-2 border-l-2 border-primary z-20">
+        {t("market.topRated")}
+      </div>
+      <Link to={`/marketplace/services/${service.id}`} className="w-full md:w-2/5 border-b-2 md:border-b-0 md:border-r-2 border-primary relative h-64 md:h-auto block">
+        <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+        <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+          <div className="text-white">
+            <p className="font-headline text-headline-md leading-tight drop-shadow-md">{service.provider_name}</p>
+            <p className="font-label text-label-md opacity-90 flex items-center gap-1">
+              <Icon name="star" filled className="text-sm" /> {Number(service.rating).toFixed(1)} ({t("market.reviewsCount", { n: service.reviews_count })})
+            </p>
+          </div>
+        </div>
+      </Link>
+      <div className="w-full md:w-3/5 p-6 flex flex-col justify-between">
+        <div>
+          <div className="mb-3">
+            <ServiceChips service={service} />
+          </div>
+          <Link to={`/marketplace/services/${service.id}`}>
+            <h3 className="font-headline text-headline-lg text-primary mb-2 leading-tight hover:text-secondary transition-colors">
+              {title}
+            </h3>
+          </Link>
+          <p className="font-body text-body-md text-on-surface-variant mb-4 line-clamp-2">{description}</p>
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col">
+              <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
+              <span className="font-headline text-headline-md text-primary leading-none">
+                {service.price ? `${service.price} ` : ""}
+                {service.price ? <span className="font-body text-base">{`TJS/${service.pricing_type}`}</span> : t("market.priceFree")}
+              </span>
+            </div>
+            <div className="w-px h-10 bg-primary" />
+            <div className="flex flex-col">
+              <span className="font-label text-label-md text-on-surface-variant uppercase text-xs">{t("market.provider")}</span>
+              <span className="font-body text-body-md text-primary font-medium">{service.provider_name}</span>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={() => onMessage(service)}
+            className="btn-primary-neo px-6 py-3 font-label text-label-md uppercase tracking-wider flex items-center gap-2"
+          >
+            {t("market.message")} <Icon name="arrow_forward" className="text-lg" />
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function StandardCard({ service, lang, t, onMessage }) {
+  const title = service[`title_${lang}`] || service.title;
+  const description = service[`description_${lang}`] || service.description;
+
+  return (
+    <article className="card-neo bg-surface-bright flex flex-col relative">
+      <Link to={`/marketplace/services/${service.id}`} className="h-48 border-b-2 border-primary relative overflow-hidden block">
+        <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+        <div className="absolute top-4 left-4">
+          <span className="bg-tertiary-fixed-dim border-2 border-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-on-tertiary-fixed">
+            {service.category}
+          </span>
+        </div>
+      </Link>
+      <div className="p-5 flex-grow flex flex-col">
+        <div className="flex justify-between items-start gap-2 mb-2">
+          <Link to={`/marketplace/services/${service.id}`}>
+            <h3 className="font-headline text-headline-md text-primary leading-tight hover:text-secondary transition-colors">
+              {title}
+            </h3>
+          </Link>
+          <div className="flex items-center gap-1 text-secondary font-bold shrink-0">
+            <Icon name="star" filled className="text-sm" /> {Number(service.rating).toFixed(1)}
+          </div>
+        </div>
+        <p className="font-body text-body-md text-on-surface-variant mb-4 text-sm line-clamp-2 flex-grow">{description}</p>
+        <div className="flex items-end justify-between mt-auto pt-4 border-t border-dashed border-outline-variant">
+          <div>
+            <p className="font-label text-label-md text-on-surface-variant uppercase text-[10px] mb-1">{t("market.provider")}</p>
+            <p className="font-body text-body-md font-medium text-primary">{service.provider_name}</p>
+          </div>
+          <div className="text-right">
+            <p className="font-headline text-headline-md text-primary leading-none">
+              {service.price ? service.price : t("market.priceFree")}{" "}
+              {service.price ? <span className="font-body text-xs">{`TJS/${service.pricing_type}`}</span> : null}
+            </p>
+          </div>
+        </div>
+        <button onClick={() => onMessage(service)} className="btn-outline-neo w-full mt-4 py-2 font-label text-label-md uppercase tracking-wider">
+          {t("market.requestQuote")}
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function FreeExchangeCard({ service, lang, t, onMessage }) {
+  const title = service[`title_${lang}`] || service.title;
+  const description = service[`description_${lang}`] || service.description;
+
+  return (
+    <article className="card-neo bg-primary-fixed flex flex-col relative">
+      <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-secondary border-2 border-primary z-10 flex items-center justify-center">
+        <Icon name="sync_alt" className="text-white text-sm" />
+      </div>
+      <div className="p-5 flex flex-col h-full">
+        <Link to={`/marketplace/services/${service.id}`} className="flex items-center gap-4 mb-4">
+          <div className="w-16 h-16 border-2 border-primary rounded-full overflow-hidden shrink-0 card-neo">
+            <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+          </div>
+          <div>
+            <h4 className="font-body text-body-lg font-bold text-primary">{service.provider_name}</h4>
+            <div className="mt-1">
+              <ServiceChips service={service} />
+            </div>
+          </div>
+        </Link>
+        <h3 className="font-headline text-headline-md text-primary mb-2 leading-tight">{title}</h3>
+        <p className="font-body text-body-md text-on-surface-variant mb-6 text-sm flex-grow">{description}</p>
+        <div className="bg-surface border-2 border-primary p-3 flex justify-between items-center mb-4">
+          <span className="font-label text-label-md uppercase tracking-widest text-primary">{t("market.rate")}</span>
+          <span className="font-headline text-headline-md text-secondary leading-none">{t("market.priceFree")}</span>
+        </div>
+        <button onClick={() => onMessage(service)} className="btn-primary-neo w-full py-2 font-label text-label-md uppercase tracking-wider">
+          {t("market.message")}
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function OfferSkillCard({ t }) {
+  return (
+    <article className="card-neo bg-inverse-surface text-surface flex flex-col justify-center items-center p-8 text-center">
+      <Icon name="post_add" className="text-4xl text-tertiary-fixed mb-4" />
+      <h3 className="font-headline text-headline-lg mb-2">{t("market.offerASkill")}</h3>
+      <p className="font-body text-body-md text-surface-variant mb-6 opacity-80">{t("market.offerASkillDesc")}</p>
+      <Link
+        to="/marketplace/services/new"
+        className="border-2 border-surface bg-transparent text-surface hover:bg-surface hover:text-inverse-surface px-6 py-2 font-label text-label-md uppercase tracking-wider transition-colors"
+      >
+        {t("market.createListing")}
+      </Link>
+    </article>
+  );
+}
 
 export default function Marketplace() {
   const t = useT();
@@ -11,272 +189,194 @@ export default function Marketplace() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("");
-  const [levelGroup, setLevelGroup] = useState("ALL"); // 'ALL', 'A1-A2', 'B1-B2', 'C1-C2'
-  const [priceGroup, setPriceGroup] = useState(""); // '', 'free', 'under50', '50-150', 'premium150'
-
-  // Pagination states
+  const [levelGroup, setLevelGroup] = useState("ALL");
+  const [priceGroup, setPriceGroup] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  const fetchServices = async () => {
-    setLoading(true);
-    try {
-      const q = new URLSearchParams();
-      if (category) q.append("category", category);
-      if (levelGroup !== "ALL") q.append("cefr_group", levelGroup);
-      if (priceGroup) q.append("price_group", priceGroup);
-
-      const res = await api.get(`/lingo/services?${q.toString()}`);
-      setServices(res || []);
-      setCurrentPage(1); // Reset page on filter changes
-    } catch (err) {
-      console.error("Error fetching services:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    fetchServices();
+    setLoading(true);
+    getLingoServices({
+      category: category || undefined,
+      cefrGroup: levelGroup !== "ALL" ? levelGroup : undefined,
+      priceGroup: priceGroup || undefined,
+    })
+      .then((res) => {
+        setServices(res || []);
+        setCurrentPage(1);
+      })
+      .catch((err) => console.error("Error fetching services:", err))
+      .finally(() => setLoading(false));
   }, [category, levelGroup, priceGroup]);
 
-  // Handle proposal message initiation
-  const handleInitiateProposal = async (service) => {
+  const handleMessage = async (service) => {
     try {
-      await api.post("/lingo/proposals", {
-        service_id: service.id,
-        price: service.price
-      });
-      // Redirect to Inbox
-      navigate("/marketplace/inbox");
+      await createLingoProposal(service.id, service.price || 0);
     } catch (err) {
       console.error("Proposal could not be created or already exists:", err);
-      // Even if already exists, just redirect to Inbox
+    } finally {
       navigate("/marketplace/inbox");
     }
   };
 
-  // Pagination calculations
-  const totalPages = Math.ceil(services.length / itemsPerPage) || 1;
-  const paginatedServices = services.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const totalPages = Math.ceil(services.length / ITEMS_PER_PAGE) || 1;
+  const pageItems = services.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const cards = useMemo(() => {
+    return pageItems.map((service, i) => {
+      const isFeatured = currentPage === 1 && i === 0;
+      const isFree = !service.price;
+      if (isFeatured) return { type: "featured", service };
+      if (isFree) return { type: "free", service };
+      return { type: "standard", service };
+    });
+  }, [pageItems, currentPage]);
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      
-      {/* Editorial Header */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-end border-b-2 border-black dark:border-stone-800 pb-6 gap-4">
-        <div>
-          <span className="text-[10px] tracking-widest font-black uppercase text-[#E32652] dark:text-[#f43f5e] font-label">
-            {t("market.eyebrow")}
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl font-black text-black dark:text-white uppercase leading-none tracking-tighter mt-1">
-            Glossa <span className="italic font-serif font-normal text-stone-600 dark:text-stone-400 lowercase">{t("market.titleAccent")}</span>
-          </h1>
-          <p className="text-gray-500 dark:text-stone-400 text-sm mt-2 max-w-xl font-sans font-medium">
-            {t("market.subtitle")}
-          </p>
+    <div className="flex flex-col md:flex-row gap-gutter">
+      {/* Index / Filter sidebar */}
+      <aside className="w-full md:w-1/4 flex flex-col gap-8 shrink-0">
+        <div className="md:sticky md:top-24">
+          <div className="mb-8">
+            <h1 className="font-display text-display-lg-mobile md:text-display-lg text-primary mb-2 uppercase tracking-tighter">
+              {t("market.directoryHeadline")}
+            </h1>
+            <p className="font-body text-body-lg text-on-surface-variant italic font-headline">{t("market.directoryIssue")}</p>
+          </div>
+
+          <div className="card-neo bg-surface-container-lowest p-6 mb-8">
+            <h2 className="font-label text-label-md text-primary uppercase border-b-2 border-primary pb-2 mb-4 tracking-widest flex items-center gap-2">
+              <Icon name="filter_list" className="text-sm" />
+              {t("market.indexFilter")}
+            </h2>
+
+            <div className="mb-6">
+              <h3 className="font-label text-label-md text-primary mb-3">{t("market.serviceType")}</h3>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full text-xs font-bold bg-surface border-2 border-primary p-2 text-primary focus:outline-none"
+              >
+                <option value="">{t("market.allTypes")}</option>
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <h3 className="font-label text-label-md text-primary mb-3">{t("market.rateCompensation")}</h3>
+              <div className="space-y-3 font-body text-body-md">
+                {[
+                  { label: t("market.anyRate"), val: "" },
+                  { label: t("market.priceFree"), val: "free" },
+                  { label: `${t("market.pricePaid")} (TJS/hr)`, val: "under50" },
+                ].map((item) => (
+                  <label key={item.val} className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="radio"
+                      name="price"
+                      checked={priceGroup === item.val}
+                      onChange={() => setPriceGroup(item.val)}
+                      className="w-5 h-5 border-2 border-primary accent-secondary"
+                    />
+                    <span className="group-hover:text-secondary transition-colors">{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-dashed border-outline-variant">
+              <h3 className="font-label text-label-md text-primary mb-3">{t("market.cefrLevel")}</h3>
+              <div className="flex flex-wrap gap-1.5">
+                {["ALL", "A1-A2", "B1-B2", "C1-C2"].map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => setLevelGroup(lvl)}
+                    className={`px-3 py-1 border-2 border-primary font-label text-[10px] uppercase transition-colors ${
+                      levelGroup === lvl ? "bg-secondary text-on-secondary" : "bg-surface hover:bg-surface-container-high text-primary"
+                    }`}
+                  >
+                    {lvl === "ALL" ? t("market.allTypes") : lvl}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden md:block w-full h-32 border-2 border-primary relative overflow-hidden bg-surface-container">
+            <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-secondary opacity-20" />
+            <div className="absolute bottom-4 left-4 font-headline text-headline-md text-primary opacity-30">**</div>
+          </div>
         </div>
-      </div>
+      </aside>
 
-      {/* Grid Layout containing Filters on left, and Services catalog list on right */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        
-        {/* Sidebar Filter Panel */}
-        <div className="space-y-6 bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] h-fit">
-          <div className="flex items-center gap-2 border-b-2 border-black dark:border-stone-800 pb-3">
-            <Icon name="filter_alt" className="text-black dark:text-stone-300" />
-            <h3 className="font-label text-xs uppercase font-bold tracking-wider text-black dark:text-stone-200">
-              {t("market.filters")}
-            </h3>
+      {/* Directory content */}
+      <div className="w-full md:w-3/4">
+        <div className="flex justify-between items-end border-b-2 border-primary pb-4 mb-8">
+          <p className="font-body text-body-md text-on-surface-variant">{t("market.servicesFound", { n: services.length })}</p>
+          <div className="flex items-center gap-2 font-label text-label-md">
+            <span className="text-on-surface-variant">{t("market.sortBy")}</span>
+            <span className="text-primary font-bold border-b border-primary border-dashed pb-0.5">{t("market.relevance")}</span>
           </div>
+        </div>
 
-          {/* LEVEL Filter */}
-          <div className="space-y-2">
-            <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              {t("market.cefrLevel")}
-            </span>
-            <div className="flex flex-col gap-1.5">
-              {["ALL", "A1-A2", "B1-B2", "C1-C2"].map((lvl) => (
-                <label key={lvl} className="flex items-center gap-2 text-xs font-bold text-black dark:text-stone-300 cursor-pointer uppercase">
-                  <input
-                    type="radio"
-                    name="level"
-                    checked={levelGroup === lvl}
-                    onChange={() => setLevelGroup(lvl)}
-                    className="accent-[#E32652]"
-                  />
-                  {lvl === "ALL" ? t("market.allTypes") : lvl}
-                </label>
-              ))}
-            </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="h-64 bg-surface-container animate-pulse border-2 border-primary" />
+            ))}
           </div>
-
-          {/* PRICE Filter */}
-          <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-stone-800">
-            <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              {t("market.price")}
-            </span>
-            <div className="flex flex-col gap-1.5">
-              {[
-                { label: t("market.allStatuses") || "All Prices", val: "" },
-                { label: "Free Services", val: "free" },
-                { label: "Under 50 TJS", val: "under50" },
-                { label: "50 - 150 TJS", val: "50-150" },
-                { label: "Premium 150+ TJS", val: "premium150" }
-              ].map((item) => (
-                <label key={item.label} className="flex items-center gap-2 text-xs font-bold text-black dark:text-stone-300 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="price"
-                    checked={priceGroup === item.val}
-                    onChange={() => setPriceGroup(item.val)}
-                    className="accent-[#E32652]"
-                  />
-                  {item.label}
-                </label>
-              ))}
-            </div>
+        ) : pageItems.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 bg-surface-bright border-2 border-dashed border-primary text-center">
+            <Icon name="search_off" className="text-4xl text-on-surface-variant mb-2" />
+            <p className="font-label text-label-md text-primary uppercase">{t("market.noListings")}</p>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter lg:gap-8">
+            {cards.map(({ type, service }) =>
+              type === "featured" ? (
+                <FeaturedCard key={service.id} service={service} lang={lang} t={t} onMessage={handleMessage} />
+              ) : type === "free" ? (
+                <FreeExchangeCard key={service.id} service={service} lang={lang} t={t} onMessage={handleMessage} />
+              ) : (
+                <StandardCard key={service.id} service={service} lang={lang} t={t} onMessage={handleMessage} />
+              )
+            )}
+            {currentPage === 1 && <OfferSkillCard t={t} />}
+          </div>
+        )}
 
-          {/* Category Filter */}
-          <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-stone-800">
-            <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              {t("market.category")}
-            </span>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full text-xs font-bold bg-[#FAF8F5] dark:bg-stone-800 border-2 border-black dark:border-stone-700 p-2 text-black dark:text-stone-200 focus:outline-none"
+        {totalPages > 1 && (
+          <div className="mt-16 flex justify-center items-center gap-4">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((c) => Math.max(c - 1, 1))}
+              className="w-10 h-10 border-2 border-primary flex items-center justify-center hover:bg-primary hover:text-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <option value="">{t("market.allTypes") || "All Categories"}</option>
-              <option value="KOREAN">Korean</option>
-              <option value="FRENCH">French</option>
-              <option value="SPANISH">Spanish</option>
-              <option value="TRANSLATION">Translation</option>
-              <option value="EDITING">Editing & QA</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Directory Listings Area */}
-        <div className="lg:col-span-3 space-y-6">
-          
-          {loading ? (
-            <div className="space-y-4">
-              {[1, 2, 3].map((n) => (
-                <div key={n} className="h-44 bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 animate-pulse" />
-              ))}
-            </div>
-          ) : paginatedServices.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-stone-900 border-2 border-dashed border-black dark:border-stone-800 text-center">
-              <Icon name="search_off" className="text-4xl text-gray-400 dark:text-stone-500 mb-2" />
-              <p className="text-sm font-bold text-black dark:text-stone-200 uppercase tracking-wide">
-                {t("market.noListings")}
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {paginatedServices.map((svc) => (
-                <div 
-                  key={svc.id}
-                  className="bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] flex flex-col md:flex-row transition-transform hover:-translate-y-0.5"
+              <Icon name="arrow_back" />
+            </button>
+            <div className="flex gap-2 font-label text-label-md">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setCurrentPage(p)}
+                  className={`w-10 h-10 border-2 border-primary flex items-center justify-center font-bold transition-colors ${
+                    p === currentPage ? "bg-primary text-surface" : "hover:bg-surface-container"
+                  }`}
                 >
-                  {/* Left Color Block Accent */}
-                  <div className="w-full md:w-48 bg-[#FAF8F5] dark:bg-stone-800 border-b-2 md:border-b-0 md:border-r-2 border-black dark:border-stone-800 p-6 flex flex-col justify-between min-h-[160px]">
-                    <div>
-                      <span className="px-2 py-1 text-[9px] font-black tracking-wider text-black border border-black bg-yellow-300 uppercase">
-                        {svc.category}
-                      </span>
-                      {svc.cefr_level && (
-                        <span className="ml-2 px-2 py-1 text-[9px] font-black tracking-wider text-white border border-black bg-[#E32652] uppercase">
-                          CEFR {svc.cefr_level}
-                        </span>
-                      )}
-                    </div>
-                    <div className="mt-4">
-                      <span className="text-[10px] text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest block">
-                        {t("market.providerInfo")}
-                      </span>
-                      <span className="text-xs font-bold text-black dark:text-stone-100 uppercase tracking-wider block">
-                        {svc.provider_name || "Lingo Pro"}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Service Core Info */}
-                  <div className="flex-1 p-6 flex flex-col justify-between gap-4">
-                    <div>
-                      <div className="flex justify-between items-start">
-                        <h2 className="font-serif font-black text-xl text-black dark:text-stone-100 hover:text-[#E32652] transition-colors leading-tight">
-                          {svc[`title_${lang}`] || svc.title}
-                        </h2>
-                        
-                        {/* Rating Display */}
-                        <div className="flex items-center gap-1 text-[#E32652]">
-                          <Icon name="star" className="text-sm text-[#E32652]" />
-                          <span className="text-xs font-bold font-sans">
-                            {Number(svc.rating).toFixed(1)}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-500 dark:text-stone-400 font-sans mt-2 leading-relaxed">
-                        {svc[`description_${lang}`] || svc.description}
-                      </p>
-                    </div>
-
-                    {/* Card Actions/Footer */}
-                    <div className="flex justify-between items-center border-t border-gray-100 dark:border-stone-800 pt-4 mt-auto">
-                      <div>
-                        <span className="text-[9px] text-gray-400 dark:text-stone-500 font-label uppercase block leading-none">
-                          {t("market.price")}
-                        </span>
-                        <span className="text-base font-black text-black dark:text-stone-100 font-mono">
-                          {svc.price == 0 ? t("market.priceFree") : `${svc.price} TJS/${svc.pricing_type}`}
-                        </span>
-                      </div>
-                      
-                      <button 
-                        onClick={() => handleInitiateProposal(svc)}
-                        className="px-4 py-2 border-2 border-black dark:border-stone-700 bg-white dark:bg-stone-800 text-black dark:text-stone-200 font-label text-xs uppercase font-bold shadow-[2px_2px_0px_#000000] dark:shadow-[2px_2px_0px_#3a3a3a] hover:bg-stone-50 dark:hover:bg-stone-700 transition-all active:translate-y-0.5 active:shadow-[1px_1px_0px_#000000]"
-                      >
-                        {t("market.message")}
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  {p}
+                </button>
               ))}
             </div>
-          )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 pt-4">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((c) => Math.max(c - 1, 1))}
-                className="w-8 h-8 flex items-center justify-center border-2 border-black dark:border-stone-700 bg-white dark:bg-stone-800 disabled:opacity-40 shadow-[1.5px_1.5px_0px_#000000]"
-              >
-                <Icon name="arrow_back" className="text-black dark:text-stone-200 text-xs" />
-              </button>
-              
-              <span className="font-mono text-xs font-bold text-black dark:text-stone-200">
-                {currentPage} / {totalPages}
-              </span>
-
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((c) => Math.min(c + 1, totalPages))}
-                className="w-8 h-8 flex items-center justify-center border-2 border-black dark:border-stone-700 bg-white dark:bg-stone-800 disabled:opacity-40 shadow-[1.5px_1.5px_0px_#000000]"
-              >
-                <Icon name="arrow_forward" className="text-black dark:text-stone-200 text-xs" />
-              </button>
-            </div>
-          )}
-
-        </div>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((c) => Math.min(c + 1, totalPages))}
+              className="w-10 h-10 border-2 border-primary flex items-center justify-center hover:bg-primary hover:text-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Icon name="arrow_forward" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
