@@ -34,6 +34,11 @@ import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Wallet from "./pages/Wallet.jsx";
 import WordDeck from "./pages/WordDeck.jsx";
 import AppLayout from "./components/layout/AppLayout.jsx";
+import MarketplaceLayout from "./components/layout/MarketplaceLayout.jsx";
+import MarketplaceInbox from "./pages/MarketplaceInbox.jsx";
+import MarketplaceAnalytics from "./pages/MarketplaceAnalytics.jsx";
+import MarketplaceServices from "./pages/MarketplaceServices.jsx";
+import MarketplaceListingEditor from "./pages/MarketplaceListingEditor.jsx";
 import PublicLayout from "./components/layout/PublicLayout.jsx";
 import LoadingScreen from "./components/LoadingScreen.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -96,7 +101,6 @@ export default function App() {
           <Route path="/tutor" element={page(TutorScenarios)} />
           <Route path="/tutor/chat" element={page(TutorChat)} />
           <Route path="/leaderboard" element={page(Leaderboard)} />
-          <Route path="/marketplace" element={page(Marketplace)} />
           <Route path="/marketplace/:id" element={page(MarketplaceStory)} />
           <Route path="/studio" element={page(AuthorStudio)} />
           <Route path="/studio/new" element={page(StoryEditor)} />
@@ -110,6 +114,15 @@ export default function App() {
           <Route path="/notifications" element={page(Notifications)} />
           <Route path="/settings" element={page(Settings)} />
           <Route path="/search" element={page(SearchResults)} />
+        </Route>
+
+        <Route element={<MarketplaceLayout />}>
+          <Route path="/marketplace" element={page(Marketplace)} />
+          <Route path="/marketplace/inbox" element={page(MarketplaceInbox)} />
+          <Route path="/marketplace/analytics" element={page(MarketplaceAnalytics)} />
+          <Route path="/marketplace/services" element={page(MarketplaceServices)} />
+          <Route path="/marketplace/services/new" element={page(MarketplaceListingEditor)} />
+          <Route path="/marketplace/services/:id/edit" element={page(MarketplaceListingEditor)} />
         </Route>
       </Route>
 
