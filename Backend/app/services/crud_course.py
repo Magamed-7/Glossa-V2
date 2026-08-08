@@ -33,16 +33,15 @@ async def get_or_create_progress(user_id: int, db: AsyncSession):
 async def get_onboarding_status(user_id: int, db: AsyncSession):
     progress = await get_or_create_progress(user_id, db)
     return {
-        'onboarded': progress.daily_minutes_budget is not None and progress.days_per_week_target is not None,
+        'onboarded': progress.daily_minutes_budget is not None,
         'daily_minutes_budget': progress.daily_minutes_budget,
-        'days_per_week_target': progress.days_per_week_target,
     }
 
 
-async def set_onboarding(user_id: int, daily_minutes_budget: int, days_per_week_target: int, db: AsyncSession):
+async def set_onboarding(user_id: int, daily_minutes_budget: int, db: AsyncSession):
     progress = await get_or_create_progress(user_id, db)
     progress.daily_minutes_budget = daily_minutes_budget
-    progress.days_per_week_target = days_per_week_target
+    progress.days_per_week_target = 7
     await db.commit()
     await db.refresh(progress)
     return progress
@@ -103,6 +102,22 @@ def compute_status(required, completed):
     return 'not_started'
 
 
+async def get_unit(unit_id: int, db: AsyncSession):
+    return (await db.execute(select(CourseUnit).where(CourseUnit.id == unit_id))).scalar_one_or_none()
+
+
+async def get_unlock_boundary(user_id: int, db: AsyncSession):
+    progress = await get_or_create_progress(user_id, db)
+
+    if progress.current_unit_id:
+        unit = await get_unit(progress.current_unit_id, db)
+        if unit is not None:
+            return unit.sequence_index
+
+    first_incomplete = await get_first_incomplete_unit(user_id, db)
+    return first_incomplete.sequence_index if first_incomplete else 0
+
+
 async def list_units(user_id: int, db: AsyncSession, level: str | None = None):
     query = select(CourseUnit).order_by(CourseUnit.sequence_index)
     if level:
@@ -113,6 +128,7 @@ async def list_units(user_id: int, db: AsyncSession, level: str | None = None):
 
     completed_map = await _completed_atoms_by_unit(user_id, db, unit_ids)
     stories_by_unit, vocab_by_unit = await _unit_story_vocab_ids(db, unit_ids)
+    boundary = await get_unlock_boundary(user_id, db)
 
     result = []
     for unit in units:
@@ -132,19 +148,28 @@ async def list_units(user_id: int, db: AsyncSession, level: str | None = None):
             'is_level_midpoint': unit.is_level_midpoint,
             'is_level_final': unit.is_level_final,
             'status': status,
+            'locked': unit.sequence_index > boundary,
         })
 
     return result
-
-
-async def get_unit(unit_id: int, db: AsyncSession):
-    return (await db.execute(select(CourseUnit).where(CourseUnit.id == unit_id))).scalar_one_or_none()
 
 
 async def get_unit_detail(user_id: int, unit_id: int, db: AsyncSession):
     unit = await get_unit(unit_id, db)
     if unit is None:
         return None
+
+    boundary = await get_unlock_boundary(user_id, db)
+
+    if unit.sequence_index > boundary:
+        return {
+            'id': unit.id,
+            'unit_code': unit.unit_code,
+            'sequence_index': unit.sequence_index,
+            'cefr_level': unit.cefr_level,
+            'theme_title': unit.theme_title,
+            'locked': True,
+        }
 
     completed_map = await _completed_atoms_by_unit(user_id, db, [unit_id])
     stories_by_unit, vocab_by_unit = await _unit_story_vocab_ids(db, [unit_id])
@@ -160,6 +185,7 @@ async def get_unit_detail(user_id: int, unit_id: int, db: AsyncSession):
         'sequence_index': unit.sequence_index,
         'cefr_level': unit.cefr_level,
         'theme_title': unit.theme_title,
+        'locked': False,
         'grammar_topic_label': unit.grammar_topic_label,
         'grammar_lesson_id': unit.grammar_lesson_id,
         'story_ids': story_ids,
@@ -184,6 +210,10 @@ ATOM_XP_REASON = {
 async def complete_atom(user_id: int, unit_id: int, atom_type: str, time_spent_seconds: int, db: AsyncSession):
     unit = await get_unit(unit_id, db)
     if unit is None:
+        return None
+
+    boundary = await get_unlock_boundary(user_id, db)
+    if unit.sequence_index > boundary:
         return None
 
     existing = (
@@ -290,8 +320,8 @@ async def get_progress_summary(user_id: int, db: AsyncSession):
         current_unit = await get_first_incomplete_unit(user_id, db)
 
     projected_finish_date = None
-    if progress.daily_minutes_budget and progress.days_per_week_target and remaining_minutes > 0:
-        minutes_per_week = progress.daily_minutes_budget * progress.days_per_week_target
+    if progress.daily_minutes_budget and remaining_minutes > 0:
+        minutes_per_week = progress.daily_minutes_budget * 7
         weeks_needed = math.ceil(remaining_minutes / minutes_per_week)
         projected_finish_date = date.today() + timedelta(weeks=weeks_needed)
 
@@ -302,7 +332,6 @@ async def get_progress_summary(user_id: int, db: AsyncSession):
         'current_unit_id': current_unit.id if current_unit else None,
         'projected_finish_date': projected_finish_date,
         'daily_minutes_budget': progress.daily_minutes_budget,
-        'days_per_week_target': progress.days_per_week_target,
         'level_breakdown': list(level_stats.values()),
     }
 
@@ -332,7 +361,7 @@ async def check_test_availability(user_id: int, cefr_level: str, test_type: str,
         return False, 'level_has_no_flagged_unit'
 
     detail = await get_unit_detail(user_id, unit.id, db)
-    if detail['status'] != 'completed':
+    if detail.get('status') != 'completed':
         return False, 'gating_unit_not_completed'
 
     return True, None

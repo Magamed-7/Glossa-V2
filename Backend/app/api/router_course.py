@@ -35,7 +35,7 @@ async def submit_onboarding(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    await crud_course.set_onboarding(current_user.id, data.daily_minutes_budget, data.days_per_week_target, db)
+    await crud_course.set_onboarding(current_user.id, data.daily_minutes_budget, db)
     return await crud_course.get_onboarding_status(current_user.id, db)
 
 

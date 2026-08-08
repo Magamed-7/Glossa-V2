@@ -8,13 +8,11 @@ ATOM_TYPES = Literal['vocabulary', 'grammar', 'story', 'review', 'ai_practice']
 
 class OnboardingRequest(BaseModel):
     daily_minutes_budget: int = Field(ge=5, le=240)
-    days_per_week_target: int = Field(ge=1, le=7)
 
 
 class OnboardingStatus(BaseModel):
     onboarded: bool
     daily_minutes_budget: int | None = None
-    days_per_week_target: int | None = None
 
 
 class CourseUnitSummary(BaseModel):
@@ -28,6 +26,7 @@ class CourseUnitSummary(BaseModel):
     is_level_midpoint: bool
     is_level_final: bool
     status: Literal['completed', 'in_progress', 'not_started']
+    locked: bool
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -38,15 +37,16 @@ class CourseUnitDetail(BaseModel):
     sequence_index: int
     cefr_level: str
     theme_title: str
-    grammar_topic_label: str | None
-    grammar_lesson_id: int | None
-    story_ids: list[int]
-    vocab_entry_ids: list[int]
-    estimated_minutes: int
-    is_level_midpoint: bool
-    is_level_final: bool
-    completed_atoms: list[str]
-    status: Literal['completed', 'in_progress', 'not_started']
+    locked: bool
+    grammar_topic_label: str | None = None
+    grammar_lesson_id: int | None = None
+    story_ids: list[int] = []
+    vocab_entry_ids: list[int] = []
+    estimated_minutes: int | None = None
+    is_level_midpoint: bool = False
+    is_level_final: bool = False
+    completed_atoms: list[str] = []
+    status: Literal['completed', 'in_progress', 'not_started'] | None = None
 
 
 class AtomCompleteRequest(BaseModel):
@@ -92,7 +92,6 @@ class CourseProgressResponse(BaseModel):
     current_unit_id: int | None
     projected_finish_date: date | None
     daily_minutes_budget: int | None
-    days_per_week_target: int | None
     level_breakdown: list[dict]
 
 
