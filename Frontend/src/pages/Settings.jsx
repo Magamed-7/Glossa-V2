@@ -24,6 +24,8 @@ export default function Settings() {
       <PageHeader
         eyebrow={t("settings.eyebrow")}
         title={t("settings.title")}
+        accent={t("settings.titleAccent")}
+        subtitle={t("settings.subtitle")}
         actions={
           <div className="flex items-center gap-3">
             <ThemeToggle />
@@ -32,7 +34,7 @@ export default function Settings() {
         }
       />
       <Tabs id="settings" tabs={TABS} value={tab} onChange={setTab} />
-      <div className="mt-8 max-w-2xl">
+      <div className="mt-8 max-w-4xl">
         {tab === "learning" && <LearningSettings />}
         {tab === "notifications" && <NotificationSettings />}
         {tab === "privacy" && <PrivacyPreferences />}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NeoCard from "../ui/NeoCard.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
+import Icon from "../ui/Icon.jsx";
 import Field from "../ui/Field.jsx";
 import Modal from "../ui/Modal.jsx";
 import DataExport from "./DataExport.jsx";
@@ -10,6 +11,15 @@ import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useT } from "../../lib/i18n.jsx";
+
+function CardHeading({ icon, children }) {
+  return (
+    <div className="flex items-center gap-2 mb-4">
+      <Icon name={icon} className="text-secondary text-xl" />
+      <h3 className="font-headline text-headline-md">{children}</h3>
+    </div>
+  );
+}
 
 function ChangePassword() {
   const t = useT();
@@ -36,31 +46,34 @@ function ChangePassword() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={onSubmit}>
-      <Field
-        label={t("settings.account.currentPasswordLabel")}
-        type="password"
-        value={oldPassword}
-        onChange={(e) => setOldPassword(e.target.value)}
-        required
-      />
-      <Field
-        label={t("settings.account.newPasswordLabel")}
-        type="password"
-        minLength={8}
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        required
-      />
-      {error && (
-        <p role="alert" className="font-label text-label-md text-error">
-          {error}
-        </p>
-      )}
-      <NeoButton type="submit" size="md" loading={submitting}>
-        {t("settings.account.changePassword")}
-      </NeoButton>
-    </form>
+    <NeoCard>
+      <CardHeading icon="lock">{t("settings.account.passwordTitle")}</CardHeading>
+      <form className="space-y-4 max-w-sm" onSubmit={onSubmit}>
+        <Field
+          label={t("settings.account.currentPasswordLabel")}
+          type="password"
+          value={oldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
+          required
+        />
+        <Field
+          label={t("settings.account.newPasswordLabel")}
+          type="password"
+          minLength={8}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+        {error && (
+          <p role="alert" className="font-label text-label-md text-error">
+            {error}
+          </p>
+        )}
+        <NeoButton type="submit" size="md" loading={submitting}>
+          {t("settings.account.changePassword")}
+        </NeoButton>
+      </form>
+    </NeoCard>
   );
 }
 
@@ -73,6 +86,7 @@ function TwoFactor() {
   const [disablePassword, setDisablePassword] = useState("");
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [showDisable, setShowDisable] = useState(false);
 
   async function onStartSetup() {
     setBusy(true);
@@ -110,6 +124,7 @@ function TwoFactor() {
       toast.success(t("settings.account.twoFactorDisabled"));
       setDisablePassword("");
       setBackupCodes(null);
+      setShowDisable(false);
     } catch (err) {
       setError(errorText(err));
     } finally {
@@ -117,50 +132,55 @@ function TwoFactor() {
     }
   }
 
-  if (backupCodes) {
-    return (
-      <div className="space-y-4">
-        <p className="font-body text-body-md">{t("settings.account.backupCodesNotice")}</p>
-        <div className="grid grid-cols-2 gap-2 font-ledger">
-          {backupCodes.map((c) => (
-            <span key={c} className="border-2 border-tertiary px-3 py-2">
-              {c}
-            </span>
-          ))}
-        </div>
-        <NeoButton variant="ghost" size="md" onClick={() => setBackupCodes(null)}>
-          {t("settings.account.done")}
-        </NeoButton>
-      </div>
-    );
-  }
-
-  if (setupData) {
-    return (
-      <form className="space-y-4" onSubmit={onConfirm}>
-        <p className="font-body text-body-md">{t("settings.account.addSecretNotice")}</p>
-        <p className="font-ledger border-2 border-tertiary px-4 py-3 break-all">{setupData.secret}</p>
-        <Field label={t("settings.account.codeLabel")} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} />
-        {error && (
-          <p role="alert" className="font-label text-label-md text-error">
-            {error}
-          </p>
-        )}
-        <NeoButton type="submit" size="md" loading={busy}>
-          {t("settings.account.confirm")}
-        </NeoButton>
-      </form>
-    );
-  }
-
   return (
-    <div className="space-y-4">
-      <NeoButton size="md" loading={busy} onClick={onStartSetup}>
-        {t("settings.account.enable2fa")}
-      </NeoButton>
-      <details>
-        <summary className="font-label text-label-md uppercase cursor-pointer">{t("settings.account.disable2faSummary")}</summary>
-        <form className="space-y-4 mt-4" onSubmit={onDisable}>
+    <NeoCard>
+      <CardHeading icon="verified_user">{t("settings.account.twoFactorTitle")}</CardHeading>
+      <p className="font-body text-body-md text-on-surface-variant mb-6 max-w-md">
+        {t("settings.account.twoFactorDescription")}
+      </p>
+
+      {backupCodes ? (
+        <div className="space-y-4">
+          <p className="font-body text-body-md">{t("settings.account.backupCodesNotice")}</p>
+          <div className="grid grid-cols-2 gap-2 font-ledger">
+            {backupCodes.map((c) => (
+              <span key={c} className="border-2 border-tertiary px-3 py-2">
+                {c}
+              </span>
+            ))}
+          </div>
+          <NeoButton variant="ghost" size="md" onClick={() => setBackupCodes(null)}>
+            {t("settings.account.done")}
+          </NeoButton>
+        </div>
+      ) : setupData ? (
+        <form className="space-y-4 max-w-sm" onSubmit={onConfirm}>
+          <p className="font-body text-body-md">{t("settings.account.addSecretNotice")}</p>
+          <p className="font-ledger border-2 border-tertiary px-4 py-3 break-all">{setupData.secret}</p>
+          <Field label={t("settings.account.codeLabel")} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} />
+          {error && (
+            <p role="alert" className="font-label text-label-md text-error">
+              {error}
+            </p>
+          )}
+          <NeoButton type="submit" size="md" loading={busy}>
+            {t("settings.account.confirm")}
+          </NeoButton>
+        </form>
+      ) : (
+        <div className="flex flex-wrap items-center gap-3">
+          <NeoButton size="md" loading={busy} onClick={onStartSetup}>
+            <Icon name="shield" className="text-sm mr-1" />
+            {t("settings.account.enable2fa")}
+          </NeoButton>
+          <NeoButton variant="ghost" size="md" onClick={() => setShowDisable((v) => !v)}>
+            {t("settings.account.disable2faSummary")}
+          </NeoButton>
+        </div>
+      )}
+
+      {showDisable && !setupData && !backupCodes && (
+        <form className="space-y-4 mt-6 pt-6 border-t border-dashed border-outline-variant max-w-sm" onSubmit={onDisable}>
           <Field
             label={t("settings.account.passwordLabel")}
             type="password"
@@ -177,12 +197,12 @@ function TwoFactor() {
             {t("settings.account.disable")}
           </NeoButton>
         </form>
-      </details>
-    </div>
+      )}
+    </NeoCard>
   );
 }
 
-function LogOut() {
+function SessionCard() {
   const t = useT();
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -193,9 +213,13 @@ function LogOut() {
   }
 
   return (
-    <NeoButton variant="ghost" size="md" onClick={onLogout}>
-      {t("settings.account.logOut")}
-    </NeoButton>
+    <NeoCard>
+      <CardHeading icon="devices">{t("settings.account.sessionTitle")}</CardHeading>
+      <p className="font-body text-body-md text-on-surface-variant mb-6">{t("settings.account.sessionDescription")}</p>
+      <NeoButton variant="ghost" size="md" className="w-full" onClick={onLogout}>
+        {t("settings.account.logOut")}
+      </NeoButton>
+    </NeoCard>
   );
 }
 
@@ -223,8 +247,13 @@ function DeleteAccount() {
   }
 
   return (
-    <>
-      <NeoButton variant="ghost" size="md" onClick={() => setOpen(true)}>
+    <div className="border-2 border-secondary bg-secondary/5 p-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Icon name="warning" className="text-secondary text-xl" />
+        <h3 className="font-headline text-headline-md text-secondary">{t("settings.account.dangerZone")}</h3>
+      </div>
+      <p className="font-body text-body-md text-on-surface-variant mb-6">{t("settings.account.dangerZoneDescription")}</p>
+      <NeoButton variant="ghost" size="md" className="w-full border-secondary text-secondary" onClick={() => setOpen(true)}>
         {t("settings.account.deleteAccount")}
       </NeoButton>
 
@@ -248,31 +277,26 @@ function DeleteAccount() {
           </NeoButton>
         </form>
       </Modal>
-    </>
+    </div>
   );
 }
 
 export default function AccountSection() {
   const t = useT();
   return (
-    <div className="space-y-8">
-      <NeoCard>
-        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.passwordTitle")}</h3>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <div className="lg:col-span-2 space-y-6">
         <ChangePassword />
-      </NeoCard>
-      <NeoCard>
-        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.twoFactorTitle")}</h3>
         <TwoFactor />
-      </NeoCard>
-      <DataExport />
-      <NeoCard>
-        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.sessionTitle")}</h3>
-        <LogOut />
-      </NeoCard>
-      <NeoCard variant="accent">
-        <h3 className="font-headline text-headline-md mb-4">{t("settings.account.dangerZone")}</h3>
+        <DataExport />
+      </div>
+      <div className="space-y-6">
+        <SessionCard />
         <DeleteAccount />
-      </NeoCard>
+        <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant leading-relaxed">
+          {t("settings.account.footerNote")}
+        </p>
+      </div>
     </div>
   );
 }

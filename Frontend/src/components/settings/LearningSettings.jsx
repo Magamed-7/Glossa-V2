@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import NeoCard from "../ui/NeoCard.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
+import Icon from "../ui/Icon.jsx";
 import Field from "../ui/Field.jsx";
 import Select from "../ui/Select.jsx";
 import { getSettings, updateSettings } from "../../lib/api/settings.js";
@@ -45,27 +47,35 @@ export default function LearningSettings() {
   if (!settings) return null;
 
   return (
-    <div className="space-y-6">
-      <Field
-        label={t("settings.learning.dailyGoalLabel")}
-        type="number"
-        min="1"
-        value={dailyGoal}
-        onChange={(e) => setDailyGoal(Number(e.target.value))}
-      />
-      <Field
-        label={t("settings.learning.studyTimeLabel")}
-        value={studyTime}
-        onChange={(e) => setStudyTime(e.target.value)}
-      />
-      <Select label={t("settings.learning.difficultyLabel")} value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-        <option value="easy">{t("settings.learning.difficultyOptions.easy")}</option>
-        <option value="medium">{t("settings.learning.difficultyOptions.medium")}</option>
-        <option value="hard">{t("settings.learning.difficultyOptions.hard")}</option>
-      </Select>
-      <NeoButton loading={submitting} onClick={onSave}>
-        {t("settings.learning.save")}
-      </NeoButton>
-    </div>
+    <NeoCard>
+      <div className="flex items-center gap-3 mb-6">
+        <Icon name="school" className="text-secondary text-2xl" />
+        <h3 className="font-headline text-headline-md">{t("settings.learning.title")}</h3>
+      </div>
+      <div className="border-t-2 border-tertiary mb-6" />
+
+      <div className="space-y-6 max-w-md">
+        <Field
+          label={t("settings.learning.dailyGoalLabel")}
+          type="number"
+          min="1"
+          value={dailyGoal}
+          onChange={(e) => setDailyGoal(Number(e.target.value))}
+        />
+        <Field
+          label={t("settings.learning.studyTimeLabel")}
+          value={studyTime}
+          onChange={(e) => setStudyTime(e.target.value)}
+        />
+        <Select label={t("settings.learning.difficultyLabel")} value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+          <option value="easy">{t("settings.learning.difficultyOptions.easy")}</option>
+          <option value="medium">{t("settings.learning.difficultyOptions.medium")}</option>
+          <option value="hard">{t("settings.learning.difficultyOptions.hard")}</option>
+        </Select>
+        <NeoButton size="md" loading={submitting} onClick={onSave}>
+          {t("settings.learning.save")}
+        </NeoButton>
+      </div>
+    </NeoCard>
   );
 }
