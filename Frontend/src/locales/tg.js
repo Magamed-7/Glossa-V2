@@ -32,6 +32,7 @@ export const tg = {
     currentStreak: "Силсилаи ҷорӣ",
     notifications: "Огоҳиномаҳо",
     myProfile: "Профили ман",
+    wallet: "Ҳамён",
     tagline: "Маҳорат тавассути дизайн",
     search: "Ҷустуҷӯ",
     submitSearch: "Ирсоли ҷустуҷӯ",

@@ -32,6 +32,7 @@ export const ru = {
     currentStreak: "Текущая серия",
     notifications: "Уведомления",
     myProfile: "Мой профиль",
+    wallet: "Кошелёк",
     tagline: "Мастерство через дизайн",
     search: "Поиск",
     submitSearch: "Отправить поиск",

@@ -34,24 +34,34 @@ export default function SearchBar() {
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} aria-label={t("nav.search")}>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label={t("nav.search")}
+        className="flex items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
+      >
         <Icon name="search" className="text-tertiary" />
       </button>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex items-center gap-2">
+    <form onSubmit={onSubmit} className="flex items-center gap-2 h-10">
       <input
         ref={inputRef}
         type="search"
-        className="bg-surface-container-low border-2 border-tertiary px-3 py-1 font-body text-body-md outline-none focus:border-secondary"
+        className="h-full bg-surface-container-low border-2 border-tertiary px-3 font-body text-body-md outline-none focus:border-secondary w-40 md:w-56"
         placeholder={t("nav.searchPlaceholder")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onBlur={() => !query && setOpen(false)}
+        autoFocus
       />
-      <button type="submit" aria-label={t("nav.submitSearch")}>
+      <button
+        type="submit"
+        aria-label={t("nav.submitSearch")}
+        className="flex items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
+      >
         <Icon name="search" className="text-secondary" />
       </button>
     </form>

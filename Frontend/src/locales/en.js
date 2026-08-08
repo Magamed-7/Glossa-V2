@@ -32,6 +32,7 @@ export const en = {
     currentStreak: "Current streak",
     notifications: "Notifications",
     myProfile: "My profile",
+    wallet: "Wallet",
     tagline: "Mastery through Design",
     search: "Search",
     submitSearch: "Submit search",

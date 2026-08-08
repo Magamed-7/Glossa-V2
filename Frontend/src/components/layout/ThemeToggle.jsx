@@ -9,7 +9,7 @@ const OPTIONS = [
   { value: "system", icon: "brightness_auto" },
 ];
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ className }) {
   const t = useT();
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
@@ -28,7 +28,10 @@ export default function ThemeToggle() {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t("nav.changeTheme")}
-        className="flex items-center gap-1.5 border-2 border-tertiary px-3 py-1.5 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors"
+        className={
+          className ||
+          "flex items-center gap-1.5 border-2 border-tertiary px-3 py-1.5 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors"
+        }
       >
         <Icon name={current.icon} className="text-sm" />
       </button>

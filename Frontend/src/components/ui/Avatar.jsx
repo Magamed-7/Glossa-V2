@@ -15,13 +15,14 @@ function initialFor(name, userId) {
   return "?";
 }
 
-export default function Avatar({ photoUrl, name, userId, size = "md", className = "", eager = false }) {
+export default function Avatar({ photoUrl, name, userId, size = "md", shape = "circle", className = "", eager = false }) {
   const sizeClass = SIZE_CLASSES[size];
   const px = SIZE_PX[size];
+  const shapeClass = shape === "square" ? "" : "rounded-full";
 
   if (photoUrl || !name) {
     return (
-      <div className={`${sizeClass} border-2 border-tertiary rounded-full overflow-hidden ${className}`}>
+      <div className={`${sizeClass} border-2 border-tertiary ${shapeClass} overflow-hidden ${className}`}>
         <img
           className="w-full h-full object-cover"
           src={photoUrl || DEFAULT_AVATAR}
@@ -37,7 +38,7 @@ export default function Avatar({ photoUrl, name, userId, size = "md", className 
 
   return (
     <div
-      className={`${sizeClass} border-2 border-tertiary rounded-full overflow-hidden bg-secondary text-on-secondary flex items-center justify-center font-label font-bold ${className}`}
+      className={`${sizeClass} border-2 border-tertiary ${shapeClass} overflow-hidden bg-secondary text-on-secondary flex items-center justify-center font-label font-bold ${className}`}
       aria-hidden="true"
     >
       {initialFor(name, userId)}
