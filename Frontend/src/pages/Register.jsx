@@ -56,7 +56,7 @@ export default function Register() {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout cancelTo="/">
       <div className="w-full max-w-lg bg-surface border-2 border-navy p-8 md:p-12 relative overflow-hidden">
         <div className="flex flex-col items-center mb-10 text-center">
           <span className="font-display text-display-lg text-primary italic mb-2 tracking-tighter">Glossa</span>
@@ -123,16 +123,10 @@ export default function Register() {
             </p>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <NeoButton type="submit" className="flex-1 flex items-center justify-center gap-3" loading={submitting}>
-              <span>{t("auth.register.submit")}</span>
-              <Icon name="arrow_forward" />
-            </NeoButton>
-            <NeoButton as={Link} to="/" variant="inverse" className="flex-1 flex items-center justify-center gap-3">
-              <Icon name="arrow_back" />
-              <span>{t("common.cancel") || "Cancel"}</span>
-            </NeoButton>
-          </div>
+          <NeoButton type="submit" className="w-full flex items-center justify-center gap-3" loading={submitting}>
+            <span>{t("auth.register.submit")}</span>
+            <Icon name="arrow_forward" />
+          </NeoButton>
 
           <div className="flex justify-center pt-4 border-t-2 border-surface-container-highest">
             <Link
