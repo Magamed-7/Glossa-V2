@@ -140,12 +140,47 @@ export const en = {
     selectedPath: "Selected Path",
     noneSelected: "None Selected",
     begin: "Begin Journey",
+    continue: "Continue",
     back: "Back",
     native: {
       titleLead: "Choose Your ",
       titleAccent: "Interface Language",
       description: "Which language are you most comfortable using Glossa in? You can change this anytime from the language switcher.",
       continue: "Continue",
+    },
+    pace: {
+      titleLead: "How Much Time ",
+      titleAccent: "Can You Give?",
+      description: "This only shapes your daily plan on the Roadmap — your streak is what keeps you coming back every day, not a deadline.",
+      minutesPerDay: "min / day",
+      continue: "Continue",
+    },
+    tour: {
+      eyebrow: "Quick Orientation",
+      titleLead: "Here's Where ",
+      titleAccent: "Everything Lives",
+      description: "Four things worth knowing before you start — in the order you'll actually use them.",
+      cta: "Enter Glossa",
+      grammar: {
+        title: "Start with a grammar lesson",
+        description: "Your Roadmap breaks A1→C1 into small units. Each one opens with a short grammar lesson explaining the rule before you see it in a story.",
+      },
+      deck: {
+        title: "Add words to your deck",
+        description: "Every word you save goes into your personal deck. Glossa uses spaced repetition (SM-2) to resurface each one right before you'd forget it.",
+      },
+      games: {
+        title: "Review with games, not chores",
+        description: "Your deck isn't just flashcards — practice it as Speed Recall (swipe know/forgot) or Typewriter (type the word from its translation) from the Library page.",
+      },
+      stories: {
+        title: "Read stories, click any word",
+        description: "Every story is written at your level. Click a word to see its translation on the spot, and add it to your deck in one tap.",
+        tryIt: "Try it right now",
+        translationLabel: "Translation",
+        addToDeck: "Add to deck",
+        hint: "That's exactly how it works inside every story.",
+      },
     },
     languages: {
       english: { title: "English", description: "The global bridge of commerce, literature, and diplomacy.", gateway: "London" },

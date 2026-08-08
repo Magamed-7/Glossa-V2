@@ -2,14 +2,65 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LanguageCard from "../components/onboarding/LanguageCard.jsx";
 import LevelPicker from "../components/onboarding/LevelPicker.jsx";
+import AppTour from "../components/onboarding/AppTour.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { addLanguage } from "../lib/api/profile.js";
 import { updateSettings } from "../lib/api/settings.js";
+import { submitOnboarding } from "../lib/api/learning.js";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { useToast } from "../lib/toast.jsx";
 import { LANGS, useI18n, useT } from "../lib/i18n.jsx";
+
+const MINUTE_OPTIONS = [15, 30, 60];
+
+function PaceStep({ minutes, onChangeMinutes, onBack, onContinue }) {
+  const t = useT();
+
+  return (
+    <>
+      <div className="mb-section-gap max-w-3xl">
+        <h1 className="font-display text-display-lg-mobile md:text-display-lg mb-6 leading-tight">
+          {t("onboarding.pace.titleLead")}
+          <span className="italic text-secondary">{t("onboarding.pace.titleAccent")}</span>
+        </h1>
+        <p className="font-body text-body-lg text-on-surface-variant max-w-xl">{t("onboarding.pace.description")}</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-section-gap max-w-2xl">
+        {MINUTE_OPTIONS.map((m) => (
+          <button
+            key={m}
+            type="button"
+            onClick={() => onChangeMinutes(m)}
+            aria-pressed={minutes === m}
+            className={`text-center p-8 border-2 transition-all ${
+              minutes === m ? "border-secondary hard-shadow-crimson text-secondary" : "border-tertiary hard-shadow hover:-translate-y-1"
+            }`}
+          >
+            <span className="font-display text-5xl block mb-2">{m}</span>
+            <span className="font-label text-label-md uppercase tracking-widest">{t("onboarding.pace.minutesPerDay")}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="flex justify-between items-center pb-20">
+        <button
+          type="button"
+          onClick={onBack}
+          className="font-label text-label-md uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors underline underline-offset-4"
+        >
+          {t("onboarding.back")}
+        </button>
+        <NeoButton className="flex items-center gap-2" onClick={onContinue}>
+          {t("onboarding.pace.continue")}
+          <Icon name="arrow_forward" />
+        </NeoButton>
+      </div>
+    </>
+  );
+}
 
 // `code` — реальное значение поля `language`, которое уходит в API; не переводить.
 const LANGUAGES = [
@@ -93,6 +144,7 @@ export default function Onboarding() {
   const [step, setStep] = useState("native");
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [level, setLevel] = useState("A1");
+  const [dailyMinutes, setDailyMinutes] = useState(30);
   const [submitting, setSubmitting] = useState(false);
 
   async function onBeginJourney() {
@@ -101,6 +153,7 @@ export default function Onboarding() {
     try {
       await addLanguage({ language: selectedLanguage, level, is_target: true });
       await updateSettings({ target_language: selectedLanguage });
+      await submitOnboarding({ daily_minutes_budget: dailyMinutes });
       await refreshUser();
       navigate("/dashboard", { replace: true });
     } catch (err) {
@@ -121,6 +174,15 @@ export default function Onboarding() {
       <main className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-12 relative z-10">
         {step === "native" ? (
           <NativeLanguageStep onDone={() => setStep("target")} />
+        ) : step === "pace" ? (
+          <PaceStep
+            minutes={dailyMinutes}
+            onChangeMinutes={setDailyMinutes}
+            onBack={() => setStep("target")}
+            onContinue={() => setStep("tour")}
+          />
+        ) : step === "tour" ? (
+          <AppTour submitting={submitting} onDone={onBeginJourney} />
         ) : (
           <>
             <div className="mb-section-gap max-w-3xl">
@@ -174,11 +236,10 @@ export default function Onboarding() {
                 <NeoButton
                   className="flex items-center gap-2"
                   disabled={!selectedLanguage}
-                  loading={submitting}
-                  onClick={onBeginJourney}
+                  onClick={() => setStep("pace")}
                 >
-                  {t("onboarding.begin")}
-                  <Icon name="flight_takeoff" />
+                  {t("onboarding.continue")}
+                  <Icon name="arrow_forward" />
                 </NeoButton>
               </div>
             </div>
