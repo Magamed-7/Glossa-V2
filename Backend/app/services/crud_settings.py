@@ -21,11 +21,16 @@ async def get_settings(user_id: int, db: AsyncSession):
 async def update_settings(user_id: int, data: SettingsUpdate, db: AsyncSession):
     settings = await get_settings(user_id, db)
 
-    settings.target_language = data.target_language or settings.target_language
-    settings.daily_goal = data.daily_goal or settings.daily_goal
-    settings.study_time = data.study_time or settings.study_time
-    settings.difficulty = data.difficulty or settings.difficulty
-    settings.reminder_time = data.reminder_time or settings.reminder_time
+    if data.target_language is not None:
+        settings.target_language = data.target_language
+    if data.daily_goal is not None:
+        settings.daily_goal = data.daily_goal
+    if data.difficulty is not None:
+        settings.difficulty = data.difficulty
+    if 'study_time' in data.model_fields_set:
+        settings.study_time = data.study_time
+    if 'reminder_time' in data.model_fields_set:
+        settings.reminder_time = data.reminder_time
 
     if data.email_enabled is not None:
         settings.email_enabled = data.email_enabled
