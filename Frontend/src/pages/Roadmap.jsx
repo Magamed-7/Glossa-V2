@@ -6,6 +6,7 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import ProgressBar from "../components/ui/ProgressBar.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useI18n } from "../lib/i18n.jsx";
+import { useToast } from "../lib/toast.jsx";
 import {
   getOnboardingStatus,
   submitOnboarding,
@@ -22,33 +23,28 @@ const LEVEL_LABELS = {
 };
 
 const MINUTE_OPTIONS = [15, 30, 60];
-const DAYS_OPTIONS = [3, 5, 7];
 
 function OnboardingGate({ lang, onDone }) {
   const [minutes, setMinutes] = useState(30);
-  const [days, setDays] = useState(5);
   const [saving, setSaving] = useState(false);
 
   const T = {
     en: {
       title: "Set your pace",
-      sub: "This only shapes recommendations — every unit stays open, you can always do more.",
+      sub: "This only shapes your daily plan — your streak is what keeps you coming back every day.",
       q1: "Minutes per day you can realistically give English?",
-      q2: "Days per week you plan to study?",
       cta: "Build my roadmap",
     },
     ru: {
       title: "Задай свой темп",
-      sub: "Это только для рекомендаций — все юниты всегда открыты, можно проходить и больше.",
+      sub: "Это только для дневного плана — приходить каждый день тебя держит стрик.",
       q1: "Сколько минут в день ты реально готов уделять английскому?",
-      q2: "Сколько дней в неделю планируешь заниматься?",
       cta: "Построить мой роадмап",
     },
     tg: {
       title: "Суръати худро танзим кунед",
-      sub: "Ин танҳо барои тавсияҳост — ҳама воҳидҳо ҳамеша кушодаанд, метавонед бештар гузаред.",
+      sub: "Ин танҳо барои нақшаи рӯзонаст — ҳар рӯз омаданатонро стрик нигоҳ медорад.",
       q1: "Дар як рӯз чанд дақиқа ба забони англисӣ вақт медиҳед?",
-      q2: "Дар як ҳафта чанд рӯз машғул мешавед?",
       cta: "Роадмапи маро бисоз",
     },
   }[lang];
@@ -56,7 +52,7 @@ function OnboardingGate({ lang, onDone }) {
   const handleSubmit = async () => {
     setSaving(true);
     try {
-      await submitOnboarding({ daily_minutes_budget: minutes, days_per_week_target: days });
+      await submitOnboarding({ daily_minutes_budget: minutes });
       onDone();
     } finally {
       setSaving(false);
@@ -68,7 +64,7 @@ function OnboardingGate({ lang, onDone }) {
       <h1 className="font-headline text-headline-lg mb-2">{T.title}</h1>
       <p className="font-body text-body-md opacity-70 mb-8">{T.sub}</p>
 
-      <div className="mb-6">
+      <div className="mb-8">
         <p className="font-label text-label-md uppercase tracking-wider mb-3">{T.q1}</p>
         <div className="flex gap-3">
           {MINUTE_OPTIONS.map((m) => (
@@ -85,23 +81,6 @@ function OnboardingGate({ lang, onDone }) {
         </div>
       </div>
 
-      <div className="mb-8">
-        <p className="font-label text-label-md uppercase tracking-wider mb-3">{T.q2}</p>
-        <div className="flex gap-3">
-          {DAYS_OPTIONS.map((d) => (
-            <button
-              key={d}
-              onClick={() => setDays(d)}
-              className={`flex-1 py-3 border-2 border-on-surface font-label text-sm font-bold transition-all ${
-                days === d ? "bg-secondary text-white shadow-[3px_3px_0px_0px_#000]" : "bg-surface hover:bg-surface-container"
-              }`}
-            >
-              {d}/7
-            </button>
-          ))}
-        </div>
-      </div>
-
       <button
         onClick={handleSubmit}
         disabled={saving}
@@ -113,7 +92,10 @@ function OnboardingGate({ lang, onDone }) {
   );
 }
 
-function statusStyle(status, isCurrent) {
+function statusStyle(status, isCurrent, locked) {
+  if (locked) {
+    return "bg-surface border-on-surface/20 text-on-surface-variant/50";
+  }
   if (status === "completed") {
     return "bg-secondary border-secondary text-white";
   }
@@ -123,34 +105,45 @@ function statusStyle(status, isCurrent) {
   return "bg-surface border-on-surface text-on-surface-variant";
 }
 
-function UnitNode({ unit, side, isCurrent, onClick }) {
+function UnitNode({ unit, side, isCurrent, onClick, onLockedClick }) {
+  const locked = unit.locked;
+  const handleClick = locked ? onLockedClick : onClick;
+
   return (
-    <div className={`flex items-center gap-4 ${side === "right" ? "flex-row" : "flex-row-reverse text-right"}`}>
-      <button
-        onClick={onClick}
-        className={`shrink-0 w-14 h-14 rounded-full border-2 flex items-center justify-center font-label text-xs font-black transition-transform hover:scale-110 ${statusStyle(unit.status, isCurrent)}`}
-        title={unit.theme_title}
+    <div className={`flex items-center gap-4 ${side === "right" ? "flex-row" : "flex-row-reverse text-right"} ${locked ? "opacity-60" : ""}`}>
+      <div
+        className={`shrink-0 w-14 h-14 rounded-full border-2 flex items-center justify-center font-label text-xs font-black transition-transform ${!locked ? "hover:scale-110 cursor-pointer" : "cursor-not-allowed"} ${statusStyle(unit.status, isCurrent, locked)}`}
+        title={locked ? undefined : unit.theme_title}
+        onClick={handleClick}
       >
-        {unit.status === "completed" ? <Icon name="check" className="text-xl" /> : unit.unit_code}
-      </button>
-      <button
-        onClick={onClick}
-        className={`flex-1 min-w-0 text-left ${side === "right" ? "" : "text-right"} group`}
+        {locked ? (
+          <Icon name="lock" className="text-lg" />
+        ) : unit.status === "completed" ? (
+          <Icon name="check" className="text-xl" />
+        ) : (
+          unit.unit_code
+        )}
+      </div>
+      <div
+        className={`flex-1 min-w-0 ${side === "right" ? "text-left" : "text-right"} group ${!locked ? "cursor-pointer" : "cursor-not-allowed"}`}
+        onClick={handleClick}
       >
-        <p className="font-body text-sm font-bold text-on-surface group-hover:text-secondary transition-colors line-clamp-1">
+        <p className={`font-body text-sm font-bold transition-colors line-clamp-1 ${locked ? "text-on-surface-variant" : "text-on-surface group-hover:text-secondary"}`}>
           {unit.theme_title}
         </p>
-        <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant flex items-center gap-1 mt-0.5">
-          {unit.unit_code} · {unit.estimated_minutes} {"min"}
-          {unit.is_level_midpoint && <Icon name="flag" className="text-sm text-secondary" />}
-          {unit.is_level_final && <Icon name="military_tech" className="text-sm text-secondary" />}
-        </p>
-      </button>
+        {!locked && (
+          <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant flex items-center gap-1 mt-0.5">
+            {unit.unit_code} · {unit.estimated_minutes} {"min"}
+            {unit.is_level_midpoint && <Icon name="flag" className="text-sm text-secondary" />}
+            {unit.is_level_final && <Icon name="military_tech" className="text-sm text-secondary" />}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
 
-function LevelSection({ level, label, units, levelStats, currentUnitId, navigate }) {
+function LevelSection({ level, label, units, levelStats, currentUnitId, navigate, onLockedClick }) {
   const pct = levelStats ? Math.round((levelStats.completed / Math.max(levelStats.total, 1)) * 100) : 0;
 
   return (
@@ -173,6 +166,7 @@ function LevelSection({ level, label, units, levelStats, currentUnitId, navigate
                     side="right"
                     isCurrent={unit.id === currentUnitId}
                     onClick={() => navigate(`/roadmap/units/${unit.id}`)}
+                    onLockedClick={onLockedClick}
                   />
                 )}
               </div>
@@ -183,6 +177,7 @@ function LevelSection({ level, label, units, levelStats, currentUnitId, navigate
                     side="left"
                     isCurrent={unit.id === currentUnitId}
                     onClick={() => navigate(`/roadmap/units/${unit.id}`)}
+                    onLockedClick={onLockedClick}
                   />
                 )}
               </div>
@@ -198,6 +193,7 @@ export default function Roadmap() {
   const { lang } = useI18n();
   const navigate = useNavigate();
   const labels = LEVEL_LABELS[lang] || LEVEL_LABELS.en;
+  const toast = useToast();
 
   const { data: onboarding, loading: onboardingLoading, reload: reloadOnboarding } = useApi(
     () => getOnboardingStatus(),
@@ -259,35 +255,42 @@ export default function Roadmap() {
   const T = {
     en: {
       title: "Your Roadmap",
-      sub: "The full path from your first word to fluent C1 — nothing is locked, this is just your guide.",
+      sub: "The full path from your first word to fluent C1 — finish a unit to unlock the next one.",
       overall: "Overall progress",
       finish: "Projected finish",
       jump: "Jump to level",
+      locked: "Finish the units before this one to unlock it.",
     },
     ru: {
       title: "Твой роадмап",
-      sub: "Полный путь от первого слова до свободного C1 — ничего не заблокировано, это просто ориентир.",
+      sub: "Полный путь от первого слова до свободного C1 — заверши юнит, чтобы открыть следующий.",
       overall: "Общий прогресс",
       finish: "Ожидаемое завершение",
       jump: "Перейти к уровню",
+      locked: "Заверши предыдущие юниты, чтобы открыть этот.",
     },
     tg: {
       title: "Нақшаи роҳи ту",
-      sub: "Роҳи пурра аз калимаи аввал то C1-и озод — ҳеҷ чиз баста нест, ин танҳо роҳнамост.",
+      sub: "Роҳи пурра аз калимаи аввал то C1-и озод — воҳидро ба итмом расонед, то навбатӣ кушода шавад.",
       overall: "Пешрафти умумӣ",
       finish: "Санаи тахминии анҷом",
       jump: "Гузариш ба сатҳ",
+      locked: "Барои кушодани ин воҳид аввал воҳидҳои қаблиро ба итмом расонед.",
     },
   }[lang];
 
+  const handleLockedClick = () => toast.info(T.locked);
+
   return (
-    <div className="max-w-5xl mx-auto pb-24">
-      <div className="mb-10">
-        <h1 className="font-headline text-5xl md:text-6xl font-bold leading-none tracking-tight mb-3">
-          {T.title}
-        </h1>
-        <p className="font-body text-body-md opacity-70 max-w-2xl">{T.sub}</p>
-      </div>
+    <div className="relative">
+      <div className="absolute inset-0 -z-10 ray-pattern pointer-events-none" aria-hidden="true" />
+      <div className="max-w-5xl mx-auto pb-24">
+        <div className="mb-10">
+          <h1 className="font-headline text-5xl md:text-6xl font-bold leading-none tracking-tight mb-3">
+            {T.title}
+          </h1>
+          <p className="font-body text-body-md opacity-70 max-w-2xl">{T.sub}</p>
+        </div>
 
       {progressLoading ? (
         <Skeleton className="h-32 mb-10" />
@@ -341,9 +344,11 @@ export default function Roadmap() {
             levelStats={levelStatsByLevel[level]}
             currentUnitId={progress?.current_unit_id}
             navigate={navigate}
+            onLockedClick={handleLockedClick}
           />
         ))
-      )}
+        )}
+      </div>
     </div>
   );
 }

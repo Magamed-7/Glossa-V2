@@ -81,8 +81,6 @@ export default function CourseUnitDetail() {
     );
   }
 
-  const completed = new Set(unit.completed_atoms);
-
   const T = {
     en: {
       back: "Back to roadmap",
@@ -96,6 +94,7 @@ export default function CourseUnitDetail() {
       noVocab: "No words attached to this unit yet.",
       noStory: "No story attached to this unit yet.",
       storyLocked: "This unit's story is written for a different level than the one on your profile, so it can't be opened right now.",
+      unitLocked: "This unit isn't open yet — finish the units before it on your roadmap first.",
     },
     ru: {
       back: "Назад к роадмапу",
@@ -109,6 +108,7 @@ export default function CourseUnitDetail() {
       noVocab: "К этому юниту пока не привязаны слова.",
       noStory: "К этому юниту пока не привязана история.",
       storyLocked: "История этого юнита написана для другого уровня, чем указан в твоём профиле, поэтому сейчас её нельзя открыть.",
+      unitLocked: "Этот юнит ещё не открыт — сначала заверши юниты перед ним на роадмапе.",
     },
     tg: {
       back: "Бозгашт ба нақшаи роҳ",
@@ -122,8 +122,33 @@ export default function CourseUnitDetail() {
       noVocab: "Ба ин воҳид ҳанӯз калима пайваст нашудааст.",
       noStory: "Ба ин воҳид ҳанӯз ҳикоя пайваст нашудааст.",
       storyLocked: "Ҳикояи ин воҳид барои сатҳи дигаре навишта шудааст, на он чи дар профили шумост, бинобар ин ҳоло кушода намешавад.",
+      unitLocked: "Ин воҳид ҳанӯз кушода нашудааст — аввал воҳидҳои пеш аз онро дар нақшаи роҳ ба итмом расонед.",
     },
   }[lang];
+
+  if (unit.locked) {
+    return (
+      <div className="max-w-3xl mx-auto pb-24">
+        <button
+          onClick={() => navigate("/roadmap")}
+          className="flex items-center gap-2 font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant hover:text-secondary mb-6"
+        >
+          <Icon name="arrow_back" className="text-lg" />
+          {T.back}
+        </button>
+        <div className="neo-card p-8 text-center">
+          <Icon name="lock" className="text-4xl text-on-surface-variant mb-3" />
+          <span className="font-label text-[10px] uppercase tracking-widest opacity-60">
+            {unit.cefr_level} · {unit.unit_code}
+          </span>
+          <h1 className="font-headline text-headline-md mt-1 mb-3">{unit.theme_title}</h1>
+          <p className="font-body text-sm text-on-surface-variant">{T.unitLocked}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const completed = new Set(unit.completed_atoms);
 
   const handleAddVocab = async () => {
     if (!vocabWords?.length) return;
