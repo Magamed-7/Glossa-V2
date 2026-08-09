@@ -27,6 +27,7 @@ def grammar_question_to_item(question: GrammarQuestions, locale: str):
         'text': pick_locale(question, 'text', locale),
         'options': question.options,
         'answer': question.answer,
+        'explanation': pick_locale(question, 'explanation', locale),
     }
 
 
@@ -38,6 +39,7 @@ def reading_question_to_item(question: StoryQuestions, locale: str):
         'options': question.options,
         'answer': question.answer,
         'story_id': question.story_id,
+        'explanation': pick_locale(question, 'explanation', locale),
     }
 
 
@@ -153,18 +155,30 @@ async def compose_level_test(cefr_level: str, test_type: str, db: AsyncSession, 
 
 
 def strip_answers(items: list[dict]):
-    return [{k: v for k, v in item.items() if k != 'answer'} for item in items]
+    hidden = {'answer', 'explanation'}
+    return [{k: v for k, v in item.items() if k not in hidden} for item in items]
 
 
 def grade(items: list[dict], answers: dict):
-    items_by_id = {item['id']: item for item in items}
     total = len(items)
     correct = 0
+    results = []
 
     for item in items:
         given = answers.get(item['id'])
-        if given is not None and str(given).strip().lower() == str(item['answer']).strip().lower():
+        is_correct = given is not None and str(given).strip().lower() == str(item['answer']).strip().lower()
+        if is_correct:
             correct += 1
+
+        results.append({
+            'id': item['id'],
+            'text': item['text'],
+            'options': item.get('options'),
+            'answer': item['answer'],
+            'given': given,
+            'is_correct': is_correct,
+            'explanation': item.get('explanation'),
+        })
 
     score_percent = (correct / total * 100) if total else 0
     passed = total > 0 and (correct / total) >= PASS_THRESHOLD
@@ -174,4 +188,5 @@ def grade(items: list[dict], answers: dict):
         'correct': correct,
         'score_percent': round(score_percent, 1),
         'passed': passed,
+        'results': results,
     }

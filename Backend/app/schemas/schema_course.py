@@ -128,8 +128,19 @@ class TestSubmitRequest(BaseModel):
     time_spent_seconds: int = Field(ge=0, default=0)
 
 
+class TestQuestionResult(BaseModel):
+    id: str
+    text: str
+    options: list[str] | None = None
+    answer: str
+    given: str | None = None
+    is_correct: bool
+    explanation: str | None = None
+
+
 class TestSubmitResponse(BaseModel):
     total: int
     correct: int
     score_percent: float
     passed: bool
+    results: list[TestQuestionResult]
