@@ -114,21 +114,15 @@ export default function StoryReader() {
     return (
       <div className="max-w-md mx-auto my-24 border-[3px] border-on-surface bg-surface p-8 shadow-[8px_8px_0_0_#000] text-center neo-card flex flex-col items-center gap-6">
         <Icon name="lock" className="text-secondary text-5xl" />
-        <h2 className="font-serif text-3xl font-black uppercase tracking-tight">
-          {lang === "ru" ? "Архив Заблокирован" : lang === "tg" ? "Бойгонӣ Маҳкам Аст" : "Level Locked"}
-        </h2>
+        <h2 className="font-serif text-3xl font-black uppercase tracking-tight">{t("stories.levelLockedTitle")}</h2>
         <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-          {lang === "ru" 
-            ? `Эта история предназначена для уровня ${story.cefr_level}. Ваш текущий уровень: ${targetLevel}. Пожалуйста, повысьте свой уровень в профиле, чтобы разблокировать.`
-            : lang === "tg"
-              ? `Ин ҳикоя барои сатҳи ${story.cefr_level} аст. Сатҳи ҷории шумо: ${targetLevel}. Лутфан сатҳи худро дар профил баланд кунед.`
-              : `This story is designed for level ${story.cefr_level}. Your current level is ${targetLevel}. Please level up your target language in settings.`}
+          {t("stories.levelLockedBody", { level: story.cefr_level, targetLevel })}
         </p>
         <Link
           to="/stories"
           className="bg-primary text-surface border-[2.5px] border-on-surface px-6 py-3 font-label text-xs uppercase font-bold tracking-widest shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer"
         >
-          {lang === "ru" ? "Вернуться в каталог" : lang === "tg" ? "Бозгашт ба каталог" : "Back to catalog"}
+          {t("stories.backToCatalog")}
         </Link>
       </div>
     );
@@ -139,25 +133,15 @@ export default function StoryReader() {
 
   return (
     <div className="min-h-screen bg-[#fcfbf9] text-on-surface font-body -mt-12">
-      {/* Fake Header to match design */}
       <header className="border-b-2 border-on-surface flex justify-between items-end pb-3 mb-10 mt-10">
         <div>
           <h1 className="font-headline text-3xl font-bold">{story.title}</h1>
           <div className="flex items-center gap-4 mt-2">
             <div className="w-12 h-1 bg-primary"></div>
             <span className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">
-              STORY {currentNumber} OF {totalCount}
+              {t("stories.storyCounter", { n: currentNumber, total: totalCount })}
             </span>
           </div>
-        </div>
-        <div className="hidden md:flex items-center gap-6 font-label text-[11px] uppercase tracking-widest font-bold">
-          <span className="cursor-pointer hover:text-primary transition-colors">CURRICULUM</span>
-          <span className="cursor-pointer hover:text-primary transition-colors">SALONS</span>
-          <span className="cursor-pointer border-b-2 border-on-surface pb-1">LIBRARY</span>
-          <span className="text-on-surface-variant font-light">|</span>
-          <span className="bg-on-surface text-surface px-4 py-2 hover:opacity-90 cursor-pointer">
-            MASTERY
-          </span>
         </div>
       </header>
 
@@ -174,9 +158,9 @@ export default function StoryReader() {
           {/* Overlay text on image */}
           <div className="absolute bottom-6 left-6 z-10 text-white">
             <div className="bg-primary text-surface font-label text-[10px] uppercase tracking-widest px-2 py-1 inline-block font-bold mb-2">
-              STORY {currentNumber}
+              {t("stories.storyCounter", { n: currentNumber, total: totalCount })}
             </div>
-            <h2 className="font-headline text-5xl font-bold drop-shadow-md">The Journey Beyond</h2>
+            <h2 className="font-headline text-5xl font-bold drop-shadow-md">{story.title}</h2>
           </div>
           {/* subtle dark gradient at bottom for text readability */}
           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -188,16 +172,16 @@ export default function StoryReader() {
             <div className="bg-on-surface text-surface font-label text-xs font-bold px-2 py-1">
               {story.cefr_level || "A1"}
             </div>
-            <span className="font-label text-sm font-bold uppercase tracking-widest">
-              {story.genre || "FEEL-GOOD JOURNEY"}
-            </span>
+            {story.genre && (
+              <span className="font-label text-sm font-bold uppercase tracking-widest">{story.genre}</span>
+            )}
           </div>
           {hasTranslation && (
             <button
               onClick={() => setShowTranslation((v) => !v)}
               className="font-label text-xs font-bold uppercase text-primary hover:underline underline-offset-4 tracking-widest"
             >
-              ПОКАЗАТЬ ПЕРЕВОД
+              {t("stories.showTranslation")}
             </button>
           )}
         </div>
@@ -205,9 +189,9 @@ export default function StoryReader() {
         {/* Title Area */}
         <div className="mb-10">
           <h1 className="font-headline text-5xl mb-2">{story.title}</h1>
-          <p className="font-headline text-lg italic text-on-surface-variant">
-            {story.title_translated || "Отголоски пустоты"}
-          </p>
+          {story.title_translated && (
+            <p className="font-headline text-lg italic text-on-surface-variant">{story.title_translated}</p>
+          )}
         </div>
 
         {/* Story Body */}
@@ -244,7 +228,7 @@ export default function StoryReader() {
             `}
           >
             <Icon name={completed ? "restart_alt" : "check_circle"} className="text-lg" />
-            {completed ? "СБРОСИТЬ ОТМЕТКУ О ПРОЧТЕНИИ" : "ОТМЕТИТЬ КАК ПРОЧИТАННОЕ"}
+            {completed ? t("stories.resetReadMark") : t("stories.markAsRead")}
           </button>
 
           <div className="flex items-center gap-4">
@@ -256,12 +240,14 @@ export default function StoryReader() {
                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
             </Link>
-            <span className="font-label text-[10px] font-bold uppercase tracking-widest">STORY {currentNumber} / {totalCount}</span>
+            <span className="font-label text-[10px] font-bold uppercase tracking-widest">
+              {t("stories.storyCounter", { n: currentNumber, total: totalCount })}
+            </span>
             <Link
               to={nextId ? `/stories/${nextId}` : `/stories?level=${story.cefr_level}`}
               className={`flex items-center gap-3 h-12 px-6 border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-surface font-label text-xs uppercase font-bold tracking-widest hover:bg-surface-variant transition-colors ${!nextId ? "opacity-35 cursor-not-allowed" : ""}`}
             >
-              NEXT STORY
+              {t("stories.nextStory")}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -270,31 +256,15 @@ export default function StoryReader() {
         </div>
       </div>
 
-      {/* Global Footer */}
-      <footer className="w-full bg-[#f3ede4] border-t border-on-surface/20 py-12 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto flex flex-col items-center gap-6">
-          <h2 className="font-headline text-3xl font-bold">Glossa</h2>
-          <div className="flex gap-8 font-headline text-sm text-on-surface-variant">
-            <span className="cursor-pointer hover:text-on-surface transition-colors">The Archives</span>
-            <span className="cursor-pointer hover:text-on-surface transition-colors">Terms of Society</span>
-            <span className="cursor-pointer hover:text-on-surface transition-colors">Privacy Manor</span>
-          </div>
-          <p className="font-headline text-xs text-on-surface-variant mt-4">
-            © 1922 Glossa Language Society. All Rights Reserved.
-          </p>
-        </div>
-
-        {/* Floating Translate View Button */}
-        {hasTranslation && (
-          <button
-            onClick={() => setShowTranslation((v) => !v)}
-            className="fixed bottom-8 right-8 bg-on-surface text-surface flex items-center gap-3 px-5 py-3 font-label text-[11px] font-bold uppercase tracking-widest border-[2px] border-on-surface shadow-[4px_4px_0_0_#C62340] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#C62340] transition-all z-50"
-          >
-            <Icon name="translate" className="text-lg" />
-            TRANSLATE VIEW
-          </button>
-        )}
-      </footer>
+      {hasTranslation && (
+        <button
+          onClick={() => setShowTranslation((v) => !v)}
+          className="fixed bottom-8 right-8 bg-on-surface text-surface flex items-center gap-3 px-5 py-3 font-label text-[11px] font-bold uppercase tracking-widest border-[2px] border-on-surface shadow-[4px_4px_0_0_#C62340] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#C62340] transition-all z-50"
+        >
+          <Icon name="translate" className="text-lg" />
+          {t("stories.translateView")}
+        </button>
+      )}
     </div>
   );
 }

@@ -68,7 +68,7 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
 
       <div className="flex justify-between items-start">
         <span className="font-label text-[10px] uppercase tracking-widest text-secondary font-bold mt-1">
-          TRANSLATION
+          {t("stories.translationTag")}
         </span>
         <button
           onClick={onAddToDeck}
@@ -92,12 +92,12 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
         {isTranslating ? (
           <div className="animate-pulse h-6 bg-surface-variant rounded w-3/4"></div>
         ) : (
-          translation || "No translation found"
+          translation || t("stories.noTranslationFound")
         )}
       </div>
 
       <div className="font-body text-xs italic text-on-surface-variant leading-relaxed">
-        Add this word to your 'Gold Mastery' deck for later review.
+        {t("stories.deckHint")}
       </div>
 
       {error && (
