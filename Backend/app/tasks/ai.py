@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 
 from sqlalchemy import select
 
@@ -87,21 +88,43 @@ def process_ai_event(**kwargs):
 
 
 GENERATE_STORY_DICTIONARY_PROMPT = (
-    'Extract all unique English words from the following text. '
-    'For each word, determine its base dictionary form (lemma) based on the context, '
-    'and translate the lemma into Russian and Tajik. '
-    'If a word appears in a form whose base form is ambiguous, choose the lemma that '
-    'fits THIS text\'s meaning (e.g. "left" as past of "leave", not the direction). '
-    'Skip proper names, numbers and words shorter than 3 letters. '
-    'Respond ONLY with a single JSON object where keys are the lowercase original words from the text, '
-    'and values are objects with keys "lemma", "ru", and "tg". '
+    'You are building a click-a-word dictionary for an English text, for learners reading it with '
+    'Russian or Tajik as their native language. Extract every unique English word that actually '
+    'appears in the text below. Skip proper names, numbers, and short function words that carry no '
+    'meaning on their own (articles "a/an/the", prepositions like "of/to/in/on/at"). Do NOT skip '
+    '"am"/"is"/"are"/"was"/"were" just because they are short — learners specifically need these '
+    'translated, so always include them (lemma "be").\n\n'
+    'For each word, output three fields:\n'
+    '1. "lemma" — the word\'s dictionary/citation form based on how it is used in THIS text: verbs '
+    'go to the bare infinitive (e.g. "thinks"/"thought"/"thinking" -> "think", "am"/"is"/"was" -> '
+    '"be", "left" as past tense of "leave" -> "leave", not the direction "left"), nouns go to the '
+    'singular, adjectives/adverbs go to the base (positive, non-comparative) form.\n'
+    '2. "ru" and "tg" — translate the LEMMA (not the inflected word) and give the translation in '
+    'the matching dictionary/citation form: verbs as the infinitive (Russian "-ть/-ти/-чь", Tajik '
+    '"-дан/-тан"), never a conjugated, imperative or command form. For example the lemma "think" '
+    'must translate as ru "думать" and tg "фикр кардан" — never as an imperative like ru "думай!" '
+    'or tg "фикр кунед". The lemma "be" (covering am/is/are/was/were) must translate as ru "быть" '
+    'and tg "будан" — never as a pronoun like "я"/"ту"/"ман" and never as the specific conjugated '
+    'form that happened to appear in the text.\n'
+    '3. If — and only if — the lemma has two genuinely different common meanings (e.g. "average" as '
+    '"typical/ordinary" vs. "a calculated mean"; "left" as "departed" vs. "not right"), translate it '
+    'as it is actually used in THIS text as the primary sense, then add the other common meaning in '
+    'parentheses, e.g. ru "обычный (тж. средний)". Words that are not genuinely ambiguous get a '
+    'single plain translation — do not invent a second sense that is not a real common meaning of '
+    'the word.\n\n'
+    'Respond ONLY with a single JSON object where keys are the lowercase original words exactly as '
+    'they appear in the text, and values are objects with keys "lemma", "ru", "tg". '
     'Example: {{"apples": {{"lemma": "apple", "ru": "яблоко", "tg": "себ"}}, '
-    '"went": {{"lemma": "go", "ru": "идти", "tg": "рафтан"}}}}. '
+    '"thinks": {{"lemma": "think", "ru": "думать", "tg": "фикр кардан"}}, '
+    '"am": {{"lemma": "be", "ru": "быть", "tg": "будан"}}}}. '
     'Ensure you return a valid JSON object. No markdown formatting or backticks around the json. '
     'Text:\n{text}'
 )
 
 WORDS_PER_DICTIONARY_CHUNK = 1500
+ALWAYS_INCLUDED_SHORT_WORDS = {'am', 'is', 'are', 'was', 'were'}
+MIN_CHUNK_COVERAGE = 0.5
+DICTIONARY_ATTEMPTS_PER_CHUNK = 2
 
 
 def _chunk_words(text: str, words_per_chunk: int = WORDS_PER_DICTIONARY_CHUNK):
@@ -109,6 +132,23 @@ def _chunk_words(text: str, words_per_chunk: int = WORDS_PER_DICTIONARY_CHUNK):
 
     for i in range(0, len(words), words_per_chunk):
         yield ' '.join(words[i:i + words_per_chunk])
+
+
+def _candidate_words(text: str):
+    found = re.findall(r"[a-zA-Z]+(?:'[a-zA-Z]+)?", text.lower())
+    return {w for w in found if len(w) >= 3 or w in ALWAYS_INCLUDED_SHORT_WORDS}
+
+
+def _chunk_dictionary_looks_complete(chunk: str, dictionary_data: dict):
+    # Модель не всегда честно "извлекает каждое слово" из текста, как просит промпт — иногда
+    # тихо возвращает валидный, но урезанный JSON (проверено вживую: 41 → 15 → 21 слово на
+    # одном и том же куске между запусками). Отличить "мало непонятных слов в коротком тексте"
+    # от "модель обрезала вывод" по одному только исключению JSON нельзя — считаем покрытие.
+    candidates = _candidate_words(chunk)
+    if not candidates:
+        return True
+    covered = sum(1 for w in candidates if w in dictionary_data)
+    return covered / len(candidates) >= MIN_CHUNK_COVERAGE
 
 
 def _strip_code_fence(raw: str):
@@ -151,13 +191,30 @@ async def _generate_story_dictionary(story_id: int, story_type: str = 'system'):
 
         for chunk in _chunk_words(getattr(story, text_field)):
             prompt = GENERATE_STORY_DICTIONARY_PROMPT.format(text=chunk)
+            chunk_data = None
 
-            try:
-                raw = await llm_client.call_llm([{'role': 'user', 'content': prompt}])
-                dictionary_data.update(json.loads(_strip_code_fence(raw)))
-            except Exception:
-                logger.exception('Failed to generate word dictionary chunk for story %s', story_id)
+            for attempt in range(DICTIONARY_ATTEMPTS_PER_CHUNK):
+                try:
+                    raw = await llm_client.call_llm([{'role': 'user', 'content': prompt}])
+                    parsed = json.loads(_strip_code_fence(raw))
+                except Exception:
+                    logger.exception('Failed to generate word dictionary chunk for story %s (attempt %s)', story_id, attempt + 1)
+                    continue
+
+                if _chunk_dictionary_looks_complete(chunk, parsed):
+                    chunk_data = parsed
+                    break
+
+                logger.warning(
+                    'Word dictionary chunk for story %s looked incomplete on attempt %s (%s words), retrying',
+                    story_id, attempt + 1, len(parsed),
+                )
+                chunk_data = parsed
+
+            if chunk_data is None:
                 return False
+
+            dictionary_data.update(chunk_data)
 
         story.word_dictionary = dictionary_data
         db.add(story)
