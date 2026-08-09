@@ -119,9 +119,14 @@ class StoryQuestions(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     story_id: Mapped[int] = mapped_column(ForeignKey('stories.id'), nullable=False, index=True)
-    text: Mapped[str] = mapped_column(String, nullable=False)
+    text_en: Mapped[str] = mapped_column(String, nullable=False)
+    text_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    text_tg: Mapped[str | None] = mapped_column(String, nullable=True)
     options: Mapped[list | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
     answer: Mapped[str] = mapped_column(String, nullable=False)
+    explanation_en: Mapped[str | None] = mapped_column(String, nullable=True)
+    explanation_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    explanation_tg: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class ReadingProgress(Base):

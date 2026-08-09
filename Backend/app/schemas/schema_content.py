@@ -139,7 +139,15 @@ class StoryQuestionsSubmit(BaseModel):
     answers: list[StoryQuestionAnswer]
 
 
+class StoryQuestionResult(BaseModel):
+    question_id: int
+    is_correct: bool
+    correct_answer: str
+    explanation: str | None = None
+
+
 class StoryQuestionsResult(BaseModel):
     total: int
     correct: int
     completed: bool
+    results: list[StoryQuestionResult]

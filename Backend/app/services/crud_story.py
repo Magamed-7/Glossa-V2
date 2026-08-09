@@ -4,6 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
 from app.schemas.schema_learning import CardCreate
 from app.services import crud_card, streaks
+from app.services.localization import pick_locale
+
+
+PASS_THRESHOLD = 0.75
 
 
 def story_to_response(story: Stories):
@@ -86,7 +90,10 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
             }
             for w in words
         ],
-        'questions': [{'id': q.id, 'text': q.text, 'options': q.options} for q in questions],
+        'questions': [
+            {'id': q.id, 'text': pick_locale(q, 'text', locale), 'options': q.options}
+            for q in questions
+        ],
     }
 
 
@@ -133,20 +140,31 @@ async def add_story_word_to_deck(word_id: int, user_id: int, locale: str, db: As
     return await crud_card.create_card(data, user_id, db, source_story_id=word.story_id)
 
 
-async def submit_story_questions(story_id: int, user_id: int, answers, db: AsyncSession):
+async def submit_story_questions(story_id: int, user_id: int, answers, locale: str, db: AsyncSession):
     questions = await get_story_questions(story_id, db)
     questions_by_id = {q.id: q for q in questions}
 
     correct = 0
+    results = []
 
     for answer in answers:
         question = questions_by_id.get(answer.question_id)
+        if question is None:
+            continue
 
-        if question is not None and answer.answer.strip().lower() == question.answer.strip().lower():
+        is_correct = answer.answer.strip().lower() == question.answer.strip().lower()
+        if is_correct:
             correct += 1
 
+        results.append({
+            'question_id': question.id,
+            'is_correct': is_correct,
+            'correct_answer': question.answer,
+            'explanation': pick_locale(question, 'explanation', locale),
+        })
+
     total = len(answers)
-    completed = total > 0 and correct == total
+    completed = total > 0 and (correct / total) >= PASS_THRESHOLD
 
     if completed:
         progress = await get_reading_progress(user_id, story_id, db)
@@ -164,4 +182,5 @@ async def submit_story_questions(story_id: int, user_id: int, answers, db: Async
         'total': total,
         'correct': correct,
         'completed': completed,
+        'results': results,
     }
