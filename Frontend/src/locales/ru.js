@@ -435,6 +435,7 @@ export const ru = {
     markedAsRead: "Прочитано",
     markAsRead: "Отметить как прочитанное",
     comprehensionCheck: "Проверка понимания",
+    comprehensionOptional: "Необязательно — проверь, что запомнил(а), это ни на что не влияет",
     submitAnswers: "Отправить ответы",
     markedReadToast: "История отмечена как прочитанная.",
     addedToDeck: "Добавлено в колоду",

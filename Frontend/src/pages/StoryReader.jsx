@@ -213,6 +213,7 @@ export default function StoryReader() {
         <StoryQuestions
           storyId={story.id}
           questions={story.questions}
+          locale={lang}
           onCompleted={() => setCompleted(true)}
         />
 

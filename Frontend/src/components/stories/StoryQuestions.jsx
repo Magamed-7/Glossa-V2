@@ -5,7 +5,7 @@ import { submitQuestions } from "../../lib/api/stories.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useT } from "../../lib/i18n.jsx";
 
-export default function StoryQuestions({ storyId, questions, onCompleted }) {
+export default function StoryQuestions({ storyId, questions, locale, onCompleted }) {
   const t = useT();
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
@@ -25,7 +25,7 @@ export default function StoryQuestions({ storyId, questions, onCompleted }) {
 
     try {
       const payload = questions.map((q) => ({ question_id: q.id, answer: answers[q.id] || "" }));
-      const outcome = await submitQuestions(storyId, payload);
+      const outcome = await submitQuestions(storyId, payload, { locale });
       setResult(outcome);
       if (outcome.completed) onCompleted?.();
     } catch (err) {
@@ -44,13 +44,28 @@ export default function StoryQuestions({ storyId, questions, onCompleted }) {
         {result.completed && (
           <p className="font-body text-body-md text-secondary">{t("stories.markedReadToast")}</p>
         )}
+        <div className="mt-4 space-y-3">
+          {result.results.map((r) => (
+            <div key={r.question_id} className={`border-l-2 pl-3 ${r.is_correct ? "border-secondary" : "border-on-surface/30"}`}>
+              <p className="font-label text-label-md uppercase">
+                {r.is_correct ? "✓" : "✗"} {t("grammar.correctAnswerPrefix")}{r.correct_answer}
+              </p>
+              {r.explanation && (
+                <p className="font-body text-body-md opacity-70 mt-0.5">{r.explanation}</p>
+              )}
+            </div>
+          ))}
+        </div>
       </NeoCard>
     );
   }
 
   return (
     <form className="mt-10 pt-6 border-t-2 border-tertiary space-y-6" onSubmit={onSubmit}>
-      <h3 className="font-headline text-headline-md">{t("stories.comprehensionCheck")}</h3>
+      <div>
+        <h3 className="font-headline text-headline-md">{t("stories.comprehensionCheck")}</h3>
+        <p className="font-label text-label-md uppercase text-on-surface-variant/70">{t("stories.comprehensionOptional")}</p>
+      </div>
       {questions.map((q) => (
         <div key={q.id}>
           <p className="font-body text-body-md mb-3">{q.text}</p>

@@ -95,6 +95,12 @@ export default function CourseUnitDetail() {
       noStory: "No story attached to this unit yet.",
       storyLocked: "This unit's story is written for a different level than the one on your profile, so it can't be opened right now.",
       unitLocked: "This unit isn't open yet — finish the units before it on your roadmap first.",
+      unitTest: "Unit test",
+      unitTestHint: "Finish grammar, vocabulary and the story first to unlock the test.",
+      startTest: "Start test",
+      levelTest: "Level test",
+      levelTestMidpointHint: "This unit marks the halfway point of the level — pass this test to keep going.",
+      levelTestFinalHint: "This unit is the last of the level — pass this test to unlock the next level.",
     },
     ru: {
       back: "Назад к роадмапу",
@@ -109,6 +115,12 @@ export default function CourseUnitDetail() {
       noStory: "К этому юниту пока не привязана история.",
       storyLocked: "История этого юнита написана для другого уровня, чем указан в твоём профиле, поэтому сейчас её нельзя открыть.",
       unitLocked: "Этот юнит ещё не открыт — сначала заверши юниты перед ним на роадмапе.",
+      unitTest: "Тест по юниту",
+      unitTestHint: "Сначала заверши грамматику, слова и историю — тогда откроется тест.",
+      startTest: "Начать тест",
+      levelTest: "Тест уровня",
+      levelTestMidpointHint: "Этот юнит — середина уровня. Пройди тест, чтобы продолжить.",
+      levelTestFinalHint: "Этот юнит — последний в уровне. Пройди тест, чтобы открыть следующий уровень.",
     },
     tg: {
       back: "Бозгашт ба нақшаи роҳ",
@@ -123,6 +135,12 @@ export default function CourseUnitDetail() {
       noStory: "Ба ин воҳид ҳанӯз ҳикоя пайваст нашудааст.",
       storyLocked: "Ҳикояи ин воҳид барои сатҳи дигаре навишта шудааст, на он чи дар профили шумост, бинобар ин ҳоло кушода намешавад.",
       unitLocked: "Ин воҳид ҳанӯз кушода нашудааст — аввал воҳидҳои пеш аз онро дар нақшаи роҳ ба итмом расонед.",
+      unitTest: "Санҷиши воҳид",
+      unitTestHint: "Аввал грамматика, калимаҳо ва ҳикояро ба итмом расон — баъд санҷиш кушода мешавад.",
+      startTest: "Оғози санҷиш",
+      levelTest: "Санҷиши сатҳ",
+      levelTestMidpointHint: "Ин воҳид миёнаи сатҳ аст — барои идома санҷишро супор.",
+      levelTestFinalHint: "Ин воҳид охирини сатҳ аст — барои кушодани сатҳи оянда санҷишро супор.",
     },
   }[lang];
 
@@ -306,6 +324,46 @@ export default function CourseUnitDetail() {
                   </button>
                 )}
               </>
+            )}
+          </AtomCard>
+        )}
+
+        {(() => {
+          const prereqDone =
+            completed.has("grammar") &&
+            (unit.vocab_entry_ids.length === 0 || completed.has("vocabulary")) &&
+            (unit.story_ids.length === 0 || completed.has("story"));
+
+          return (
+            <AtomCard icon="quiz" title={T.unitTest} done={completed.has("unit_test")}>
+              {!prereqDone ? (
+                <p className="font-body text-sm text-on-surface-variant italic">{T.unitTestHint}</p>
+              ) : (
+                <Link
+                  to={`/roadmap/units/${unit.id}/test`}
+                  className="btn-primary-neo px-5 py-2.5 font-label-md text-xs uppercase tracking-wider inline-block"
+                >
+                  {T.startTest}
+                </Link>
+              )}
+            </AtomCard>
+          );
+        })()}
+
+        {(unit.is_level_midpoint || unit.is_level_final) && (
+          <AtomCard icon="military_tech" title={T.levelTest} done={completed.has("level_test")}>
+            <p className="font-body text-sm text-on-surface-variant mb-4">
+              {unit.is_level_final ? T.levelTestFinalHint : T.levelTestMidpointHint}
+            </p>
+            {completed.has("unit_test") ? (
+              <Link
+                to={`/roadmap/level-test/${unit.cefr_level}/${unit.is_level_final ? "final" : "midpoint"}`}
+                className="btn-primary-neo px-5 py-2.5 font-label-md text-xs uppercase tracking-wider inline-block"
+              >
+                {T.startTest}
+              </Link>
+            ) : (
+              <p className="font-body text-sm text-on-surface-variant italic">{T.unitTestHint}</p>
             )}
           </AtomCard>
         )}

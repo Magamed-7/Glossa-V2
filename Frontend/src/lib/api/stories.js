@@ -30,6 +30,9 @@ export function addWordToDeck(storyId, wordId, { locale }) {
   return api.post(`/stories/${storyId}/words/${wordId}/add-to-deck?${params}`);
 }
 
-export function submitQuestions(storyId, answers) {
-  return api.post(`/stories/${storyId}/questions/submit`, { answers });
+export function submitQuestions(storyId, answers, { locale } = {}) {
+  const params = new URLSearchParams();
+  if (locale) params.set("locale", locale);
+  const query = params.toString();
+  return api.post(`/stories/${storyId}/questions/submit${query ? `?${query}` : ""}`, { answers });
 }

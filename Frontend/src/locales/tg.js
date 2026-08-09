@@ -435,6 +435,7 @@ export const tg = {
     markedAsRead: "Хондашуда қайд шуд",
     markAsRead: "Ҳамчун хондашуда қайд кунед",
     comprehensionCheck: "Санҷиши фаҳмиш",
+    comprehensionOptional: "Ихтиёрӣ — санҷед, ки чиро дар хотир доред, ин ба чизе таъсир намерасонад",
     submitAnswers: "Ирсоли ҷавобҳо",
     markedReadToast: "Ҳикоя ҳамчун хондашуда қайд шуд.",
     addedToDeck: "Ба колода илова шуд",

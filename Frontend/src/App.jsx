@@ -26,6 +26,8 @@ import PublicProfile from "./pages/PublicProfile.jsx";
 import Register from "./pages/Register.jsx";
 import Roadmap from "./pages/Roadmap.jsx";
 import CourseUnitDetail from "./pages/CourseUnitDetail.jsx";
+import UnitTest from "./pages/UnitTest.jsx";
+import LevelTest from "./pages/LevelTest.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Settings from "./pages/Settings.jsx";
 import SpacedRepetition from "./pages/SpacedRepetition.jsx";
@@ -98,6 +100,8 @@ export default function App() {
           <Route path="/dashboard" element={page(Dashboard)} />
           <Route path="/roadmap" element={page(Roadmap)} />
           <Route path="/roadmap/units/:id" element={page(CourseUnitDetail)} />
+          <Route path="/roadmap/units/:id/test" element={page(UnitTest)} />
+          <Route path="/roadmap/level-test/:level/:type" element={page(LevelTest)} />
           <Route path="/deck" element={page(WordDeck)} />
           <Route path="/review" element={page(SpacedRepetition)} />
           <Route path="/stories" element={page(StoriesCatalog)} />

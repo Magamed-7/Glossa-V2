@@ -44,6 +44,7 @@ const PAGE_TEXT = {
     min: "min",
     locked: "Finish the units before this one to unlock it.",
     minuteQuestion: "Minutes per day?",
+    testOut: "Confident in this level? Test out and skip to the next one",
   },
   ru: {
     eyebrow: "Учебный план",
@@ -65,6 +66,7 @@ const PAGE_TEXT = {
     min: "мин",
     locked: "Заверши предыдущие юниты, чтобы открыть этот.",
     minuteQuestion: "Минут в день?",
+    testOut: "Уверен в этом уровне? Сдай тест и перейди сразу к следующему",
   },
   tg: {
     eyebrow: "Нақшаи таълим",
@@ -86,8 +88,11 @@ const PAGE_TEXT = {
     min: "дақ",
     locked: "Барои кушодани ин воҳид аввал воҳидҳои қаблиро ба итмом расонед.",
     minuteQuestion: "Дар як рӯз чанд дақиқа?",
+    testOut: "Ба ин сатҳ бовариноӣ? Санҷишро супор ва ба сатҳи оянда гузар",
   },
 };
+
+const LAST_LEVEL = "C1";
 
 function splitTitle(title) {
   const idx = title.indexOf(",");
@@ -471,6 +476,15 @@ export default function Roadmap() {
           <span className="font-label text-[10px] uppercase tracking-[0.25em] text-on-surface-variant mt-2 block">
             {T.progress}: {chapterStats?.completed ?? 0} / {chapterStats?.total ?? chapterUnits.length}
           </span>
+
+          {effectiveLevel === progress?.current_level && effectiveLevel !== LAST_LEVEL && (
+            <button
+              onClick={() => navigate(`/roadmap/level-test/${effectiveLevel}/placement`)}
+              className="mt-4 font-label text-[10px] uppercase tracking-widest font-bold text-secondary underline underline-offset-4 hover:text-on-surface transition-colors"
+            >
+              {T.testOut}
+            </button>
+          )}
         </div>
 
         {unitsLoading ? (

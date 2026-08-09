@@ -435,6 +435,7 @@ export const en = {
     markedAsRead: "Marked as Read",
     markAsRead: "Mark as Read",
     comprehensionCheck: "Comprehension Check",
+    comprehensionOptional: "Optional — check what you remember, nothing here is required",
     submitAnswers: "Submit Answers",
     markedReadToast: "Story marked as read.",
     addedToDeck: "Added to Deck",
