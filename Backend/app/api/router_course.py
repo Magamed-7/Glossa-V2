@@ -14,9 +14,12 @@ from app.schemas.schema_course import (
     LevelTestGenerateResponse,
     OnboardingRequest,
     OnboardingStatus,
+    TestSubmitRequest,
+    TestSubmitResponse,
     TodayQueueResponse,
+    UnitTestGenerateResponse,
 )
-from app.services import course_today, crud_course
+from app.services import course_today, crud_course, test_compose
 
 router_course = APIRouter(prefix='/learning', tags=['Course'])
 
@@ -93,6 +96,9 @@ async def get_progress(
     return await crud_course.get_progress_summary(current_user.id, db)
 
 
+LEVEL_TEST_TYPES = ('midpoint', 'final', 'placement')
+
+
 @router_course.get('/tests/{level}/{test_type}', response_model=LevelTestAvailability)
 async def get_test_availability(
     level: str,
@@ -100,8 +106,8 @@ async def get_test_availability(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    if test_type not in ('midpoint', 'final'):
-        raise AppError(code='INVALID_TEST_TYPE', message='test_type must be midpoint or final', status_code=400)
+    if test_type not in LEVEL_TEST_TYPES:
+        raise AppError(code='INVALID_TEST_TYPE', message='test_type must be midpoint, final or placement', status_code=400)
 
     available, reason = await crud_course.check_test_availability(current_user.id, level, test_type, db)
     return {'available': available, 'cefr_level': level, 'test_type': test_type, 'reason': reason}
@@ -111,15 +117,81 @@ async def get_test_availability(
 async def generate_test(
     level: str,
     test_type: str,
+    locale: str = 'en',
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    if test_type not in ('midpoint', 'final'):
-        raise AppError(code='INVALID_TEST_TYPE', message='test_type must be midpoint or final', status_code=400)
+    if test_type not in LEVEL_TEST_TYPES:
+        raise AppError(code='INVALID_TEST_TYPE', message='test_type must be midpoint, final or placement', status_code=400)
 
     available, reason = await crud_course.check_test_availability(current_user.id, level, test_type, db)
     if not available:
         raise AppError(code='TEST_NOT_AVAILABLE', message=reason or 'Test not available yet', status_code=400)
 
-    attempt = await crud_course.create_test_attempt(current_user.id, level, test_type, db)
-    return {'status': 'not_yet_generated', 'attempt_id': attempt.id}
+    attempt = await crud_course.generate_level_test(current_user.id, level, test_type, locale, db)
+    return {
+        'attempt_id': attempt.id,
+        'cefr_level': level,
+        'test_type': test_type,
+        'questions': test_compose.strip_answers(attempt.questions_snapshot),
+    }
+
+
+@router_course.post('/tests/{level}/{test_type}/{attempt_id}/submit', response_model=TestSubmitResponse)
+async def submit_test(
+    level: str,
+    test_type: str,
+    attempt_id: int,
+    data: TestSubmitRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    if test_type not in LEVEL_TEST_TYPES:
+        raise AppError(code='INVALID_TEST_TYPE', message='test_type must be midpoint, final or placement', status_code=400)
+
+    outcome = await crud_course.submit_level_test(
+        current_user.id, level, test_type, attempt_id, data.answers, data.time_spent_seconds, db
+    )
+    if outcome is None:
+        raise AppError(code='TEST_ATTEMPT_NOT_FOUND', message='Test attempt not found', status_code=404)
+
+    return outcome
+
+
+@router_course.post('/units/{unit_id}/test/generate', response_model=UnitTestGenerateResponse)
+async def generate_unit_test(
+    unit_id: int,
+    locale: str = 'en',
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    available, reason = await crud_course.check_unit_test_availability(current_user.id, unit_id, db)
+    if not available:
+        raise AppError(code='TEST_NOT_AVAILABLE', message=reason or 'Test not available yet', status_code=400)
+
+    attempt = await crud_course.generate_unit_test(current_user.id, unit_id, locale, db)
+    if attempt is None:
+        raise AppError(code='COURSE_UNIT_NOT_FOUND', message='Course unit not found', status_code=404)
+
+    return {
+        'attempt_id': attempt.id,
+        'course_unit_id': unit_id,
+        'questions': test_compose.strip_answers(attempt.questions_snapshot),
+    }
+
+
+@router_course.post('/units/{unit_id}/test/{attempt_id}/submit', response_model=TestSubmitResponse)
+async def submit_unit_test(
+    unit_id: int,
+    attempt_id: int,
+    data: TestSubmitRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    outcome = await crud_course.submit_unit_test(
+        current_user.id, unit_id, attempt_id, data.answers, data.time_spent_seconds, db
+    )
+    if outcome is None:
+        raise AppError(code='TEST_ATTEMPT_NOT_FOUND', message='Test attempt not found', status_code=404)
+
+    return outcome

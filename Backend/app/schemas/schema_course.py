@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-ATOM_TYPES = Literal['vocabulary', 'grammar', 'story', 'review', 'ai_practice']
+ATOM_TYPES = Literal['vocabulary', 'grammar', 'story', 'review', 'ai_practice', 'unit_test', 'level_test']
 
 
 class OnboardingRequest(BaseModel):
@@ -102,6 +102,34 @@ class LevelTestAvailability(BaseModel):
     reason: str | None = None
 
 
+class TestQuestionItem(BaseModel):
+    id: str
+    kind: Literal['grammar', 'vocab', 'reading']
+    text: str
+    options: list[str] | None = None
+    story_id: int | None = None
+
+
 class LevelTestGenerateResponse(BaseModel):
-    status: str
-    attempt_id: int | None = None
+    attempt_id: int
+    cefr_level: str
+    test_type: str
+    questions: list[TestQuestionItem]
+
+
+class UnitTestGenerateResponse(BaseModel):
+    attempt_id: int
+    course_unit_id: int
+    questions: list[TestQuestionItem]
+
+
+class TestSubmitRequest(BaseModel):
+    answers: dict[str, str]
+    time_spent_seconds: int = Field(ge=0, default=0)
+
+
+class TestSubmitResponse(BaseModel):
+    total: int
+    correct: int
+    score_percent: float
+    passed: bool

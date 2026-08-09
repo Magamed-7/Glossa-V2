@@ -11,9 +11,12 @@ from app.models.model_course import (
     CourseUnitVocab,
     LevelTest,
     LevelTestAttempt,
+    UnitTestAttempt,
     UserCourseProgress,
 )
-from app.services import ratings
+from app.services import ratings, test_compose
+
+LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1']
 
 
 async def get_or_create_progress(user_id: int, db: AsyncSession):
@@ -90,6 +93,9 @@ def required_atoms(unit: CourseUnit, has_vocab: bool, has_stories: bool):
         atoms.append('vocabulary')
     if has_stories:
         atoms.append('story')
+    atoms.append('unit_test')
+    if unit.is_level_midpoint or unit.is_level_final:
+        atoms.append('level_test')
     return atoms
 
 
@@ -359,7 +365,26 @@ async def get_or_create_level_test(cefr_level: str, test_type: str, db: AsyncSes
     return level_test
 
 
+async def _flagged_unit_gate_ok(user_id: int, unit: CourseUnit, db: AsyncSession):
+    stories_by_unit, vocab_by_unit = await _unit_story_vocab_ids(db, [unit.id])
+    completed_map = await _completed_atoms_by_unit(user_id, db, [unit.id])
+    required = required_atoms(unit, bool(vocab_by_unit.get(unit.id)), bool(stories_by_unit.get(unit.id)))
+    prerequisite_atoms = [atom for atom in required if atom != 'level_test']
+    return compute_status(prerequisite_atoms, completed_map.get(unit.id)) == 'completed'
+
+
 async def check_test_availability(user_id: int, cefr_level: str, test_type: str, db: AsyncSession):
+    if test_type == 'placement':
+        progress = await get_or_create_progress(user_id, db)
+        current_unit = await get_unit(progress.current_unit_id, db) if progress.current_unit_id else None
+        if current_unit is None:
+            current_unit = await get_first_incomplete_unit(user_id, db)
+        if current_unit is None or current_unit.cefr_level != cefr_level:
+            return False, 'not_current_level'
+        if cefr_level not in LEVEL_ORDER or LEVEL_ORDER.index(cefr_level) == len(LEVEL_ORDER) - 1:
+            return False, 'no_next_level'
+        return True, None
+
     flag_field = CourseUnit.is_level_midpoint if test_type == 'midpoint' else CourseUnit.is_level_final
     unit = (
         await db.execute(select(CourseUnit).where(CourseUnit.cefr_level == cefr_level, flag_field == True))
@@ -368,17 +393,142 @@ async def check_test_availability(user_id: int, cefr_level: str, test_type: str,
     if unit is None:
         return False, 'level_has_no_flagged_unit'
 
-    detail = await get_unit_detail(user_id, unit.id, db)
-    if detail.get('status') != 'completed':
+    boundary = await get_unlock_boundary(user_id, db)
+    if unit.sequence_index > boundary:
+        return False, 'level_not_reached'
+
+    if not await _flagged_unit_gate_ok(user_id, unit, db):
         return False, 'gating_unit_not_completed'
 
     return True, None
 
 
-async def create_test_attempt(user_id: int, cefr_level: str, test_type: str, db: AsyncSession):
-    level_test = await get_or_create_level_test(cefr_level, test_type, db)
-    attempt = LevelTestAttempt(user_id=user_id, level_test_id=level_test.id, status='not_generated')
+async def check_unit_test_availability(user_id: int, unit_id: int, db: AsyncSession):
+    unit = await get_unit(unit_id, db)
+    if unit is None:
+        return False, 'unit_not_found'
+
+    boundary = await get_unlock_boundary(user_id, db)
+    if unit.sequence_index > boundary:
+        return False, 'unit_locked'
+
+    stories_by_unit, vocab_by_unit = await _unit_story_vocab_ids(db, [unit_id])
+    completed_map = await _completed_atoms_by_unit(user_id, db, [unit_id])
+    required = required_atoms(unit, bool(vocab_by_unit.get(unit_id)), bool(stories_by_unit.get(unit_id)))
+    prerequisite_atoms = [atom for atom in required if atom != 'unit_test']
+
+    if compute_status(prerequisite_atoms, completed_map.get(unit_id)) != 'completed':
+        return False, 'unit_material_not_completed'
+
+    return True, None
+
+
+async def generate_unit_test(user_id: int, unit_id: int, locale: str, db: AsyncSession):
+    unit = await get_unit(unit_id, db)
+    if unit is None:
+        return None
+
+    items = await test_compose.compose_unit_test(unit, db, locale=locale)
+    attempt = UnitTestAttempt(user_id=user_id, course_unit_id=unit_id, questions_snapshot=items, status='ready')
     db.add(attempt)
     await db.commit()
     await db.refresh(attempt)
     return attempt
+
+
+async def submit_unit_test(user_id: int, unit_id: int, attempt_id: int, answers: dict, time_spent_seconds: int, db: AsyncSession):
+    attempt = (
+        await db.execute(
+            select(UnitTestAttempt).where(
+                UnitTestAttempt.id == attempt_id,
+                UnitTestAttempt.user_id == user_id,
+                UnitTestAttempt.course_unit_id == unit_id,
+            )
+        )
+    ).scalar_one_or_none()
+
+    if attempt is None:
+        return None
+
+    outcome = test_compose.grade(attempt.questions_snapshot, answers)
+    attempt.answers = answers
+    attempt.score_percent = outcome['score_percent']
+    attempt.status = 'completed'
+    attempt.completed_at = datetime.now(timezone.utc)
+    await db.commit()
+
+    if outcome['passed']:
+        await complete_atom(user_id, unit_id, 'unit_test', time_spent_seconds, db)
+
+    return outcome
+
+
+async def generate_level_test(user_id: int, cefr_level: str, test_type: str, locale: str, db: AsyncSession):
+    level_test = await get_or_create_level_test(cefr_level, test_type, db)
+    items = await test_compose.compose_level_test(cefr_level, test_type, db, locale=locale)
+    attempt = LevelTestAttempt(
+        user_id=user_id, level_test_id=level_test.id, questions_snapshot=items, status='ready'
+    )
+    db.add(attempt)
+    await db.commit()
+    await db.refresh(attempt)
+    return attempt
+
+
+async def submit_level_test(user_id: int, cefr_level: str, test_type: str, attempt_id: int, answers: dict, time_spent_seconds: int, db: AsyncSession):
+    attempt = (
+        await db.execute(
+            select(LevelTestAttempt).where(
+                LevelTestAttempt.id == attempt_id, LevelTestAttempt.user_id == user_id
+            )
+        )
+    ).scalar_one_or_none()
+
+    if attempt is None:
+        return None
+
+    outcome = test_compose.grade(attempt.questions_snapshot, answers)
+    attempt.answers = answers
+    attempt.score_percent = outcome['score_percent']
+    attempt.status = 'completed'
+    attempt.completed_at = datetime.now(timezone.utc)
+    await db.commit()
+
+    if outcome['passed']:
+        if test_type == 'placement':
+            await _advance_to_next_level(user_id, cefr_level, db)
+        else:
+            flag_field = CourseUnit.is_level_midpoint if test_type == 'midpoint' else CourseUnit.is_level_final
+            unit = (
+                await db.execute(
+                    select(CourseUnit).where(CourseUnit.cefr_level == cefr_level, flag_field == True)
+                )
+            ).scalar_one_or_none()
+            if unit is not None:
+                await complete_atom(user_id, unit.id, 'level_test', time_spent_seconds, db)
+
+    return outcome
+
+
+async def _advance_to_next_level(user_id: int, cefr_level: str, db: AsyncSession):
+    if cefr_level not in LEVEL_ORDER:
+        return
+
+    next_index = LEVEL_ORDER.index(cefr_level) + 1
+    if next_index >= len(LEVEL_ORDER):
+        return
+
+    next_level = LEVEL_ORDER[next_index]
+    next_unit = (
+        await db.execute(
+            select(CourseUnit).where(CourseUnit.cefr_level == next_level).order_by(CourseUnit.sequence_index).limit(1)
+        )
+    ).scalar_one_or_none()
+
+    if next_unit is None:
+        return
+
+    progress = await get_or_create_progress(user_id, db)
+    progress.current_unit_id = next_unit.id
+    progress.last_activity_at = datetime.now(timezone.utc)
+    await db.commit()
