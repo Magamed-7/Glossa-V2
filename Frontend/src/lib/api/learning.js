@@ -52,6 +52,30 @@ export function getTestAvailability(level, testType) {
   return api.get(`/learning/tests/${level}/${testType}`);
 }
 
-export function generateTest(level, testType) {
-  return api.post(`/learning/tests/${level}/${testType}/generate`);
+export function generateLevelTest(level, testType, { locale } = {}) {
+  const params = new URLSearchParams();
+  if (locale) params.set("locale", locale);
+  const query = params.toString();
+  return api.post(`/learning/tests/${level}/${testType}/generate${query ? `?${query}` : ""}`);
+}
+
+export function submitLevelTest(level, testType, attemptId, answers, timeSpentSeconds = 0) {
+  return api.post(`/learning/tests/${level}/${testType}/${attemptId}/submit`, {
+    answers,
+    time_spent_seconds: timeSpentSeconds,
+  });
+}
+
+export function generateUnitTest(unitId, { locale } = {}) {
+  const params = new URLSearchParams();
+  if (locale) params.set("locale", locale);
+  const query = params.toString();
+  return api.post(`/learning/units/${unitId}/test/generate${query ? `?${query}` : ""}`);
+}
+
+export function submitUnitTest(unitId, attemptId, answers, timeSpentSeconds = 0) {
+  return api.post(`/learning/units/${unitId}/test/${attemptId}/submit`, {
+    answers,
+    time_spent_seconds: timeSpentSeconds,
+  });
 }

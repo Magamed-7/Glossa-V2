@@ -76,10 +76,11 @@ def question_to_response(question: GrammarQuestions, locale: str):
     }
 
 
-def question_to_result_response(question: GrammarQuestions, locale: str):
+def question_to_result_response(question: GrammarQuestions, locale: str, is_correct: bool):
     return {
         **question_to_response(question, locale),
         'explanation': pick_locale(question, 'explanation', locale),
+        'is_correct': is_correct,
     }
 
 
@@ -149,7 +150,7 @@ async def submit_grammar_answers(lesson_id: int, user_id: int, answers, locale: 
             correct += 1
 
         db.add(GrammarAttempts(user_id=user_id, question_id=question.id, is_correct=is_correct))
-        results.append(question_to_result_response(question, locale))
+        results.append(question_to_result_response(question, locale, is_correct))
 
     await db.commit()
 

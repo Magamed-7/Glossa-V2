@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import QuizCard from "../components/quiz/QuizCard.jsx";
+import QuizResults from "../components/quiz/QuizResults.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useAppData } from "../lib/AppDataContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
@@ -134,338 +136,6 @@ function TheoryCard({ lesson, examples, lang, onStartPractice, hasQuestions }) {
   );
 }
 
-// ── Helper: strip instruction prefix from question text ─────────────────────
-// Many DB questions are stored as "Choose the correct form: He ___ a student."
-// We split on the FIRST colon so the instruction goes to the header
-// and only the sentence stays in the sentence card.
-function parseQuestionText(raw) {
-  if (!raw) return { instruction: "", sentence: "" };
-
-  // Common instruction patterns that precede a colon:
-  // "Choose the correct form:", "Fill in the blank:", "Complete the sentence:", etc.
-  const colonIdx = raw.indexOf(":");
-
-  // Only split if the part before ":" looks like an instruction
-  // (no more than ~60 chars and doesn't contain sentence-ending punctuation)
-  if (colonIdx > 0 && colonIdx < 80) {
-    const before = raw.slice(0, colonIdx).trim();
-    const after  = raw.slice(colonIdx + 1).trim();
-    // If the before-part has no period/exclamation it's likely an instruction
-    if (!before.includes(".") && !before.includes("!") && after.length > 0) {
-      return { instruction: before, sentence: after };
-    }
-  }
-
-  return { instruction: "", sentence: raw };
-}
-
-// ── Card 2: Quiz ──────────────────────────────────────────────────────────────
-function QuizCard({ questions, lang, onFinish }) {
-  const [currentQ, setCurrentQ] = useState(0);
-  const [answers, setAnswers] = useState({});        // { questionId: answer }
-  const [selected, setSelected] = useState(null);    // chosen option for current Q
-  const [inputVal, setInputVal] = useState("");      // text input value
-  const [feedback, setFeedback] = useState(null);    // "correct"|"wrong"|null
-  const [submitting, setSubmitting] = useState(false);
-
-  const q = questions[currentQ];
-  const total = questions.length;
-  const isLastQ = currentQ === total - 1;
-  const pct = (currentQ / total) * 100;
-
-  // Reset per-question state when question changes
-  useEffect(() => {
-    setSelected(null);
-    setInputVal("");
-    setFeedback(null);
-  }, [currentQ]);
-
-  // Called when user picks an MCQ option — auto-advance after 400ms
-  function pickOption(opt) {
-    if (feedback !== null) return; // already answered
-    setSelected(opt);
-    const newAnswers = { ...answers, [q.id]: opt };
-    setAnswers(newAnswers);
-
-    // Brief flash of selection, then advance
-    setTimeout(() => {
-      advanceOrFinish(newAnswers);
-    }, 350);
-  }
-
-  // For text inputs — called when user taps "Next"
-  function submitText() {
-    if (feedback !== null) return;
-    const val = inputVal.trim();
-    const newAnswers = { ...answers, [q.id]: val };
-    setAnswers(newAnswers);
-    advanceOrFinish(newAnswers);
-  }
-
-  async function advanceOrFinish(finalAnswers) {
-    if (!isLastQ) {
-      setCurrentQ((c) => c + 1);
-    } else {
-      // All answered — submit to backend
-      setSubmitting(true);
-      try {
-        const payload = questions.map((question) => ({
-          question_id: question.id,
-          answer: finalAnswers[question.id] || "",
-        }));
-        const result = await onFinish(payload);
-        // onFinish sets result in parent
-      } catch {
-        setSubmitting(false);
-      }
-    }
-  }
-
-  return (
-    <div className="w-full max-w-3xl mx-auto">
-      {/* Progress bar + counter */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="flex-1 h-3 border-2 border-on-surface bg-surface relative overflow-hidden">
-          <div
-            className="absolute left-0 top-0 h-full bg-secondary transition-all duration-500"
-            style={{ width: `${pct}%` }}
-          />
-          {/* tick grid */}
-          <div className="absolute inset-0 flex justify-evenly pointer-events-none">
-            {Array.from({ length: total - 1 }).map((_, i) => (
-              <div key={i} className="w-px h-full bg-on-surface/20" />
-            ))}
-          </div>
-        </div>
-        <span className="font-label text-[11px] uppercase font-bold text-on-surface-variant whitespace-nowrap">
-          {currentQ + 1} / {total}
-        </span>
-      </div>
-
-      {/* Question card */}
-      <div className="bg-surface border-2 border-on-surface shadow-[8px_8px_0px_0px_#b90538] p-8 md:p-12 relative">
-        {/* Paperclip */}
-        <div className="absolute -top-3 -right-2 rotate-45 z-20">
-          <Paperclip />
-        </div>
-
-        {/* Exercise header */}
-        {(() => {
-          const { instruction, sentence } = parseQuestionText(q.text);
-          // What to show in the task description line:
-          // If the text had an explicit instruction prefix, use it verbatim.
-          // Otherwise fall back to a generic label per question type.
-          const taskLine = instruction
-            || (q.options?.length > 0
-              ? (lang === "ru" ? "Выберите правильный вариант" : lang === "tg" ? "Вариантро интихоб кунед" : "Choose the correct answer")
-              : (lang === "ru" ? "Заполните пропуск" : lang === "tg" ? "Холиро пур кунед" : "Fill in the blank"));
-
-          return (
-            <>
-              <div className="flex justify-between items-start border-b-2 border-on-surface pb-4 mb-8">
-                <div>
-                  <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant block mb-1">
-                    {lang === "ru" ? "Упражнение" : lang === "tg" ? "Машқ" : "Exercise No."}{" "}
-                    {String(currentQ + 1).padStart(3, "0")}
-                  </span>
-                  <p className="font-body text-lg italic text-on-surface-variant">
-                    {taskLine}
-                  </p>
-                </div>
-                <span className="font-label text-[9px] font-bold uppercase tracking-widest text-secondary bg-[#ffdadb] px-2 py-1 border border-secondary shadow-[2px_2px_0px_0px_#b90538] shrink-0 ml-4">
-                  {currentQ + 1}/{total}
-                </span>
-              </div>
-
-              {/* Sentence card — only the actual sentence, no instruction prefix */}
-              {sentence && (
-                <div className="flex items-center justify-center mb-10 px-4 py-8 bg-surface-container border-2 border-on-surface shadow-[4px_4px_0px_0px_#000]">
-                  <span className="font-headline text-3xl md:text-5xl text-on-surface leading-none text-center">
-                    {sentence}
-                  </span>
-                </div>
-              )}
-            </>
-          );
-        })()}
-
-        {/* MCQ options — click auto-advances */}
-        {q.options && q.options.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {q.options.map((opt) => {
-              const isChosen = selected === opt;
-              return (
-                <button
-                  key={opt}
-                  onClick={() => pickOption(opt)}
-                  disabled={selected !== null}
-                  className={`
-                    border-2 border-on-surface p-5 text-center transition-all cursor-pointer
-                    ${isChosen
-                      ? "bg-secondary text-surface shadow-[4px_4px_0px_0px_#000] scale-[0.98]"
-                      : "bg-surface hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#000]"
-                    }
-                    disabled:cursor-default
-                  `}
-                >
-                  <span className="font-headline text-2xl font-bold">{opt}</span>
-                </button>
-              );
-            })}
-          </div>
-        ) : (
-          /* Text input — requires explicit Next button */
-          <div className="space-y-4">
-            <input
-              autoFocus
-              type="text"
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && inputVal.trim() && submitText()}
-              placeholder="___"
-              className="w-full font-headline text-3xl text-secondary text-center bg-transparent border-0 border-b-4 border-dashed border-on-surface focus:ring-0 focus:border-secondary outline-none transition-colors py-3"
-            />
-            <button
-              onClick={submitText}
-              disabled={!inputVal.trim() || submitting}
-              className="w-full bg-secondary text-surface border-2 border-on-surface py-4 font-label text-[11px] uppercase tracking-widest font-bold shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-40 flex items-center justify-between px-6 cursor-pointer"
-            >
-              <span>
-                {isLastQ
-                  ? (submitting
-                    ? (lang === "ru" ? "Отправка…" : lang === "tg" ? "Фиристодан…" : "Submitting…")
-                    : (lang === "ru" ? "Завершить" : lang === "tg" ? "Анҷом додан" : "Finish"))
-                  : (lang === "ru" ? "Далее" : lang === "tg" ? "Минбаъд" : "Next")}
-              </span>
-              <Icon name={isLastQ ? "check" : "arrow_forward"} className="text-lg" />
-            </button>
-          </div>
-        )}
-
-        {/* Sticky note with current question number dots */}
-        <div className="absolute -bottom-8 -right-4 md:-right-10 bg-[#ffb95f] text-[#2a1700] p-3 border-2 border-on-surface shadow-[4px_4px_0px_0px_#000] rotate-3 z-20">
-          <div className="flex gap-1.5">
-            {questions.map((_, i) => (
-              <div
-                key={i}
-                className={`w-2 h-2 rounded-full border border-[#2a1700] transition-all ${
-                  i < currentQ ? "bg-[#2a1700]" : i === currentQ ? "bg-secondary scale-125" : "bg-transparent"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Skip / back links */}
-      <div className="flex justify-center gap-6 mt-5">
-        <button
-          onClick={() => currentQ > 0 && setCurrentQ((c) => c - 1)}
-          disabled={currentQ === 0}
-          className="font-label text-[10px] text-on-surface-variant hover:text-on-surface underline underline-offset-4 transition-colors cursor-pointer uppercase font-bold tracking-widest disabled:opacity-30"
-        >
-          {lang === "ru" ? "← Назад" : lang === "tg" ? "← Бозгашт" : "← Back"}
-        </button>
-        <button
-          onClick={() => window.history.back()}
-          className="font-label text-[10px] text-on-surface-variant hover:text-secondary underline underline-offset-4 transition-colors cursor-pointer uppercase font-bold tracking-widest"
-        >
-          {lang === "ru" ? "Выйти" : lang === "tg" ? "Баромадан" : "Exit"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ── Results screen ────────────────────────────────────────────────────────────
-function ResultsScreen({ result, lessonTopic, onRetry, onBack, lang }) {
-  const pct = result.total > 0 ? Math.round((result.correct / result.total) * 100) : 0;
-  const perfect = pct === 100;
-
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-20" style={BG}>
-      <div className="w-full max-w-2xl">
-        {/* Score card */}
-        <div className="bg-surface border-2 border-on-surface shadow-[8px_8px_0px_0px_#b90538] p-8 md:p-12 mb-6">
-          <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant block mb-4">
-            {lang === "ru" ? "Результаты" : lang === "tg" ? "Натиҷаҳо" : "Results"}
-          </span>
-          <h2 className="font-headline text-3xl font-bold text-on-surface mb-6 leading-tight">
-            {lessonTopic}
-          </h2>
-
-          {/* Big score */}
-          <div className="flex items-end gap-2 mb-2">
-            <span className="font-headline text-[96px] leading-none font-bold text-secondary">{pct}</span>
-            <span className="font-headline text-5xl font-bold text-secondary mb-2">%</span>
-          </div>
-          <p className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-4">
-            {result.correct} / {result.total}{" "}
-            {lang === "ru" ? "верных ответов" : lang === "tg" ? "ҷавобҳои дуруст" : "correct"}
-          </p>
-
-          {/* Progress gauge */}
-          <div className="w-full h-4 border-2 border-on-surface bg-surface-container">
-            <div className="h-full bg-secondary transition-all" style={{ width: `${pct}%` }} />
-          </div>
-
-          {perfect && (
-            <p className="font-label text-[10px] uppercase tracking-widest font-bold text-secondary mt-3 flex items-center gap-2">
-              <Icon name="star" className="text-base" />
-              {lang === "ru" ? "Идеально!" : lang === "tg" ? "Олиҷаноб!" : "Perfect score!"}
-            </p>
-          )}
-        </div>
-
-        {/* Per-question review */}
-        <div className="space-y-3 mb-6">
-          {result.results.map((q, i) => (
-            <div
-              key={q.id}
-              className={`border-2 border-on-surface p-5 bg-surface shadow-[3px_3px_0px_0px_#000] flex gap-4 items-start border-l-4 ${
-                q.is_correct ? "border-l-[#4caf50]" : "border-l-secondary"
-              }`}
-            >
-              <Icon
-                name={q.is_correct ? "check_circle" : "cancel"}
-                className={`text-xl mt-0.5 shrink-0 ${q.is_correct ? "text-[#4caf50]" : "text-secondary"}`}
-              />
-              <div className="min-w-0">
-                <p className="font-body text-sm text-on-surface leading-relaxed mb-1">{q.text}</p>
-                <p className="font-label text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">
-                  {lang === "ru" ? "Правильно: " : lang === "tg" ? "Дуруст: " : "Correct: "}
-                  <span className="text-on-surface normal-case">{q.answer}</span>
-                </p>
-                {q.explanation && (
-                  <p className="font-body text-xs text-on-surface-variant mt-1 italic">{q.explanation}</p>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Actions */}
-        <div className="flex gap-4">
-          <button
-            onClick={onRetry}
-            className="flex-1 bg-secondary text-surface border-2 border-on-surface py-4 font-label text-[11px] uppercase tracking-widest font-bold shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2"
-          >
-            <Icon name="refresh" className="text-base" />
-            {lang === "ru" ? "Ещё раз" : lang === "tg" ? "Такрор" : "Try Again"}
-          </button>
-          <button
-            onClick={onBack}
-            className="flex-1 bg-surface text-on-surface border-2 border-on-surface py-4 font-label text-[11px] uppercase tracking-widest font-bold shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2"
-          >
-            <Icon name="grid_view" className="text-base" />
-            {lang === "ru" ? "Все уроки" : lang === "tg" ? "Ҳама дарсҳо" : "All Lessons"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ── MAIN PAGE ─────────────────────────────────────────────────────────────────
 export default function GrammarLesson() {
   const { id } = useParams();
@@ -506,8 +176,12 @@ export default function GrammarLesson() {
   const questions = lesson.questions || [];
 
   // ── Quiz submit handler (passed into QuizCard) ──
-  async function handleFinish(payload) {
+  async function handleFinish(answers) {
     try {
+      const payload = questions.map((question) => ({
+        question_id: question.id,
+        answer: answers[question.id] || "",
+      }));
       const outcome = await submitLesson(lesson.id, payload);
       setResult(outcome);
       setPhase("results");
@@ -521,9 +195,9 @@ export default function GrammarLesson() {
   // ── Results phase ──
   if (phase === "results" && result) {
     return (
-      <ResultsScreen
+      <QuizResults
         result={result}
-        lessonTopic={lesson.topic}
+        title={lesson.topic}
         lang={lang}
         onRetry={() => { setPhase("quiz"); setResult(null); }}
         onBack={() => navigate("/grammar")}

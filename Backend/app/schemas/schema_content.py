@@ -29,6 +29,7 @@ class GrammarQuestionResponse(BaseModel):
 
 class GrammarQuestionResultResponse(GrammarQuestionResponse):
     explanation: str | None
+    is_correct: bool
 
 
 class GrammarLessonResponse(BaseModel):
