@@ -106,6 +106,14 @@ async def get_unit(unit_id: int, db: AsyncSession):
     return (await db.execute(select(CourseUnit).where(CourseUnit.id == unit_id))).scalar_one_or_none()
 
 
+def theme_title(unit: CourseUnit, locale: str):
+    if locale == 'tg':
+        return unit.theme_title_tg or unit.theme_title_ru
+    if locale == 'en':
+        return unit.theme_title_en or unit.theme_title_ru
+    return unit.theme_title_ru
+
+
 async def get_unlock_boundary(user_id: int, db: AsyncSession):
     progress = await get_or_create_progress(user_id, db)
 
@@ -118,7 +126,7 @@ async def get_unlock_boundary(user_id: int, db: AsyncSession):
     return first_incomplete.sequence_index if first_incomplete else 0
 
 
-async def list_units(user_id: int, db: AsyncSession, level: str | None = None):
+async def list_units(user_id: int, db: AsyncSession, level: str | None = None, locale: str = 'en'):
     query = select(CourseUnit).order_by(CourseUnit.sequence_index)
     if level:
         query = query.where(CourseUnit.cefr_level == level)
@@ -142,7 +150,7 @@ async def list_units(user_id: int, db: AsyncSession, level: str | None = None):
             'unit_code': unit.unit_code,
             'sequence_index': unit.sequence_index,
             'cefr_level': unit.cefr_level,
-            'theme_title': unit.theme_title,
+            'theme_title': theme_title(unit, locale),
             'grammar_topic_label': unit.grammar_topic_label,
             'estimated_minutes': unit.estimated_minutes,
             'is_level_midpoint': unit.is_level_midpoint,
@@ -154,7 +162,7 @@ async def list_units(user_id: int, db: AsyncSession, level: str | None = None):
     return result
 
 
-async def get_unit_detail(user_id: int, unit_id: int, db: AsyncSession):
+async def get_unit_detail(user_id: int, unit_id: int, db: AsyncSession, locale: str = 'en'):
     unit = await get_unit(unit_id, db)
     if unit is None:
         return None
@@ -167,7 +175,7 @@ async def get_unit_detail(user_id: int, unit_id: int, db: AsyncSession):
             'unit_code': unit.unit_code,
             'sequence_index': unit.sequence_index,
             'cefr_level': unit.cefr_level,
-            'theme_title': unit.theme_title,
+            'theme_title': theme_title(unit, locale),
             'locked': True,
         }
 
@@ -184,7 +192,7 @@ async def get_unit_detail(user_id: int, unit_id: int, db: AsyncSession):
         'unit_code': unit.unit_code,
         'sequence_index': unit.sequence_index,
         'cefr_level': unit.cefr_level,
-        'theme_title': unit.theme_title,
+        'theme_title': theme_title(unit, locale),
         'locked': False,
         'grammar_topic_label': unit.grammar_topic_label,
         'grammar_lesson_id': unit.grammar_lesson_id,

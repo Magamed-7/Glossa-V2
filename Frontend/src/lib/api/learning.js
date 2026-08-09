@@ -16,19 +16,26 @@ export function submitOnboarding(data) {
   return api.post("/learning/onboarding", data);
 }
 
-export function getTodayQueue() {
-  return api.get("/learning/today");
+export function getTodayQueue({ locale } = {}) {
+  const params = new URLSearchParams();
+  if (locale) params.set("locale", locale);
+  const query = params.toString();
+  return api.get(`/learning/today${query ? `?${query}` : ""}`);
 }
 
-export function getCourseUnits(level) {
+export function getCourseUnits(level, { locale } = {}) {
   const params = new URLSearchParams();
   if (level) params.set("level", level);
+  if (locale) params.set("locale", locale);
   const query = params.toString();
   return api.get(`/learning/units${query ? `?${query}` : ""}`);
 }
 
-export function getCourseUnitDetail(unitId) {
-  return api.get(`/learning/units/${unitId}`);
+export function getCourseUnitDetail(unitId, { locale } = {}) {
+  const params = new URLSearchParams();
+  if (locale) params.set("locale", locale);
+  const query = params.toString();
+  return api.get(`/learning/units/${unitId}${query ? `?${query}` : ""}`);
 }
 
 export function completeAtom(unitId, atomType, timeSpentSeconds = 0) {

@@ -41,28 +41,31 @@ async def submit_onboarding(
 
 @router_course.get('/today', response_model=TodayQueueResponse)
 async def get_today(
+    locale: str = 'en',
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await course_today.get_today_queue(current_user.id, db)
+    return await course_today.get_today_queue(current_user.id, db, locale=locale)
 
 
 @router_course.get('/units', response_model=list[CourseUnitSummary])
 async def get_units(
     level: str | None = None,
+    locale: str = 'en',
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_course.list_units(current_user.id, db, level=level)
+    return await crud_course.list_units(current_user.id, db, level=level, locale=locale)
 
 
 @router_course.get('/units/{unit_id}', response_model=CourseUnitDetail)
 async def get_unit_detail(
     unit_id: int,
+    locale: str = 'en',
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    detail = await crud_course.get_unit_detail(current_user.id, unit_id, db)
+    detail = await crud_course.get_unit_detail(current_user.id, unit_id, db, locale=locale)
     if detail is None:
         raise AppError(code='COURSE_UNIT_NOT_FOUND', message='Course unit not found', status_code=404)
     return detail

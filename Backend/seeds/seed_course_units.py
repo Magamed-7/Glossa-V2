@@ -245,7 +245,7 @@ async def run(reset, dry_run):
                 sequence_index=sequence_index,
                 cefr_level=entry['cefr_level'],
                 source_unit_number=entry['source_unit_number'],
-                theme_title=entry['theme_title'],
+                theme_title_ru=entry['theme_title'],
                 grammar_topic_label=entry['grammar_topic_label'],
                 grammar_lesson_id=entry['grammar_lesson_id'],
                 estimated_minutes=_estimate_minutes(bool(per_atom_vocab), bool(per_atom_stories)),

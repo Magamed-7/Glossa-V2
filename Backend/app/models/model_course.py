@@ -15,7 +15,9 @@ class CourseUnit(Base):
     sequence_index: Mapped[int] = mapped_column(Integer, nullable=False, unique=True, index=True)
     cefr_level: Mapped[str] = mapped_column(String, nullable=False, index=True)
     source_unit_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    theme_title: Mapped[str] = mapped_column(String, nullable=False)
+    theme_title_en: Mapped[str | None] = mapped_column(String, nullable=True)
+    theme_title_ru: Mapped[str] = mapped_column(String, nullable=False)
+    theme_title_tg: Mapped[str | None] = mapped_column(String, nullable=True)
     grammar_topic_label: Mapped[str | None] = mapped_column(String, nullable=True)
 
     grammar_lesson_id: Mapped[int | None] = mapped_column(ForeignKey('grammar_lessons.id'), nullable=True)

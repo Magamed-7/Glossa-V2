@@ -18,7 +18,7 @@ async def _next_unit(current: CourseUnit, db: AsyncSession):
     ).scalar_one_or_none()
 
 
-async def get_today_queue(user_id: int, db: AsyncSession):
+async def get_today_queue(user_id: int, db: AsyncSession, locale: str = 'en'):
     progress = await crud_course.get_or_create_progress(user_id, db)
     budget = progress.daily_minutes_budget or 30
     remaining = budget
@@ -68,7 +68,7 @@ async def get_today_queue(user_id: int, db: AsyncSession):
                 'kind': atom_type,
                 'course_unit_id': current_unit.id,
                 'unit_code': current_unit.unit_code,
-                'theme_title': current_unit.theme_title,
+                'theme_title': crud_course.theme_title(current_unit, locale),
                 'estimated_minutes': estimated,
                 'grammar_lesson_id': detail['grammar_lesson_id'] if atom_type == 'grammar' else None,
                 'story_ids': detail['story_ids'] if atom_type == 'story' else None,
@@ -84,7 +84,7 @@ async def get_today_queue(user_id: int, db: AsyncSession):
                         'kind': 'next_unit_preview',
                         'course_unit_id': next_unit.id,
                         'unit_code': next_unit.unit_code,
-                        'theme_title': next_unit.theme_title,
+                        'theme_title': crud_course.theme_title(next_unit, locale),
                         'estimated_minutes': next_unit.estimated_minutes,
                     })
 

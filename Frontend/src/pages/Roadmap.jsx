@@ -303,8 +303,8 @@ export default function Roadmap() {
   );
 
   const { data: units, loading: unitsLoading, error: unitsError } = useApi(
-    () => (onboarded ? getCourseUnits() : Promise.resolve(null)),
-    [onboarded]
+    () => (onboarded ? getCourseUnits(undefined, { locale: lang }) : Promise.resolve(null)),
+    [onboarded, lang]
   );
 
   const unitsByLevel = useMemo(() => {

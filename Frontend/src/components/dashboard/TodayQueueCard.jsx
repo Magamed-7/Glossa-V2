@@ -57,8 +57,8 @@ export default function TodayQueueCard() {
   const onboarded = onboarding?.onboarded;
 
   const { data: today, loading: todayLoading } = useApi(
-    () => (onboarded ? getTodayQueue() : Promise.resolve(null)),
-    [onboarded]
+    () => (onboarded ? getTodayQueue({ locale: lang }) : Promise.resolve(null)),
+    [onboarded, lang]
   );
 
   if (onboardingLoading) {

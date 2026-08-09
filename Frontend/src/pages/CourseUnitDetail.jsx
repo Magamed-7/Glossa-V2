@@ -38,7 +38,7 @@ export default function CourseUnitDetail() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const { data: unit, loading, error, reload } = useApi(() => getCourseUnitDetail(id), [id]);
+  const { data: unit, loading, error, reload } = useApi(() => getCourseUnitDetail(id, { locale: lang }), [id, lang]);
 
   const { data: vocabWords } = useApi(
     () => (unit ? getVocabularyByIds(unit.vocab_entry_ids, { locale: lang }) : Promise.resolve(null)),
