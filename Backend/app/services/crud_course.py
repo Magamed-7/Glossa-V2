@@ -158,6 +158,7 @@ async def list_units(user_id: int, db: AsyncSession, level: str | None = None, l
             'cefr_level': unit.cefr_level,
             'theme_title': theme_title(unit, locale),
             'grammar_topic_label': unit.grammar_topic_label,
+            'grammar_lesson_id': unit.grammar_lesson_id,
             'estimated_minutes': unit.estimated_minutes,
             'is_level_midpoint': unit.is_level_midpoint,
             'is_level_final': unit.is_level_final,

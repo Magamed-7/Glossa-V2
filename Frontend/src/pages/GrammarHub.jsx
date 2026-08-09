@@ -1,52 +1,53 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
-import { getLessons, getWeakTopics, getGrammarProgress } from "../lib/api/grammar.js";
+import { getWeakTopics, getGrammarProgress } from "../lib/api/grammar.js";
+import { getCourseUnits } from "../lib/api/learning.js";
 import { useI18n } from "../lib/i18n.jsx";
 
-// ── Constant CEFR list ────────────────────────────────────────────────────────
-const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+// ── Constant CEFR list — matches the Roadmap; no C2 content exists yet ─────────
+const LEVELS = ["A1", "A2", "B1", "B2", "C1"];
 
 const LEVEL_LABELS = {
-  en: { A1: "A1 Beginner", A2: "A2 Elementary", B1: "B1 Intermediate", B2: "B2 Upper-Int", C1: "C1 Advanced", C2: "C2 Mastery" },
-  ru: { A1: "A1 Начинающий", A2: "A2 Элементарный", B1: "B1 Средний", B2: "B2 Выше среднего", C1: "C1 Продвинутый", C2: "C2 Мастер" },
-  tg: { A1: "A1 Ибтидоӣ", A2: "A2 Оддӣ", B1: "B1 Миёна", B2: "B2 Аз миёна боло", C1: "C1 Пешрафта", C2: "C2 Олиӣ" },
+  en: { A1: "A1 Beginner", A2: "A2 Elementary", B1: "B1 Intermediate", B2: "B2 Upper-Int", C1: "C1 Advanced" },
+  ru: { A1: "A1 Начинающий", A2: "A2 Элементарный", B1: "B1 Средний", B2: "B2 Выше среднего", C1: "C1 Продвинутый" },
+  tg: { A1: "A1 Ибтидоӣ", A2: "A2 Оддӣ", B1: "B1 Миёна", B2: "B2 Аз миёна боло", C1: "C1 Пешрафта" },
 };
 
-// Short labels so they fit in one row on small screens
-const LEVEL_SHORT = { A1: "A1", A2: "A2", B1: "B1", B2: "B2", C1: "C1", C2: "C2" };
+const LEVEL_SHORT = { A1: "A1", A2: "A2", B1: "B1", B2: "B2", C1: "C1" };
 
 // ── Small lesson card ─────────────────────────────────────────────────────────
-function LessonCard({ lesson, index }) {
+function LessonCard({ unit, index, locked, lockedLabel }) {
   const navigate = useNavigate();
 
   return (
     <button
-      onClick={() => navigate(`/grammar/${lesson.id}`)}
-      className="group text-left bg-surface border-2 border-on-surface p-5 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all relative overflow-hidden min-h-[200px] flex flex-col w-full cursor-pointer"
+      onClick={() => !locked && navigate(`/grammar/${unit.grammar_lesson_id}`)}
+      disabled={locked}
+      title={locked ? lockedLabel : undefined}
+      className={`group text-left border-2 p-5 relative overflow-hidden min-h-[160px] flex flex-col w-full transition-all
+        ${locked
+          ? "bg-surface/60 border-on-surface/20 border-dashed cursor-not-allowed"
+          : "bg-surface border-on-surface shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none cursor-pointer"
+        }`}
     >
-      <div className="absolute top-0 right-0 bg-on-surface text-surface font-label text-[10px] font-bold px-3 py-1 border-b-2 border-l-2 border-on-surface z-10">
-        {String(index + 1).padStart(2, "0")}
+      <div className={`absolute top-0 right-0 font-label text-[10px] font-bold px-3 py-1 border-b-2 border-l-2 z-10
+        ${locked ? "bg-surface text-on-surface-variant/50 border-on-surface/20" : "bg-on-surface text-surface border-on-surface"}`}>
+        {locked ? <Icon name="lock" className="text-xs" /> : String(index + 1).padStart(2, "0")}
       </div>
-      {index % 3 === 1 && (
-        <div className="absolute -right-5 -bottom-5 w-28 h-28 bg-secondary/10 rounded-full opacity-50 group-hover:scale-110 transition-transform pointer-events-none" />
-      )}
-      <h4 className="font-headline text-base font-bold text-on-surface mb-2 mt-4 relative z-10 leading-snug">
-        {lesson.topic}
+      <h4 className={`font-headline text-base font-bold mb-2 mt-4 relative z-10 leading-snug ${locked ? "text-on-surface-variant/50" : "text-on-surface"}`}>
+        {unit.grammar_topic_label || unit.theme_title}
       </h4>
-      {lesson.structure && (
-        <p className="font-body text-xs text-on-surface-variant line-clamp-3 relative z-10 mb-3 flex-1">
-          {lesson.structure}
-        </p>
-      )}
       <div className="flex items-center justify-between relative z-10 mt-auto pt-3 border-t border-on-surface/20">
         <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant font-bold truncate max-w-[70%]">
-          {lesson.unit || "General"}
+          {unit.unit_code}
         </span>
-        <Icon name="arrow_forward" className="text-on-surface text-base group-hover:translate-x-1 transition-transform shrink-0" />
+        {!locked && (
+          <Icon name="arrow_forward" className="text-on-surface text-base group-hover:translate-x-1 transition-transform shrink-0" />
+        )}
       </div>
     </button>
   );
@@ -64,7 +65,6 @@ function ProgressPanel({ progress, activeLevel, lang }) {
     );
   }
 
-  // Find active level stats
   const lvlStats = progress.by_level?.find((b) => b.level === activeLevel);
   const pct = lvlStats?.percent ?? 0;
   const done = lvlStats?.completed_lessons ?? 0;
@@ -85,7 +85,6 @@ function ProgressPanel({ progress, activeLevel, lang }) {
         <span className="font-headline text-6xl font-bold leading-none">{Math.round(pct)}</span>
         <span className="font-headline text-2xl font-bold mb-1">%</span>
       </div>
-      {/* Striped gauge */}
       <div className="w-full h-4 border-2 border-surface/50 bg-surface/20 p-[2px]">
         <div
           className="h-full bg-surface relative overflow-hidden transition-all duration-700"
@@ -100,10 +99,9 @@ function ProgressPanel({ progress, activeLevel, lang }) {
           />
         </div>
       </div>
-      {/* All-level mini bars */}
       {progress.by_level && (
-        <div className="mt-4 grid grid-cols-6 gap-1">
-          {progress.by_level.map((b) => (
+        <div className="mt-4 grid grid-cols-5 gap-1">
+          {progress.by_level.filter((b) => LEVELS.includes(b.level)).map((b) => (
             <div key={b.level} className="flex flex-col items-center gap-1">
               <div className="w-full h-1 bg-surface/30 relative overflow-hidden">
                 <div className="absolute left-0 top-0 h-full bg-surface/80" style={{ width: `${b.percent}%` }} />
@@ -124,34 +122,50 @@ export default function GrammarHub() {
   const { languages } = useAuth();
 
   const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
-  const targetLevel = rawLevel === "native" ? "C2" : rawLevel;
-  const [activeLevel, setActiveLevel] = useState(targetLevel);
+  const targetLevel = LEVELS.includes(rawLevel) ? rawLevel : "C1";
+  const currentRank = LEVELS.indexOf(targetLevel);
 
+  const [activeLevel, setActiveLevel] = useState(targetLevel);
   const labels = LEVEL_LABELS[lang] || LEVEL_LABELS.en;
 
-  // Data fetching
-  const { data: lessons, loading: lessonsLoading } = useApi(
-    () => getLessons({ level: activeLevel, limit: 100 }),
-    [activeLevel]
+  const lockedHint = lang === "ru"
+    ? "Открывается, когда ты дойдёшь до этого уровня в роадмапе"
+    : lang === "tg"
+      ? "Вақте ки ба ин сатҳ дар нақшаи роҳ мерасед, кушода мешавад"
+      : "Unlocks once you reach this level on the roadmap";
+
+  const { data: units, loading: unitsLoading } = useApi(
+    () => getCourseUnits(undefined, { locale: lang }),
+    [lang]
   );
-  const { data: progress, loading: progressLoading } = useApi(
-    () => getGrammarProgress(),
-    []
-  );
+  const { data: progress } = useApi(() => getGrammarProgress(), []);
   const { data: weakTopics } = useApi(() => getWeakTopics(), []);
 
-  const featuredLesson = lessons?.[0];
+  const unitsByLevel = useMemo(() => {
+    if (!units) return {};
+    const grouped = {};
+    for (const u of units) {
+      if (!u.grammar_lesson_id) continue;
+      grouped[u.cefr_level] = grouped[u.cefr_level] || [];
+      grouped[u.cefr_level].push(u);
+    }
+    return grouped;
+  }, [units]);
+
+  const featuredUnit = unitsByLevel[targetLevel]?.[0];
 
   const weakestTopic = weakTopics?.length
     ? [...weakTopics].sort((a, b) => b.error_rate - a.error_rate)[0]
     : null;
 
-  const weakLesson = weakestTopic && lessons
-    ? lessons.find((l) => l.topic === weakestTopic.topic) || null
+  const weakUnit = weakestTopic && units
+    ? units.find((u) => u.grammar_topic_label === weakestTopic.topic) || null
     : null;
 
-  // Active level lesson count for spotlight
-  const activeLvlProgress = progress?.by_level?.find((b) => b.level === activeLevel);
+  const scrollToLevel = (lv) => {
+    setActiveLevel(lv);
+    document.getElementById(`grammar-level-${lv}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div
@@ -162,7 +176,6 @@ export default function GrammarHub() {
         backgroundSize: "20px 20px",
       }}
     >
-      {/* Decorative background */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full border border-secondary opacity-10" />
         <div className="absolute bottom-[20%] right-[5%] w-[60vw] h-[60vw] rounded-full border border-on-surface opacity-5" />
@@ -171,7 +184,6 @@ export default function GrammarHub() {
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 md:px-16 py-16">
 
-        {/* ── Page Header ── */}
         <div className="mb-10">
           <h1 className="font-headline text-5xl md:text-6xl font-bold text-on-surface tracking-tight leading-none">
             Syntactic{" "}
@@ -184,39 +196,37 @@ export default function GrammarHub() {
           </h1>
           <p className="font-body text-base text-on-surface-variant max-w-2xl mt-3">
             {lang === "ru"
-              ? "Изучайте архитектурные блоки языка. Выберите уровень для изучения грамматических структур."
+              ? "Все грамматические темы курса, по порядку, как в роадмапе. Открыт твой текущий уровень и всё, что ниже."
               : lang === "tg"
-                ? "Блокҳои меъмории забонро омӯзед. Сатҳро барои омӯзиши сохторҳои грамматикӣ интихоб кунед."
-                : "Master the architectural blocks of language. Select a proficiency level to explore essential grammatical structures."}
+                ? "Ҳамаи мавзӯъҳои грамматикии курс, паиҳам, мисли нақшаи роҳ. Сатҳи ҳозираат ва ҳама чизи поёнтар кушода аст."
+                : "Every grammar topic in the course, in roadmap order. Your current level and everything below it is open."}
           </p>
         </div>
 
-        {/* ── CEFR Tabs — fit all 6 in one row without scroll ── */}
+        {/* ── Level quick-nav — jumps to a section, doesn't hide the others ── */}
         <div className="mb-10 relative">
-          {/* Bottom border line */}
           <div className="absolute bottom-0 left-0 w-full h-[2px] bg-on-surface z-0" />
           <div className="flex gap-1 relative z-10">
             {LEVELS.map((lv) => {
               const isActive = activeLevel === lv;
-              const isLocked = lv !== targetLevel;
+              const isLocked = LEVELS.indexOf(lv) > currentRank;
               return (
                 <button
                   key={lv}
-                  onClick={() => !isLocked && setActiveLevel(lv)}
+                  onClick={() => scrollToLevel(lv)}
                   title={labels[lv]}
                   className={`
                     flex-1 font-label text-[10px] md:text-[11px] uppercase tracking-wider font-bold
                     px-1 py-2.5 border-2 border-on-surface border-b-0 rounded-t-sm
-                    whitespace-nowrap text-center transition-colors select-none
+                    whitespace-nowrap text-center transition-colors select-none cursor-pointer
                     ${isActive
                       ? "bg-secondary text-surface -mb-[2px] pb-[calc(0.625rem+2px)]"
                       : isLocked
-                        ? "bg-surface text-on-surface-variant opacity-40 cursor-not-allowed border-dashed"
-                        : "bg-surface text-on-surface-variant hover:bg-surface-variant cursor-pointer"
+                        ? "bg-surface text-on-surface-variant opacity-50 border-dashed"
+                        : "bg-surface text-on-surface-variant hover:bg-surface-variant"
                     }
                   `}
                 >
-                  {/* On mobile: show short code; on md+: show full label */}
                   <span className="md:hidden">{LEVEL_SHORT[lv]}</span>
                   <span className="hidden md:inline">{labels[lv]}</span>
                 </button>
@@ -225,58 +235,48 @@ export default function GrammarHub() {
           </div>
         </div>
 
-        {/* ── 12-column grid ── */}
-        <div className="grid grid-cols-12 gap-6">
-
-          {/* Spotlight card — 7 cols */}
+        <div className="grid grid-cols-12 gap-6 mb-14">
           <div className="col-span-12 lg:col-span-7 bg-surface border-2 border-on-surface p-6 md:p-8 shadow-[4px_4px_0px_0px_#000] relative">
-            {/* File tab */}
             <div className="absolute -top-[28px] left-[-2px] border-2 border-on-surface border-b-0 bg-surface px-3 py-1 font-label text-[9px] uppercase tracking-widest font-bold text-on-surface">
               {lang === "ru" ? "В ФОКУСЕ" : lang === "tg" ? "ДИҚҚАТ" : "FOCUS"}
             </div>
 
-            {lessonsLoading ? (
+            {unitsLoading ? (
               <div className="space-y-3">
                 <Skeleton className="h-5 w-1/4" />
                 <Skeleton className="h-8 w-3/4" />
                 <Skeleton className="h-16" />
                 <Skeleton className="h-10 w-36" />
               </div>
-            ) : featuredLesson ? (
+            ) : featuredUnit ? (
               <div className="flex gap-6 h-full">
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="bg-[#ffb95f] text-[#2a1700] px-2 py-0.5 font-label text-[9px] uppercase font-bold border border-on-surface">
-                        {featuredLesson.cefr_level}
+                        {featuredUnit.cefr_level}
                       </span>
                       <span className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant font-bold truncate">
                         {lang === "ru" ? "СИНТАКСИЧЕСКИЙ УЗЕЛ" : lang === "tg" ? "ГИРЕҲИ СИНТАКСИС" : "SYNTAX NODE"}
                       </span>
                     </div>
                     <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-3 leading-tight">
-                      {featuredLesson.topic}
+                      {featuredUnit.grammar_topic_label}
                     </h2>
-                    {featuredLesson.structure && (
-                      <p className="font-body text-sm text-on-surface-variant mb-4 line-clamp-3">
-                        {featuredLesson.structure}
-                      </p>
-                    )}
                   </div>
                   <div className="flex items-center gap-4 pt-4 border-t-2 border-dashed border-on-surface">
                     <button
-                      onClick={() => navigate(`/grammar/${featuredLesson.id}`)}
+                      onClick={() => navigate(`/grammar/${featuredUnit.grammar_lesson_id}`)}
                       className="bg-secondary text-surface border-2 border-on-surface font-label text-[10px] uppercase tracking-widest font-bold px-5 py-2.5 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all cursor-pointer shrink-0"
                     >
                       {lang === "ru" ? "Учить сейчас" : lang === "tg" ? "Ҳоло омӯзед" : "Study Now"}
                     </button>
                     <span className="font-label text-[10px] uppercase text-on-surface flex items-center gap-1 font-bold">
                       <Icon name="schedule" className="text-sm" />
-                      15 Min
+                      {featuredUnit.estimated_minutes} Min
                     </span>
                   </div>
                 </div>
-                {/* Image side */}
                 <div className="hidden md:block w-40 border-2 border-on-surface relative shrink-0 bg-surface-container overflow-hidden">
                   <div className="w-full h-full bg-gradient-to-br from-on-surface/5 to-secondary/10 absolute inset-0" />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -295,16 +295,9 @@ export default function GrammarHub() {
             )}
           </div>
 
-          {/* Right panel — 5 cols */}
           <div className="col-span-12 lg:col-span-5 flex flex-col gap-5">
-            {/* Progress card */}
-            <ProgressPanel
-              progress={progress}
-              activeLevel={activeLevel}
-              lang={lang}
-            />
+            <ProgressPanel progress={progress} activeLevel={activeLevel} lang={lang} />
 
-            {/* Weak topic / consistency card */}
             <div className="flex-1 border-2 border-on-surface p-5 bg-surface shadow-[4px_4px_0px_0px_#000] relative overflow-hidden">
               <div className="absolute w-28 h-28 rounded-full border-2 border-on-surface border-dashed opacity-20 -top-4 -left-4" />
               <div className="absolute w-56 h-56 rounded-full border-2 border-on-surface border-dashed opacity-10 -bottom-10 -right-10" />
@@ -324,9 +317,9 @@ export default function GrammarHub() {
                       {Math.round(weakestTopic.error_rate)}%{" "}
                       {lang === "ru" ? "ошибок" : lang === "tg" ? "хатогиҳо" : "error rate"}
                     </p>
-                    {weakLesson && (
+                    {weakUnit && (
                       <button
-                        onClick={() => navigate(`/grammar/${weakLesson.id}`)}
+                        onClick={() => navigate(`/grammar/${weakUnit.grammar_lesson_id}`)}
                         className="font-label text-[10px] uppercase tracking-widest font-bold text-secondary border-b-2 border-secondary hover:text-on-surface hover:border-on-surface transition-colors cursor-pointer"
                       >
                         {lang === "ru" ? "Практиковать →" : lang === "tg" ? "Машқ кунед →" : "Practice Now →"}
@@ -351,43 +344,57 @@ export default function GrammarHub() {
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Syllabus header */}
-          <div className="col-span-12 mt-8 mb-4 flex justify-between items-end border-b-2 border-on-surface pb-3">
-            <h3 className="font-headline text-xl font-bold text-on-surface">
-              {activeLevel}{" "}
-              {lang === "ru" ? "Программа" : lang === "tg" ? "Барнома" : "Syllabus"}
-            </h3>
-            {activeLvlProgress && activeLvlProgress.total_lessons > 0 && (
-              <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">
-                {activeLvlProgress.completed_lessons}/{activeLvlProgress.total_lessons}{" "}
-                {lang === "ru" ? "завершено" : lang === "tg" ? "ба итмом расид" : "completed"}
-              </span>
-            )}
+        {/* ── Full syllabus — every level, in roadmap order, stacked ── */}
+        {unitsLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-40" />)}
           </div>
+        ) : (
+          LEVELS.map((lv) => {
+            const levelUnits = unitsByLevel[lv] || [];
+            const isLocked = LEVELS.indexOf(lv) > currentRank;
+            const lvlStats = progress?.by_level?.find((b) => b.level === lv);
 
-          {/* Lesson cards grid */}
-          <div className="col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {lessonsLoading
-              ? Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-48" />)
-              : lessons && lessons.length > 0
-                ? lessons.map((lesson, i) => (
-                    <LessonCard key={lesson.id} lesson={lesson} index={i} />
-                  ))
-                : (
-                  <div className="col-span-3 border-2 border-dashed border-on-surface p-10 text-center flex flex-col items-center gap-2">
-                    <Icon name="auto_stories" className="text-4xl text-on-surface-variant/30" />
+            return (
+              <div key={lv} id={`grammar-level-${lv}`} className="mb-14 scroll-mt-24">
+                <div className="flex justify-between items-end border-b-2 border-on-surface pb-3 mb-5">
+                  <h3 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
+                    {labels[lv]}
+                    {isLocked && <Icon name="lock" className="text-base text-on-surface-variant/50" />}
+                  </h3>
+                  {lvlStats && lvlStats.total_lessons > 0 && (
+                    <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">
+                      {lvlStats.completed_lessons}/{lvlStats.total_lessons}{" "}
+                      {lang === "ru" ? "завершено" : lang === "tg" ? "ба итмом расид" : "completed"}
+                    </span>
+                  )}
+                </div>
+
+                {levelUnits.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {levelUnits.map((unit, i) => (
+                      <LessonCard
+                        key={unit.id}
+                        unit={unit}
+                        index={i}
+                        locked={isLocked}
+                        lockedLabel={lockedHint}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-on-surface p-8 text-center">
                     <p className="font-body text-sm text-on-surface-variant">
-                      {lang === "ru"
-                        ? "Уроки для этого уровня ещё не добавлены."
-                        : lang === "tg"
-                          ? "Дарсҳо барои ин сатҳ ҳанӯз илова нашудаанд."
-                          : "No lessons available for this level yet."}
+                      {lang === "ru" ? "Темы для этого уровня скоро появятся." : lang === "tg" ? "Мавзӯъҳо барои ин сатҳ ба зудӣ илова мешаванд." : "Topics for this level are coming soon."}
                     </p>
                   </div>
                 )}
-          </div>
-        </div>
+              </div>
+            );
+          })
+        )}
       </main>
     </div>
   );

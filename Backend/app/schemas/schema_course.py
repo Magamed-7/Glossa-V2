@@ -22,6 +22,7 @@ class CourseUnitSummary(BaseModel):
     cefr_level: str
     theme_title: str
     grammar_topic_label: str | None
+    grammar_lesson_id: int | None = None
     estimated_minutes: int
     is_level_midpoint: bool
     is_level_final: bool
