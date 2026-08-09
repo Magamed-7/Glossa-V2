@@ -1,11 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import * as authApi from "../api/auth.js";
 import * as profileApi from "../api/profile.js";
+import { getSettings } from "../api/settings.js";
 import { clearTokens, readUserId, setTokens } from "./tokens.js";
+import { useI18n } from "../i18n.jsx";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const { lang, setLang } = useI18n();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [status, setStatus] = useState("loading");
@@ -20,6 +23,14 @@ export function AuthProvider({ children }) {
       setUser(me);
       setProfile(myProfile);
       setStatus("authenticated");
+
+      // Аккаунт — источник истины для языка интерфейса: без этого `glossa-lang` живёт
+      // только в localStorage конкретного браузера и теряется/расходится при заходе
+      // с другого устройства или после очистки данных.
+      try {
+        const settings = await getSettings();
+        if (settings?.interface_language) setLang(settings.interface_language);
+      } catch (e) {}
 
       const userId = readUserId();
       if (userId) {
@@ -43,7 +54,7 @@ export function AuthProvider({ children }) {
       setLanguages(undefined);
       setStatus("anonymous");
     }
-  }, []);
+  }, [setLang]);
 
   useEffect(() => {
     loadUser();

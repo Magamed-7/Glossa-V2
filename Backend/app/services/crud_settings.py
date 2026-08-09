@@ -23,6 +23,8 @@ async def update_settings(user_id: int, data: SettingsUpdate, db: AsyncSession):
 
     if data.target_language is not None:
         settings.target_language = data.target_language
+    if data.interface_language is not None:
+        settings.interface_language = data.interface_language
     if data.daily_goal is not None:
         settings.daily_goal = data.daily_goal
     if data.difficulty is not None:

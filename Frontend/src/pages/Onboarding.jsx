@@ -77,6 +77,11 @@ function NativeLanguageStep({ onDone }) {
   const t = useT();
   const { lang, setLang } = useI18n();
 
+  function selectNative(code) {
+    setLang(code);
+    updateSettings({ interface_language: code }).catch(() => {});
+  }
+
   return (
     <>
       <div className="mb-section-gap max-w-3xl">
@@ -92,7 +97,7 @@ function NativeLanguageStep({ onDone }) {
           <button
             key={l.code}
             type="button"
-            onClick={() => setLang(l.code)}
+            onClick={() => selectNative(l.code)}
             aria-pressed={lang === l.code}
             className={`group text-left relative bg-surface-container-lowest border-2 p-6 flex flex-col h-full transition-all ${
               lang === l.code ? "border-secondary hard-shadow-crimson" : "border-tertiary hard-shadow hover:-translate-y-1"

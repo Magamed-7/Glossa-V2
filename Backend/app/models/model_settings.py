@@ -11,6 +11,7 @@ class UserSettings(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, unique=True, index=True)
 
     target_language: Mapped[str | None] = mapped_column(String, nullable=True)
+    interface_language: Mapped[str] = mapped_column(String, nullable=False, default='en')
     daily_goal: Mapped[int] = mapped_column(Integer, nullable=False, default=10)
     study_time: Mapped[str | None] = mapped_column(String, nullable=True)
     difficulty: Mapped[str] = mapped_column(String, nullable=False, default='medium')

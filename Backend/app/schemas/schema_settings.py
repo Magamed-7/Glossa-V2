@@ -3,10 +3,12 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict
 
 DIFFICULTY_LEVELS = Literal['easy', 'medium', 'hard']
+INTERFACE_LANGUAGES = Literal['en', 'ru', 'tg']
 
 
 class SettingsUpdate(BaseModel):
     target_language: str | None = None
+    interface_language: INTERFACE_LANGUAGES | None = None
     daily_goal: int | None = None
     study_time: str | None = None
     difficulty: DIFFICULTY_LEVELS | None = None
@@ -20,6 +22,7 @@ class SettingsUpdate(BaseModel):
 
 class SettingsResponse(BaseModel):
     target_language: str | None
+    interface_language: str
     daily_goal: int
     study_time: str | None
     difficulty: str

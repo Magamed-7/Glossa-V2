@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { LANGS, useI18n, useT } from "../../lib/i18n.jsx";
+import { useAuth } from "../../lib/auth/AuthContext.jsx";
+import { updateSettings } from "../../lib/api/settings.js";
 import Icon from "../ui/Icon.jsx";
 
 export default function LanguageSwitcher() {
   const t = useT();
   const { lang, setLang } = useI18n();
+  const { status } = useAuth();
   const [open, setOpen] = useState(false);
   const current = LANGS.find((l) => l.code === lang) || LANGS[0];
+
+  function selectLang(code) {
+    setLang(code);
+    setOpen(false);
+    if (status === "authenticated") updateSettings({ interface_language: code }).catch(() => {});
+  }
 
   return (
     <div
@@ -36,10 +45,7 @@ export default function LanguageSwitcher() {
             <li key={l.code}>
               <button
                 type="button"
-                onClick={() => {
-                  setLang(l.code);
-                  setOpen(false);
-                }}
+                onClick={() => selectLang(l.code)}
                 className={`flex w-full items-center justify-between gap-2 px-3 py-2 font-label text-label-md transition-colors ${
                   l.code === lang ? "bg-secondary-container text-on-secondary-container" : "hover:bg-surface-container"
                 }`}
