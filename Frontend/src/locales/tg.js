@@ -564,6 +564,7 @@ export const tg = {
     exclusiveAccess: "Дастрасии махсус",
     lockedDossiers: "Дасисаҳои пӯшида",
     lockedDossiersDescription: "Тарифро баланд бардоред, то машқи номаҳдуди сӯҳбати ИИ дар ҳамаи сенарияҳо кушода шавад.",
+    startSession: "Оғози сеанс",
     sendMessage: "Фиристодан",
     typeReply: "Ҷавоби худро нависед…",
     accuracy: "Дақиқӣ",

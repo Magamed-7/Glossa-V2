@@ -564,6 +564,7 @@ export const en = {
     exclusiveAccess: "Exclusive Access",
     lockedDossiers: "Locked Dossiers",
     lockedDossiersDescription: "Upgrade your plan to unlock unlimited AI conversation practice across every scenario.",
+    startSession: "Start Session",
     sendMessage: "Send",
     typeReply: "Type your reply…",
     accuracy: "Accuracy",

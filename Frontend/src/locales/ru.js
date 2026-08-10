@@ -564,6 +564,7 @@ export const ru = {
     exclusiveAccess: "Эксклюзивный доступ",
     lockedDossiers: "Закрытые досье",
     lockedDossiersDescription: "Улучшите тариф, чтобы открыть неограниченную практику ИИ-разговора во всех сценариях.",
+    startSession: "Начать сеанс",
     sendMessage: "Отправить",
     typeReply: "Введите ответ…",
     accuracy: "Точность",
