@@ -110,3 +110,19 @@ class UnitTestAttempt(Base):
     status: Mapped[str] = mapped_column(String, nullable=False, default='ready')
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class PracticeTestAttempt(Base):
+    __tablename__ = 'practice_test_attempts'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    category: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    cefr_levels: Mapped[list] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=False)
+    story_id: Mapped[int | None] = mapped_column(ForeignKey('stories.id'), nullable=True, index=True)
+    questions_snapshot: Mapped[dict | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
+    answers: Mapped[dict | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
+    score_percent: Mapped[float | None] = mapped_column(Float, nullable=True)
+    status: Mapped[str] = mapped_column(String, nullable=False, default='ready')
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
