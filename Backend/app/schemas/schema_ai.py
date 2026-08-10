@@ -3,7 +3,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-SCENARIOS = Literal['casual', 'interview', 'restaurant', 'airport', 'telegram']
+SCENARIOS = Literal[
+    'casual', 'interview', 'restaurant', 'airport', 'telegram',
+    'shopping', 'doctor', 'debate', 'adventure', 'newfriend',
+]
 
 
 class ChatSessionCreate(BaseModel):
