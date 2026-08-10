@@ -23,7 +23,7 @@ export default function TutorChat() {
         eyebrow={t("tutor.eyebrow")}
         title={t("tutor.titleLead")}
         accent={t("tutor.titleAccent")}
-        subtitle={t("tutor.scenario", { scenario })}
+        subtitle={t("tutor.scenario", { scenario: t(`tutor.scenarios.${scenario}.title`) })}
       />
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
         <div className="flex flex-col h-[600px] border-2 border-tertiary">

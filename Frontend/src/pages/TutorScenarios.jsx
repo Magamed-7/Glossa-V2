@@ -49,11 +49,23 @@ export default function TutorScenarios() {
       {hasAccess ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
-            <ScenarioCard scenario={featured} featured onSelect={onSelect} />
+            <ScenarioCard
+              scenario={featured}
+              title={t(`tutor.scenarios.${featured.code}.title`)}
+              description={t(`tutor.scenarios.${featured.code}.description`)}
+              featured
+              onSelect={onSelect}
+            />
           </div>
           <div className="flex flex-col gap-6">
             {rest.map((scenario) => (
-              <ScenarioCard key={scenario.code} scenario={scenario} onSelect={onSelect} />
+              <ScenarioCard
+                key={scenario.code}
+                scenario={scenario}
+                title={t(`tutor.scenarios.${scenario.code}.title`)}
+                description={t(`tutor.scenarios.${scenario.code}.description`)}
+                onSelect={onSelect}
+              />
             ))}
           </div>
         </div>
