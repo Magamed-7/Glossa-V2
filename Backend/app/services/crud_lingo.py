@@ -27,6 +27,7 @@ async def create_lingo_service(data: LingoServiceCreate, provider_id: int, db: A
         category=data.category,
         cefr_level=data.cefr_level,
         price=data.price,
+        currency=data.currency,
         pricing_type=data.pricing_type,
         status=data.status
     )
@@ -116,7 +117,8 @@ async def create_lingo_proposal(data: LingoProposalCreate, client_id: int, db: A
         client_id=client_id,
         provider_id=service.provider_id,
         service_id=data.service_id,
-        price=data.price
+        price=data.price,
+        currency=service.currency
     )
     db.add(proposal)
     await db.commit()

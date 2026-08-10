@@ -16,6 +16,7 @@ class LingoServiceCreate(BaseModel):
     category: str
     cefr_level: str | None = None
     price: Decimal
+    currency: Literal['TJS', 'USD', 'RUB'] = 'TJS'
     pricing_type: Literal['hr', 'doc', 'word'] = 'hr'
     status: Literal['active', 'draft', 'hidden'] = 'active'
 
@@ -32,6 +33,7 @@ class LingoServiceUpdate(BaseModel):
     category: str | None = None
     cefr_level: str | None = None
     price: Decimal | None = None
+    currency: Literal['TJS', 'USD', 'RUB'] | None = None
     pricing_type: Literal['hr', 'doc', 'word'] | None = None
     status: Literal['active', 'draft', 'hidden'] | None = None
 
@@ -52,6 +54,7 @@ class LingoServiceResponse(BaseModel):
     category: str
     cefr_level: str | None = None
     price: Decimal
+    currency: str
     pricing_type: str
     status: str
     rating: float
@@ -64,6 +67,7 @@ class LingoServiceResponse(BaseModel):
 class LingoProposalCreate(BaseModel):
     service_id: int
     price: Decimal
+    currency: str = 'TJS'
 
 
 class LingoProposalResponse(BaseModel):
@@ -79,6 +83,7 @@ class LingoProposalResponse(BaseModel):
     service_title_tg: str | None = None
     service_category: str | None = None
     price: Decimal
+    currency: str
     status: str
     created_at: datetime
 

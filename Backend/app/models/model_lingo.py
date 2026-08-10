@@ -25,6 +25,7 @@ class LingoServices(Base):
     category: Mapped[str] = mapped_column(String, nullable=False) # e.g. KOREAN, SPANISH, FRENCH, TRANSLATION, EDITING
     cefr_level: Mapped[str | None] = mapped_column(String, nullable=True) # e.g. A1, A2, B1, B2, C1, C2
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    currency: Mapped[str] = mapped_column(String, nullable=False, default='TJS')
     pricing_type: Mapped[str] = mapped_column(String, nullable=False, default='hr') # 'hr' or 'doc' or 'word'
     status: Mapped[str] = mapped_column(String, nullable=False, default='active') # 'active', 'draft', 'hidden'
     rating: Mapped[float] = mapped_column(Numeric(3, 2), nullable=False, default=5.0)
@@ -40,6 +41,7 @@ class LingoProposals(Base):
     provider_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
     service_id: Mapped[int] = mapped_column(ForeignKey('lingo_services.id'), nullable=False, index=True)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    currency: Mapped[str] = mapped_column(String, nullable=False, default='TJS')
     status: Mapped[str] = mapped_column(String, nullable=False, default='pending') # 'pending', 'active', 'completed', 'declined'
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

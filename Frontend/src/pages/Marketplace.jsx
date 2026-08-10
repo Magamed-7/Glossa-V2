@@ -4,7 +4,7 @@ import Icon from "../components/ui/Icon.jsx";
 import { useT, useI18n } from "../lib/i18n.jsx";
 import { getLingoServices, createLingoProposal } from "../lib/api/lingo.js";
 
-const CATEGORIES = ["KOREAN", "FRENCH", "SPANISH", "TRANSLATION", "EDITING"];
+const CATEGORIES = ["ENGLISH", "RUSSIAN", "TAJIK", "TRANSLATION", "EDITING"];
 const ITEMS_PER_PAGE = 5;
 
 // Маппинг по реальным именам из БД → высококачественные фото
@@ -101,7 +101,7 @@ function FeaturedCard({ service, lang, t, onMessage }) {
               <span className="font-label-md text-label-md text-on-surface-variant uppercase text-xs">{t("market.rate")}</span>
               {service.price ? (
                 <span className="font-headline-md text-headline-md text-primary leading-tight">
-                  {service.price} <span className="font-body-md text-base">{`TJS/${service.pricing_type}`}</span>
+                  {service.price} <span className="font-body-md text-base">{`${service.currency || "TJS"}/${service.pricing_type}`}</span>
                 </span>
               ) : (
                 <span className="font-headline-md text-headline-md text-secondary leading-tight">{t("market.priceFree")}</span>
@@ -161,7 +161,7 @@ function StandardCard({ service, lang, t, onMessage }) {
           <div className="text-right">
             <p className={`font-headline-md text-headline-md leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
               {service.price ? service.price : t("market.priceFree")}{" "}
-              {service.price ? <span className="font-body-md text-xs">{`TJS/${service.pricing_type}`}</span> : null}
+              {service.price ? <span className="font-body-md text-xs">{`${service.currency || "TJS"}/${service.pricing_type}`}</span> : null}
             </p>
           </div>
         </div>
@@ -305,24 +305,22 @@ export default function Marketplace() {
         </div>
       </div>
 
-      <div className="relative flex flex-col md:flex-row gap-gutter">
-        {/* Index / Filter sidebar */}
-        <aside className="w-full md:w-1/4 flex flex-col gap-8 shrink-0">
-          <div className="md:sticky md:top-24">
-
-
-          <div className="card-neo bg-surface-container-lowest p-6 mb-8">
-            <h2 className="font-label-md text-label-md text-primary uppercase border-b-2 border-primary pb-2 mb-4 tracking-widest flex items-center gap-2">
-              <Icon name="filter_list" className="text-sm" />
-              {t("market.indexFilter")}
-            </h2>
-
-            <div className="mb-6">
-              <h3 className="font-label-md text-label-md text-primary mb-3">{t("market.serviceType")}</h3>
+      {/* Horizontal Filter Bar */}
+      <div className="card-neo bg-surface-container-lowest p-6 mb-8 border-2 border-primary">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          {/* Main filter controls */}
+          <div className="flex flex-wrap items-center gap-6">
+            
+            {/* Category Dropdown */}
+            <div className="flex flex-col min-w-[200px]">
+              <span className="font-label-md text-[10px] text-primary uppercase tracking-widest mb-1.5 font-bold flex items-center gap-1">
+                <Icon name="translate" className="text-xs" />
+                {t("market.serviceType")}
+              </span>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full text-xs font-bold bg-surface border-2 border-primary p-2 text-primary focus:outline-none"
+                className="w-full text-xs font-bold bg-surface border-2 border-primary p-2 text-primary focus:outline-none focus:ring-1 focus:ring-secondary"
               >
                 <option value="">{t("market.allTypes")}</option>
                 {CATEGORIES.map((c) => (
@@ -331,36 +329,18 @@ export default function Marketplace() {
               </select>
             </div>
 
-            <div>
-              <h3 className="font-label-md text-label-md text-primary mb-3">{t("market.rateCompensation")}</h3>
-              <div className="space-y-3 font-body-md text-body-md">
-                {[
-                  { label: t("market.anyRate"), val: "" },
-                  { label: t("market.priceFree"), val: "free" },
-                  { label: `${t("market.pricePaid")} (TJS/hr)`, val: "under50" },
-                ].map((item) => (
-                  <label key={item.val} className="flex items-center gap-3 cursor-pointer group">
-                    <input
-                      type="radio"
-                      name="price"
-                      checked={priceGroup === item.val}
-                      onChange={() => setPriceGroup(item.val)}
-                      className="w-5 h-5 border-2 border-primary accent-secondary"
-                    />
-                    <span className="group-hover:text-secondary transition-colors">{item.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-dashed border-outline-variant">
-              <h3 className="font-label-md text-label-md text-primary mb-3">{t("market.cefrLevel")}</h3>
-              <div className="flex flex-wrap gap-1.5">
+            {/* CEFR Level Segmented Controls */}
+            <div className="flex flex-col">
+              <span className="font-label-md text-[10px] text-primary uppercase tracking-widest mb-1.5 font-bold flex items-center gap-1">
+                <Icon name="bar_chart" className="text-xs" />
+                {t("market.cefrLevel")}
+              </span>
+              <div className="flex flex-wrap gap-1">
                 {["ALL", "A1-A2", "B1-B2", "C1-C2"].map((lvl) => (
                   <button
                     key={lvl}
                     onClick={() => setLevelGroup(lvl)}
-                    className={`px-3 py-1 border-2 border-primary font-label-md text-[10px] uppercase transition-colors ${
+                    className={`px-3 py-2 border-2 border-primary font-label-md text-[10px] uppercase transition-colors font-bold ${
                       levelGroup === lvl ? "bg-secondary text-on-secondary" : "bg-surface hover:bg-surface-container-high text-primary"
                     }`}
                   >
@@ -369,21 +349,50 @@ export default function Marketplace() {
                 ))}
               </div>
             </div>
+
+            {/* Price compensation radio buttons */}
+            <div className="flex flex-col">
+              <span className="font-label-md text-[10px] text-primary uppercase tracking-widest mb-1.5 font-bold flex items-center gap-1">
+                <Icon name="payments" className="text-xs" />
+                {t("market.rateCompensation")}
+              </span>
+              <div className="flex items-center gap-4 py-2 text-xs font-bold text-primary">
+                {[
+                  { label: t("market.anyRate"), val: "" },
+                  { label: t("market.priceFree"), val: "free" },
+                  { label: t("market.pricePaid"), val: "under50" },
+                ].map((item) => (
+                  <label key={item.val} className="flex items-center gap-2 cursor-pointer group">
+                    <input
+                      type="radio"
+                      name="price"
+                      checked={priceGroup === item.val}
+                      onChange={() => setPriceGroup(item.val)}
+                      className="w-4 h-4 border-2 border-primary accent-secondary cursor-pointer"
+                    />
+                    <span className="group-hover:text-secondary transition-colors">{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
           </div>
 
-          <div className="hidden md:block w-full h-32 border-2 border-primary relative overflow-hidden bg-surface-container">
-            <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-secondary opacity-20" />
-            <div className="absolute bottom-4 left-4 font-headline-md text-headline-md text-primary opacity-30">**</div>
+          {/* Neo decoration block */}
+          <div className="hidden lg:flex items-center gap-4 bg-surface-container border-2 border-primary p-3 h-12 relative overflow-hidden">
+            <span className="font-label-md text-[10px] font-black uppercase text-secondary tracking-widest">Glossa Market Hub</span>
+            <div className="w-px h-full bg-primary" />
+            <span className="font-mono text-xs text-primary/40 font-bold">V.2.0</span>
           </div>
+
         </div>
-      </aside>
+      </div>
 
-      {/* Directory content */}
-      <div className="w-full md:w-3/4">
-
+      {/* Directory content (Spanning full width) */}
+      <div className="w-full">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-            {[1, 2, 3, 4].map((n) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter lg:gap-8">
+            {[1, 2, 3, 4, 5, 6].map((n) => (
               <div key={n} className="h-64 bg-surface-container animate-pulse border-2 border-primary" />
             ))}
           </div>
@@ -393,7 +402,7 @@ export default function Marketplace() {
             <p className="font-label-md text-label-md text-primary uppercase">{t("market.noListings")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter lg:gap-8">
             {cards.map(({ type, service }) =>
               type === "featured" ? (
                 <FeaturedCard key={service.id} service={service} lang={lang} t={t} onMessage={handleMessage} />
@@ -438,7 +447,6 @@ export default function Marketplace() {
             </button>
           </div>
         )}
-      </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, or_
 import json
 
 from app.api.auth import get_current_user
@@ -64,6 +64,7 @@ async def create_service(
         category=service.category,
         cefr_level=service.cefr_level,
         price=service.price,
+        currency=service.currency,
         pricing_type=service.pricing_type,
         status=service.status,
         rating=float(service.rating),
@@ -105,6 +106,7 @@ async def list_services(
                 category=s.category,
                 cefr_level=s.cefr_level,
                 price=s.price,
+                currency=s.currency,
                 pricing_type=s.pricing_type,
                 status=s.status,
                 rating=float(s.rating),
@@ -139,6 +141,7 @@ async def get_service(
         category=s.category,
         cefr_level=s.cefr_level,
         price=s.price,
+        currency=s.currency,
         pricing_type=s.pricing_type,
         status=s.status,
         rating=float(s.rating),
@@ -172,6 +175,7 @@ async def update_service(
         category=s.category,
         cefr_level=s.cefr_level,
         price=s.price,
+        currency=s.currency,
         pricing_type=s.pricing_type,
         status=s.status,
         rating=float(s.rating),
@@ -208,6 +212,7 @@ async def create_proposal(
         service_title_tg=svc.title_tg if svc else None,
         service_category=svc.category if svc else None,
         price=p.price,
+        currency=p.currency,
         status=p.status,
         created_at=p.created_at
     )
@@ -245,6 +250,7 @@ async def list_proposals(
                 service_title_tg=svc.title_tg if svc else None,
                 service_category=svc.category if svc else None,
                 price=p.price,
+                currency=p.currency,
                 status=p.status,
                 created_at=p.created_at
             )
@@ -283,6 +289,7 @@ async def proposal_action(
         service_title_tg=svc.title_tg if svc else None,
         service_category=svc.category if svc else None,
         price=p.price,
+        currency=p.currency,
         status=p.status,
         created_at=p.created_at
     )
@@ -314,14 +321,95 @@ async def list_messages(
     return res
 
 
+async def generate_ai_provider_reply(proposal_id: int, client_id: int):
+    from app.db.database import AsyncSessionLocal
+    from app.models.model_lingo import LingoProposals, LingoMessages, LingoServices
+    import asyncio
+    
+    # Wait a brief moment to simulate typing / network delay so it feels organic
+    await asyncio.sleep(1.5)
+
+    async with AsyncSessionLocal() as session:
+        # Load proposal
+        p_query = await session.execute(select(LingoProposals).where(LingoProposals.id == proposal_id))
+        p = p_query.scalar_one_or_none()
+        if not p:
+            return
+        
+        # Load provider
+        prov_query = await session.execute(select(Users).where(Users.id == p.provider_id))
+        provider = prov_query.scalar_one_or_none()
+        if not provider or not provider.email or not provider.email.endswith('@glossa.com'):
+            return
+
+        # Load service
+        svc_query = await session.execute(select(LingoServices).where(LingoServices.id == p.service_id))
+        svc = svc_query.scalar_one_or_none()
+        if not svc:
+            return
+
+        # Query last 10 messages
+        msgs_query = await session.execute(
+            select(LingoMessages).where(LingoMessages.proposal_id == proposal_id).order_by(LingoMessages.created_at.asc())
+        )
+        history = list(msgs_query.scalars().all())
+        if not history:
+            return
+
+        # Build prompt
+        system_prompt = (
+            f"You are {provider.username}, a language tutor or localization specialist on the Glossa Marketplace. "
+            f"You are chatting with a client.\n"
+            f"Here is your service info:\n"
+            f"Title: {svc.title}\n"
+            f"Description: {svc.description}\n\n"
+            f"Write a helpful, professional, and friendly response to the client. Keep the message relatively short (1-3 sentences) and realistic. "
+            f"Do not include any placeholders, JSON, prefixing (like 'Marc Dubois:'), or meta text. Just write the raw chat message."
+        )
+
+        messages_payload = [
+            {"role": "system", "content": system_prompt}
+        ]
+        for msg in history[-10:]:
+            role = "assistant" if msg.sender_id == provider.id else "user"
+            messages_payload.append({"role": role, "content": msg.text})
+
+        try:
+            reply_text = await call_llm(messages_payload, json_mode=False)
+            reply_text = reply_text.strip().strip('"').strip("'")
+        except Exception:
+            # Fallback replies based on provider and service
+            reply_text = f"Здравствуйте! Спасибо за сообщение. Я изучу ваш запрос и отвечу вам в ближайшее время."
+
+        # Insert reply message
+        new_msg = LingoMessages(
+            proposal_id=proposal_id,
+            sender_id=provider.id,
+            text=reply_text
+        )
+        session.add(new_msg)
+        await session.commit()
+
+
 @router_lingo.post('/proposals/{id}/messages', response_model=LingoMessageResponse)
 async def send_message(
     id: int,
     data: LingoMessageCreate,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
     m = await crud_lingo.create_lingo_message(id, current_user.id, data, db)
+    
+    # If the client sent this message, check if we should trigger an AI provider reply
+    p_query = await db.execute(select(LingoProposals).where(LingoProposals.id == m.proposal_id))
+    p = p_query.scalar_one_or_none()
+    if p and current_user.id == p.client_id:
+        prov_query = await db.execute(select(Users).where(Users.id == p.provider_id))
+        provider = prov_query.scalar_one_or_none()
+        if provider and provider.email and provider.email.endswith('@glossa.com'):
+            background_tasks.add_task(generate_ai_provider_reply, m.proposal_id, current_user.id)
+
     return LingoMessageResponse(
         id=m.id,
         proposal_id=m.proposal_id,

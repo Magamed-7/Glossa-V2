@@ -227,7 +227,7 @@ export default function MarketplaceInbox() {
               
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-black dark:text-stone-300 font-mono">
-                  {t("market.price").toUpperCase()}: {selectedProposal.price} TJS
+                  {t("market.price").toUpperCase()}: {selectedProposal.price} {selectedProposal.currency || "TJS"}
                 </span>
               </div>
             </div>

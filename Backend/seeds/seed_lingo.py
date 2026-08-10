@@ -83,21 +83,22 @@ async def seed():
                 db.add(UserBalances(user_id=prov.id, balance=Decimal('0.00')))
                 await db.commit()
 
-        # 3. Create Services
+        # 3. Create Services matching the 3 languages studied + translation + editing, levels and multiple currencies
         services_data = [
             {
                 'provider_id': providers['Ji-Yoon K.'].id,
-                'title': 'TOPIK Exam Preparation',
-                'description': 'Intensive coaching for TOPIK II levels 3–6. Focus on writing and reading comprehension.',
-                'title_en': 'TOPIK Exam Preparation',
-                'title_ru': 'Подготовка к экзамену TOPIK',
-                'title_tg': 'Омодагӣ ба имтиҳони TOPIK',
-                'description_en': 'Intensive coaching for TOPIK II levels 3–6. Focus on writing and reading comprehension.',
-                'description_ru': 'Интенсивный коучинг для TOPIK II уровней 3–6. Упор на письмо и понимание прочитанного.',
-                'description_tg': 'Омӯзиши интенсивӣ барои сатҳҳои 3–6-и TOPIK II. Таваҷҷуҳ ба навиштан ва фаҳмиши хониш.',
-                'category': 'KOREAN',
-                'cefr_level': 'B2',
-                'price': Decimal('60.00'),
+                'title': 'English IELTS Preparation (up to C1)',
+                'description': 'Targeted study to get you to C1 level. Speaking drills and writing reviews included.',
+                'title_en': 'English IELTS Preparation (up to C1)',
+                'title_ru': 'Подготовка к IELTS (до уровня C1)',
+                'title_tg': 'Омодагӣ ба IELTS (то сатҳи C1)',
+                'description_en': 'Targeted study to get you to C1 level. Speaking drills and writing reviews included.',
+                'description_ru': 'Целевое обучение для достижения уровня C1. Разговорная практика и анализ эссе включены.',
+                'description_tg': 'Омӯзиши мақсаднок барои расидан ба сатҳи C1. Практикаи гуфтугӯӣ ва баррасии эссеро дар бар мегирад.',
+                'category': 'ENGLISH',
+                'cefr_level': 'C1',
+                'price': Decimal('15.00'),
+                'currency': 'USD',
                 'pricing_type': 'hr',
                 'status': 'active',
                 'rating': Decimal('4.80'),
@@ -105,35 +106,37 @@ async def seed():
             },
             {
                 'provider_id': providers['Elena Rossi'].id,
-                'title': 'Italian Business Document Translation',
-                'description': 'Professional translation of legal contracts, financial audits, and business presentations from English to Italian.',
-                'title_en': 'Italian Business Document Translation',
-                'title_ru': 'Перевод деловых документов на итальянский',
-                'title_tg': 'Тарҷумаи ҳуҷҷатҳои тиҷоратӣ ба забони итолиёвӣ',
-                'description_en': 'Professional translation of legal contracts, financial audits, and business presentations from English to Italian.',
-                'description_ru': 'Профессиональный перевод юридических договоров, финансовых аудитов и бизнес-презентаций с английского на итальянский.',
-                'description_tg': 'Тарҷумаи касбии шартномаҳои ҳуқуқӣ, аудити молиявӣ ва презентатсияҳои тиҷоратӣ аз забони англисӣ ба итолиёвӣ.',
-                'category': 'TRANSLATION',
-                'cefr_level': 'C1',
-                'price': Decimal('0.15'),
-                'pricing_type': 'word',
+                'title': 'Russian Language for Beginners (A1-A2 only)',
+                'description': 'Learn Russian from scratch up to A2. We will cover basic conversation and grammar.',
+                'title_en': 'Russian Language for Beginners (A1-A2 only)',
+                'title_ru': 'Русский язык для начинающих (только A1-A2)',
+                'title_tg': 'Забони русӣ барои навомӯзон (танҳо A1-A2)',
+                'description_en': 'Learn Russian from scratch up to A2. We will cover basic conversation and grammar.',
+                'description_ru': 'Изучение русского языка с нуля до уровня A2. Разберем базовый диалог и основы грамматики.',
+                'description_tg': 'Омӯзиши забони русӣ аз сифр то сатҳи A2. Мо муколамаҳои асосӣ ва асосҳои грамматикаро меомӯзем.',
+                'category': 'RUSSIAN',
+                'cefr_level': 'A2',
+                'price': Decimal('120.00'),
+                'currency': 'TJS',
+                'pricing_type': 'hr',
                 'status': 'active',
                 'rating': Decimal('4.90'),
                 'reviews_count': 34
             },
             {
                 'provider_id': providers['Marc Dubois'].id,
-                'title': 'Conversational French Tutoring (Pack of 5)',
-                'description': 'Improve your speaking fluency and pronunciation through guided real-world topics. Perfect for intermediate speakers.',
-                'title_en': 'Conversational French Tutoring (Pack of 5)',
-                'title_ru': 'Разговорный французский (пакет из 5 занятий)',
-                'title_tg': 'Забони гуфтугӯии фаронсавӣ (бастаи 5 дарс)',
-                'description_en': 'Improve your speaking fluency and pronunciation through guided real-world topics. Perfect for intermediate speakers.',
-                'description_ru': 'Улучшите беглость речи и произношение на реальных темах под руководством преподавателя. Идеально для среднего уровня.',
-                'description_tg': 'Равонии сухан ва талаффузи худро тавассути мавзӯъҳои воқеӣ бо роҳбарии муаллим беҳтар кунед. Барои сатҳи миёна мувофиқ аст.',
-                'category': 'FRENCH',
-                'cefr_level': 'B1',
-                'price': Decimal('120.00'),
+                'title': 'Advanced Tajik Conversation & Grammar (B2-C1)',
+                'description': 'Master complex morphology and speak Tajik like a native speaker. Focus on syntax and style.',
+                'title_en': 'Advanced Tajik Conversation & Grammar (B2-C1)',
+                'title_ru': 'Продвинутый таджикский язык: грамматика и разговор (B2-C1)',
+                'title_tg': 'Забони тоҷикии пешрафта: грамматика ва гуфтугӯ (B2-C1)',
+                'description_en': 'Master complex morphology and speak Tajik like a native speaker. Focus on syntax and style.',
+                'description_ru': 'Освойте сложную морфологию и говорите на таджикском как носитель. Упор на синтаксис и стиль.',
+                'description_tg': 'Морфологияи мураккабро аз худ кунед ва бо забони тоҷикӣ мисли як сокини маҳаллӣ сӯҳбат кунед. Таваҷҷӯҳ ба синтаксис ва услуб.',
+                'category': 'TAJIK',
+                'cefr_level': 'C1',
+                'price': Decimal('800.00'),
+                'currency': 'RUB',
                 'pricing_type': 'hr',
                 'status': 'active',
                 'rating': Decimal('4.70'),
@@ -141,35 +144,37 @@ async def seed():
             },
             {
                 'provider_id': providers['Carlos S.'].id,
-                'title': 'Spanish for Beginners',
-                'description': 'Learn fundamental vocabulary and grammar rules. Focused on practical conversational situations.',
-                'title_en': 'Spanish for Beginners',
-                'title_ru': 'Испанский для начинающих',
-                'title_tg': 'Забони испанӣ барои навомӯзон',
-                'description_en': 'Learn fundamental vocabulary and grammar rules. Focused on practical conversational situations.',
-                'description_ru': 'Изучите базовую лексику и грамматические правила. Упор на практические разговорные ситуации.',
-                'description_tg': 'Луғати асосӣ ва қоидаҳои грамматикиро омӯзед. Таваҷҷуҳ ба вазъиятҳои амалии гуфтугӯӣ.',
-                'category': 'SPANISH',
-                'cefr_level': 'A1',
-                'price': Decimal('45.00'),
-                'pricing_type': 'hr',
+                'title': 'English-Russian-Tajik Document Translation (up to C2)',
+                'description': 'Professional business, legal and technical translation between English, Russian and Tajik.',
+                'title_en': 'English-Russian-Tajik Document Translation (up to C2)',
+                'title_ru': 'Профессиональный перевод: английский, русский, таджикский (до C2)',
+                'title_tg': 'Тарҷумаи ҳуҷҷатҳои англисӣ-русӣ-тоҷикӣ (то сатҳи C2)',
+                'description_en': 'Professional business, legal and technical translation between English, Russian and Tajik.',
+                'description_ru': 'Профессиональный перевод деловой, юридической и технической документации между английским, русским и таджикским.',
+                'description_tg': 'Тарҷумаи касбии тиҷоратӣ, ҳуқуқӣ ва техникии байни забонҳои англисӣ, русӣ ва тоҷикӣ.',
+                'category': 'TRANSLATION',
+                'cefr_level': 'C2',
+                'price': Decimal('0.05'),
+                'currency': 'USD',
+                'pricing_type': 'word',
                 'status': 'active',
                 'rating': Decimal('4.60'),
                 'reviews_count': 8
             },
             {
                 'provider_id': providers['Bahriddin A.'].id,
-                'title': 'Tajik Syntax & Structure',
-                'description': 'Explore complex grammatical structures and morphology in Tajik. Suited for advanced linguists.',
-                'title_en': 'Tajik Syntax & Structure',
-                'title_ru': 'Синтаксис и структура таджикского языка',
-                'title_tg': 'Наҳв ва сохтори забони тоҷикӣ',
-                'description_en': 'Explore complex grammatical structures and morphology in Tajik. Suited for advanced linguists.',
-                'description_ru': 'Изучение сложных грамматических конструкций и морфологии таджикского языка. Подходит для продвинутых лингвистов.',
-                'description_tg': 'Омӯзиши сохторҳои мураккаби грамматикӣ ва морфологияи забони тоҷикӣ. Барои забоншиносони пешрафта мувофиқ аст.',
-                'category': 'TRANSLATION',
-                'cefr_level': 'B1',
-                'price': Decimal('50.00'),
+                'title': 'Tajik Essay Proofreading (only B2-C2)',
+                'description': 'Thorough spelling, punctuation and grammar verification of academic papers and books in Tajik.',
+                'title_en': 'Tajik Essay Proofreading (only B2-C2)',
+                'title_ru': 'Корректура текстов на таджикском (только B2-C2)',
+                'title_tg': 'Ислоҳи матнҳо бо забони тоҷикӣ (танҳо B2-C2)',
+                'description_en': 'Thorough spelling, punctuation and grammar verification of academic papers and books in Tajik.',
+                'description_ru': 'Тщательная проверка орфографии, пунктуации и грамматики академических работ и книг на таджикском языке.',
+                'description_tg': 'Санҷиши дақиқи имло, китобат ва грамматикаи корҳои академӣ ва китобҳо бо забони тоҷикӣ.',
+                'category': 'EDITING',
+                'cefr_level': 'C1',
+                'price': Decimal('30.00'),
+                'currency': 'TJS',
                 'pricing_type': 'hr',
                 'status': 'active',
                 'rating': Decimal('4.90'),
@@ -177,17 +182,18 @@ async def seed():
             },
             {
                 'provider_id': providers['Global Tech Inc.'].id,
-                'title': 'Localization QA Testing',
-                'description': 'QA audit, localization review, and software interface proofreading across European languages.',
-                'title_en': 'Localization QA Testing',
-                'title_ru': 'Тестирование качества локализации',
-                'title_tg': 'Санҷиши сифати локализатсия',
-                'description_en': 'QA audit, localization review, and software interface proofreading across European languages.',
-                'description_ru': 'Аудит качества, проверка локализации и корректура интерфейсов ПО на европейских языках.',
-                'description_tg': 'Аудити сифат, баррасии локализатсия ва ислоҳи интерфейси нармафзор бо забонҳои аврупоӣ.',
+                'title': 'Web Interface Localization & Editing',
+                'description': 'QA review, interface copy translations, and localization testing across Russian, Tajik and English.',
+                'title_en': 'Web Interface Localization & Editing',
+                'title_ru': 'Локализация и редактура веб-интерфейсов',
+                'title_tg': 'Локализатсия ва таҳрири веб-интерфейсҳо',
+                'description_en': 'QA review, interface copy translations, and localization testing across Russian, Tajik and English.',
+                'description_ru': 'Проверка качества, перевод элементов интерфейса и тестирование локализации на русском, таджикском и английском.',
+                'description_tg': 'Санҷиши сифат, тарҷумаи унсурҳои интерфейс ва санҷиши локализатсия бо забонҳои русӣ, тоҷикӣ ва англисӣ.',
                 'category': 'EDITING',
                 'cefr_level': 'C2',
-                'price': Decimal('0.10'),
+                'price': Decimal('1.20'),
+                'currency': 'USD',
                 'pricing_type': 'word',
                 'status': 'active',
                 'rating': Decimal('5.00'),
@@ -219,9 +225,9 @@ async def seed():
             if first_user:
                 client_candidates.append(first_user)
 
-        svc_ital = next(s for s in services if s.title == 'Italian Business Document Translation')
-        svc_french = next(s for s in services if s.title == 'Conversational French Tutoring (Pack of 5)')
-        svc_qa = next(s for s in services if s.title == 'Localization QA Testing')
+        svc_ital = next(s for s in services if s.category == 'RUSSIAN')
+        svc_french = next(s for s in services if s.category == 'TAJIK')
+        svc_qa = next(s for s in services if s.title == 'Web Interface Localization & Editing')
 
         for client in client_candidates:
             # Ensure client has balance
@@ -239,6 +245,7 @@ async def seed():
                 provider_id=providers['Elena Rossi'].id,
                 service_id=svc_ital.id,
                 price=Decimal('150.00'),
+                currency='TJS',
                 status='pending'
             )
             db.add(prop_ital)
@@ -246,9 +253,9 @@ async def seed():
             await db.refresh(prop_ital)
 
             messages_ital = [
-                LingoMessages(proposal_id=prop_ital.id, sender_id=providers['Elena Rossi'].id, text="Здравствуйте! Я изучила ваши юридические документы. Перевод займет около 3 дней."),
-                LingoMessages(proposal_id=prop_ital.id, sender_id=client.id, text="Отлично! Какая будет итоговая стоимость?"),
-                LingoMessages(proposal_id=prop_ital.id, sender_id=providers['Elena Rossi'].id, text="Я выставила предложение на 150 TJS за весь пакет. Можете подтвердить и оплатить здесь."),
+                LingoMessages(proposal_id=prop_ital.id, sender_id=providers['Elena Rossi'].id, text="Здравствуйте! Я готова помочь вам изучить русский язык до уровня A2. Первое занятие можно провести уже завтра."),
+                LingoMessages(proposal_id=prop_ital.id, sender_id=client.id, text="Отлично! Какая будет итоговая стоимость занятий?"),
+                LingoMessages(proposal_id=prop_ital.id, sender_id=providers['Elena Rossi'].id, text="Я выставила предложение на 150 TJS за базовый вводный курс. Можете подтвердить и оплатить здесь."),
             ]
             db.add_all(messages_ital)
 
@@ -258,6 +265,7 @@ async def seed():
                 provider_id=providers['Marc Dubois'].id,
                 service_id=svc_french.id,
                 price=Decimal('120.00'),
+                currency='RUB',
                 status='active'
             )
             db.add(prop_french)
@@ -265,10 +273,10 @@ async def seed():
             await db.refresh(prop_french)
 
             messages_french = [
-                LingoMessages(proposal_id=prop_french.id, sender_id=client.id, text="Привет, Марк! Я хотел бы забронировать пакет из 5 разговорных занятий."),
-                LingoMessages(proposal_id=prop_french.id, sender_id=providers['Marc Dubois'].id, text="Bonjour! Рад слышать. В какое время вам удобно заниматься?"),
-                LingoMessages(proposal_id=prop_french.id, sender_id=client.id, text="Предлагаю в 4 PM CET по вторникам."),
-                LingoMessages(proposal_id=prop_french.id, sender_id=providers['Marc Dubois'].id, text="Отлично подходит! Условия подтверждены, жду вас на первом уроке!"),
+                LingoMessages(proposal_id=prop_french.id, sender_id=client.id, text="Привет, Марк! Я хотел бы повысить свой таджикский язык до C1. Поможешь с синтаксисом?"),
+                LingoMessages(proposal_id=prop_french.id, sender_id=providers['Marc Dubois'].id, text="Салом! Конечно, с радостью. Будем делать упор на сложные конструкции и тексты. В какое время вам удобно заниматься?"),
+                LingoMessages(proposal_id=prop_french.id, sender_id=client.id, text="Давай во вторник в 16:00."),
+                LingoMessages(proposal_id=prop_french.id, sender_id=providers['Marc Dubois'].id, text="Договорились! Я подтвердил занятие, жду встречи!"),
             ]
             db.add_all(messages_french)
 
@@ -278,6 +286,7 @@ async def seed():
                 provider_id=providers['Global Tech Inc.'].id,
                 service_id=svc_qa.id,
                 price=Decimal('300.00'),
+                currency='USD',
                 status='completed'
             )
             db.add(prop_qa)
@@ -285,15 +294,15 @@ async def seed():
             await db.refresh(prop_qa)
 
             messages_qa = [
-                LingoMessages(proposal_id=prop_qa.id, sender_id=providers['Global Tech Inc.'].id, text="Мы закончили тестирование локализации вашего приложения. Отчет прикреплен."),
-                LingoMessages(proposal_id=prop_qa.id, sender_id=client.id, text="Спасибо за быструю работу, все выглядит отлично!"),
-                LingoMessages(proposal_id=prop_qa.id, sender_id=providers['Global Tech Inc.'].id, text="Рады были помочь! Инвойс #4402 оплачен. Удачи в релизе!"),
+                LingoMessages(proposal_id=prop_qa.id, sender_id=providers['Global Tech Inc.'].id, text="Мы завершили аудит и редактуру локализации вашего веб-интерфейса. Все тексты приведены в соответствие."),
+                LingoMessages(proposal_id=prop_qa.id, sender_id=client.id, text="Большое спасибо, всё проверил, перевод выглядит очень естественно!"),
+                LingoMessages(proposal_id=prop_qa.id, sender_id=providers['Global Tech Inc.'].id, text="Рады сотрудничеству! Работа завершена и оплачена."),
             ]
             db.add_all(messages_qa)
 
             await db.commit()
         
-        print("Lingo database seeding completed successfully without registering new users!")
+        print("Lingo database seeding completed successfully with English, Russian, Tajik and multi-currency!")
 
 if __name__ == '__main__':
     asyncio.run(seed())

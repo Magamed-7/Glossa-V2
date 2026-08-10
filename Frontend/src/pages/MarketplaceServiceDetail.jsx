@@ -183,7 +183,7 @@ export default function MarketplaceServiceDetail() {
               <span className="font-headline-md text-headline-md text-secondary font-black">
                 {service.price ? (
                   <>
-                    {service.price} <span className="font-body-md text-base font-normal text-primary">{`TJS/${service.pricing_type}`}</span>
+                    {service.price} <span className="font-body-md text-base font-normal text-primary">{`${service.currency || "TJS"}/${service.pricing_type}`}</span>
                   </>
                 ) : (
                   t("market.priceFree") || "FREE EXCHANGE"
