@@ -35,6 +35,7 @@ export function useAiChatSocket({ scenario, language }) {
   const retriedAuthRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
   const reconnectTimerRef = useRef(null);
+  const isFirstEverMessageRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -75,6 +76,7 @@ export function useAiChatSocket({ scenario, language }) {
           // Сервер переиспользует свежую (в пределах суток) сессию и присылает её историю —
           // подставляем только на холодном старте (F5), не поверх уже идущего в этой вкладке
           // разговора при транзитном переподключении.
+          isFirstEverMessageRef.current = !data.messages || data.messages.length === 0;
           if (data.messages && data.messages.length > 0) {
             setMessages((current) =>
               current.length > 0
@@ -83,7 +85,6 @@ export function useAiChatSocket({ scenario, language }) {
                     role: m.role,
                     text: m.text,
                     corrections: m.corrections,
-                    encouragement: m.encouragement,
                   }))
             );
           }
@@ -98,7 +99,13 @@ export function useAiChatSocket({ scenario, language }) {
                 break;
               }
             }
-            updated.push({ role: "assistant", text: data.reply, corrections: null, encouragement: data.encouragement });
+            updated.push({ role: "assistant", text: data.reply, corrections: null, xpEarned: data.xp_earned });
+            // Одна системная заметка про цикл практики/уровня/XP — только после самого первого
+            // ответа наставника в свежей (без истории) сессии, не от лица персонажа.
+            if (isFirstEverMessageRef.current) {
+              isFirstEverMessageRef.current = false;
+              updated.push({ role: "note", text: t("tutor.onboardingNote") });
+            }
             return updated;
           });
         } else if (data.type === "assistant_error") {

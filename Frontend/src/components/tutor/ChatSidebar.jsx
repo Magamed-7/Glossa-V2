@@ -1,13 +1,30 @@
 import { useEffect, useState } from "react";
 import NeoCard from "../ui/NeoCard.jsx";
+import NeoButton from "../ui/NeoButton.jsx";
 import { useApi } from "../../lib/useApi.js";
-import { getMyErrors } from "../../lib/api/ai.js";
+import { getMyErrors, getSessionAnalysis } from "../../lib/api/ai.js";
+import { errorText } from "../../lib/api/errorText.js";
 import { useT } from "../../lib/i18n.jsx";
 
 export default function ChatSidebar({ messages, scenario, language, sessionId }) {
   const t = useT();
   const { data: recentErrors } = useApi(() => getMyErrors(), []);
   const [elapsed, setElapsed] = useState(0);
+  const [analysis, setAnalysis] = useState(null);
+  const [analysisStatus, setAnalysisStatus] = useState("idle");
+
+  async function onGetRecommendations() {
+    if (!sessionId) return;
+    setAnalysisStatus("loading");
+    try {
+      const result = await getSessionAnalysis(sessionId);
+      setAnalysis(result);
+      setAnalysisStatus("done");
+    } catch (err) {
+      setAnalysisStatus("error");
+      setAnalysis({ error: errorText(err) });
+    }
+  }
 
   useEffect(() => {
     if (!sessionId) return undefined;
@@ -64,6 +81,35 @@ export default function ChatSidebar({ messages, scenario, language, sessionId })
             </dd>
           </div>
         </dl>
+      </NeoCard>
+
+      <NeoCard>
+        <h3 className="font-headline text-headline-md mb-2">{t("tutor.analysisTitle")}</h3>
+        {analysisStatus === "done" && analysis && !analysis.error ? (
+          <div className="space-y-3">
+            <p className="font-body text-body-md">{analysis.recommendation}</p>
+            {analysis.topics?.length > 0 && (
+              <ul className="flex flex-wrap gap-2">
+                {analysis.topics.map((topic) => (
+                  <li key={topic} className="font-label text-label-md uppercase border border-tertiary px-2 py-1">
+                    {topic}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="font-label text-label-md uppercase text-secondary">
+              {t("tutor.analysisXpEarned")}: {analysis.xp_earned}
+            </p>
+          </div>
+        ) : analysisStatus === "loading" ? (
+          <p className="font-body text-body-md opacity-70 italic">{t("tutor.analysisLoading")}</p>
+        ) : analysisStatus === "error" ? (
+          <p className="font-body text-body-md text-error">{analysis?.error || t("tutor.analysisError")}</p>
+        ) : (
+          <NeoButton variant="ghost" onClick={onGetRecommendations} disabled={!sessionId}>
+            {t("tutor.getRecommendations")}
+          </NeoButton>
+        )}
       </NeoCard>
     </div>
   );

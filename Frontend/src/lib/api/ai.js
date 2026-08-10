@@ -7,3 +7,7 @@ export function generateExercise({ topic, level }) {
 export function getMyErrors() {
   return api.get("/ai/errors/my");
 }
+
+export function getSessionAnalysis(sessionId) {
+  return api.get(`/ai/sessions/${sessionId}/analysis`);
+}

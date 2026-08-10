@@ -576,6 +576,12 @@ export const en = {
     languageLabel: "Language",
     durationLabel: "Duration",
     arrow: " → ",
+    onboardingNote: "A quick note before we start: the more you practice here — and the better you express yourself — the faster your level grows, and the more XP you earn. Whenever you want, hit \"Get recommendations\" below to see exactly what's worth reviewing next.",
+    getRecommendations: "Get recommendations",
+    analysisTitle: "Practice Report",
+    analysisXpEarned: "XP earned this session",
+    analysisLoading: "Reviewing your conversation…",
+    analysisError: "Couldn't put together recommendations right now — try again in a moment.",
   },
   leaderboard: {
     eyebrow: "Global Rankings",
