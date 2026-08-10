@@ -5,7 +5,9 @@ import Icon from "../components/ui/Icon.jsx";
 import Gauge from "../components/ui/Gauge.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useI18n } from "../lib/i18n.jsx";
-import { getEligibleLevels, getPracticeAnalytics, getPracticeHistory, getStoryTests } from "../lib/api/practiceTests.js";
+import { getEligibleLevels, getLearnedIds, getPracticeAnalytics, getPracticeHistory, getStoryTests } from "../lib/api/practiceTests.js";
+import { getLessons } from "../lib/api/grammar.js";
+import { getVocabulary } from "../lib/api/vocabulary.js";
 import { getBookCoverUrl } from "./StoriesCatalog.jsx";
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
@@ -43,7 +45,7 @@ const TXT = {
     grammaticalArchitecture: "Grammatical Architecture",
     lexicalAcquisition: "Lexical Acquisition",
     literaryComprehension: "Literary Comprehension",
-    comprehensiveSynthesis: "Comprehensive Synthesis",
+    comprehensiveSynthesis: "All three combined (Grammar + Vocabulary + Reading)",
     commence: "Commence Training Drill",
     pickLevel: "Select at least one proficiency target",
     pickCategory: "Select at least one curricular focus",
@@ -72,6 +74,23 @@ const TXT = {
     performanceBreakdown: "Performance breakdown",
     levelLabel: (level) => `Level ${level}`,
     volLabel: (roman, level) => `Vol. ${roman} - ${level}`,
+    chooseSpecific: "Choose specific topics, words & stories",
+    specificGrammar: "Specific grammar topics",
+    specificVocab: "Specific words",
+    specificStories: "Specific stories (already read)",
+    searchWords: "Search words…",
+    searchTopics: "Search topics…",
+    searchStories: "Search stories…",
+    noTopics: "No topics for the selected levels.",
+    noWords: "No words found.",
+    noStoriesRead: "You haven't finished reading anything at these levels yet.",
+    filterAll: "All",
+    filterStudied: "Studied",
+    filterNew: "Not yet studied",
+    selectedCount: (g, v) => `${g} topic${g === 1 ? "" : "s"}, ${v} word${v === 1 ? "" : "s"} selected`,
+    clearSelection: "Clear selection",
+    randomFromLearned: "🎲 Build from what I've already studied",
+    randomFromLearnedEmpty: "You haven't studied anything at these levels yet — try a topic or two first.",
   },
   ru: {
     registryNo: "Реестр № ЭКЗ-74",
@@ -97,7 +116,7 @@ const TXT = {
     grammaticalArchitecture: "Грамматическая архитектура",
     lexicalAcquisition: "Освоение лексики",
     literaryComprehension: "Понимание текста",
-    comprehensiveSynthesis: "Комплексный синтез",
+    comprehensiveSynthesis: "Всё сразу (грамматика + лексика + истории)",
     commence: "Начать тренировку",
     pickLevel: "Выбери хотя бы один целевой уровень",
     pickCategory: "Выбери хотя бы один учебный фокус",
@@ -126,6 +145,23 @@ const TXT = {
     performanceBreakdown: "Разбивка по результатам",
     levelLabel: (level) => `Уровень ${level}`,
     volLabel: (roman, level) => `Вып. ${roman} - ${level}`,
+    chooseSpecific: "Выбрать конкретные темы, слова и истории",
+    specificGrammar: "Конкретные темы грамматики",
+    specificVocab: "Конкретные слова",
+    specificStories: "Конкретные истории (уже прочитанные)",
+    searchWords: "Поиск слов…",
+    searchTopics: "Поиск тем…",
+    searchStories: "Поиск историй…",
+    noTopics: "Для выбранных уровней нет тем.",
+    noWords: "Слова не найдены.",
+    noStoriesRead: "На этих уровнях ты пока не дочитал(а) ни одной истории.",
+    filterAll: "Все",
+    filterStudied: "Изучено",
+    filterNew: "Ещё не изучено",
+    selectedCount: (g, v) => `Выбрано тем: ${g}, слов: ${v}`,
+    clearSelection: "Очистить выбор",
+    randomFromLearned: "🎲 Собрать из уже изученного",
+    randomFromLearnedEmpty: "На этих уровнях ты пока ничего не изучил(а) — сначала пройди хотя бы пару тем.",
   },
   tg: {
     registryNo: "Феҳрист № ИМТ-74",
@@ -151,7 +187,7 @@ const TXT = {
     grammaticalArchitecture: "Сохтори грамматикӣ",
     lexicalAcquisition: "Азхудкунии луғат",
     literaryComprehension: "Фаҳмиши матн",
-    comprehensiveSynthesis: "Синтези ҳамаҷониба",
+    comprehensiveSynthesis: "Ҳама якҷоя (грамматика + луғат + матн)",
     commence: "Машқро оғоз кунед",
     pickLevel: "Ҳадди ақал як сатҳи мақсаднокро интихоб кунед",
     pickCategory: "Ҳадди ақал як фокуси таълимиро интихоб кунед",
@@ -180,6 +216,23 @@ const TXT = {
     performanceBreakdown: "Тақсимоти натиҷаҳо",
     levelLabel: (level) => `Сатҳи ${level}`,
     volLabel: (roman, level) => `Ҷилди ${roman} - ${level}`,
+    chooseSpecific: "Мавзӯъ, калима ва ҳикояҳои мушаххасро интихоб кунед",
+    specificGrammar: "Мавзӯъҳои мушаххаси грамматика",
+    specificVocab: "Калимаҳои мушаххас",
+    specificStories: "Ҳикояҳои мушаххас (аллакай хондашуда)",
+    searchWords: "Ҷустуҷӯи калима…",
+    searchTopics: "Ҷустуҷӯи мавзӯъ…",
+    searchStories: "Ҷустуҷӯи ҳикоя…",
+    noTopics: "Барои сатҳҳои интихобшуда мавзӯъ нест.",
+    noWords: "Калима ёфт нашуд.",
+    noStoriesRead: "Дар ин сатҳҳо шумо ҳанӯз ягон ҳикояро пурра нахондаед.",
+    filterAll: "Ҳама",
+    filterStudied: "Омӯхташуда",
+    filterNew: "Ҳанӯз наомӯхта",
+    selectedCount: (g, v) => `Интихоб шуд: ${g} мавзӯъ, ${v} калима`,
+    clearSelection: "Тоза кардани интихоб",
+    randomFromLearned: "🎲 Аз чизи аллакай омӯхташуда созед",
+    randomFromLearnedEmpty: "Дар ин сатҳҳо шумо ҳанӯз чизе наомӯхтаед — аввал якчанд мавзӯъро гузаред.",
   },
 };
 
@@ -301,14 +354,74 @@ function AcademicStandingLedger({ analytics, history, t }) {
   );
 }
 
+function TopicCheckbox({ checked, onChange, tag, label }) {
+  return (
+    <label className="flex items-center gap-2 text-xs cursor-pointer group py-0.5">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="accent-on-surface w-3.5 h-3.5 shrink-0 cursor-pointer"
+      />
+      <span className="font-body group-hover:text-secondary transition-colors leading-snug">
+        {tag && <span className="font-mono text-[9px] opacity-50 mr-1">{tag}</span>}
+        {label}
+      </span>
+    </label>
+  );
+}
+
+function FilterChips({ value, onChange, t }) {
+  const options = [
+    ["all", t.filterAll],
+    ["studied", t.filterStudied],
+    ["new", t.filterNew],
+  ];
+  return (
+    <div className="flex gap-1 mb-2">
+      {options.map(([key, label]) => (
+        <button
+          key={key}
+          type="button"
+          onClick={() => onChange(key)}
+          className={`font-mono text-[8px] uppercase tracking-wider px-2 py-1 border transition-colors cursor-pointer ${
+            value === key ? "bg-on-surface text-surface border-on-surface" : "bg-surface text-on-surface-variant border-on-surface/30 hover:border-on-surface"
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function FoundationalDrills({ t, eligibleLevels }) {
   const navigate = useNavigate();
   const [levels, setLevels] = useState([]);
   const [categories, setCategories] = useState(["grammar", "vocab"]);
 
+  const [showTopics, setShowTopics] = useState(false);
+  const [grammarTopics, setGrammarTopics] = useState([]);
+  const [vocabWords, setVocabWords] = useState([]);
+  const [readStories, setReadStories] = useState([]);
+  const [grammarLessonIds, setGrammarLessonIds] = useState([]);
+  const [vocabEntryIds, setVocabEntryIds] = useState([]);
+  const [storyIds, setStoryIds] = useState([]);
+  const [grammarSearch, setGrammarSearch] = useState("");
+  const [vocabSearch, setVocabSearch] = useState("");
+  const [storySearch, setStorySearch] = useState("");
+  const [grammarFilter, setGrammarFilter] = useState("all");
+  const [vocabFilter, setVocabFilter] = useState("all");
+  const [topicsLoading, setTopicsLoading] = useState(false);
+  const [learned, setLearned] = useState(null);
+
   useEffect(() => {
     if (eligibleLevels?.length) setLevels((prev) => (prev.length ? prev : [eligibleLevels[eligibleLevels.length - 1]]));
   }, [eligibleLevels]);
+
+  useEffect(() => {
+    getLearnedIds().then(setLearned).catch(() => setLearned({ grammar_lesson_ids: [], vocab_entry_ids: [], story_ids: [] }));
+  }, []);
 
   function toggleLevel(level) {
     setLevels((prev) => (prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level]));
@@ -324,12 +437,149 @@ function FoundationalDrills({ t, eligibleLevels }) {
     setCategories(comprehensive ? [] : ["grammar", "vocab", "reading"]);
   }
 
+  const levelsKey = levels.join(",");
+  const learnedGrammarSet = new Set(learned?.grammar_lesson_ids || []);
+  const learnedVocabSet = new Set(learned?.vocab_entry_ids || []);
+
+  useEffect(() => {
+    if (!showTopics || levels.length === 0) {
+      setGrammarTopics([]);
+      return;
+    }
+    let cancelled = false;
+    setTopicsLoading(true);
+    Promise.all(levels.map((lv) => getLessons({ level: lv, search: grammarSearch || undefined, limit: 100 })))
+      .then((results) => {
+        if (!cancelled) setGrammarTopics(results.flat());
+      })
+      .finally(() => !cancelled && setTopicsLoading(false));
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTopics, levelsKey, grammarSearch]);
+
+  useEffect(() => {
+    if (!showTopics || levels.length === 0) {
+      setVocabWords([]);
+      return;
+    }
+    let cancelled = false;
+    const handle = setTimeout(() => {
+      Promise.all(levels.map((lv) => getVocabulary({ level: lv, search: vocabSearch || undefined, limit: 60 })))
+        .then((results) => {
+          if (!cancelled) setVocabWords(results.flat());
+        });
+    }, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(handle);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTopics, levelsKey, vocabSearch]);
+
+  useEffect(() => {
+    if (!showTopics || !categories.includes("reading") || levels.length === 0) {
+      setReadStories([]);
+      return;
+    }
+    let cancelled = false;
+    Promise.all(levels.map((lv) => getStoryTests({ level: lv })))
+      .then((results) => {
+        if (!cancelled) setReadStories(results.flat().filter((s) => s.is_read));
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTopics, levelsKey, categories.includes("reading")]);
+
+  useEffect(() => {
+    const validIds = new Set(grammarTopics.map((g) => g.id));
+    setGrammarLessonIds((prev) => prev.filter((id) => validIds.has(id)));
+  }, [grammarTopics]);
+
+  useEffect(() => {
+    const validIds = new Set(vocabWords.map((w) => w.id));
+    setVocabEntryIds((prev) => prev.filter((id) => validIds.has(id)));
+  }, [vocabWords]);
+
+  useEffect(() => {
+    const validIds = new Set(readStories.map((s) => s.story_id));
+    setStoryIds((prev) => prev.filter((id) => validIds.has(id)));
+  }, [readStories]);
+
+  function toggleGrammarLesson(id) {
+    setGrammarLessonIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setCategories((prev) => (prev.includes("grammar") ? prev : [...prev, "grammar"]));
+  }
+
+  function toggleVocabEntry(id) {
+    setVocabEntryIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setCategories((prev) => (prev.includes("vocab") ? prev : [...prev, "vocab"]));
+  }
+
+  function toggleStory(id) {
+    setStoryIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setCategories((prev) => (prev.includes("reading") ? prev : [...prev, "reading"]));
+  }
+
+  function clearTopicSelection() {
+    setGrammarLessonIds([]);
+    setVocabEntryIds([]);
+    setStoryIds([]);
+  }
+
+  const visibleGrammarTopics = grammarTopics.filter((g) => {
+    if (grammarFilter === "studied") return learnedGrammarSet.has(g.id);
+    if (grammarFilter === "new") return !learnedGrammarSet.has(g.id);
+    return true;
+  });
+
+  const visibleVocabWords = vocabWords.filter((w) => {
+    if (vocabFilter === "studied") return learnedVocabSet.has(w.id);
+    if (vocabFilter === "new") return !learnedVocabSet.has(w.id);
+    return true;
+  });
+
+  const visibleStories = readStories.filter((s) =>
+    !storySearch || s.title.toLowerCase().includes(storySearch.toLowerCase())
+  );
+
   const canStart = levels.length > 0 && categories.length > 0;
+
+  function launch(params) {
+    navigate(`/tests/practice/run?${params.toString()}`);
+  }
 
   function start() {
     if (!canStart) return;
     const params = new URLSearchParams({ levels: levels.join(","), categories: categories.join(","), size: PRACTICE_SIZE });
-    navigate(`/tests/practice/run?${params.toString()}`);
+    if (grammarLessonIds.length) params.set("grammarLessonIds", grammarLessonIds.join(","));
+    if (vocabEntryIds.length) params.set("vocabEntryIds", vocabEntryIds.join(","));
+    if (storyIds.length) params.set("storyIds", storyIds.join(","));
+    launch(params);
+  }
+
+  const hasLearnedContent = learned && (learned.grammar_lesson_ids.length > 0 || learned.vocab_entry_ids.length > 0 || learned.story_ids.length > 0);
+
+  function startFromLearned() {
+    if (!learned || levels.length === 0) return;
+    const g = learned.grammar_lesson_ids;
+    const v = learned.vocab_entry_ids;
+    const s = learned.story_ids;
+    if (g.length === 0 && v.length === 0 && s.length === 0) return;
+
+    const cats = [];
+    if (g.length > 0) cats.push("grammar");
+    if (v.length > 0) cats.push("vocab");
+    if (s.length > 0) cats.push("reading");
+
+    const params = new URLSearchParams({ levels: levels.join(","), categories: cats.join(","), size: PRACTICE_SIZE });
+    if (g.length) params.set("grammarLessonIds", g.join(","));
+    if (v.length) params.set("vocabEntryIds", v.join(","));
+    if (s.length) params.set("storyIds", s.join(","));
+    launch(params);
   }
 
   return (
@@ -352,7 +602,7 @@ function FoundationalDrills({ t, eligibleLevels }) {
         {t.targetProficiency}
       </p>
       <div className="flex flex-wrap gap-3 mb-6 relative z-10">
-        {LEVELS.map((level) => {
+        {(eligibleLevels || []).map((level) => {
           const active = levels.includes(level);
           return (
             <button
@@ -391,6 +641,128 @@ function FoundationalDrills({ t, eligibleLevels }) {
           {t.comprehensiveSynthesis}
         </CheckRow>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setShowTopics((v) => !v)}
+        className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors mb-4 relative z-10 cursor-pointer"
+      >
+        <Icon name={showTopics ? "expand_less" : "expand_more"} className="text-base" />
+        {t.chooseSpecific}
+      </button>
+
+      {showTopics && (
+        <div className="mb-6 border border-on-surface/30 border-dashed p-4 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant mb-2 font-bold">{t.specificGrammar}</p>
+            <input
+              type="text"
+              value={grammarSearch}
+              onChange={(e) => setGrammarSearch(e.target.value)}
+              placeholder={t.searchTopics}
+              className="w-full border-b border-on-surface/40 bg-transparent text-xs font-body py-1 mb-2 focus:outline-none focus:border-secondary"
+            />
+            <FilterChips value={grammarFilter} onChange={setGrammarFilter} t={t} />
+            <div className="max-h-48 overflow-y-auto space-y-0.5 pr-1">
+              {topicsLoading ? (
+                <Skeleton className="h-24" />
+              ) : visibleGrammarTopics.length === 0 ? (
+                <p className="font-body text-xs text-on-surface-variant italic">{t.noTopics}</p>
+              ) : (
+                visibleGrammarTopics.map((lesson) => (
+                  <TopicCheckbox
+                    key={lesson.id}
+                    checked={grammarLessonIds.includes(lesson.id)}
+                    onChange={() => toggleGrammarLesson(lesson.id)}
+                    tag={lesson.cefr_level}
+                    label={lesson.topic}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant mb-2 font-bold">{t.specificVocab}</p>
+            <input
+              type="text"
+              value={vocabSearch}
+              onChange={(e) => setVocabSearch(e.target.value)}
+              placeholder={t.searchWords}
+              className="w-full border-b border-on-surface/40 bg-transparent text-xs font-body py-1 mb-2 focus:outline-none focus:border-secondary"
+            />
+            <FilterChips value={vocabFilter} onChange={setVocabFilter} t={t} />
+            <div className="max-h-48 overflow-y-auto space-y-0.5 pr-1">
+              {visibleVocabWords.length === 0 ? (
+                <p className="font-body text-xs text-on-surface-variant italic">{t.noWords}</p>
+              ) : (
+                visibleVocabWords.map((entry) => (
+                  <TopicCheckbox
+                    key={entry.id}
+                    checked={vocabEntryIds.includes(entry.id)}
+                    onChange={() => toggleVocabEntry(entry.id)}
+                    tag={entry.cefr_level}
+                    label={entry.translation ? `${entry.word} — ${entry.translation}` : entry.word}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+
+          {categories.includes("reading") && (
+            <div className="md:col-span-2">
+              <p className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant mb-2 font-bold">{t.specificStories}</p>
+              <input
+                type="text"
+                value={storySearch}
+                onChange={(e) => setStorySearch(e.target.value)}
+                placeholder={t.searchStories}
+                className="w-full border-b border-on-surface/40 bg-transparent text-xs font-body py-1 mb-2 focus:outline-none focus:border-secondary"
+              />
+              <div className="max-h-40 overflow-y-auto space-y-0.5 pr-1">
+                {visibleStories.length === 0 ? (
+                  <p className="font-body text-xs text-on-surface-variant italic">{t.noStoriesRead}</p>
+                ) : (
+                  visibleStories.map((story) => (
+                    <TopicCheckbox
+                      key={story.story_id}
+                      checked={storyIds.includes(story.story_id)}
+                      onChange={() => toggleStory(story.story_id)}
+                      tag={story.cefr_level}
+                      label={story.title}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {(grammarLessonIds.length > 0 || vocabEntryIds.length > 0 || storyIds.length > 0) && (
+            <div className="md:col-span-2 flex items-center justify-between font-mono text-[9px] uppercase text-on-surface-variant pt-3 border-t border-on-surface/20">
+              <span>{t.selectedCount(grammarLessonIds.length, vocabEntryIds.length)}</span>
+              <button type="button" onClick={clearTopicSelection} className="underline hover:text-secondary cursor-pointer">
+                {t.clearSelection}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {hasLearnedContent && (
+        <button
+          type="button"
+          onClick={startFromLearned}
+          disabled={levels.length === 0}
+          className="w-full border border-on-surface/40 border-dashed py-2.5 mb-3 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors relative z-10 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        >
+          {t.randomFromLearned}
+        </button>
+      )}
+      {learned && !hasLearnedContent && (
+        <p className="font-body text-[10px] text-on-surface-variant italic mb-3 text-center relative z-10">
+          {t.randomFromLearnedEmpty}
+        </p>
+      )}
 
       <button
         type="button"

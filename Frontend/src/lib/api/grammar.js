@@ -1,9 +1,10 @@
 import { api } from "./client.js";
 
-export function getLessons({ level, unit, limit = 20, offset = 0 } = {}) {
+export function getLessons({ level, unit, search, limit = 20, offset = 0 } = {}) {
   const params = new URLSearchParams({ limit, offset });
   if (level) params.set("level", level);
   if (unit) params.set("unit", unit);
+  if (search) params.set("search", search);
   return api.get(`/grammar/?${params}`);
 }
 

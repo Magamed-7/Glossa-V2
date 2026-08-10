@@ -35,6 +35,9 @@ export default function PracticeTestRun() {
   const levels = (searchParams.get("levels") || "").split(",").filter(Boolean);
   const categories = (searchParams.get("categories") || "").split(",").filter(Boolean);
   const size = searchParams.get("size") || "medium";
+  const grammarLessonIds = (searchParams.get("grammarLessonIds") || "").split(",").filter(Boolean).map(Number);
+  const vocabEntryIds = (searchParams.get("vocabEntryIds") || "").split(",").filter(Boolean).map(Number);
+  const storyIds = (searchParams.get("storyIds") || "").split(",").filter(Boolean).map(Number);
 
   const category = categories.length > 1 ? "combined" : categories[0] || "grammar";
   const label = (CATEGORY_LABEL[lang] || CATEGORY_LABEL.en)[category] || category;
@@ -56,7 +59,7 @@ export default function PracticeTestRun() {
     setGenError(null);
     setResult(null);
     try {
-      const data = await generateCustomTest({ cefrLevels: levels, categories, size }, { locale: lang });
+      const data = await generateCustomTest({ cefrLevels: levels, categories, size, grammarLessonIds, vocabEntryIds, storyIds }, { locale: lang });
       setAttempt(data);
     } catch (err) {
       setGenError(errorText(err) || t.genError);

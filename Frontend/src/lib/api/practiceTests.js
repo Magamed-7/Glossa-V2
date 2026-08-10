@@ -31,7 +31,7 @@ export function generateStoryTest(storyId, { locale } = {}) {
   return api.post(`/practice-tests/stories/${storyId}/generate${query ? `?${query}` : ""}`);
 }
 
-export function generateCustomTest({ cefrLevels, categories, size }, { locale } = {}) {
+export function generateCustomTest({ cefrLevels, categories, size, grammarLessonIds, vocabEntryIds, storyIds }, { locale } = {}) {
   const params = new URLSearchParams();
   if (locale) params.set("locale", locale);
   const query = params.toString();
@@ -39,7 +39,14 @@ export function generateCustomTest({ cefrLevels, categories, size }, { locale } 
     cefr_levels: cefrLevels,
     categories,
     size,
+    grammar_lesson_ids: grammarLessonIds || [],
+    vocab_entry_ids: vocabEntryIds || [],
+    story_ids: storyIds || [],
   });
+}
+
+export function getLearnedIds() {
+  return api.get("/practice-tests/learned");
 }
 
 export function submitPracticeTest(attemptId, answers) {
