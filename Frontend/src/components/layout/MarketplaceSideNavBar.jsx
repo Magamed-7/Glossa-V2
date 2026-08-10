@@ -145,6 +145,14 @@ export default function MarketplaceSideNavBar() {
       {/* Sidebar Bottom links */}
       <div className="mt-auto pt-4 border-t border-gray-300 dark:border-stone-800 flex flex-col gap-2">
         <NavLink
+          to="/pricing"
+          className="flex items-center gap-3 px-4 py-2 font-label text-xs uppercase font-bold tracking-wider text-black dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+        >
+          <Icon name="payments" className="text-black dark:text-stone-300" />
+          {t("market.pricing") || "Pricing"}
+        </NavLink>
+
+        <NavLink
           to="/settings"
           className="flex items-center gap-3 px-4 py-2 font-label text-xs uppercase font-bold tracking-wider text-black dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
         >

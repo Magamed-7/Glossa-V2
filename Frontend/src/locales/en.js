@@ -1047,6 +1047,7 @@ export const en = {
     subtitle: "Find expert linguists, tutoring professionals, and translation services for any language.",
     filters: "Filters",
     directory: "Services",
+    pricing: "Pricing",
     storiesNav: "Books",
     analytics: "Analytics",
     myServices: "My Services",
