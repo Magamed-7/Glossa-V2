@@ -14,32 +14,32 @@ export default function RankTable({ entries, myUserId, myEntry }) {
   const hasMore = visible < rows.length;
 
   return (
-    <section className="border-2 border-black bg-[var(--color-surface)] neo-shadow overflow-x-auto">
+    <section className="border-2 border-tertiary bg-surface neo-card overflow-x-auto">
       <table className="w-full text-left border-collapse min-w-[520px]">
         <caption className="sr-only">{t("leaderboard.captionSr")}</caption>
         <thead>
-          <tr className="border-b-2 border-black bg-[var(--color-surface-container-high)]">
+          <tr className="border-b-2 border-tertiary bg-surface-container-high">
             <th
               scope="col"
-              className="py-4 px-6 font-label-md text-xs uppercase tracking-widest text-[var(--color-on-surface-variant)] w-16"
+              className="py-4 px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant w-16"
             >
               {t("leaderboard.rank")}
             </th>
             <th
               scope="col"
-              className="py-4 px-6 font-label-md text-xs uppercase tracking-widest text-[var(--color-on-surface-variant)]"
+              className="py-4 px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant"
             >
               {t("leaderboard.scholar")}
             </th>
             <th
               scope="col"
-              className="py-4 px-6 font-label-md text-xs uppercase tracking-widest text-[var(--color-on-surface-variant)] text-right"
+              className="py-4 px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right"
             >
               {t("leaderboard.score")}
             </th>
           </tr>
         </thead>
-        <tbody className="font-body-md text-[var(--color-on-surface)] divide-y divide-[var(--color-surface-variant)]">
+        <tbody className="font-body text-on-surface divide-y divide-surface-variant">
           {visibleRows.map((entry, i) => {
             const isMe = entry.user_id === myUserId;
             return (
@@ -47,34 +47,36 @@ export default function RankTable({ entries, myUserId, myEntry }) {
                 key={entry.user_id}
                 className={`group transition-colors ${
                   isMe
-                    ? "bg-crimson-accent/10 border-l-4 border-l-crimson-accent"
+                    ? "bg-secondary-container/20 border-l-4 border-l-secondary-container"
                     : i % 2 === 1
-                    ? "bg-[var(--color-surface-container-lowest)]"
-                    : "hover:bg-[var(--color-surface-variant)]"
+                    ? "bg-surface-container-lowest"
+                    : "hover:bg-surface-variant"
                 }`}
               >
-                <td className="py-4 px-6 font-bold font-headline text-lg text-[var(--color-on-surface)]">
+                <td className="py-4 px-6 font-bold font-headline text-lg text-on-surface">
                   {entry.rank}
                 </td>
-                <td className="py-4 px-6 flex items-center gap-4">
-                  <div className="grayscale group-hover:grayscale-0 transition-all">
-                    <Avatar
-                      photoUrl={entry.photo_url}
-                      name={entry.username}
-                      userId={entry.user_id}
-                      size="sm"
-                    />
+                <td className="py-4 px-6">
+                  <div className="flex items-center gap-4">
+                    <div className="grayscale group-hover:grayscale-0 transition-all">
+                      <Avatar
+                        photoUrl={entry.photo_url}
+                        name={entry.username}
+                        userId={entry.user_id}
+                        size="sm"
+                      />
+                    </div>
+                    <span className="font-medium text-on-surface">
+                      {entry.username || t("common.dash")}
+                      {isMe && (
+                        <span className="ml-2 text-xs font-label text-secondary uppercase tracking-widest">
+                          ({t("leaderboard.you")})
+                        </span>
+                      )}
+                    </span>
                   </div>
-                  <span className="font-medium text-[var(--color-on-surface)]">
-                    {entry.username || t("common.dash")}
-                    {isMe && (
-                      <span className="ml-2 text-xs font-label-md text-crimson-accent uppercase tracking-widest">
-                        ({t("leaderboard.you")})
-                      </span>
-                    )}
-                  </span>
                 </td>
-                <td className="py-4 px-6 text-right font-bold text-[var(--color-on-surface)]">
+                <td className="py-4 px-6 text-right font-bold text-on-surface">
                   {entry.score}
                 </td>
               </tr>
@@ -83,32 +85,32 @@ export default function RankTable({ entries, myUserId, myEntry }) {
 
           {/* Sticky "You" row if not in visible set */}
           {myEntry && !myRowIncluded && (
-            <tr className="border-t-2 border-black bg-crimson-accent/10 border-l-4 border-l-crimson-accent">
-              <td className="py-4 px-6 font-bold font-headline text-lg">
+            <tr className="border-t-2 border-tertiary bg-secondary-container/20 border-l-4 border-l-secondary-container">
+              <td className="py-4 px-6 font-bold font-headline text-lg text-on-surface">
                 {myEntry.rank ?? t("common.dash")}
               </td>
-              <td className="py-4 px-6 font-medium text-[var(--color-on-surface)]">
+              <td className="py-4 px-6 font-medium text-on-surface">
                 {t("leaderboard.you")}
               </td>
-              <td className="py-4 px-6 text-right font-bold">{myEntry.score}</td>
+              <td className="py-4 px-6 text-right font-bold text-on-surface">{myEntry.score}</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* Load more footer */}
-      <div className="border-t-2 border-black p-4 flex justify-center bg-[var(--color-surface-container-high)]">
+      {/* Footer */}
+      <div className="border-t-2 border-tertiary p-4 flex justify-center bg-surface-container-high">
         {hasMore ? (
           <button
             id="leaderboard-load-more"
-            className="font-label-md text-sm uppercase tracking-widest text-[var(--color-on-surface)] hover:text-crimson-accent flex items-center gap-2 transition-colors"
+            className="font-label text-sm uppercase tracking-widest text-on-surface hover:text-secondary flex items-center gap-2 transition-colors"
             onClick={() => setVisible((v) => v + PAGE_SIZE)}
           >
             {t("leaderboard.loadMore")}
             <span className="material-symbols-outlined text-sm">expand_more</span>
           </button>
         ) : (
-          <span className="font-label-md text-xs uppercase tracking-widest text-[var(--color-on-surface-variant)]">
+          <span className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
             {t("common.dash")} end {t("common.dash")}
           </span>
         )}

@@ -1,5 +1,4 @@
 import { useSearchParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Podium from "../components/leaderboard/Podium.jsx";
 import RankTable from "../components/leaderboard/RankTable.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
@@ -10,31 +9,6 @@ import { getGlobal, getWeekly, getMyRank, resetLeaderboard } from "../lib/api/le
 import { readUserId } from "../lib/auth/tokens.js";
 import { useT } from "../lib/i18n.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
-
-/* ─── page-scoped styles ──────────────────────────────────────────────── */
-const pageStyles = `
-  .neo-shadow {
-    box-shadow: 4px 4px 0 0 #000000;
-    transition: all 0.2s ease;
-  }
-  .neo-shadow:hover {
-    box-shadow: 2px 2px 0 0 #000000;
-    transform: translate(2px, 2px);
-  }
-  .neo-shadow-crimson {
-    box-shadow: 4px 4px 0 0 #dc2c4f;
-    transition: all 0.2s ease;
-  }
-  .neo-shadow-crimson:hover {
-    box-shadow: 2px 2px 0 0 #dc2c4f;
-    transform: translate(2px, 2px);
-  }
-  .dot-bg {
-    background-image: radial-gradient(var(--color-on-surface) 1px, transparent 1px);
-    background-size: 20px 20px;
-    opacity: 0.05;
-  }
-`;
 
 export default function Leaderboard() {
   const t = useT();
@@ -71,7 +45,7 @@ export default function Leaderboard() {
     }
   }
 
-  /* XP progress — derive from myEntry */
+  /* XP progress */
   const myScore = myEntry?.score ?? 0;
   const myRank = myEntry?.rank ?? null;
   const nextRankScore = myScore ? Math.ceil(myScore / 100) * 100 + 50 : 1300;
@@ -85,20 +59,18 @@ export default function Leaderboard() {
   const rest = entries ?? [];
 
   return (
-    <>
-      <style>{pageStyles}</style>
-
+    <div>
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <section className="flex flex-col md:flex-row justify-between items-end gap-6 border-b-2 border-black pb-8 mb-10">
+      <section className="flex flex-col md:flex-row justify-between items-end gap-6 border-b-2 border-tertiary pb-8 mb-10">
         <div>
-          <span className="font-label-md text-label-md text-crimson-accent uppercase tracking-widest block mb-4">
+          <span className="font-label text-label-md text-secondary uppercase tracking-widest block mb-4">
             {t("leaderboard.eyebrow")}
           </span>
-          <h1 className="font-headline text-4xl md:text-6xl text-[var(--color-on-surface)] italic leading-tight">
+          <h1 className="font-headline text-4xl md:text-6xl text-on-surface italic leading-tight">
             {t("leaderboard.titleLead")}{" "}
-            <em className="not-italic">{t("leaderboard.titleAccent")}</em>
+            <em className="not-italic text-secondary-container">{t("leaderboard.titleAccent")}</em>
           </h1>
-          <p className="font-body text-[var(--color-on-surface-variant)] mt-3 max-w-2xl text-base md:text-lg">
+          <p className="font-body text-on-surface-variant mt-3 max-w-2xl text-base md:text-lg">
             {t("leaderboard.subtitle")}
           </p>
         </div>
@@ -107,10 +79,10 @@ export default function Leaderboard() {
           <button
             id="lb-period-global"
             onClick={() => onPeriodChange("global")}
-            className={`border-2 border-black font-label-md text-label-md uppercase tracking-widest px-5 py-2 transition-colors ${
+            className={`border-2 border-tertiary font-label text-label-md uppercase tracking-widest px-5 py-2 transition-colors ${
               period === "global"
-                ? "bg-black text-[var(--color-surface)]"
-                : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                ? "bg-tertiary text-on-tertiary"
+                : "bg-surface text-on-surface hover:bg-surface-variant"
             }`}
           >
             {t("leaderboard.allTime")}
@@ -118,19 +90,18 @@ export default function Leaderboard() {
           <button
             id="lb-period-weekly"
             onClick={() => onPeriodChange("weekly")}
-            className={`border-2 border-black font-label-md text-label-md uppercase tracking-widest px-5 py-2 transition-colors ${
+            className={`border-2 border-tertiary font-label text-label-md uppercase tracking-widest px-5 py-2 transition-colors ${
               period === "weekly"
-                ? "bg-black text-[var(--color-surface)]"
-                : "bg-[var(--color-surface)] text-[var(--color-on-surface)] hover:bg-[var(--color-surface-variant)]"
+                ? "bg-tertiary text-on-tertiary"
+                : "bg-surface text-on-surface hover:bg-surface-variant"
             }`}
           >
             {t("leaderboard.thisWeek")}
           </button>
-          {/* Admin reset */}
           {user && (user.role === "admin" || user.role === "teacher") && (
             <button
               onClick={handleReset}
-              className="border-2 border-error text-error font-label-md text-label-md uppercase tracking-widest px-4 py-2 hover:bg-error-container transition-colors"
+              className="border-2 border-error text-error font-label text-label-md uppercase tracking-widest px-4 py-2 hover:bg-error-container transition-colors"
             >
               {t("leaderboard.resetButton")}
             </button>
@@ -143,75 +114,76 @@ export default function Leaderboard() {
 
       {!loading && !error && entries && (
         <>
-          {/* ── Main grid: Podium (8 cols) + Sidebar (4 cols) ──────────── */}
+          {/* ── 12-col grid: Podium + Standing sidebar ──────────────── */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
-            {/* Podium box */}
-            <section className="lg:col-span-8 flex flex-col items-center justify-end min-h-[360px] border-2 border-black p-6 bg-[var(--color-surface-container-low)] relative overflow-hidden">
-              <div className="absolute inset-0 dot-bg pointer-events-none" />
+            {/* Podium */}
+            <section className="lg:col-span-8 flex flex-col items-center justify-end min-h-[360px] border-2 border-tertiary p-6 bg-surface-container-low relative overflow-hidden neo-card">
+              <div
+                className="absolute inset-0 pointer-events-none opacity-5"
+                style={{
+                  backgroundImage: "radial-gradient(var(--color-on-surface) 1px, transparent 1px)",
+                  backgroundSize: "20px 20px",
+                }}
+              />
               <Podium entries={top3} />
             </section>
 
             {/* Standing sidebar */}
-            <aside className="lg:col-span-4 flex flex-col gap-6">
-              <div className="bg-[var(--color-surface)] border-2 border-black p-6 neo-shadow flex flex-col h-full">
+            <aside className="lg:col-span-4">
+              <div className="neo-card p-6 flex flex-col h-full">
                 {/* header */}
-                <div className="flex items-center gap-2 mb-6 border-b-2 border-black pb-4">
-                  <span className="material-symbols-outlined text-crimson-accent">badge</span>
-                  <h2 className="font-headline text-xl italic text-[var(--color-on-surface)]">
+                <div className="flex items-center gap-2 mb-6 border-b-2 border-tertiary pb-4">
+                  <span className="material-symbols-outlined text-secondary">badge</span>
+                  <h2 className="font-headline text-xl italic text-on-surface">
                     {t("leaderboard.yourStanding")}
                   </h2>
                 </div>
 
                 {myEntry ? (
                   <>
-                    {/* user row */}
                     <div className="flex items-center gap-4 mb-6">
                       <Avatar
                         photoUrl={myEntry.photo_url}
                         name={myEntry.username}
                         userId={myEntry.user_id}
                         size="lg"
-                        className="border-2 border-black"
+                        className="border-2 border-tertiary"
                       />
                       <div>
-                        <p className="font-label-md text-sm text-[var(--color-on-surface-variant)] uppercase tracking-widest">
+                        <p className="font-label text-sm text-on-surface-variant uppercase tracking-widest">
                           {myRank ? `RANK ${myRank}` : "UNRANKED"}
                         </p>
-                        <p className="font-headline text-2xl text-[var(--color-on-surface)]">
+                        <p className="font-headline text-2xl text-on-surface">
                           {myScore.toLocaleString()} XP
                         </p>
                       </div>
                     </div>
 
-                    {/* progress */}
                     <div className="mt-auto space-y-3">
-                      <div className="flex justify-between items-center text-sm font-label-md">
-                        <span className="text-[var(--color-on-surface-variant)]">
+                      <div className="flex justify-between items-center text-sm font-label">
+                        <span className="text-on-surface-variant">
                           {t("leaderboard.nextRank")} ({myRank ? myRank - 1 : "—"})
                         </span>
-                        <span className="text-[var(--color-on-surface)] font-bold">
+                        <span className="text-on-surface font-bold">
                           {nextRankScore.toLocaleString()} XP
                         </span>
                       </div>
-                      <div className="w-full bg-[var(--color-surface-variant)] h-4 border-2 border-black relative overflow-hidden">
+                      <div className="w-full bg-surface-variant h-4 border-2 border-tertiary relative overflow-hidden">
                         <div
-                          className="absolute top-0 left-0 h-full bg-crimson-accent border-r-2 border-black transition-all duration-700"
+                          className="absolute top-0 left-0 h-full bg-secondary-container border-r-2 border-tertiary transition-all duration-700"
                           style={{ width: `${progressPct}%` }}
                         />
                       </div>
                     </div>
                   </>
                 ) : (
-                  <p className="text-[var(--color-on-surface-variant)] text-sm font-body italic">
-                    —
-                  </p>
+                  <p className="text-on-surface-variant text-sm font-body italic">—</p>
                 )}
 
-                {/* CTA */}
                 <Link
                   to="/dashboard"
                   id="lb-view-missions"
-                  className="w-full mt-6 bg-crimson-accent text-white border-2 border-black neo-shadow font-label-md text-label-md uppercase tracking-widest py-4 px-4 flex justify-center items-center gap-2 hover:bg-secondary transition-colors"
+                  className="w-full mt-6 bg-secondary-container text-on-secondary-container border-2 border-tertiary hard-shadow font-label text-label-md uppercase tracking-widest py-4 px-4 flex justify-center items-center gap-2 hover:bg-secondary hover:text-on-secondary transition-colors"
                 >
                   <span className="material-symbols-outlined">assignment_turned_in</span>
                   {t("leaderboard.viewMissions")}
@@ -220,10 +192,10 @@ export default function Leaderboard() {
             </aside>
           </div>
 
-          {/* ── Rank table ──────────────────────────────────────────────── */}
+          {/* ── Rank table ──────────────────────────────────────────── */}
           <RankTable entries={rest} myUserId={myUserId} myEntry={myEntry} />
         </>
       )}
-    </>
+    </div>
   );
 }
