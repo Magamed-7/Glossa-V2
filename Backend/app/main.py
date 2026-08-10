@@ -12,6 +12,7 @@ from app.api.router_export import router_export
 from app.api.router_lingo import router_lingo
 from app.api.router_notification import router_notification
 from app.api.router_payment import router_payment, router_payments_history, router_stripe
+from app.api.router_practice import router_practice
 from app.api.router_profile import router_profile
 from app.api.router_rating import router_rating
 from app.api.router_search import router_search
@@ -63,6 +64,7 @@ app.include_router(router_deck)
 app.include_router(router_reviews)
 app.include_router(router_learning)
 app.include_router(router_course)
+app.include_router(router_practice)
 app.include_router(router_profile)
 app.include_router(router_settings)
 app.include_router(router_vocabulary)

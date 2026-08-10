@@ -3,7 +3,7 @@ import random
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.model_content import GrammarQuestions, Stories, StoryQuestions, VocabEntries
+from app.models.model_content import GrammarLessons, GrammarQuestions, Stories, StoryQuestions, VocabEntries
 from app.models.model_course import CourseUnit, CourseUnitVocab
 from app.services.localization import pick_locale
 from app.services.vocab_questions import build_vocab_questions, get_level_vocab_pool
@@ -18,6 +18,9 @@ LEVEL_TEST_BLUEPRINTS = {
 }
 
 UNIT_TEST_BLUEPRINT = {'grammar': 5, 'vocab': 3}
+
+PRACTICE_TEST_SIZES = {'short': 10, 'medium': 20, 'long': 30}
+PRACTICE_GRAMMAR_SHARE = 0.6
 
 
 def grammar_question_to_item(question: GrammarQuestions, locale: str):
@@ -74,6 +77,25 @@ async def _unit_vocab_entries(db: AsyncSession, unit_id: int):
 
     entries = await db.execute(select(VocabEntries).where(VocabEntries.id.in_(ids)))
     return entries.scalars().all()
+
+
+async def _grammar_pool_for_levels(db: AsyncSession, cefr_levels: list[str]):
+    result = await db.execute(
+        select(GrammarQuestions)
+        .join(GrammarLessons, GrammarQuestions.lesson_id == GrammarLessons.id)
+        .where(GrammarLessons.cefr_level.in_(cefr_levels))
+    )
+    return result.scalars().all()
+
+
+async def _vocab_pool_for_levels(db: AsyncSession, cefr_levels: list[str]):
+    result = await db.execute(select(VocabEntries).where(VocabEntries.cefr_level.in_(cefr_levels)))
+    return result.scalars().all()
+
+
+async def _reading_pool_for_story(db: AsyncSession, story_id: int):
+    result = await db.execute(select(StoryQuestions).where(StoryQuestions.story_id == story_id))
+    return result.scalars().all()
 
 
 async def _lessons_for_level(db: AsyncSession, cefr_level: str, up_to_sequence_index: int | None = None):
@@ -150,6 +172,39 @@ async def compose_level_test(cefr_level: str, test_type: str, db: AsyncSession, 
     items = grammar_items + vocab_items + reading_items
     target_total = sum(blueprint.values())
     items = _fill_with_grammar(items, grammar_pool, target_total, locale, rng)
+    rng.shuffle(items)
+    return items
+
+
+async def compose_practice_test(cefr_levels: list[str], categories: list[str], size: int, db: AsyncSession, locale: str = 'en', seed: str | None = None):
+    seed_key = f"practice:{'-'.join(sorted(cefr_levels))}:{'-'.join(sorted(categories))}:{size}"
+    rng = _seeded_rng(seed or seed_key)
+
+    items = []
+    grammar_pool = []
+
+    if 'grammar' in categories:
+        grammar_pool = await _grammar_pool_for_levels(db, cefr_levels)
+        rng.shuffle(grammar_pool)
+        grammar_target = size if categories == ['grammar'] else round(size * PRACTICE_GRAMMAR_SHARE)
+        items += [grammar_question_to_item(q, locale) for q in grammar_pool[:grammar_target]]
+
+    if 'vocab' in categories:
+        vocab_pool = await _vocab_pool_for_levels(db, cefr_levels)
+        vocab_target = size - len(items)
+        items += build_vocab_questions(vocab_pool, vocab_pool, locale, rng, vocab_target)
+
+    if grammar_pool and len(items) < size:
+        items = _fill_with_grammar(items, grammar_pool, size, locale, rng)
+
+    rng.shuffle(items)
+    return items
+
+
+async def compose_story_practice_test(story_id: int, db: AsyncSession, locale: str = 'en', seed: str | None = None):
+    rng = _seeded_rng(seed or f'practice:story:{story_id}')
+    pool = await _reading_pool_for_story(db, story_id)
+    items = [reading_question_to_item(q, locale) for q in pool]
     rng.shuffle(items)
     return items
 
