@@ -87,6 +87,32 @@ def process_ai_event(**kwargs):
     return kwargs
 
 
+async def _generate_card_transcription(card_id: int):
+    from app.models.model_card import Cards
+    from app.services import transcription
+
+    async with AsyncSessionLocal() as db:
+        result = await db.execute(select(Cards).where(Cards.id == card_id))
+        card = result.scalar_one_or_none()
+
+        if card is None:
+            return False
+
+        value = await transcription.get_one(card.word, db)
+        if value is None:
+            return False
+
+        card.transcription = value
+        db.add(card)
+        await db.commit()
+        return True
+
+
+@celery_app.task(name='app.tasks.ai.generate_card_transcription')
+def generate_card_transcription_task(card_id: int):
+    return run_async(_generate_card_transcription(card_id))
+
+
 GENERATE_STORY_DICTIONARY_PROMPT = (
     'You are building a click-a-word dictionary for an English text, for learners reading it with '
     'Russian or Tajik as their native language. Extract every unique English word that actually '

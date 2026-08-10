@@ -11,6 +11,7 @@ class CardCreate(BaseModel):
     translation: str
     example: str | None = None
     source_story_id: int | None = None
+    transcription: str | None = None
 
 
 class CardStatusUpdate(BaseModel):
@@ -23,6 +24,7 @@ class CardResponse(BaseModel):
     translation: str
     example: str | None
     audio_url: str | None
+    transcription: str | None = None
     status: str
     ease_factor: float
     interval: int

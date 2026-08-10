@@ -23,6 +23,7 @@ async def create_card(data: CardCreate, user_id: int, db: AsyncSession, source_s
         translation=data.translation,
         example=data.example,
         source_story_id=source_story_id,
+        transcription=data.transcription,
     )
 
     db.add(card)

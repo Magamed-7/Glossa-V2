@@ -32,7 +32,16 @@ async def create_card(
         from app.core.limits import check_leveled_vocab_limit
         await check_leveled_vocab_limit(current_user.id, db)
 
-    return await crud_card.create_card(data, current_user.id, db, source_story_id=data.source_story_id)
+    card = await crud_card.create_card(data, current_user.id, db, source_story_id=data.source_story_id)
+
+    if data.source_story_id is None and data.transcription is None:
+        from app.core.limits import check_transcription_quota
+        from app.tasks.ai import generate_card_transcription_task
+
+        if await check_transcription_quota(current_user.id, db):
+            generate_card_transcription_task.delay(card.id)
+
+    return card
 
 
 @router_deck.get('/', response_model=list[CardResponse])
