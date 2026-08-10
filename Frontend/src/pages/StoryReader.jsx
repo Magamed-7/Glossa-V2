@@ -132,7 +132,7 @@ export default function StoryReader() {
   const hasTranslation = !!story.body_translated;
 
   return (
-    <div className="min-h-screen bg-[#fcfbf9] text-on-surface font-body -mt-12">
+    <div className="min-h-screen bg-surface text-on-surface font-body -mt-12">
       <header className="border-b-2 border-on-surface flex justify-between items-end pb-3 mb-10 mt-10">
         <div>
           <h1 className="font-headline text-3xl font-bold">{story.title}</h1>

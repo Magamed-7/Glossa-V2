@@ -68,7 +68,7 @@ function BookCover({ story, isCompleted, progress }) {
         </div>
 
         {/* Vintage Paper sticker label for the title */}
-        <div className="my-auto bg-[#fcfbf9] text-on-surface border-[2.5px] border-on-surface shadow-[3px_3px_0_0_#000] p-3 text-center rotate-[-1deg] transition-all duration-500 group-hover:rotate-[1deg] group-hover:scale-105">
+        <div className="my-auto bg-surface text-on-surface border-[2.5px] border-on-surface shadow-[3px_3px_0_0_#000] p-3 text-center rotate-[-1deg] transition-all duration-500 group-hover:rotate-[1deg] group-hover:scale-105">
           <h4 className="font-headline text-sm font-bold uppercase tracking-tight leading-tight">
             {story.title}
           </h4>
@@ -95,7 +95,7 @@ function BookCover({ story, isCompleted, progress }) {
       {/* COMPLETED Stamp */}
       {isCompleted && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/15 pointer-events-none z-35">
-          <div className="border-[3px] border-secondary text-secondary font-black tracking-wider uppercase px-4 py-1.5 rounded rotate-[-12deg] shadow-lg bg-[#fcfbf9] text-base font-mono">
+          <div className="border-[3px] border-secondary text-secondary font-black tracking-wider uppercase px-4 py-1.5 rounded rotate-[-12deg] shadow-lg bg-surface text-base font-mono">
             {t("stories.completed").toUpperCase()}
           </div>
         </div>
@@ -221,7 +221,7 @@ export default function StoriesCatalog() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
+    <div className="max-w-4xl mx-auto px-4 py-8 bg-surface text-on-surface min-h-screen">
       {/* Genre Archives View (Detailed Genre view if activeGenre selected) */}
       {activeGenre ? (
         <div className="flex flex-col gap-8">
@@ -247,7 +247,7 @@ export default function StoriesCatalog() {
             </div>
             <button
               onClick={() => onGenreChange("")}
-              className="absolute top-4 right-4 bg-[#fcfbf9] text-on-surface border-[2.5px] border-on-surface shadow-[3px_3px_0_0_#000] hover:shadow-[1px_1px_0_0_#000] active:translate-y-0.5 active:shadow-[0px_0px_0_0_#000] px-4 py-1.5 font-label text-[9px] uppercase tracking-widest font-bold cursor-pointer transition-all"
+              className="absolute top-4 right-4 bg-surface text-on-surface border-[2.5px] border-on-surface shadow-[3px_3px_0_0_#000] hover:shadow-[1px_1px_0_0_#000] active:translate-y-0.5 active:shadow-[0px_0px_0_0_#000] px-4 py-1.5 font-label text-[9px] uppercase tracking-widest font-bold cursor-pointer transition-all"
             >
               {t("stories.backToCatalog")}
             </button>
@@ -318,7 +318,7 @@ export default function StoriesCatalog() {
                   <div className="flex justify-center mt-10">
                     <button
                       onClick={() => setLoadMoreCount(c => c + 6)}
-                      className="px-6 py-2.5 border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-[#fcfbf9] font-label text-[10px] uppercase font-bold tracking-widest hover:bg-surface-variant transition-all hover:-translate-y-0.5 cursor-pointer"
+                      className="px-6 py-2.5 border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-surface font-label text-[10px] uppercase font-bold tracking-widest hover:bg-surface-variant transition-all hover:-translate-y-0.5 cursor-pointer"
                     >
                       {t("stories.loadMore")}
                     </button>
@@ -365,7 +365,7 @@ export default function StoriesCatalog() {
                       ? "bg-secondary text-surface shadow-[2px_2px_0_0_#000] -translate-x-[1px] -translate-y-[1px] cursor-pointer" 
                       : isLocked
                         ? "bg-[#e5dfd9] text-on-surface-variant opacity-60 cursor-not-allowed border-dashed"
-                        : "bg-[#fcfbf9] text-on-surface shadow-[3px_3px_0_0_#000] hover:bg-surface-variant cursor-pointer"
+                        : "bg-surface text-on-surface shadow-[3px_3px_0_0_#000] hover:bg-surface-variant cursor-pointer"
                     }
                   `}
                 >
@@ -530,7 +530,7 @@ export default function StoriesCatalog() {
           </div>
 
           {/* Weekly Dispatch Newsletter bottom block */}
-          <div className="border-[2px] border-on-surface shadow-[4px_4px_0_0_#000] p-6 bg-[#f3ede4] flex flex-col gap-4 text-center items-center">
+          <div className="border-[2px] border-on-surface shadow-[4px_4px_0_0_#000] p-6 bg-surface-container flex flex-col gap-4 text-center items-center">
             <Icon name="mail" className="text-3xl text-secondary" />
             <div>
               <h4 className="font-headline text-lg font-bold">{t("stories.weeklyDispatch")}</h4>

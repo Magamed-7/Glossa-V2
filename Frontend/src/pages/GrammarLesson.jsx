@@ -14,8 +14,8 @@ import { useI18n } from "../lib/i18n.jsx";
 // ─────────────────────────────────────────────────────────────────────────────
 // Dot-grid background shared style
 const BG = {
-  backgroundColor: "#fcf9f6",
-  backgroundImage: "radial-gradient(#c6c6cd 1.5px, transparent 1.5px)",
+  backgroundColor: "var(--color-surface)",
+  backgroundImage: "radial-gradient(var(--color-outline-variant, #c6c6cd) 1.5px, transparent 1.5px)",
   backgroundSize: "24px 24px",
 };
 

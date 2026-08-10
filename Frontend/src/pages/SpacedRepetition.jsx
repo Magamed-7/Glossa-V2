@@ -231,10 +231,10 @@ export default function SpacedRepetition() {
 
   return (
     <div 
-      className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 relative select-none animate-fadeIn"
+      className="min-h-screen text-on-surface font-sans p-4 md:p-8 relative select-none animate-fadeIn"
       style={{
-        backgroundColor: "#fcf9f6",
-        backgroundImage: "linear-gradient(#e5e2df 1px, transparent 1px), linear-gradient(90deg, #e5e2df 1px, transparent 1px)",
+        backgroundColor: "var(--color-surface)",
+        backgroundImage: "linear-gradient(var(--color-outline-variant, #e5e2df) 1px, transparent 1px), linear-gradient(90deg, var(--color-outline-variant, #e5e2df) 1px, transparent 1px)",
         backgroundSize: "20px 20px"
       }}
     >
@@ -350,15 +350,15 @@ export default function SpacedRepetition() {
                     </p>
                     
                     {c.example && (
-                      <p className="text-[11px] text-[#45464d] font-serif border-l-2 border-black/25 pl-2.5 max-w-md italic mt-1" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>
+                      <p className="text-[11px] text-on-surface-variant font-serif border-l-2 border-black/25 pl-2.5 max-w-md italic mt-1" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>
                         {c.example}
                       </p>
                     )}
 
                     {/* Info Bar */}
-                    <div className="bg-[#f6f3f0] border-2 border-black p-3.5 flex gap-6 text-[10px] font-mono uppercase tracking-wider font-bold w-full max-w-md mt-2">
+                    <div className="bg-surface-container border-2 border-black p-3.5 flex gap-6 text-[10px] font-mono uppercase tracking-wider font-bold w-full max-w-md mt-2">
                       <span>MASTERY: <strong className="text-[#ba1a1a]">LVL {c.repetitions}</strong></span>
-                      <span className="border-l border-black/35 pl-6">NEXT INTERVAL: <strong className="text-black">{c.interval}D</strong></span>
+                      <span className="border-l border-black/35 pl-6">NEXT INTERVAL: <strong className="text-on-surface">{c.interval}D</strong></span>
                     </div>
 
                     {/* Action buttons */}
@@ -373,7 +373,7 @@ export default function SpacedRepetition() {
 
                       <button
                         onClick={() => toast.info(`${t("review.nextReview")}: ${c.next_review_date ? formatDate(c.next_review_date) : t("review.now")}`)}
-                        className="bg-white hover:bg-surface-variant text-black border-2 border-black p-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex items-center justify-center"
+                        className="bg-surface hover:bg-surface-variant text-on-surface border-2 border-primary p-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer flex items-center justify-center"
                       >
                         <span className="material-symbols-outlined text-base font-bold">calendar_month</span>
                       </button>
@@ -390,7 +390,7 @@ export default function SpacedRepetition() {
                   <div key={c.id} className="relative w-full opacity-90">
                     
                     {/* Left gutter Badge - hidden on mobile, absolutely positioned on desktop, safe from scroll clips */}
-                    <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-white text-black items-center justify-center border-2 border-black shadow-[2px_2px_0_0_#000] z-20">
+                    <div className="hidden sm:flex absolute -left-14 top-6 w-9 h-9 rounded-full bg-surface text-on-surface items-center justify-center border-2 border-primary shadow-[2px_2px_0_0_#000] z-20">
                       <span className="material-symbols-outlined text-lg">{icon}</span>
                     </div>
 
@@ -402,7 +402,7 @@ export default function SpacedRepetition() {
                       </div>
 
                       {/* Stamp at top-left */}
-                      <div className="w-fit bg-[#f0edea] text-on-surface-variant/80 border border-dashed border-black/40 px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none select-none">
+                      <div className="w-fit bg-surface-container text-on-surface-variant/80 border border-dashed border-primary/45 px-2.5 py-1 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none select-none">
                         {getDueLabel(c)}
                       </div>
 
@@ -415,9 +415,9 @@ export default function SpacedRepetition() {
                       </p>
 
                       {/* Info Bar */}
-                      <div className="bg-[#f6f3f0] border-2 border-black/30 p-3.5 flex gap-6 text-[10px] font-mono uppercase tracking-wider font-bold w-full max-w-md opacity-70 mt-2">
-                        <span>MASTERY: <strong className="text-black/60">LVL {c.repetitions}</strong></span>
-                        <span className="border-l border-black/20 pl-6">NEXT INTERVAL: <strong className="text-black/60">{c.interval}D</strong></span>
+                      <div className="bg-surface-container border-2 border-primary/30 p-3.5 flex gap-6 text-[10px] font-mono uppercase tracking-wider font-bold w-full max-w-md opacity-70 mt-2">
+                        <span>MASTERY: <strong className="text-on-surface/60">LVL {c.repetitions}</strong></span>
+                        <span className="border-l border-primary/20 pl-6">NEXT INTERVAL: <strong className="text-on-surface/60">{c.interval}D</strong></span>
                       </div>
 
                       {/* Action buttons (Locked) */}
@@ -451,7 +451,7 @@ export default function SpacedRepetition() {
       {/* --- REVIEW MODAL OVERLAY --- */}
       {activeReviewSession && sessionCard && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none overflow-y-auto">
-          <div className="w-full max-w-xl bg-[#fcfbf9] border-[3px] border-black p-5 sm:p-8 shadow-[8px_8px_0_0_#000] relative flex flex-col gap-4 sm:gap-6 neo-card my-8 max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-xl bg-surface border-[3px] border-black p-5 sm:p-8 shadow-[8px_8px_0_0_#000] relative flex flex-col gap-4 sm:gap-6 neo-card my-8 max-h-[90vh] overflow-y-auto">
             
             {/* Close Button */}
             <button 
@@ -499,7 +499,7 @@ export default function SpacedRepetition() {
       {/* --- SESSION COMPLETION VIEW OVERLAY --- */}
       {activeReviewSession && !sessionCard && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none overflow-y-auto">
-          <div className="w-full max-w-md bg-[#fcfbf9] border-[3px] border-black p-6 sm:p-8 shadow-[8px_8px_0_0_#000] text-center relative neo-card my-8 max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-md bg-surface border-[3px] border-black p-6 sm:p-8 shadow-[8px_8px_0_0_#000] text-center relative neo-card my-8 max-h-[90vh] overflow-y-auto">
             
             <span className="material-symbols-outlined text-secondary text-5xl mb-4" style={{ fontVariationSettings: "'FILL' 1" }}>celebration</span>
             

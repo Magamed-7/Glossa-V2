@@ -171,8 +171,8 @@ export default function GrammarHub() {
     <div
       className="min-h-screen text-on-surface relative overflow-x-hidden"
       style={{
-        backgroundColor: "#fcf9f6",
-        backgroundImage: "radial-gradient(#dcdad7 1px, transparent 1px)",
+        backgroundColor: "var(--color-surface)",
+        backgroundImage: "radial-gradient(var(--color-outline-variant, #dcdad7) 1px, transparent 1px)",
         backgroundSize: "20px 20px",
       }}
     >

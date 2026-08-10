@@ -683,7 +683,7 @@ export default function WordDeck() {
 
   if (gameMode === "setup") {
     return (
-      <div className="max-w-xl mx-auto px-4 py-16 bg-[#fcfbf9] text-on-surface min-h-screen flex items-center justify-center">
+      <div className="max-w-xl mx-auto px-4 py-16 bg-surface text-on-surface min-h-screen flex items-center justify-center">
         <div className="w-full border-[3px] border-primary bg-surface p-8 shadow-[8px_8px_0_0_#000] relative">
           <div className="absolute top-0 right-0 w-8 h-8 border-l-2 border-b-2 border-primary bg-[#ffddb8]"></div>
           <h2 className="font-serif text-3xl font-bold uppercase tracking-tight text-primary mb-6 border-b-2 border-primary pb-3 flex justify-between items-center">
@@ -820,16 +820,16 @@ export default function WordDeck() {
   if (gameMode === "speed-recall" && gameItems.length > 0) {
     return (
       <div 
-        className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 flex flex-col relative overflow-hidden select-none"
+        className="min-h-screen text-on-surface font-sans p-4 md:p-8 flex flex-col relative overflow-hidden select-none"
         style={{
-          backgroundColor: "#fcf9f6",
-          backgroundImage: "linear-gradient(#e5e2df 1px, transparent 1px), linear-gradient(90deg, #e5e2df 1px, transparent 1px)",
+          backgroundColor: "var(--color-surface)",
+          backgroundImage: "linear-gradient(var(--color-outline-variant, #e5e2df) 1px, transparent 1px), linear-gradient(90deg, var(--color-outline-variant, #e5e2df) 1px, transparent 1px)",
           backgroundSize: "20px 20px"
         }}
       >
         {/* Header */}
         <header className="w-full flex flex-col md:flex-row justify-between items-center gap-4 mb-8 z-10 max-w-5xl mx-auto">
-          <div className="bg-[#fcf9f6] border-2 border-black p-4 flex items-center gap-3 shadow-[4px_4px_0_0_#0F172A] neo-card">
+          <div className="bg-surface border-2 border-black p-4 flex items-center gap-3 shadow-[4px_4px_0_0_#0F172A] neo-card">
             <span className="material-symbols-outlined text-secondary text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
             <h1 className="font-serif text-3xl font-bold uppercase tracking-tight text-primary">
               Speed Recall: Emergency Purge
@@ -838,11 +838,11 @@ export default function WordDeck() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setGameMode("archive")}
-              className="text-sm bg-[#fcf9f6] text-primary border-2 border-primary px-5 py-3 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase cursor-pointer"
+              className="text-sm bg-surface text-primary border-2 border-primary px-5 py-3 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase cursor-pointer"
             >
               {t("deck.games.btnStopExit")}
             </button>
-            <div className="bg-[#fcf9f6] border-2 border-[#ba1a1a] px-6 py-2.5 flex flex-col items-end shadow-[4px_4px_0_0_#0F172A] neo-card">
+            <div className="bg-surface border-2 border-[#ba1a1a] px-6 py-2.5 flex flex-col items-end shadow-[4px_4px_0_0_#0F172A] neo-card">
               <span className="text-[10px] text-[#ba1a1a] font-mono uppercase tracking-widest font-bold">Time Remaining</span>
               <span className="font-serif text-4xl font-black text-[#ba1a1a] leading-none">60s</span>
             </div>
@@ -853,14 +853,14 @@ export default function WordDeck() {
         <main 
           className="flex-grow w-full max-w-5xl mx-auto z-10 p-6 border-4 border-[#ba1a1a] flex flex-col md:flex-row items-stretch gap-6 relative"
           style={{
-            background: "repeating-linear-gradient(45deg, #ba1a1a, #ba1a1a 12px, #fcf9f6 12px, #fcf9f6 24px)"
+            background: "repeating-linear-gradient(45deg, #ba1a1a, #ba1a1a 12px, var(--color-surface) 12px, var(--color-surface) 24px)"
           }}
         >
           {/* Left Card: KNOW */}
           <div className="hidden md:flex flex-col justify-center items-center w-1/4 select-none">
             <div
               onClick={() => handleRecallAction(true)}
-              className="bg-[#fcf9f6] border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform -rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
+              className="bg-surface border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform -rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
             >
               <span className="material-symbols-outlined text-display-lg text-primary text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_left</span>
               <span className="font-serif text-3xl font-bold text-primary tracking-tight">KNOW</span>
@@ -869,7 +869,7 @@ export default function WordDeck() {
           </div>
 
           {/* Central Scrolling Area */}
-          <div className="flex-grow relative overflow-hidden flex flex-col items-center justify-center border-2 border-black bg-[#f6f3f0] shadow-[4px_4px_0px_0px_#0F172A] min-h-[400px] select-none neo-card">
+          <div className="flex-grow relative overflow-hidden flex flex-col items-center justify-center border-2 border-black bg-surface-container shadow-[4px_4px_0px_0px_#0F172A] min-h-[400px] select-none neo-card">
             
             {/* Combo Indicator */}
             <div className="absolute top-4 right-4 z-20">
@@ -932,15 +932,15 @@ export default function WordDeck() {
             </div>
 
             {/* Gradient Fades for Top/Bottom edges */}
-            <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#f6f3f0] to-transparent pointer-events-none z-20"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f6f3f0] to-transparent pointer-events-none z-20"></div>
+            <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-surface to-transparent pointer-events-none z-20"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-surface to-transparent pointer-events-none z-20"></div>
           </div>
 
-          {/* Right Card: FORGOT */}
+          {/* Left Card: FORGOT */}
           <div className="hidden md:flex flex-col justify-center items-center w-1/4 select-none">
             <div
               onClick={() => handleRecallAction(false)}
-              className="bg-[#fcf9f6] border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
+              className="bg-surface border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
             >
               <span className="material-symbols-outlined text-display-lg text-[#ba1a1a] text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_right</span>
               <span className="font-serif text-3xl font-bold text-[#ba1a1a] tracking-tight">FORGOT</span>
@@ -952,14 +952,14 @@ export default function WordDeck() {
           <div className="flex md:hidden w-full gap-4 mt-auto z-20">
             <button
               onClick={() => handleRecallAction(true)}
-              className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] active:translate-y-0.5 cursor-pointer rounded-none"
+              className="flex-1 bg-surface border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] active:translate-y-0.5 cursor-pointer rounded-none"
             >
               <span className="material-symbols-outlined text-2xl text-black">arrow_back</span>
               <span className="font-bold text-sm uppercase text-black">{t("deck.games.btnKnow")}</span>
             </button>
             <button
               onClick={() => handleRecallAction(false)}
-              className="flex-1 bg-[#fcf9f6] border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] active:translate-y-0.5 cursor-pointer rounded-none"
+              className="flex-1 bg-surface border-2 border-black p-4 flex flex-col items-center gap-2 text-center shadow-[4px_4px_0_0_#000] active:translate-y-0.5 cursor-pointer rounded-none"
             >
               <span className="material-symbols-outlined text-2xl text-[#ba1a1a]">arrow_forward</span>
               <span className="font-bold text-sm uppercase text-[#ba1a1a]">{t("deck.games.btnForget")}</span>
@@ -974,14 +974,14 @@ export default function WordDeck() {
   if (gameMode === "speed-recall-results") {
     return (
       <div 
-        className="min-h-screen text-[#1c1c1a] font-sans p-4 md:p-8 flex flex-col justify-center items-center select-none"
+        className="min-h-screen text-on-surface font-sans p-4 md:p-8 flex flex-col justify-center items-center select-none"
         style={{
-          backgroundColor: "#fcf9f6",
-          backgroundImage: "linear-gradient(#e5e2df 1px, transparent 1px), linear-gradient(90deg, #e5e2df 1px, transparent 1px)",
+          backgroundColor: "var(--color-surface)",
+          backgroundImage: "linear-gradient(var(--color-outline-variant, #e5e2df) 1px, transparent 1px), linear-gradient(90deg, var(--color-outline-variant, #e5e2df) 1px, transparent 1px)",
           backgroundSize: "20px 20px"
         }}
       >
-        <div className="bg-[#fcf9f6] border-2 border-black p-8 max-w-md w-full shadow-[6px_6px_0_0_#000] text-center neo-card">
+        <div className="bg-surface border-2 border-black p-8 max-w-md w-full shadow-[6px_6px_0_0_#000] text-center neo-card">
           <Icon name="verified_user" className="text-secondary text-5xl mb-4" />
           <h2 className="font-serif text-3xl font-black uppercase tracking-tight mb-2">
             {t("deck.games.debriefingTitle")}
@@ -990,7 +990,7 @@ export default function WordDeck() {
             {t("deck.games.sessionComplete")}
           </p>
 
-          <div className="border-2 border-black bg-[#f0edea] p-4 flex flex-col gap-3 text-left font-mono text-sm mb-6">
+          <div className="border-2 border-black bg-surface-container p-4 flex flex-col gap-3 text-left font-mono text-sm mb-6">
             <div className="flex justify-between border-b border-black pb-1.5">
               <span>{t("deck.games.resultsCorrect")}</span>
               <span className="font-bold text-emerald-600">{recallResultsStats.correct}</span>
@@ -1028,7 +1028,7 @@ export default function WordDeck() {
   if (gameMode === "typewriter" && gameItems.length > 0) {
     const card = gameItems[typeIndex];
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen flex flex-col justify-between">
+      <div className="max-w-4xl mx-auto px-4 py-8 bg-surface text-on-surface min-h-screen flex flex-col justify-between">
         {/* Header */}
         <header className="w-full flex justify-between items-center border-b-2 border-primary pb-4 mb-8">
           <div className="flex items-center gap-4">
@@ -1048,7 +1048,7 @@ export default function WordDeck() {
         {/* Game Card */}
         <div
           onClick={() => typewriterInputRef.current?.focus()}
-          className="flex-grow flex flex-col items-center justify-center p-8 md:p-12 border-[3px] border-primary bg-[#f0edea] shadow-[8px_8px_0_0_#000] min-h-[400px] relative overflow-hidden cursor-pointer"
+          className="flex-grow flex flex-col items-center justify-center p-8 md:p-12 border-[3px] border-primary bg-surface-container shadow-[8px_8px_0_0_#000] min-h-[400px] relative overflow-hidden cursor-pointer"
         >
           {showSuccessStamp && (
             <div className="absolute inset-0 m-auto w-max h-max font-serif text-8xl font-black text-emerald-600 border-[8px] border-emerald-600 px-8 py-2 transform -rotate-12 opacity-90 z-20 pointer-events-none tracking-widest select-none bg-surface/95">
@@ -1157,7 +1157,7 @@ export default function WordDeck() {
 
 
     return (
-      <div className="max-w-5xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
+      <div className="max-w-5xl mx-auto px-4 py-8 bg-surface text-on-surface min-h-screen">
         {/* Header */}
         <header className="border-b-[2px] border-on-surface pb-4 mb-8 flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -1303,7 +1303,7 @@ export default function WordDeck() {
 
   // --- ARCHIVE VIEW (DEFAULT LIST) ---
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 bg-[#fcfbf9] text-on-surface min-h-screen">
+    <div className="max-w-5xl mx-auto px-4 py-8 bg-surface text-on-surface min-h-screen">
       {/* Title */}
       <div className="border-b-[2px] border-on-surface pb-4 mb-6">
         <h1 className="font-serif text-5xl md:text-6xl font-normal tracking-tight leading-none">
