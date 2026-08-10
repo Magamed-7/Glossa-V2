@@ -672,6 +672,7 @@ export const tg = {
       telegram: "Дастрасӣ ба Telegram",
     },
     aiLocked: "Дастрас нест",
+    unlimitedLabel: "Бемаҳдудият",
     readyVocabByPlan: { free: "5 ҳамагӣ", premium: "55 / рӯз", pro: "Бе маҳдудият" },
     subscribed: "Акнун шумо дар тарифи {code} ҳастед!",
     currentPlan: "Тарифи ҷорӣ",

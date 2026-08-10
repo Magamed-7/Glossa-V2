@@ -1,24 +1,82 @@
 import Icon from "../ui/Icon.jsx";
-import { formatLimit, formatSeconds } from "../../lib/format.js";
+import { formatSeconds } from "../../lib/format.js";
 import { useT } from "../../lib/i18n.jsx";
 
-const ROW_KEYS = [
-  { key: "stories_per_day", labelKey: "pricing.rows.storiesPerDay", format: formatLimit },
-  { key: "deck_words_per_day", labelKey: "pricing.rows.wordsPerDay", format: formatLimit },
-  { key: "own_stories_per_week", labelKey: "pricing.rows.ownStoriesPerWeek", format: formatLimit },
-  {
-    key: "ai_seconds_per_day",
-    labelKey: "pricing.rows.aiPerDay",
-    format: (v) => (v === null ? "∞" : v === 0 ? "—" : formatSeconds(v)),
-  },
+const PLAN_COLUMN_CLASS = {
+  free: "",
+  premium: "bg-secondary-fixed/25",
+  pro: "bg-tertiary-fixed/30",
+};
+
+const ROW_ICONS = {
+  stories_per_day: "auto_stories",
+  deck_words_per_day: "translate",
+  readyVocab: "collections_bookmark",
+  own_stories_per_week: "edit_note",
+  ai_seconds_per_day: "smart_toy",
+  buyStories: "storefront",
+  telegram: "send",
+};
+
+const NUMERIC_ROWS = [
+  { key: "stories_per_day", labelKey: "pricing.rows.storiesPerDay" },
+  { key: "deck_words_per_day", labelKey: "pricing.rows.wordsPerDay" },
+  { key: "own_stories_per_week", labelKey: "pricing.rows.ownStoriesPerWeek" },
 ];
 
 function divider(i, total) {
   return i < total - 1 ? "border-r-2 border-tertiary" : "";
 }
 
+function RowLabel({ icon, children }) {
+  return (
+    <td className="p-6 border-r-2 border-tertiary font-semibold">
+      <span className="flex items-center gap-2.5">
+        <Icon name={icon} className="text-secondary text-xl shrink-0" />
+        {children}
+      </span>
+    </td>
+  );
+}
+
+function UnlimitedValue({ t }) {
+  return (
+    <div className="flex flex-col items-center">
+      <span className="font-display text-3xl font-bold text-secondary leading-none">∞</span>
+      <span className="font-label text-[10px] uppercase tracking-widest text-secondary font-bold mt-1">
+        {t("pricing.unlimitedLabel")}
+      </span>
+    </div>
+  );
+}
+
+function LockedValue({ t }) {
+  return (
+    <div className="flex flex-col items-center opacity-50">
+      <Icon name="lock" className="text-xl" />
+      <span className="font-label text-[10px] uppercase tracking-widest font-bold mt-1">{t("pricing.aiLocked")}</span>
+    </div>
+  );
+}
+
+function NumberValue({ value }) {
+  return <span className="font-display text-3xl font-bold text-on-surface">{value}</span>;
+}
+
+function BooleanValue({ value }) {
+  if (value) {
+    return (
+      <span className="inline-flex w-9 h-9 rounded-full bg-secondary items-center justify-center">
+        <Icon name="check" className="text-on-secondary text-xl" />
+      </span>
+    );
+  }
+  return <Icon name="lock" className="text-xl opacity-40" />;
+}
+
 export default function PlanComparison({ plans }) {
   const t = useT();
+
   return (
     <div className="border-2 border-tertiary bg-surface overflow-x-auto">
       <table className="w-full border-collapse text-left">
@@ -31,55 +89,87 @@ export default function PlanComparison({ plans }) {
               <th
                 key={plan.id}
                 scope="col"
-                className={`p-6 font-label text-label-md uppercase tracking-widest text-center ${divider(i, plans.length)}`}
+                className={`p-6 font-headline text-xl uppercase tracking-widest text-center align-bottom ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
               >
+                {plan.code === "premium" && (
+                  <span className="block font-label text-[9px] tracking-widest text-secondary font-bold mb-1">
+                    {t("pricing.mostPopular")}
+                  </span>
+                )}
                 {t(`pricing.plans.${plan.code}.name`) || plan.code}
               </th>
             ))}
           </tr>
         </thead>
         <tbody className="font-body text-body-md">
-          {ROW_KEYS.map((row) => (
+          {NUMERIC_ROWS.map((row) => (
             <tr key={row.key} className="border-b border-surface-container-highest">
-              <td className="p-6 border-r-2 border-tertiary font-semibold">{t(row.labelKey)}</td>
+              <RowLabel icon={ROW_ICONS[row.key]}>{t(row.labelKey)}</RowLabel>
               {plans.map((plan, i) => (
-                <td key={plan.id} className={`p-6 text-center font-ledger ${divider(i, plans.length)}`}>
-                  {row.key === "ai_seconds_per_day" && plan[row.key] === 0
-                    ? t("pricing.aiLocked")
-                    : row.format(plan[row.key])}
+                <td
+                  key={plan.id}
+                  className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+                >
+                  {plan[row.key] === null ? <UnlimitedValue t={t} /> : <NumberValue value={plan[row.key]} />}
                 </td>
               ))}
             </tr>
           ))}
+
           <tr className="border-b border-surface-container-highest">
-            <td className="p-6 border-r-2 border-tertiary font-semibold">{t("pricing.rows.readyVocab")}</td>
+            <RowLabel icon={ROW_ICONS.ai_seconds_per_day}>{t("pricing.rows.aiPerDay")}</RowLabel>
             {plans.map((plan, i) => (
-              <td key={plan.id} className={`p-6 text-center font-ledger ${divider(i, plans.length)}`}>
-                {t(`pricing.readyVocabByPlan.${plan.code}`) || "—"}
-              </td>
-            ))}
-          </tr>
-          <tr className="border-b border-surface-container-highest">
-            <td className="p-6 border-r-2 border-tertiary font-semibold">{t("pricing.rows.buyStories")}</td>
-            {plans.map((plan, i) => (
-              <td key={plan.id} className={`p-6 text-center ${divider(i, plans.length)}`}>
-                {plan.can_buy_stories ? (
-                  <Icon name="check" className="text-secondary" />
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                {plan.ai_seconds_per_day === 0 ? (
+                  <LockedValue t={t} />
+                ) : plan.ai_seconds_per_day === null ? (
+                  <UnlimitedValue t={t} />
                 ) : (
-                  <Icon name="close" className="text-outline-variant" />
+                  <span className="font-display text-2xl font-bold text-secondary">{formatSeconds(plan.ai_seconds_per_day)}</span>
                 )}
               </td>
             ))}
           </tr>
+
+          <tr className="border-b border-surface-container-highest">
+            <RowLabel icon={ROW_ICONS.readyVocab}>{t("pricing.rows.readyVocab")}</RowLabel>
+            {plans.map((plan, i) => (
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                {plan.code === "free" ? (
+                  <span className="font-body text-sm text-on-surface-variant">{t(`pricing.readyVocabByPlan.${plan.code}`)}</span>
+                ) : (
+                  <span className="font-display text-2xl font-bold text-secondary">{t(`pricing.readyVocabByPlan.${plan.code}`)}</span>
+                )}
+              </td>
+            ))}
+          </tr>
+
+          <tr className="border-b border-surface-container-highest">
+            <RowLabel icon={ROW_ICONS.buyStories}>{t("pricing.rows.buyStories")}</RowLabel>
+            {plans.map((plan, i) => (
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                <BooleanValue value={plan.can_buy_stories} />
+              </td>
+            ))}
+          </tr>
+
           <tr>
-            <td className="p-6 border-r-2 border-tertiary font-semibold">{t("pricing.rows.telegram")}</td>
+            <RowLabel icon={ROW_ICONS.telegram}>{t("pricing.rows.telegram")}</RowLabel>
             {plans.map((plan, i) => (
-              <td key={plan.id} className={`p-6 text-center ${divider(i, plans.length)}`}>
-                {plan.telegram_access ? (
-                  <Icon name="check" className="text-secondary" />
-                ) : (
-                  <Icon name="close" className="text-outline-variant" />
-                )}
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                <BooleanValue value={plan.telegram_access} />
               </td>
             ))}
           </tr>

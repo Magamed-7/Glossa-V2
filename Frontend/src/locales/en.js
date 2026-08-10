@@ -671,6 +671,7 @@ export const en = {
       telegram: "Telegram access",
     },
     aiLocked: "Locked",
+    unlimitedLabel: "Unlimited",
     readyVocabByPlan: { free: "5 total", premium: "55 / day", pro: "Unlimited" },
     subscribed: "You're now on the {code} plan!",
     currentPlan: "Current Plan",

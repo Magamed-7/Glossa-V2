@@ -671,6 +671,7 @@ export const ru = {
       telegram: "Доступ к Telegram",
     },
     aiLocked: "Недоступно",
+    unlimitedLabel: "Безлимит",
     readyVocabByPlan: { free: "5 всего", premium: "55 / день", pro: "Безлимит" },
     subscribed: "Теперь у тебя тариф {code}!",
     currentPlan: "Текущий тариф",
