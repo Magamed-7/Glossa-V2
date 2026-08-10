@@ -28,7 +28,7 @@ export default function MetricGauges() {
   if (error) {
     return (
       <div className="col-span-12 md:col-span-6 lg:col-span-5">
-        <ErrorState error={error} onRetry={reload} />
+        <ErrorState error={error} onRetry={reload} variant="inline" />
       </div>
     );
   }

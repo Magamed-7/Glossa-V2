@@ -35,7 +35,7 @@ export default function StoryProgressCard() {
   if (error) {
     return (
       <div className="col-span-12 md:col-span-6 lg:col-span-7">
-        <ErrorState error={error} onRetry={reload} />
+        <ErrorState error={error} onRetry={reload} variant="inline" />
       </div>
     );
   }

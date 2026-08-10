@@ -45,7 +45,7 @@ export default function DailyMission() {
   if (error) {
     return (
       <div className="col-span-12 lg:col-span-8">
-        <ErrorState error={error} onRetry={reload} />
+        <ErrorState error={error} onRetry={reload} variant="inline" />
       </div>
     );
   }

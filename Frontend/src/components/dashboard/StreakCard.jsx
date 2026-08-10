@@ -21,7 +21,7 @@ export default function StreakCard() {
   if (streak === null) {
     return (
       <div className="col-span-12 lg:col-span-4">
-        <ErrorState error={{ message: t("dashboard.streak.error") }} onRetry={refreshStreak} />
+        <ErrorState error={{ message: t("dashboard.streak.error") }} onRetry={refreshStreak} variant="inline" />
       </div>
     );
   }
