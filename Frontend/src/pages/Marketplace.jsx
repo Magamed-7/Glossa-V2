@@ -18,15 +18,15 @@ const PHOTO_MAP = {
   "marc dubois":"/img/jean_luc.png",
   "jean-luc":   "/img/jean_luc.png",
   "jean luc":   "/img/jean_luc.png",
-  "elena rossi":"/img/ji_yoon.png",
+  "elena rossi":"/img/yuki_tanaka.png",
   "yunus":      "/img/Yunus.png",
   "ruslan":     "/img/Ruslan.jpg",
   "ruslanjon":  "/img/Ruslan.jpg",
   "osaf":       "/img/Osaf.jpg",
-  "dilshod":    "/img/yuki_tanaka.png",
-  "amir":       "/img/jean_luc.png",
-  "bahriddin a.":"/img/carlos_m.png",
-  "global tech inc.": "/img/ji_yoon.png",
+  "dilshod":    "/img/marketing/curator-yunus.png",
+  "amir":       "/img/marketing/curator-osaf.webp",
+  "bahriddin a.":"/img/marketing/curator-arthur.webp",
+  "global tech inc.": "/img/marketing/curator-ruslan.webp",
 };
 
 function avatarUrl(service) {
