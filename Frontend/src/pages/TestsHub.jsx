@@ -2,208 +2,280 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import Gauge from "../components/ui/Gauge.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useI18n } from "../lib/i18n.jsx";
 import { getEligibleLevels, getPracticeAnalytics, getPracticeHistory, getStoryTests } from "../lib/api/practiceTests.js";
+import { getBookCoverUrl } from "./StoriesCatalog.jsx";
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const LEVEL_ORDER_INDEX = Object.fromEntries(LEVELS.map((l, i) => [l, i]));
-
-const SIZES = ["short", "medium", "long"];
-const SIZE_COUNT = { short: 10, medium: 20, long: 30 };
+const PRACTICE_SIZE = "medium";
 
 const TXT = {
   en: {
-    title: "Test Yourself",
-    subtitle: "Extra practice tests, on your own terms. Taking these never changes your Roadmap progress, XP or streak — they're just for checking where you stand.",
-    analyticsTitle: "Your practice average",
-    attempts: "attempts",
-    passRate: "pass rate",
-    byCategory: "By content",
-    byLevel: "By level",
-    noAttemptsYet: "No practice tests taken yet — try one below.",
-    levelUpTitle: "Level-up test",
-    levelUpBody: (level, next) => `Pass this to skip straight from ${level} to ${next}. Unlike the tests below, this one does affect your Roadmap.`,
-    levelUpCta: "Take the level-up test",
-    levelUpNone: "You're on the highest level — no level-up test available.",
-    builderTitle: "Build your own test",
-    builderBody: "Choose levels and content, then start. Doesn't touch your Roadmap.",
-    levelsLabel: "Levels",
-    categoriesLabel: "Content",
-    grammar: "Grammar",
-    vocab: "Vocabulary",
-    sizeLabel: "Length",
-    sizeNames: { short: "Short", medium: "Medium", long: "Long" },
-    questions: "questions",
-    start: "Start test",
-    pickLevel: "Pick at least one level",
-    pickCategory: "Pick at least one content type",
-    storiesTitle: "Story tests",
-    storiesBody: "Reading comprehension checks, one per story. Read the story first to unlock its test.",
-    allLevels: "All levels",
-    readFirst: "Read the story first",
-    readIt: "Read it",
-    takeTest: "Take the test",
-    retake: "Retake",
-    best: "Best",
-    historyTitle: "Recent attempts",
-    combined: "Combined",
-    story: "Story",
-    noHistory: "Nothing here yet.",
+    registryNo: "Registry No. EXM-71",
+    volume: "Vol. 19",
+    title: "Examination Hall",
+    subtitle: "An Official Registry of Assessment. From foundational pedagogical drills to formal promotion examinations, evaluate your academic mastery with rigorous precision.",
+    standingTitle: "Academic Standing",
+    standingSub: "Your practice record. Ungraded — this ledger never affects your Roadmap, XP or streak.",
+    average: "Average score",
+    attempts: "Attempts logged",
+    passRate: "Pass rate",
+    noAttemptsYet: "No entries in the ledger yet — commence a drill below to begin your record.",
+    recentEntries: "Recent entries",
+    combined: "Grammar + Vocabulary",
+    story: "Literature",
+    grammarCat: "Grammar",
+    vocabCat: "Vocabulary",
+    drillsTitle: "Foundational Drills",
+    ungraded: "Ungraded",
+    drillsBody: "Configure modular pedagogical exercises tailored to your current scholarly focus. These iterations do not influence formal registry standing.",
+    targetProficiency: "Target Proficiency",
+    curricularFocus: "Curricular Focus",
+    grammaticalArchitecture: "Grammatical Architecture",
+    lexicalAcquisition: "Lexical Acquisition",
+    comprehensiveSynthesis: "Comprehensive Synthesis",
+    commence: "Commence Training Drill",
+    pickLevel: "Select at least one proficiency target",
+    pickCategory: "Select at least one curricular focus",
+    advancementTitle: "Registry Advancement",
+    officialAssessment: "Official Assessment",
+    promotionExam: "Promotion Exam",
+    promotionRange: (a, b) => `${a} to ${b}`,
+    promotionBody: "This formal adjudication evaluates your scholarly readiness to progress. It encompasses advanced grammatical architectures, extended lexical mastery, and complex textual comprehension.",
+    promotionNote: "Successful navigation of this rigorous assessment permanently advances your scholarly standing within the registry.",
+    initiate: "Initiate Official Examination",
+    maxLevelTitle: "Highest Standing Achieved",
+    maxLevelBody: "You have already attained the registry's highest formal standing. No further promotion examination is available.",
+    archivesTitle: "Literature Comprehension Archives",
+    indexFilter: "Index Filter",
+    completeIndex: "Complete Index",
+    sealed: "Sealed",
+    prerequisiteDeficient: "Prerequisite Deficient",
+    prerequisiteBody: "Scholarly review of the foundational text is mandatory prior to examination access.",
+    consultText: "Consult Text First",
+    indexed: "Indexed",
+    bestOf: (n) => `Best ${n}%`,
+    commenceExam: "Commence Exam",
+    retakeExam: "Retake Exam",
+    noStories: "No texts archived for this filter yet.",
   },
   ru: {
-    title: "Проверь себя",
-    subtitle: "Дополнительные тесты по твоему выбору. Они никак не влияют на прогресс роудмапа, опыт или серию — только для самопроверки.",
-    analyticsTitle: "Твой средний результат",
-    attempts: "попыток",
-    passRate: "% сдачи",
-    byCategory: "По разделам",
-    byLevel: "По уровням",
-    noAttemptsYet: "Пока нет пройденных тестов — начни с любого ниже.",
-    levelUpTitle: "Тест перехода на уровень выше",
-    levelUpBody: (level, next) => `Сдай его, чтобы перескочить с ${level} сразу на ${next}. В отличие от тестов ниже, этот влияет на твой роудмап.`,
-    levelUpCta: "Пройти тест перехода",
-    levelUpNone: "Ты уже на максимальном уровне — тест перехода недоступен.",
-    builderTitle: "Собери свой тест",
-    builderBody: "Выбери уровни и содержание, затем начни. Роудмап не затронет.",
-    levelsLabel: "Уровни",
-    categoriesLabel: "Содержание",
-    grammar: "Грамматика",
-    vocab: "Лексика",
-    sizeLabel: "Длина",
-    sizeNames: { short: "Короткий", medium: "Средний", long: "Длинный" },
-    questions: "вопросов",
-    start: "Начать тест",
-    pickLevel: "Выбери хотя бы один уровень",
-    pickCategory: "Выбери хотя бы один раздел",
-    storiesTitle: "Тесты по историям",
-    storiesBody: "Проверка понимания прочитанного, отдельно по каждой истории. Сначала прочитай историю — тест откроется после.",
-    allLevels: "Все уровни",
-    readFirst: "Сначала прочитайте историю",
-    readIt: "Читать",
-    takeTest: "Пройти тест",
-    retake: "Пройти ещё раз",
-    best: "Лучший результат",
-    historyTitle: "Недавние попытки",
+    registryNo: "Реестр № ЭКЗ-71",
+    volume: "Вып. 19",
+    title: "Экзаменационный зал",
+    subtitle: "Официальный реестр аттестации. От базовых тренировочных упражнений до официальных экзаменов на повышение уровня — оцени своё мастерство с полной строгостью.",
+    standingTitle: "Академическая репутация",
+    standingSub: "Твой журнал практики. Без оценки в личное дело — этот реестр никак не влияет на роудмап, опыт или серию.",
+    average: "Средний результат",
+    attempts: "Попыток в журнале",
+    passRate: "Процент сдачи",
+    noAttemptsYet: "В журнале пока пусто — начни тренировку ниже, чтобы открыть запись.",
+    recentEntries: "Последние записи",
     combined: "Грамматика + лексика",
-    story: "История",
-    noHistory: "Пока пусто.",
+    story: "Литература",
+    grammarCat: "Грамматика",
+    vocabCat: "Лексика",
+    drillsTitle: "Базовые тренировки",
+    ungraded: "Без оценки",
+    drillsBody: "Настрой модульные тренировочные упражнения под текущий научный фокус. Эти попытки не влияют на официальную репутацию в реестре.",
+    targetProficiency: "Целевой уровень",
+    curricularFocus: "Учебный фокус",
+    grammaticalArchitecture: "Грамматическая архитектура",
+    lexicalAcquisition: "Освоение лексики",
+    comprehensiveSynthesis: "Комплексный синтез",
+    commence: "Начать тренировку",
+    pickLevel: "Выбери хотя бы один целевой уровень",
+    pickCategory: "Выбери хотя бы один учебный фокус",
+    advancementTitle: "Продвижение по реестру",
+    officialAssessment: "Официальная аттестация",
+    promotionExam: "Экзамен на повышение",
+    promotionRange: (a, b) => `${a} → ${b}`,
+    promotionBody: "Эта формальная аттестация оценивает твою научную готовность к продвижению. Она охватывает продвинутые грамматические конструкции, расширенное владение лексикой и сложное понимание текста.",
+    promotionNote: "Успешное прохождение этой строгой аттестации навсегда повышает твою репутацию в реестре.",
+    initiate: "Начать официальный экзамен",
+    maxLevelTitle: "Высшая репутация достигнута",
+    maxLevelBody: "Ты уже достиг высшей официальной репутации в реестре. Экзамен на повышение больше недоступен.",
+    archivesTitle: "Архив понимания текста",
+    indexFilter: "Фильтр каталога",
+    completeIndex: "Весь каталог",
+    sealed: "Опечатано",
+    prerequisiteDeficient: "Не выполнено предусловие",
+    prerequisiteBody: "Перед доступом к экзамену необходимо прочитать первоисточник.",
+    consultText: "Сначала читать текст",
+    indexed: "В каталоге",
+    bestOf: (n) => `Лучший ${n}%`,
+    commenceExam: "Сдать экзамен",
+    retakeExam: "Пересдать",
+    noStories: "Для этого фильтра пока нет текстов в архиве.",
   },
   tg: {
-    title: "Худро санҷед",
-    subtitle: "Санҷишҳои иловагӣ ба хости худ. Онҳо ба пешрафти нақшаи роҳ, XP ё силсила таъсир намерасонанд — танҳо барои худсанҷӣ.",
-    analyticsTitle: "Натиҷаи миёнаи шумо",
-    attempts: "кӯшиш",
-    passRate: "% гузариш",
-    byCategory: "Аз рӯи бахш",
-    byLevel: "Аз рӯи сатҳ",
-    noAttemptsYet: "Ҳанӯз ягон санҷиш супорида нашудааст — аз поён сар кунед.",
-    levelUpTitle: "Санҷиши гузариш ба сатҳи болотар",
-    levelUpBody: (level, next) => `Барои гузаштан аз ${level} мустақим ба ${next} инро супоред. Бар хилофи санҷишҳои поён, ин ба нақшаи роҳатон таъсир мерасонад.`,
-    levelUpCta: "Санҷиши гузаришро супоред",
-    levelUpNone: "Шумо аллакай дар сатҳи баландтарин ҳастед — санҷиши гузариш дастрас нест.",
-    builderTitle: "Санҷиши худро созед",
-    builderBody: "Сатҳҳо ва мазмунро интихоб кунед, сипас оғоз кунед. Ба нақшаи роҳ таъсир намерасонад.",
-    levelsLabel: "Сатҳҳо",
-    categoriesLabel: "Мазмун",
-    grammar: "Грамматика",
-    vocab: "Луғат",
-    sizeLabel: "Дарозӣ",
-    sizeNames: { short: "Кӯтоҳ", medium: "Миёна", long: "Дароз" },
-    questions: "савол",
-    start: "Санҷишро оғоз кунед",
-    pickLevel: "Ҳадди ақал як сатҳро интихоб кунед",
-    pickCategory: "Ҳадди ақал як бахшро интихоб кунед",
-    storiesTitle: "Санҷиш аз рӯи ҳикояҳо",
-    storiesBody: "Санҷиши фаҳмиши хониш, барои ҳар ҳикоя алоҳида. Аввал ҳикояро хонед — сипас санҷиш кушода мешавад.",
-    allLevels: "Ҳамаи сатҳҳо",
-    readFirst: "Аввал ҳикояро хонед",
-    readIt: "Хондан",
-    takeTest: "Санҷишро супоред",
-    retake: "Такрор супоред",
-    best: "Беҳтарин натиҷа",
-    historyTitle: "Кӯшишҳои охирин",
+    registryNo: "Феҳрист № ИМТ-71",
+    volume: "Ҷилди 19",
+    title: "Толори имтиҳонот",
+    subtitle: "Феҳристи расмии арзёбӣ. Аз машқҳои таълимии асосӣ то имтиҳонҳои расмии гузариш ба сатҳи баланд — донишу маҳорати худро бо дақиқии қатъӣ санҷед.",
+    standingTitle: "Мақоми илмӣ",
+    standingSub: "Феҳристи машқи шумо. Бе баҳогузорӣ — ин феҳрист ба нақшаи роҳ, XP ё силсила ҳеҷ гоҳ таъсир намерасонад.",
+    average: "Натиҷаи миёна",
+    attempts: "Кӯшишҳои сабтшуда",
+    passRate: "Фоизи гузариш",
+    noAttemptsYet: "Феҳрист ҳанӯз холист — барои кушодани сабт аз поён машқеро оғоз кунед.",
+    recentEntries: "Сабтҳои охирин",
     combined: "Грамматика + луғат",
-    story: "Ҳикоя",
-    noHistory: "Ҳанӯз холӣ.",
+    story: "Адабиёт",
+    grammarCat: "Грамматика",
+    vocabCat: "Луғат",
+    drillsTitle: "Машқҳои асосӣ",
+    ungraded: "Бе баҳо",
+    drillsBody: "Машқҳои таълимии модулиро мутобиқи фокуси илмии ҷории худ танзим кунед. Ин такрорҳо ба мақоми расмии феҳрист таъсир намерасонанд.",
+    targetProficiency: "Сатҳи мақсаднок",
+    curricularFocus: "Фокуси таълимӣ",
+    grammaticalArchitecture: "Сохтори грамматикӣ",
+    lexicalAcquisition: "Азхудкунии луғат",
+    comprehensiveSynthesis: "Синтези ҳамаҷониба",
+    commence: "Машқро оғоз кунед",
+    pickLevel: "Ҳадди ақал як сатҳи мақсаднокро интихоб кунед",
+    pickCategory: "Ҳадди ақал як фокуси таълимиро интихоб кунед",
+    advancementTitle: "Пешравӣ дар феҳрист",
+    officialAssessment: "Арзёбии расмӣ",
+    promotionExam: "Имтиҳони гузариш",
+    promotionRange: (a, b) => `${a} → ${b}`,
+    promotionBody: "Ин арзёбии расмӣ омодагии илмии шуморо барои пешравӣ месанҷад. Он сохторҳои грамматикии пешрафта, азхудкунии васеи луғат ва фаҳмиши мураккаби матнро дар бар мегирад.",
+    promotionNote: "Гузаштани муваффақонаи ин арзёбии қатъӣ мақоми шуморо дар феҳрист ба таври доимӣ баланд мебардорад.",
+    initiate: "Имтиҳони расмиро оғоз кунед",
+    maxLevelTitle: "Мақоми баландтарин ба даст омад",
+    maxLevelBody: "Шумо аллакай ба мақоми баландтарини расмии феҳрист расидед. Имтиҳони гузариш дигар дастрас нест.",
+    archivesTitle: "Бойгонии фаҳмиши матн",
+    indexFilter: "Филтри феҳрист",
+    completeIndex: "Феҳристи пурра",
+    sealed: "Мӯҳршуда",
+    prerequisiteDeficient: "Пешшарт иҷро нашудааст",
+    prerequisiteBody: "Пеш аз дастрасӣ ба имтиҳон хондани матни асосӣ ҳатмист.",
+    consultText: "Аввал матнро хонед",
+    indexed: "Дар феҳрист",
+    bestOf: (n) => `Беҳтарин ${n}%`,
+    commenceExam: "Имтиҳонро супоред",
+    retakeExam: "Такрор супоред",
+    noStories: "Барои ин филтр ҳанӯз матне дар бойгонӣ нест.",
   },
 };
 
-function StatBlock({ label, value }) {
+function RegistryTag({ children, align = "left" }) {
   return (
-    <div className="flex flex-col">
-      <span className="font-headline text-4xl font-bold leading-none">{value}</span>
-      <span className="font-label text-[10px] uppercase tracking-widest font-bold opacity-70 mt-1">{label}</span>
-    </div>
+    <span
+      className={`font-ledger text-[10px] uppercase tracking-widest border-2 border-tertiary px-2.5 py-1 inline-block ${
+        align === "right" ? "text-right" : ""
+      }`}
+    >
+      {children}
+    </span>
   );
 }
 
-function AnalyticsPanel({ analytics, t }) {
-  if (!analytics) {
-    return (
-      <div className="bg-secondary text-surface border-2 border-on-surface p-6 shadow-[4px_4px_0px_0px_#000]">
-        <Skeleton className="h-8 w-1/2 mb-3 bg-surface/20" />
-        <Skeleton className="h-12 w-1/3 bg-surface/20" />
-      </div>
-    );
-  }
+function SectionLabel({ children }) {
+  return (
+    <h2 className="font-headline text-headline-md border-b-2 border-tertiary pb-2">{children}</h2>
+  );
+}
 
-  if (analytics.total_attempts === 0) {
-    return (
-      <div className="bg-surface border-2 border-on-surface p-6 shadow-[4px_4px_0px_0px_#000] flex items-center gap-3">
-        <Icon name="quiz" className="text-3xl text-on-surface-variant/50" />
-        <p className="font-body text-sm text-on-surface-variant">{t.noAttemptsYet}</p>
-      </div>
-    );
-  }
+function CheckRow({ checked, onClick, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full flex items-center gap-3 text-left group cursor-pointer py-1"
+    >
+      <span
+        className={`w-5 h-5 shrink-0 border-2 border-tertiary flex items-center justify-center transition-colors ${
+          checked ? "bg-tertiary" : "bg-surface"
+        }`}
+      >
+        {checked && <Icon name="check" className="text-surface text-sm" />}
+      </span>
+      <span className="font-label text-label-md group-hover:text-secondary transition-colors">{children}</span>
+    </button>
+  );
+}
+
+function AcademicStanding({ analytics, history, t }) {
+  const hasAttempts = analytics && analytics.total_attempts > 0;
 
   return (
-    <div className="bg-secondary text-surface border-2 border-on-surface p-6 shadow-[4px_4px_0px_0px_#000]">
-      <h3 className="font-headline text-lg font-bold mb-4">{t.analyticsTitle}</h3>
-      <div className="flex items-end gap-8 mb-5">
-        <div className="flex items-end gap-1">
-          <span className="font-headline text-6xl font-bold leading-none">{Math.round(analytics.average_score_percent)}</span>
-          <span className="font-headline text-2xl font-bold mb-1">%</span>
-        </div>
-        <StatBlock label={t.attempts} value={analytics.total_attempts} />
-        <StatBlock label={t.passRate} value={`${Math.round(analytics.pass_rate)}%`} />
-      </div>
-
-      {analytics.by_category.length > 0 && (
-        <div className="mb-3">
-          <p className="font-label text-[9px] uppercase tracking-widest font-bold opacity-70 mb-2">{t.byCategory}</p>
-          <div className="flex flex-wrap gap-2">
-            {analytics.by_category.map((c) => (
-              <span key={c.category} className="font-label text-[10px] uppercase font-bold border border-surface/50 px-2 py-1">
-                {c.category === "combined" ? t.combined : c.category === "story" ? t.story : c.category === "grammar" ? t.grammar : t.vocab}
-                {" — "}{Math.round(c.average_score_percent)}%
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {analytics.by_level.length > 0 && (
+    <div className="neo-card p-6 md:p-8">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-2 mb-6">
         <div>
-          <p className="font-label text-[9px] uppercase tracking-widest font-bold opacity-70 mb-2">{t.byLevel}</p>
-          <div className="flex flex-wrap gap-2">
-            {analytics.by_level.map((l) => (
-              <span key={l.cefr_level} className="font-label text-[10px] uppercase font-bold border border-surface/50 px-2 py-1">
-                {l.cefr_level} — {Math.round(l.average_score_percent)}%
-              </span>
-            ))}
-          </div>
+          <h2 className="font-headline text-headline-md">{t.standingTitle}</h2>
+          <p className="font-body text-body-md text-on-surface-variant mt-1 max-w-xl italic">{t.standingSub}</p>
         </div>
+      </div>
+
+      {!analytics ? (
+        <Skeleton className="h-24" />
+      ) : !hasAttempts ? (
+        <div className="border-2 border-dashed border-tertiary p-6 flex items-center gap-3">
+          <Icon name="history_edu" className="text-3xl text-on-surface-variant/50" />
+          <p className="font-body text-body-md text-on-surface-variant">{t.noAttemptsYet}</p>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-wrap items-center gap-8 md:gap-12 pb-6 mb-6 border-b border-dotted border-tertiary/50">
+            <Gauge value={Math.round(analytics.average_score_percent)} label={t.average} size={112} />
+            <div className="flex flex-col gap-1">
+              <span className="font-ledger text-4xl leading-none">{analytics.total_attempts}</span>
+              <span className="font-label text-label-md uppercase text-on-surface-variant">{t.attempts}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="font-ledger text-4xl leading-none">{Math.round(analytics.pass_rate)}%</span>
+              <span className="font-label text-label-md uppercase text-on-surface-variant">{t.passRate}</span>
+            </div>
+
+            {(analytics.by_category.length > 0 || analytics.by_level.length > 0) && (
+              <div className="flex flex-wrap gap-2 ml-auto">
+                {analytics.by_category.map((c) => (
+                  <span key={c.category} className="font-label text-[10px] uppercase font-bold border border-tertiary px-2 py-1">
+                    {c.category === "combined" ? t.combined : c.category === "story" ? t.story : c.category === "grammar" ? t.grammarCat : t.vocabCat}
+                    {" · "}{Math.round(c.average_score_percent)}%
+                  </span>
+                ))}
+                {analytics.by_level.map((l) => (
+                  <span key={l.cefr_level} className="font-label text-[10px] uppercase font-bold border border-tertiary px-2 py-1">
+                    {l.cefr_level} · {Math.round(l.average_score_percent)}%
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {history && history.length > 0 && (
+            <div>
+              <p className="font-label text-label-md uppercase text-on-surface-variant mb-3">{t.recentEntries}</p>
+              <div className="divide-y divide-dotted divide-tertiary/50">
+                {history.slice(0, 5).map((h) => (
+                  <div key={h.id} className="flex items-center justify-between gap-4 py-2.5">
+                    <span className="font-body text-sm truncate">
+                      {h.category === "combined" ? t.combined : h.category === "story" ? t.story : h.category === "grammar" ? t.grammarCat : t.vocabCat}
+                      <span className="text-on-surface-variant"> — {h.cefr_levels.join(", ")}</span>
+                    </span>
+                    <span className="font-ledger text-lg shrink-0">
+                      {h.score_percent !== null ? `${Math.round(h.score_percent)}%` : "—"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
 }
 
-function TestBuilder({ t, lang, eligibleLevels }) {
+function FoundationalDrills({ t, eligibleLevels }) {
   const navigate = useNavigate();
   const [levels, setLevels] = useState([]);
   const [categories, setCategories] = useState(["grammar", "vocab"]);
-  const [size, setSize] = useState("medium");
 
   useEffect(() => {
     if (eligibleLevels?.length) setLevels((prev) => (prev.length ? prev : [eligibleLevels[eligibleLevels.length - 1]]));
@@ -213,25 +285,36 @@ function TestBuilder({ t, lang, eligibleLevels }) {
     setLevels((prev) => (prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level]));
   }
 
-  function toggleCategory(category) {
-    setCategories((prev) => (prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]));
+  function toggleCategory(cat) {
+    setCategories((prev) => (prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]));
+  }
+
+  const comprehensive = categories.includes("grammar") && categories.includes("vocab");
+
+  function toggleComprehensive() {
+    setCategories(comprehensive ? [] : ["grammar", "vocab"]);
   }
 
   const canStart = levels.length > 0 && categories.length > 0;
 
   function start() {
     if (!canStart) return;
-    const params = new URLSearchParams({ levels: levels.join(","), categories: categories.join(","), size });
+    const params = new URLSearchParams({ levels: levels.join(","), categories: categories.join(","), size: PRACTICE_SIZE });
     navigate(`/tests/practice/run?${params.toString()}`);
   }
 
   return (
-    <div className="bg-surface border-2 border-on-surface p-6 shadow-[4px_4px_0px_0px_#000]">
-      <h3 className="font-headline text-lg font-bold text-on-surface mb-1">{t.builderTitle}</h3>
-      <p className="font-body text-sm text-on-surface-variant mb-5">{t.builderBody}</p>
+    <div className="neo-card p-6 md:p-8 flex flex-col h-full">
+      <div className="flex items-center gap-3 mb-4">
+        <h3 className="font-headline text-headline-md">{t.drillsTitle}</h3>
+        <span className="font-label text-[10px] uppercase font-bold border border-tertiary px-2 py-0.5 text-on-surface-variant">
+          {t.ungraded}
+        </span>
+      </div>
+      <p className="font-body text-body-md text-on-surface-variant mb-6">{t.drillsBody}</p>
 
-      <p className="font-label text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-2">{t.levelsLabel}</p>
-      <div className="flex flex-wrap gap-2 mb-5">
+      <p className="font-label text-label-md uppercase text-on-surface-variant mb-2">{t.targetProficiency}</p>
+      <div className="grid grid-cols-3 gap-2 mb-6">
         {(eligibleLevels || []).map((level) => {
           const active = levels.includes(level);
           return (
@@ -239,8 +322,8 @@ function TestBuilder({ t, lang, eligibleLevels }) {
               key={level}
               type="button"
               onClick={() => toggleLevel(level)}
-              className={`font-label text-[11px] uppercase font-bold px-3 py-2 border-2 border-on-surface transition-all cursor-pointer ${
-                active ? "bg-secondary text-surface shadow-[3px_3px_0px_0px_#000]" : "bg-surface text-on-surface hover:bg-surface-variant"
+              className={`font-headline text-base font-bold py-2.5 border-2 border-tertiary transition-colors cursor-pointer ${
+                active ? "bg-tertiary text-surface" : "bg-surface hover:bg-surface-container"
               }`}
             >
               {level}
@@ -249,48 +332,27 @@ function TestBuilder({ t, lang, eligibleLevels }) {
         })}
       </div>
 
-      <p className="font-label text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-2">{t.categoriesLabel}</p>
-      <div className="flex flex-wrap gap-2 mb-5">
-        {[["grammar", t.grammar], ["vocab", t.vocab]].map(([key, label]) => {
-          const active = categories.includes(key);
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => toggleCategory(key)}
-              className={`font-label text-[11px] uppercase font-bold px-3 py-2 border-2 border-on-surface transition-all cursor-pointer ${
-                active ? "bg-secondary text-surface shadow-[3px_3px_0px_0px_#000]" : "bg-surface text-on-surface hover:bg-surface-variant"
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
-
-      <p className="font-label text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-2">{t.sizeLabel}</p>
-      <div className="flex flex-wrap gap-2 mb-6">
-        {SIZES.map((s) => (
-          <button
-            key={s}
-            type="button"
-            onClick={() => setSize(s)}
-            className={`font-label text-[11px] uppercase font-bold px-3 py-2 border-2 border-on-surface transition-all cursor-pointer ${
-              size === s ? "bg-secondary text-surface shadow-[3px_3px_0px_0px_#000]" : "bg-surface text-on-surface hover:bg-surface-variant"
-            }`}
-          >
-            {t.sizeNames[s]} ({SIZE_COUNT[s]} {t.questions})
-          </button>
-        ))}
+      <p className="font-label text-label-md uppercase text-on-surface-variant mb-2">{t.curricularFocus}</p>
+      <div className="mb-6 space-y-1">
+        <CheckRow checked={categories.includes("grammar")} onClick={() => toggleCategory("grammar")}>
+          {t.grammaticalArchitecture}
+        </CheckRow>
+        <CheckRow checked={categories.includes("vocab")} onClick={() => toggleCategory("vocab")}>
+          {t.lexicalAcquisition}
+        </CheckRow>
+        <CheckRow checked={comprehensive} onClick={toggleComprehensive}>
+          {t.comprehensiveSynthesis}
+        </CheckRow>
       </div>
 
       <button
         type="button"
         onClick={start}
         disabled={!canStart}
-        className="w-full bg-secondary text-surface border-2 border-on-surface py-3 font-label text-[11px] uppercase tracking-widest font-bold shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        className="mt-auto w-full bg-tertiary text-surface py-3.5 font-label text-label-md uppercase tracking-widest flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity cursor-pointer"
       >
-        {t.start}
+        <Icon name="play_arrow" className="text-lg" />
+        {t.commence}
       </button>
       {!canStart && (
         <p className="font-label text-[10px] text-on-surface-variant mt-2 text-center">
@@ -301,71 +363,109 @@ function TestBuilder({ t, lang, eligibleLevels }) {
   );
 }
 
-function LevelUpCard({ t, currentLevel }) {
+function RegistryAdvancement({ t, currentLevel }) {
   const navigate = useNavigate();
   const idx = LEVEL_ORDER_INDEX[currentLevel];
   const nextLevel = idx !== undefined && idx < LEVELS.length - 1 ? LEVELS[idx + 1] : null;
 
   return (
-    <div className="border-2 border-on-surface border-dashed p-6 bg-[#fff8e8]">
-      <div className="flex items-center gap-2 mb-2">
-        <Icon name="military_tech" className="text-secondary text-xl" />
-        <h3 className="font-headline text-lg font-bold text-on-surface">{t.levelUpTitle}</h3>
+    <div className="border-2 border-secondary bg-surface p-6 md:p-8 flex flex-col h-full relative hard-shadow-coral">
+      <div className="flex items-start justify-between mb-4">
+        <span className="bg-secondary text-on-secondary font-label text-[10px] uppercase tracking-widest font-bold px-2.5 py-1">
+          {t.officialAssessment}
+        </span>
+        <Icon name="workspace_premium" className="text-secondary text-2xl" />
       </div>
+
       {nextLevel ? (
         <>
-          <p className="font-body text-sm text-on-surface-variant mb-4">{t.levelUpBody(currentLevel, nextLevel)}</p>
+          <h3 className="font-headline text-headline-md">{t.promotionExam}</h3>
+          <p className="font-headline italic text-secondary text-lg mb-4">{t.promotionRange(currentLevel, nextLevel)}</p>
+          <p className="font-body text-body-md text-on-surface-variant mb-5">{t.promotionBody}</p>
+
+          <div className="bg-secondary-fixed text-on-secondary-fixed p-4 flex items-start gap-3 mb-6">
+            <Icon name="verified" className="text-secondary shrink-0 mt-0.5" />
+            <p className="font-body text-sm">{t.promotionNote}</p>
+          </div>
+
           <button
             type="button"
             onClick={() => navigate(`/roadmap/level-test/${currentLevel}/placement`)}
-            className="bg-on-surface text-surface border-2 border-on-surface px-5 py-2.5 font-label text-[10px] uppercase tracking-widest font-bold shadow-[4px_4px_0px_0px_#b90538] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all cursor-pointer"
+            className="mt-auto w-full bg-secondary text-on-secondary py-3.5 font-label text-label-md uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer"
           >
-            {t.levelUpCta}
+            {t.initiate}
           </button>
         </>
       ) : (
-        <p className="font-body text-sm text-on-surface-variant">{t.levelUpNone}</p>
+        <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
+          <Icon name="military_tech" className="text-4xl text-secondary mb-3" />
+          <h3 className="font-headline text-headline-md mb-2">{t.maxLevelTitle}</h3>
+          <p className="font-body text-body-md text-on-surface-variant max-w-xs">{t.maxLevelBody}</p>
+        </div>
       )}
     </div>
   );
 }
 
-function StoryRow({ story, t, lang }) {
+function StoryCard({ story, t }) {
   const navigate = useNavigate();
 
-  return (
-    <div className="flex items-center justify-between gap-4 border-2 border-on-surface bg-surface p-4 shadow-[3px_3px_0px_0px_#000]">
-      <div className="min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="font-label text-[9px] uppercase font-bold border border-on-surface px-1.5 py-0.5">{story.cefr_level}</span>
-          {story.attempts > 0 && (
-            <span className="font-label text-[9px] uppercase font-bold text-on-surface-variant">
-              {t.best}: {Math.round(story.best_score_percent)}%
-            </span>
-          )}
+  if (!story.is_read) {
+    return (
+      <div className="border-2 border-tertiary bg-surface flex flex-col">
+        <div className="aspect-[4/3] bg-surface-container-high border-b-2 border-tertiary border-dashed flex flex-col items-center justify-center gap-2">
+          <Icon name="lock" className="text-3xl text-on-surface-variant/50" />
+          <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">{t.sealed}</span>
         </div>
-        <p className="font-headline text-base font-bold text-on-surface truncate">{story.title}</p>
+        <div className="p-5 flex flex-col flex-1">
+          <span className="font-label text-[9px] uppercase font-bold text-secondary mb-2">{t.prerequisiteDeficient}</span>
+          <p className="font-body text-sm text-on-surface-variant mb-4 flex-1">{t.prerequisiteBody}</p>
+          <button
+            type="button"
+            onClick={() => navigate(`/stories/${story.story_id}`)}
+            className="w-full bg-tertiary text-surface py-2.5 font-label text-[10px] uppercase tracking-widest font-bold hover:opacity-90 transition-opacity cursor-pointer"
+          >
+            {t.consultText}
+          </button>
+        </div>
       </div>
+    );
+  }
 
-      {story.is_read ? (
-        <button
-          type="button"
-          onClick={() => navigate(`/tests/story/${story.story_id}/run`)}
-          className="shrink-0 bg-secondary text-surface border-2 border-on-surface px-4 py-2 font-label text-[10px] uppercase tracking-widest font-bold shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all cursor-pointer"
-        >
-          {story.attempts > 0 ? t.retake : t.takeTest}
-        </button>
-      ) : (
-        <button
-          type="button"
-          onClick={() => navigate(`/stories/${story.story_id}`)}
-          title={t.readFirst}
-          className="shrink-0 flex items-center gap-1.5 bg-surface text-on-surface-variant border-2 border-on-surface/40 border-dashed px-4 py-2 font-label text-[10px] uppercase tracking-widest font-bold hover:border-on-surface hover:text-on-surface transition-all cursor-pointer"
-        >
-          <Icon name="lock" className="text-sm" />
-          {t.readIt}
-        </button>
-      )}
+  return (
+    <div className="border-2 border-tertiary bg-surface flex flex-col group">
+      <div className="aspect-[4/3] relative overflow-hidden border-b-2 border-tertiary">
+        <img
+          src={getBookCoverUrl(story.story_id)}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-300"
+        />
+        <span className="absolute top-2 left-2 bg-surface font-ledger text-[9px] uppercase tracking-widest px-2 py-0.5 border border-tertiary">
+          {story.cefr_level}
+        </span>
+        {story.attempts > 0 && (
+          <span className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-secondary border-2 border-tertiary flex items-center justify-center">
+            <Icon name="workspace_premium" className="text-on-secondary text-base" />
+          </span>
+        )}
+      </div>
+      <div className="p-5 flex flex-col flex-1">
+        <h4 className="font-headline text-lg font-bold leading-tight mb-1">{story.title}</h4>
+        {story.genre && <p className="font-body text-xs italic text-on-surface-variant mb-4">{story.genre}</p>}
+        <div className="mt-auto flex items-center justify-between gap-3 pt-3 border-t border-dotted border-tertiary/50">
+          <span className="font-label text-[9px] uppercase font-bold text-on-surface-variant flex items-center gap-1">
+            <Icon name="bookmark" className="text-sm" />
+            {story.attempts > 0 ? t.bestOf(Math.round(story.best_score_percent)) : t.indexed}
+          </span>
+          <button
+            type="button"
+            onClick={() => navigate(`/tests/story/${story.story_id}/run`)}
+            className="bg-surface border-2 border-tertiary px-3 py-1.5 font-label text-[9px] uppercase tracking-widest font-bold hover:bg-tertiary hover:text-surface transition-colors cursor-pointer"
+          >
+            {story.attempts > 0 ? t.retakeExam : t.commenceExam}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -385,92 +485,68 @@ export default function TestsHub() {
   );
 
   return (
-    <div
-      className="min-h-screen text-on-surface relative overflow-x-hidden"
-      style={{
-        backgroundColor: "#fcf9f6",
-        backgroundImage: "radial-gradient(#dcdad7 1px, transparent 1px)",
-        backgroundSize: "20px 20px",
-      }}
-    >
-      <main className="relative z-10 max-w-7xl mx-auto px-4 md:px-16 py-16">
-        <div className="mb-10">
-          <h1 className="font-headline text-5xl md:text-6xl font-bold text-on-surface tracking-tight leading-none">
-            {t.title}
-          </h1>
-          <p className="font-body text-base text-on-surface-variant max-w-2xl mt-3">{t.subtitle}</p>
+    <div className="min-h-screen text-on-surface bg-surface">
+      <main className="max-w-5xl mx-auto px-4 md:px-8 py-14 pb-24">
+        <div className="flex items-start justify-between mb-6">
+          <RegistryTag>{t.registryNo}</RegistryTag>
+          <RegistryTag align="right">{t.volume}</RegistryTag>
         </div>
 
-        <div className="grid grid-cols-12 gap-6 mb-10">
-          <div className="col-span-12 lg:col-span-6">
-            <AnalyticsPanel analytics={analytics} t={t} />
-          </div>
-          <div className="col-span-12 lg:col-span-6">
-            <LevelUpCard t={t} currentLevel={levelsData?.current_level || "A1"} />
-          </div>
+        <div className="text-center mb-6">
+          <h1 className="font-headline text-4xl md:text-5xl font-bold uppercase tracking-tight">{t.title}</h1>
+          <p className="font-body text-body-lg italic text-on-surface-variant max-w-2xl mx-auto mt-4">{t.subtitle}</p>
         </div>
 
-        <div className="grid grid-cols-12 gap-6 mb-14">
-          <div className="col-span-12 lg:col-span-5">
-            <TestBuilder t={t} lang={lang} eligibleLevels={levelsData?.eligible_levels} />
-          </div>
+        <div className="flex items-center gap-3 mb-12">
+          <div className="flex-1 h-px bg-tertiary" />
+          <span className="text-tertiary">•</span>
+          <div className="flex-1 h-px bg-tertiary" />
+        </div>
 
-          <div className="col-span-12 lg:col-span-7">
-            <div className="mb-4 flex items-end justify-between gap-4">
-              <div>
-                <h3 className="font-headline text-xl font-bold text-on-surface">{t.storiesTitle}</h3>
-                <p className="font-body text-sm text-on-surface-variant">{t.storiesBody}</p>
-              </div>
+        <div className="mb-12">
+          <AcademicStanding analytics={analytics} history={history} t={t} />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
+          <FoundationalDrills t={t} eligibleLevels={levelsData?.eligible_levels} />
+          <RegistryAdvancement t={t} currentLevel={levelsData?.current_level || "A1"} />
+        </div>
+
+        <div className="flex items-end justify-between gap-4 mb-6">
+          <SectionLabel>{t.archivesTitle}</SectionLabel>
+          <div className="shrink-0 flex items-center gap-2">
+            <span className="font-label text-[10px] uppercase text-on-surface-variant hidden sm:inline">{t.indexFilter}</span>
+            <div className="relative">
               <select
                 value={storyLevelFilter}
                 onChange={(e) => setStoryLevelFilter(e.target.value)}
-                className="font-label text-[11px] uppercase font-bold border-2 border-on-surface bg-surface px-2 py-2 shrink-0"
+                className="appearance-none font-label text-[11px] uppercase font-bold border-2 border-tertiary bg-surface pl-3 pr-8 py-2 cursor-pointer"
               >
-                <option value="">{t.allLevels}</option>
+                <option value="">{t.completeIndex}</option>
                 {LEVELS.map((lv) => (
                   <option key={lv} value={lv}>{lv}</option>
                 ))}
               </select>
+              <Icon name="expand_more" className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-base" />
             </div>
-
-            {storiesLoading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-16" />)}
-              </div>
-            ) : (
-              <div className="space-y-3 max-h-[520px] overflow-y-auto pr-1">
-                {(storyTests || []).map((story) => (
-                  <StoryRow key={story.story_id} story={story} t={t} lang={lang} />
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
-        <div>
-          <h3 className="font-headline text-xl font-bold text-on-surface border-b-2 border-on-surface pb-3 mb-5">
-            {t.historyTitle}
-          </h3>
-          {history && history.length > 0 ? (
-            <div className="space-y-2">
-              {history.map((h) => (
-                <div key={h.id} className="flex items-center justify-between gap-4 border-2 border-on-surface bg-surface p-4">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className="font-label text-[9px] uppercase font-bold border border-on-surface px-1.5 py-0.5 shrink-0">
-                      {h.category === "combined" ? t.combined : h.category === "story" ? t.story : h.category === "grammar" ? t.grammar : t.vocab}
-                    </span>
-                    <span className="font-body text-sm text-on-surface-variant truncate">{h.cefr_levels.join(", ")}</span>
-                  </div>
-                  <span className="font-headline text-lg font-bold text-secondary shrink-0">
-                    {h.score_percent !== null ? `${Math.round(h.score_percent)}%` : "—"}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="font-body text-sm text-on-surface-variant">{t.noHistory}</p>
-          )}
-        </div>
+        {storiesLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-72" />)}
+          </div>
+        ) : storyTests && storyTests.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {storyTests.map((story) => (
+              <StoryCard key={story.story_id} story={story} t={t} />
+            ))}
+          </div>
+        ) : (
+          <div className="border-2 border-dashed border-tertiary p-10 text-center">
+            <p className="font-body text-body-md text-on-surface-variant">{t.noStories}</p>
+          </div>
+        )}
       </main>
     </div>
   );
