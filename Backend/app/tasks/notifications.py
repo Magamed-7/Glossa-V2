@@ -21,10 +21,15 @@ def daily_review_reminders(**kwargs):
     from app.services import crud_content, notify_service, review, streaks
 
     async def run():
-        current_hour = datetime.now(timezone.utc).strftime('%H:00')
+        # Convert UTC to local GMT+5 time
+        local_time = datetime.now(timezone.utc) + timedelta(hours=5)
+        current_hour_local = local_time.strftime('%H')
 
         async with AsyncSessionLocal() as db:
-            result = await db.execute(select(UserSettings).where(UserSettings.reminder_time == current_hour))
+            # Match settings where reminder_time starts with current_hour_local (e.g., "19:20" matches at hour 19)
+            result = await db.execute(
+                select(UserSettings).where(UserSettings.reminder_time.like(f"{current_hour_local}:%"))
+            )
             due_settings = result.scalars().all()
 
             sent = 0

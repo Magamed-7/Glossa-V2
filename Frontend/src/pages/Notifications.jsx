@@ -129,10 +129,10 @@ export default function Notifications() {
                     <div className="mt-4 flex justify-start">
                       {n.type === "review_reminder" && (
                         <Link
-                          to="/dashboard"
+                          to="/deck"
                           className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
                         >
-                          {t("notifications.reviewRemarks") || "REVIEW REMARKS"}
+                          {t("nav.deck") || "LEXICON"}
                           <Icon name="arrow_right_alt" className="text-sm" />
                         </Link>
                       )}
@@ -141,16 +141,25 @@ export default function Notifications() {
                           to="/leaderboard"
                           className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
                         >
-                          {t("notifications.viewLeaderboard") || "LEADERBOARD REGISTRY"}
+                          {t("nav.leaderboard") || "LEADERBOARD"}
                           <Icon name="arrow_right_alt" className="text-sm" />
                         </Link>
                       )}
                       {n.type === "achievement" && (
                         <Link
+                          to="/profile"
+                          className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
+                        >
+                          {t("nav.profile") || "PROFILE"}
+                          <Icon name="arrow_right_alt" className="text-sm" />
+                        </Link>
+                      )}
+                      {n.type !== "review_reminder" && n.type !== "leaderboard_reset" && n.type !== "achievement" && (
+                        <Link
                           to="/dashboard"
                           className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
                         >
-                          {t("notifications.viewAchievements") || "CONSULT ARCHIVE"}
+                          {t("nav.dashboard") || "HOME"}
                           <Icon name="arrow_right_alt" className="text-sm" />
                         </Link>
                       )}

@@ -59,7 +59,15 @@ export default function AppLayout({ fab }) {
             {/* Clickable Content */}
             <div
               onClick={() => {
-                navigate("/notifications");
+                let targetUrl = "/dashboard";
+                if (activeToast.type === "review_reminder") {
+                  targetUrl = "/deck";
+                } else if (activeToast.type === "leaderboard_reset") {
+                  targetUrl = "/leaderboard";
+                } else if (activeToast.type === "achievement") {
+                  targetUrl = "/profile";
+                }
+                navigate(targetUrl);
                 clearToast();
               }}
               className="mt-3 cursor-pointer group"
