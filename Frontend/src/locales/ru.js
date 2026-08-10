@@ -555,6 +555,9 @@ export const ru = {
     learner: "Ученик",
     score: "Очки",
     you: "Вы",
+    resetButton: "Сбросить период",
+    confirmResetWeekly: "Вы уверены, что хотите сбросить недельный рейтинг?",
+    confirmResetGlobal: "Вы уверены, что хотите сбросить глобальный рейтинг (начнется новый сезон)?",
   },
   pricing: {
     eyebrow: "Выберите тариф",

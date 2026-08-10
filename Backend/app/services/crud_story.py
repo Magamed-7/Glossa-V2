@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
 from app.schemas.schema_learning import CardCreate
-from app.services import crud_card, streaks
+from app.services import crud_card, ratings, streaks
 from app.services.localization import pick_locale
 
 
@@ -168,15 +168,21 @@ async def submit_story_questions(story_id: int, user_id: int, answers, locale: s
 
     if completed:
         progress = await get_reading_progress(user_id, story_id, db)
+        was_completed = False
 
         if progress is None:
             progress = ReadingProgress(user_id=user_id, story_id=story_id)
             db.add(progress)
+        else:
+            was_completed = progress.is_completed
 
         progress.is_completed = True
         await db.commit()
 
         await streaks.touch_streak(user_id, db)
+
+        if not was_completed:
+            await ratings.award_xp(user_id, 'review_passed', db)
 
     return {
         'total': total,

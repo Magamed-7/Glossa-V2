@@ -555,6 +555,9 @@ export const en = {
     learner: "Learner",
     score: "Score",
     you: "You",
+    resetButton: "Reset Period",
+    confirmResetWeekly: "Are you sure you want to reset the weekly leaderboard?",
+    confirmResetGlobal: "Are you sure you want to reset the global leaderboard (starts a new season)?",
   },
   pricing: {
     eyebrow: "Choose Your Tier",

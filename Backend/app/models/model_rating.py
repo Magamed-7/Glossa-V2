@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db.database import Base
 
 XpReason = Enum(
-    'review_passed', 'word_learned', 'story_written', 'review_received', 'social',
+    'review_passed', 'word_learned', 'story_written', 'review_received', 'social', 'login',
     name='xp_reason',
 )
 

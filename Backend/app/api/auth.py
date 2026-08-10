@@ -1,10 +1,12 @@
+from datetime import date
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
+from app.core.redis_client import redis_client
 from app.core.security import decode_access_token, oauth2_scheme
 from app.db.database import get_db
-from app.services import crud_user
+from app.services import crud_user, ratings
 
 
 async def get_current_user(
@@ -31,5 +33,19 @@ async def get_current_user(
 
     if not user.is_active:
         raise AppError(code='ACCOUNT_DEACTIVATED', message='This account has been deactivated', status_code=401)
+
+    # Award daily login XP (once per calendar day, skipped in tests)
+    import sys
+    if 'pytest' not in sys.modules:
+        today_str = date.today().isoformat()
+        redis_key = f'user:daily_login:{user.id}:{today_str}'
+        already_logged_in = await redis_client.get(redis_key)
+        if not already_logged_in:
+            await redis_client.set(redis_key, '1', ex=86400)
+            # Try to award XP but don't crash auth if there's a transient issue
+            try:
+                await ratings.award_xp(user.id, 'login', db)
+            except Exception:
+                pass
 
     return user
