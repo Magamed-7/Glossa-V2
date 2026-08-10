@@ -218,7 +218,9 @@ SCENARIO_PROMPTS = {
 RESPONSE_INSTRUCTIONS = """
 OUTPUT FORMAT — follow exactly.
 Reply with a single JSON object and nothing else. No markdown, no backticks, no
-text before or after the JSON.
+text before or after the JSON. Do not narrate what you are about to do or explain
+your reasoning — your entire response must start with the character "{{" and end
+with "}}".
 
 {{
   "reply": "your in-character reply in {language}, 1-3 sentences, normally ending with a question",
@@ -313,9 +315,31 @@ def _system_prompt(scenario: str, language: str, level: str | None, native_langu
     return f'{core}\nLEARNER LEVEL\n{guidance}\n\n{scenario_text}\n\n{output_format}'
 
 
+def _extract_json_object(raw_text: str):
+    text = raw_text.strip()
+
+    if text.startswith('```'):
+        text = text.strip('`')
+        if text.lower().startswith('json'):
+            text = text[4:]
+        text = text.strip()
+
+    start = text.find('{')
+    end = text.rfind('}')
+    if start == -1 or end == -1 or end < start:
+        return None
+
+    return text[start:end + 1]
+
+
 def _parse_llm_response(raw_text: str):
+    # В ветке без tool-calls модель не в строгом json_mode (см. call_llm_message) —
+    # DeepSeek иногда добавляет разговорную преамбулу перед JSON, хотя промпт запрещает
+    # текст до/после. Вытаскиваем сам {...} из ответа вместо requiring чистого JSON.
+    candidate = _extract_json_object(raw_text) or raw_text
+
     try:
-        data = json.loads(raw_text)
+        data = json.loads(candidate)
         reply = data.get('reply', '')
         encouragement = data.get('encouragement') or None
         corrections = data.get('corrections', []) or []
