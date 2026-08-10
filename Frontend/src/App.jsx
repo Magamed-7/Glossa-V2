@@ -136,6 +136,7 @@ export default function App() {
           <Route path="/marketplace" element={page(Marketplace)} />
           <Route path="/marketplace/stories" element={page(MarketplaceStories)} />
           <Route path="/marketplace/inbox" element={page(MarketplaceInbox)} />
+          <Route path="/marketplace/pricing" element={page(Pricing)} />
           <Route path="/marketplace/analytics" element={page(MarketplaceAnalytics)} />
           <Route path="/marketplace/services" element={page(MarketplaceServices)} />
           <Route path="/marketplace/services/new" element={page(MarketplaceListingEditor)} />
