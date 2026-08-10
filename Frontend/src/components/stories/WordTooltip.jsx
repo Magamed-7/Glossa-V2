@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { addWordToDeck } from "../../lib/api/stories.js";
 import { createCard } from "../../lib/api/deck.js";
+import { getWordTranscription } from "../../lib/api/vocabulary.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useI18n, useT } from "../../lib/i18n.jsx";
 
@@ -16,6 +17,24 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
 
   const translation = initialTranslation || dynamicTranslation;
   const lemma = wordData.lemma;
+
+  const [dynamicTranscription, setDynamicTranscription] = useState(null);
+  const transcription = wordData.transcription || dynamicTranscription;
+
+  useEffect(() => {
+    if (wordData.transcription) return;
+
+    let active = true;
+    getWordTranscription(lemma)
+      .then((res) => {
+        if (active) setDynamicTranscription(res.transcription);
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, [lemma, wordData.transcription]);
 
   useEffect(() => {
     if (initialTranslation) return;
@@ -51,7 +70,7 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
       if (wordData.id) {
         card = await addWordToDeck(storyId, wordData.id, { locale: lang });
       } else {
-        card = await createCard({ word: lemma, translation });
+        card = await createCard({ word: lemma, translation, transcription });
       }
       setStatus("added");
       onAdded?.(card);
@@ -88,11 +107,16 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
         </button>
       </div>
 
-      <div className="font-headline text-lg font-bold text-on-surface break-words leading-tight">
-        {isTranslating ? (
-          <div className="animate-pulse h-6 bg-surface-variant rounded w-3/4"></div>
-        ) : (
-          translation || t("stories.noTranslationFound")
+      <div className="flex items-baseline gap-2 flex-wrap">
+        <div className="font-headline text-lg font-bold text-on-surface break-words leading-tight">
+          {isTranslating ? (
+            <div className="animate-pulse h-6 bg-surface-variant rounded w-3/4"></div>
+          ) : (
+            translation || t("stories.noTranslationFound")
+          )}
+        </div>
+        {transcription && (
+          <span className="font-mono text-xs text-on-surface-variant italic">/{transcription}/</span>
         )}
       </div>
 

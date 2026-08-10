@@ -41,6 +41,7 @@ export default function StoryBody({ body, words, wordDictionary, storyId, onWord
           lemma: w.word,
           ru: w.translation_ru,
           tg: w.translation_tg,
+          transcription: w.transcription,
         });
       });
     }
