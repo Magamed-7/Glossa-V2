@@ -48,4 +48,7 @@ async def get_current_user(
             except Exception:
                 pass
 
+    # Track active status in Redis (TTL of 5 minutes)
+    await redis_client.set(f"user:active:{user.id}", "1", ex=300)
+
     return user

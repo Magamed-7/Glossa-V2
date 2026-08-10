@@ -79,6 +79,29 @@ async def check_achievements(user_id: int, db: AsyncSession):
     if newly_awarded:
         await db.commit()
 
+        # Trigger notifications for each newly earned achievement
+        from app.services import notify_service, crud_settings
+        for achievement in newly_awarded:
+            settings = await crud_settings.get_settings(user_id, db)
+            locale = getattr(settings, 'interface_language', 'en')
+            if locale not in ('en', 'ru', 'tg'):
+                locale = 'en'
+
+            if locale == 'ru':
+                title = "Получено новое достижение! 🏆"
+                body = f"Поздравляем с получением награды «{achievement.title}»!"
+            elif locale == 'tg':
+                title = "Дастоварди нав кушода шуд! 🏆"
+                body = f"Шуморо бо гирифтани нишони «{achievement.title}» табрик мекунем!"
+            else:
+                title = "New Achievement Unlocked! 🏆"
+                body = f"Congratulations on earning the \"{achievement.title}\" badge!"
+
+            try:
+                await notify_service.notify(user_id, "achievement", title, body, db)
+            except Exception:
+                pass
+
     return newly_awarded
 
 

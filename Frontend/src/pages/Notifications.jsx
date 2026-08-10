@@ -15,7 +15,16 @@ export default function Notifications() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (fetched) setItems(fetched);
+    if (fetched) {
+      setItems(fetched);
+      const hasUnread = fetched.some((n) => !n.is_read);
+      if (hasUnread) {
+        setItems((current) => current.map((n) => ({ ...n, is_read: true })));
+        markAllRead().catch((e) => {
+          setItems(fetched);
+        });
+      }
+    }
   }, [fetched]);
 
   async function onOpen(notification) {

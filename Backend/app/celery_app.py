@@ -41,6 +41,14 @@ celery_app.conf.beat_schedule = {
         'task': 'app.tasks.analytics.recompute_daily_metrics',
         'schedule': crontab(hour=2, minute=0),
     },
+    'sm2-repetition-reminders': {
+        'task': 'app.tasks.notifications.sm2_repetition_reminders',
+        'schedule': crontab(minute='*/10'),
+    },
+    'streak-protection-reminders': {
+        'task': 'app.tasks.notifications.streak_protection_reminders',
+        'schedule': crontab(hour=20, minute=0),
+    },
 }
 
 

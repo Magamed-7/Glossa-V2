@@ -44,9 +44,12 @@ def nightly_achievements_check_task():
 @celery_app.task(name='app.tasks.analytics.reset_weekly_leaderboard')
 def reset_weekly_leaderboard_task():
     from app.services import ratings
+    from app.services.notify_service import notify_all_users_leaderboard_reset
 
     async def run():
         await redis_client.delete(ratings.weekly_leaderboard_key())
+        async with AsyncSessionLocal() as db:
+            await notify_all_users_leaderboard_reset('weekly', db)
         return 'reset'
 
     return run_async(run())

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, func
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, func, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.database import Base
@@ -24,6 +24,10 @@ class Cards(Base):
     repetitions: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     next_review_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_quality: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+    day_before_notified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    hour_notified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    due_notified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

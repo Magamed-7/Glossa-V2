@@ -66,4 +66,7 @@ async def reset_leaderboards(
         await ratings.reset_global_leaderboard(db)
         message = 'Global leaderboard reset'
 
+    from app.services.notify_service import notify_all_users_leaderboard_reset
+    await notify_all_users_leaderboard_reset(period, db)
+
     return {'status': 'success', 'message': message}

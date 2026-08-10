@@ -34,6 +34,11 @@ async def submit_review(card_id: int, user_id: int, quality: int, db: AsyncSessi
     card.next_review_date = result['next_review_date']
     card.last_quality = quality
 
+    # Reset notification flags for the new review schedule
+    card.day_before_notified = False
+    card.hour_notified = False
+    card.due_notified = False
+
     # Synchronize card status with reviews:
     # - quality >= 4 (Good/Easy) is learned (Mastered)
     # - quality == 3 (Hard) is hard (Difficult)
