@@ -12,8 +12,9 @@ from app.schemas.schema_content import (
     QuestionSubmit,
     VocabResponse,
     WeakTopicResponse,
+    WordTranscriptionResponse,
 )
-from app.services import crud_content
+from app.services import crud_content, transcription
 
 router_vocabulary = APIRouter(prefix='/vocabulary', tags=['Vocabulary'])
 router_grammar = APIRouter(prefix='/grammar', tags=['Grammar'])
@@ -35,7 +36,17 @@ async def get_vocabulary(
         db, level=level, unit=unit, search=search, ids=id_list,
         limit=limit if id_list is None else len(id_list), offset=offset,
     )
-    return [crud_content.vocab_to_response(entry, locale) for entry in entries]
+    return await crud_content.vocab_entries_to_responses(entries, locale, db)
+
+
+@router_vocabulary.get('/transcription', response_model=WordTranscriptionResponse)
+async def get_word_transcription(
+    word: str,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    value = await transcription.get_one(word, db)
+    return {'word': word, 'transcription': value}
 
 
 @router_vocabulary.get('/{entry_id}', response_model=VocabResponse)
@@ -49,7 +60,8 @@ async def get_vocab_entry(
     if entry is None:
         raise AppError(code='VOCAB_ENTRY_NOT_FOUND', message='Vocabulary entry not found', status_code=404)
 
-    return crud_content.vocab_to_response(entry, locale)
+    responses = await crud_content.vocab_entries_to_responses([entry], locale, db)
+    return responses[0]
 
 
 @router_grammar.get('/', response_model=list[GrammarLessonResponse])

@@ -11,6 +11,12 @@ class VocabResponse(BaseModel):
     translation: str | None
     cefr_level: str
     unit: str | None
+    transcription: str | None = None
+
+
+class WordTranscriptionResponse(BaseModel):
+    word: str
+    transcription: str | None
 
 
 class GrammarExampleResponse(BaseModel):
@@ -91,6 +97,7 @@ class StoryWordResponse(BaseModel):
     translation_tg: str | None
     part_of_speech: str | None
     context: str | None
+    transcription: str | None = None
 
 
 class StoryQuestionResponse(BaseModel):

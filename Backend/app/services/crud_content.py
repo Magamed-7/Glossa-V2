@@ -8,7 +8,7 @@ from app.models.model_content import (
     GrammarQuestions,
     VocabEntries,
 )
-from app.services import ratings
+from app.services import ratings, transcription
 from app.services.localization import pick_locale
 
 
@@ -20,7 +20,7 @@ def vocab_translation(entry: VocabEntries, locale: str):
     return None
 
 
-def vocab_to_response(entry: VocabEntries, locale: str):
+def vocab_to_response(entry: VocabEntries, locale: str, transcriptions: dict | None = None):
     return {
         'id': entry.id,
         'word': entry.word,
@@ -29,7 +29,13 @@ def vocab_to_response(entry: VocabEntries, locale: str):
         'translation': vocab_translation(entry, locale),
         'cefr_level': entry.cefr_level,
         'unit': entry.unit,
+        'transcription': (transcriptions or {}).get(entry.word.strip().lower()),
     }
+
+
+async def vocab_entries_to_responses(entries: list[VocabEntries], locale: str, db: AsyncSession):
+    transcriptions = await transcription.get_many([e.word for e in entries], db)
+    return [vocab_to_response(entry, locale, transcriptions) for entry in entries]
 
 
 async def get_vocab_entries(db: AsyncSession, level=None, unit=None, search=None, ids=None, limit=20, offset=0):
