@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
 from app.schemas.schema_learning import CardCreate
-from app.services import crud_card, ratings, streaks
+from app.services import crud_card, ratings, streaks, transcription
 from app.services.localization import pick_locale
 
 
@@ -72,6 +72,7 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
 
     words = await get_story_words(story_id, db)
     questions = await get_story_questions(story_id, db)
+    transcriptions = await transcription.get_many([w.word for w in words], db)
 
     return {
         **story_to_response(story),
@@ -87,6 +88,7 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
                 'translation_tg': w.translation_tg,
                 'part_of_speech': w.part_of_speech,
                 'context': w.context,
+                'transcription': transcriptions.get(w.word.strip().lower()),
             }
             for w in words
         ],
@@ -135,8 +137,9 @@ async def add_story_word_to_deck(word_id: int, user_id: int, locale: str, db: As
         return None
 
     translation = word.translation_tg if locale == 'tg' else word.translation_ru
+    word_transcription = await transcription.get_one(word.word, db)
 
-    data = CardCreate(word=word.word, translation=translation, example=word.context)
+    data = CardCreate(word=word.word, translation=translation, example=word.context, transcription=word_transcription)
     return await crud_card.create_card(data, user_id, db, source_story_id=word.story_id)
 
 
