@@ -356,7 +356,8 @@ export default function WordDeck() {
           word: item.word,
           translation: lang === "tg" ? item.translation_tg : item.translation_ru,
           example: item.example_en,
-          source_story_id: sourceId
+          source_story_id: sourceId,
+          transcription: item.transcription ? item.transcription.replace(/^\/+|\/+$/g, "") : null
         });
         addedCount++;
       } catch (err) {
@@ -389,7 +390,8 @@ export default function WordDeck() {
           word: item.word,
           translation: lang === "tg" ? item.translation_tg : item.translation_ru,
           example: item.example_en,
-          source_story_id: sourceId
+          source_story_id: sourceId,
+          transcription: item.transcription ? item.transcription.replace(/^\/+|\/+$/g, "") : null
         });
         addedCount++;
       } catch (err) {
@@ -1782,7 +1784,7 @@ export default function WordDeck() {
                   <div className="flex-1 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
                     <div>
                       <span className="font-serif text-lg font-bold uppercase text-primary mr-2">{w.word}</span>
-                      <span className="font-mono text-xs text-outline italic">/{w.transcription}/</span>
+                      <span className="font-mono text-xs text-outline italic">/{w.transcription?.replace(/^\/+|\/+$/g, "")}/</span>
                     </div>
                     <div className="text-right">
                       <span className="font-label text-xs uppercase font-bold text-on-surface-variant bg-surface px-2 py-0.5 border border-on-surface/20 mr-2">{w.part_of_speech}</span>

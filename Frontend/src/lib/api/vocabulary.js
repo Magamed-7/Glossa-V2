@@ -22,3 +22,8 @@ export function getVocabularyByIds(ids, { locale } = {}) {
   if (locale) params.set("locale", locale);
   return api.get(`/vocabulary/?${params}`);
 }
+
+export function getWordTranscription(word) {
+  const params = new URLSearchParams({ word });
+  return api.get(`/vocabulary/transcription?${params}`);
+}

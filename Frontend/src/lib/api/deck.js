@@ -10,8 +10,8 @@ export function getCard(cardId) {
   return api.get(`/deck/${cardId}`);
 }
 
-export function createCard({ word, translation, example, source_story_id }) {
-  return api.post("/deck/", { word, translation, example, source_story_id });
+export function createCard({ word, translation, example, source_story_id, transcription }) {
+  return api.post("/deck/", { word, translation, example, source_story_id, transcription });
 }
 
 export function setCardStatus(cardId, status) {
