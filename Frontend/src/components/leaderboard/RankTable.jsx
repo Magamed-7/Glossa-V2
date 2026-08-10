@@ -32,7 +32,7 @@ export default function RankTable({ entries, myUserId, myEntry }) {
               <td className="py-3 font-ledger">{entry.rank}</td>
               <td className="py-3">
                 <div className="flex items-center gap-3">
-                  <Avatar name={entry.username} userId={entry.user_id} size="sm" />
+                  <Avatar photoUrl={entry.photo_url} name={entry.username} userId={entry.user_id} size="sm" />
                   <span className="font-body">{entry.username || t("common.dash")}</span>
                 </div>
               </td>

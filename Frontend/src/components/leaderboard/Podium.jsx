@@ -16,7 +16,7 @@ export default function Podium({ entries }) {
 
         return (
           <div key={rank} className="flex flex-col items-center gap-3 w-32">
-            <Avatar name={entry.username} userId={entry.user_id} size={rank === 1 ? "lg" : "md"} />
+            <Avatar photoUrl={entry.photo_url} name={entry.username} userId={entry.user_id} size={rank === 1 ? "lg" : "md"} />
             <span className="font-headline text-lg text-center truncate w-full">{entry.username || t("common.dash")}</span>
             <span className="font-ledger text-secondary">{entry.score}</span>
             <div className={`w-full ${HEIGHTS[rank]} bg-secondary-container border-2 border-tertiary flex items-start justify-center pt-2`}>

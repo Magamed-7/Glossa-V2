@@ -6,6 +6,7 @@ class LeaderboardEntry(BaseModel):
     user_id: int
     username: str | None
     score: int
+    photo_url: str | None = None
 
 
 class MyRankResponse(BaseModel):

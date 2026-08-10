@@ -111,12 +111,19 @@ async def get_leaderboard(key: str, db: AsyncSession, limit: int = 20):
     user_ids = [int(user_id) for user_id, _ in entries]
     users_by_id = await crud_user.get_by_ids(user_ids, db)
 
+    from app.models.model_profile import UserProfiles
+    profiles_result = await db.execute(
+        select(UserProfiles.user_id, UserProfiles.photo_url).where(UserProfiles.user_id.in_(user_ids))
+    )
+    photo_urls = {user_id: photo_url for user_id, photo_url in profiles_result.all()}
+
     return [
         {
             'rank': rank + 1,
             'user_id': user_id,
             'username': users_by_id[user_id].username if user_id in users_by_id else None,
             'score': int(score),
+            'photo_url': photo_urls.get(user_id),
         }
         for rank, (user_id, score) in enumerate(zip(user_ids, (s for _, s in entries)))
     ]

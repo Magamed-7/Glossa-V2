@@ -151,7 +151,12 @@ async def seed():
                 text("select id from user_profiles where user_id = :uid"), {"uid": user_id}
             )).fetchone()
             if not profile_exists:
-                db.add(UserProfiles(user_id=user_id, bio=f"Hello, I am {first_name}! Let's learn languages."))
+                db.add(UserProfiles(user_id=user_id, bio=f"Hello, I am {first_name}! Let's learn languages.", photo_url=f"https://i.pravatar.cc/150?u={username}"))
+            else:
+                await db.execute(
+                    text("update user_profiles set photo_url = :photo_url where user_id = :uid"),
+                    {"photo_url": f"https://i.pravatar.cc/150?u={username}", "uid": user_id}
+                )
             
             settings_exists = (await db.execute(
                 text("select id from user_settings where user_id = :uid"), {"uid": user_id}
