@@ -62,6 +62,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_RATES': {
         'login': '7/min',
+        'email_change': '7/min',
     },
 }
 

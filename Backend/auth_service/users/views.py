@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import authenticate
+from django.utils import timezone
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,6 +12,7 @@ from users.serializers import (
     ChangePasswordSerializer,
     PasswordConfirmSerializer,
     RegisterSerializer,
+    RequestEmailChangeSerializer,
     TwoFactorCodeSerializer,
     UpdateMeSerializer,
     UserSerializer,
@@ -19,7 +21,7 @@ from users.serializers import (
     PasswordResetConfirmSerializer,
     PasswordResetVerifySerializer,
 )
-from users.throttles import LoginRateThrottle, TwoFactorRateThrottle
+from users.throttles import EmailChangeRateThrottle, LoginRateThrottle, TwoFactorRateThrottle
 
 
 class RegisterView(generics.CreateAPIView):
@@ -53,27 +55,16 @@ class MeView(APIView):
         serializer = UpdateMeSerializer(request.user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
 
-        new_email = serializer.validated_data.get('email')
-        email_changed = new_email is not None and new_email != request.user.email
+        new_username = serializer.validated_data.get('username')
+        username_changed = new_username is not None and new_username != request.user.username
 
         user = serializer.save()
 
-        email_sent = None
+        if username_changed:
+            user.last_username_change_at = timezone.now()
+            user.save(update_fields=['last_username_change_at'])
 
-        if email_changed:
-            user.is_verified = False
-            user.save(update_fields=['is_verified'])
-
-            email_sent = True
-
-            try:
-                verification.send_verification_email(user)
-            except verification.ResendCooldownError:
-                email_sent = False
-
-        data = UserSerializer(user).data
-        data['email_sent'] = email_sent
-        return Response(data)
+        return Response(UserSerializer(user).data)
 
     def delete(self, request):
         serializer = PasswordConfirmSerializer(data=request.data, context={'request': request})
@@ -82,6 +73,42 @@ class MeView(APIView):
         request.user.is_active = False
         request.user.save(update_fields=['is_active'])
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class RequestEmailChangeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [EmailChangeRateThrottle]
+
+    def post(self, request):
+        serializer = RequestEmailChangeSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        new_email = serializer.validated_data['new_email']
+
+        try:
+            verification.send_email_change_code(request.user, new_email)
+        except verification.ResendCooldownError as exc:
+            return Response(
+                {'detail': 'Please wait before requesting another code', 'seconds_left': exc.seconds_left},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+            )
+
+        return Response({'detail': 'Code sent'})
+
+
+class ConfirmEmailChangeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [EmailChangeRateThrottle]
+
+    def post(self, request):
+        serializer = VerifyEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        new_email = verification.confirm_email_change_code(request.user, serializer.validated_data['code'])
+
+        if new_email is None:
+            return Response({'detail': 'Invalid or expired code'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(UserSerializer(request.user).data)
 
 
 class VerifyEmailView(APIView):
@@ -169,74 +196,86 @@ class Verify2FALoginView(APIView):
 
     def post(self, request):
         pending_token = request.data.get('pending_token')
-        user_id = two_factor.resolve_pending_login(pending_token) if pending_token else None
+
+        serializer = TwoFactorCodeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user_id = two_factor.verify_login_code(pending_token, serializer.validated_data['code']) if pending_token else None
 
         if user_id is None:
-            return Response({'detail': 'Pending login is invalid or expired'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Pending login is invalid, expired, or the code is wrong'}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.filter(id=user_id, is_active=True).first()
 
         if user is None:
             return Response({'detail': 'No active account found with the given credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        serializer = TwoFactorCodeSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        code = serializer.validated_data['code']
-
-        valid = two_factor.verify_totp_code(user.totp_secret, code) or two_factor.consume_backup_code(user, code)
-
-        if not valid:
-            return Response({'detail': 'Invalid code'}, status=status.HTTP_400_BAD_REQUEST)
-
         return Response(_issue_tokens(user))
 
 
-class Setup2FAView(APIView):
+class RequestEnable2FAView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         if request.user.is_2fa_enabled:
             return Response({'detail': '2FA is already enabled'}, status=status.HTTP_400_BAD_REQUEST)
 
-        secret = two_factor.generate_totp_secret()
-        request.user.totp_secret = secret
-        request.user.save(update_fields=['totp_secret'])
+        serializer = PasswordConfirmSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
 
-        return Response({'secret': secret, 'otpauth_uri': two_factor.get_totp_uri(request.user, secret)})
+        try:
+            two_factor.send_enable_code(request.user)
+        except two_factor.ResendCooldownError as exc:
+            return Response(
+                {'detail': 'Please wait before requesting another code', 'seconds_left': exc.seconds_left},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+            )
+
+        return Response({'detail': 'Code sent'})
 
 
-class Confirm2FAView(APIView):
+class ConfirmEnable2FAView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [TwoFactorRateThrottle]
 
     def post(self, request):
-        if not request.user.totp_secret:
-            return Response({'detail': 'Call 2fa/setup first'}, status=status.HTTP_400_BAD_REQUEST)
-
         serializer = TwoFactorCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        if not two_factor.verify_totp_code(request.user.totp_secret, serializer.validated_data['code']):
+        if not two_factor.confirm_enable_code(request.user, serializer.validated_data['code']):
             return Response({'detail': 'Invalid code'}, status=status.HTTP_400_BAD_REQUEST)
 
-        codes, hashed = two_factor.generate_backup_codes()
-        request.user.is_2fa_enabled = True
-        request.user.backup_codes = hashed
-        request.user.save(update_fields=['is_2fa_enabled', 'backup_codes'])
-
-        return Response({'is_2fa_enabled': True, 'backup_codes': codes})
+        return Response({'is_2fa_enabled': True})
 
 
-class Disable2FAView(APIView):
+class RequestDisable2FAView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         serializer = PasswordConfirmSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
 
-        request.user.is_2fa_enabled = False
-        request.user.totp_secret = None
-        request.user.backup_codes = None
-        request.user.save(update_fields=['is_2fa_enabled', 'totp_secret', 'backup_codes'])
+        try:
+            two_factor.send_disable_code(request.user)
+        except two_factor.ResendCooldownError as exc:
+            return Response(
+                {'detail': 'Please wait before requesting another code', 'seconds_left': exc.seconds_left},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+            )
+
+        return Response({'detail': 'Code sent'})
+
+
+class ConfirmDisable2FAView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [TwoFactorRateThrottle]
+
+    def post(self, request):
+        serializer = TwoFactorCodeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if not two_factor.confirm_disable_code(request.user, serializer.validated_data['code']):
+            return Response({'detail': 'Invalid code'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'is_2fa_enabled': False})
 

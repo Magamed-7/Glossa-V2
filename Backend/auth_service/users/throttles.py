@@ -15,3 +15,11 @@ class TwoFactorRateThrottle(SimpleRateThrottle):
     def get_cache_key(self, request, view):
         ident = request.data.get('pending_token') or self.get_ident(request)
         return self.cache_format % {'scope': self.scope, 'ident': ident}
+
+
+class EmailChangeRateThrottle(SimpleRateThrottle):
+    scope = 'email_change'
+
+    def get_cache_key(self, request, view):
+        ident = request.user.id if request.user.is_authenticated else self.get_ident(request)
+        return self.cache_format % {'scope': self.scope, 'ident': ident}

@@ -4,6 +4,7 @@ import threading
 
 from django.conf import settings
 from django.core.mail import send_mail
+from django.utils import timezone
 
 from users.redis_client import redis_client
 
@@ -106,4 +107,51 @@ def verify_password_reset_code(email, code):
 
 def delete_password_reset_code(email):
     redis_client.delete(_pwd_reset_code_key(email))
+
+
+def _email_change_code_key(user_id):
+    return f'email_change_code:{user_id}'
+
+
+def _email_change_new_email_key(user_id):
+    return f'email_change_new_email:{user_id}'
+
+
+def _email_change_cooldown_key(user_id):
+    return f'email_change_cooldown:{user_id}'
+
+
+def send_email_change_code(user, new_email):
+    if redis_client.exists(_email_change_cooldown_key(user.id)):
+        raise ResendCooldownError(redis_client.ttl(_email_change_cooldown_key(user.id)))
+
+    code = ''.join(secrets.choice(string.digits) for _ in range(6))
+    redis_client.set(_email_change_code_key(user.id), code, ex=CODE_TTL_SECONDS)
+    redis_client.set(_email_change_new_email_key(user.id), new_email, ex=CODE_TTL_SECONDS)
+
+    subject = 'Glossa: confirm your new email'
+    message = f'Your code to confirm this email address is {code}. It expires in 10 minutes.'
+
+    thread = threading.Thread(target=_send_email_thread, args=(subject, message, [new_email]))
+    thread.start()
+
+    redis_client.set(_email_change_cooldown_key(user.id), '1', ex=RESEND_COOLDOWN_SECONDS)
+
+
+def confirm_email_change_code(user, code):
+    stored_code = redis_client.get(_email_change_code_key(user.id))
+    new_email = redis_client.get(_email_change_new_email_key(user.id))
+
+    if stored_code is None or new_email is None or stored_code != code:
+        return None
+
+    redis_client.delete(_email_change_code_key(user.id))
+    redis_client.delete(_email_change_new_email_key(user.id))
+
+    user.email = new_email
+    user.is_verified = True
+    user.last_email_change_at = timezone.now()
+    user.save(update_fields=['email', 'is_verified', 'last_email_change_at'])
+
+    return new_email
 

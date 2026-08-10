@@ -1,8 +1,24 @@
+from datetime import timedelta
+
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils import timezone
 from rest_framework import serializers
 
 from users.models import User
+
+USERNAME_CHANGE_COOLDOWN_DAYS = 40
+EMAIL_CHANGE_COOLDOWN_DAYS = 40
+
+
+def _cooldown_error(last_changed_at, cooldown_days):
+    elapsed = timezone.now() - last_changed_at
+    remaining = timedelta(days=cooldown_days) - elapsed
+
+    if remaining <= timedelta(0):
+        return None
+
+    return f'You can change this again in {remaining.days + 1} day(s)'
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -28,26 +44,52 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role', 'is_verified', 'created_at']
+        fields = [
+            'id', 'username', 'email', 'role', 'is_verified', 'is_2fa_enabled', 'created_at',
+            'last_username_change_at', 'last_email_change_at',
+        ]
 
 
 class UpdateMeSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False, validators=[])
-    email = serializers.EmailField(required=False, validators=[])
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username']
 
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exclude(id=self.instance.id).exists():
-            raise serializers.ValidationError('Email already exists')
+    def validate_username(self, value):
+        user = self.instance
+
+        if value == user.username:
+            return value
+
+        if User.objects.filter(username=value).exclude(id=user.id).exists():
+            raise serializers.ValidationError('Username already exists')
+
+        if user.last_username_change_at is not None:
+            error = _cooldown_error(user.last_username_change_at, USERNAME_CHANGE_COOLDOWN_DAYS)
+            if error:
+                raise serializers.ValidationError(error)
 
         return value
 
-    def validate_username(self, value):
-        if User.objects.filter(username=value).exclude(id=self.instance.id).exists():
-            raise serializers.ValidationError('Username already exists')
+
+class RequestEmailChangeSerializer(serializers.Serializer):
+    new_email = serializers.EmailField()
+
+    def validate_new_email(self, value):
+        user = self.context['request'].user
+
+        if value == user.email:
+            raise serializers.ValidationError('This is already your email')
+
+        if User.objects.filter(email=value).exclude(id=user.id).exists():
+            raise serializers.ValidationError('Email already exists')
+
+        if user.last_email_change_at is not None:
+            error = _cooldown_error(user.last_email_change_at, EMAIL_CHANGE_COOLDOWN_DAYS)
+            if error:
+                raise serializers.ValidationError(error)
 
         return value
 
@@ -90,7 +132,7 @@ class PasswordConfirmSerializer(serializers.Serializer):
 
 
 class TwoFactorCodeSerializer(serializers.Serializer):
-    code = serializers.CharField(min_length=6, max_length=8)
+    code = serializers.CharField(min_length=6, max_length=6)
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
