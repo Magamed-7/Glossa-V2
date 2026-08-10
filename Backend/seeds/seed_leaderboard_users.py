@@ -108,9 +108,29 @@ NAMES = [
 ]
 
 async def seed():
+    # Build a pool of 46 unique avatars: 26 copied desktop wallpapers, 5 generated, 15 existing defaults
+    pool = []
+    for idx in range(1, 27):
+        pool.append(f"/img/avatars/desktop_{idx}.jpg")
+    for idx in range(1, 6):
+        pool.append(f"/img/avatars/gen_{idx}.png")
+    existing_defaults = [
+        "academic-curious.webp", "academic-silver.webp", "archivist-glasses.webp",
+        "archivist-monocle.webp", "archivist-suit.webp", "creative-glasses.webp",
+        "learner-cheerful.webp", "learner-confident.webp", "learner-focused.webp",
+        "linguist-bw.webp", "scholar-coat.webp", "scholar-hornrim.webp",
+        "scholar-lamp.webp", "scholar-turtleneck.webp", "student-studio.webp"
+    ]
+    for name in existing_defaults:
+        pool.append(f"/img/avatars/{name}")
+
     async with AsyncSessionLocal() as db:
         print("Starting user seed for leaderboards...")
         for username, first_name, last_name in NAMES:
+            # Deterministic index for the user's avatar
+            hash_idx = sum(ord(char) for char in username) % len(pool)
+            avatar_url = pool[hash_idx]
+
             # 1. Check if user already exists in `users`
             existing = await db.execute(
                 text("select id from users where username = :username"),
@@ -151,11 +171,11 @@ async def seed():
                 text("select id from user_profiles where user_id = :uid"), {"uid": user_id}
             )).fetchone()
             if not profile_exists:
-                db.add(UserProfiles(user_id=user_id, bio=f"Hello, I am {first_name}! Let's learn languages.", photo_url=f"https://i.pravatar.cc/150?u={username}"))
+                db.add(UserProfiles(user_id=user_id, bio=f"Hello, I am {first_name}! Let's learn languages.", photo_url=avatar_url))
             else:
                 await db.execute(
                     text("update user_profiles set photo_url = :photo_url where user_id = :uid"),
-                    {"photo_url": f"https://i.pravatar.cc/150?u={username}", "uid": user_id}
+                    {"photo_url": avatar_url, "uid": user_id}
                 )
             
             settings_exists = (await db.execute(
