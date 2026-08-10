@@ -27,8 +27,8 @@ class Settings:
     TG_BOT: str = os.getenv('TG_BOT', '')
     TELEGRAM_BOT_USERNAME: str = os.getenv('TELEGRAM_BOT_USERNAME', 'Glossahelperbot')
 
-    CELERY_BROKER_URL: str = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/1')
-    CELERY_RESULT_BACKEND: str = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/1')
+    CELERY_BROKER_URL: str = os.getenv('CELERY_BROKER_URL', f"redis://:{os.getenv('REDIS_PASSWORD', '')}@localhost:6379/1" if os.getenv('REDIS_PASSWORD') else 'redis://localhost:6379/1')
+    CELERY_RESULT_BACKEND: str = os.getenv('CELERY_RESULT_BACKEND', f"redis://:{os.getenv('REDIS_PASSWORD', '')}@localhost:6379/1" if os.getenv('REDIS_PASSWORD') else 'redis://localhost:6379/1')
 
     STRIPE_SECRET_KEY: str = os.getenv('STRIPE_SECRET_KEY', '')
     STRIPE_WEBHOOK_SECRET: str = os.getenv('STRIPE_WEBHOOK_SECRET', '')

@@ -56,4 +56,7 @@ async def submit_review(card_id: int, user_id: int, quality: int, db: AsyncSessi
     if quality >= 3:
         await ratings.award_xp(card.user_id, 'review_passed', db)
 
+    from app.services.achievements import check_achievements
+    await check_achievements(card.user_id, db)
+
     return card

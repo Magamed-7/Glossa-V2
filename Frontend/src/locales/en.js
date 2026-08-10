@@ -252,10 +252,11 @@ export const en = {
     },
     streak: {
       error: "Couldn't load your streak",
-      title: "Weekly Streak",
+      title: "Active Streak",
       days: "Days",
       quote: "Consistency is the precursor to mastery.",
     },
+    viewAchievements: "View Achievements",
   },
   achievements: {
     eyebrow: "Milestones",

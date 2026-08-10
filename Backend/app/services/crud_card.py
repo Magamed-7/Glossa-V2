@@ -77,6 +77,8 @@ async def update_card_status(card_id: int, user_id: int, data: CardStatusUpdate,
 
     if became_learned:
         await ratings.award_xp(card.user_id, 'word_learned', db)
+        from app.services.achievements import check_achievements
+        await check_achievements(card.user_id, db)
 
     return card
 

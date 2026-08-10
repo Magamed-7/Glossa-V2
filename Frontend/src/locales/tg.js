@@ -256,6 +256,7 @@ export const tg = {
       days: "Рӯзҳо",
       quote: "Пайдарпаӣ пешгузаштаи маҳорат аст.",
     },
+    viewAchievements: "Дидани дастовардҳо",
   },
   achievements: {
     eyebrow: "Марраҳо",

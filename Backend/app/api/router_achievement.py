@@ -19,4 +19,5 @@ async def get_my_achievements(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
+    await achievements.check_achievements(current_user.id, db)
     return await achievements.get_my_achievements(current_user.id, db)

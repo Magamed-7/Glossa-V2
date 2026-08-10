@@ -256,6 +256,7 @@ export const ru = {
       days: "Дней",
       quote: "Постоянство — предвестник мастерства.",
     },
+    viewAchievements: "Посмотреть достижения",
   },
   achievements: {
     eyebrow: "Вехи",

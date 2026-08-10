@@ -9,25 +9,91 @@ from sqlalchemy import select
 from app.db.database import AsyncSessionLocal
 from app.models.model_achievement import Achievements
 
-ACHIEVEMENTS = [
-    {'code': 'words_10', 'title': 'First 10 Words', 'category': 'grinder', 'threshold': 10, 'icon': 'words_10'},
-    {'code': 'words_50', 'title': '50 Words Learned', 'category': 'grinder', 'threshold': 50, 'icon': 'words_50'},
-    {'code': 'words_100', 'title': '100 Words Learned', 'category': 'grinder', 'threshold': 100, 'icon': 'words_100'},
-    {'code': 'words_500', 'title': '500 Words Learned', 'category': 'grinder', 'threshold': 500, 'icon': 'words_500'},
-    {'code': 'streak_7', 'title': 'Week Streak', 'category': 'learner', 'threshold': 7, 'icon': 'streak_7'},
-    {'code': 'streak_30', 'title': 'Month Streak', 'category': 'learner', 'threshold': 30, 'icon': 'streak_30'},
-    {'code': 'streak_100', 'title': '100 Day Streak', 'category': 'learner', 'threshold': 100, 'icon': 'streak_100'},
-    {'code': 'stories_written_1', 'title': 'First Story', 'category': 'teacher', 'threshold': 1, 'icon': 'stories_written_1'},
-    {'code': 'stories_written_5', 'title': '5 Stories Written', 'category': 'teacher', 'threshold': 5, 'icon': 'stories_written_5'},
-    {'code': 'stories_written_20', 'title': '20 Stories Written', 'category': 'teacher', 'threshold': 20, 'icon': 'stories_written_20'},
-    {'code': 'stories_sold_1', 'title': 'First Sale', 'category': 'teacher', 'threshold': 1, 'icon': 'stories_sold_1'},
-    {'code': 'stories_sold_10', 'title': '10 Sales', 'category': 'teacher', 'threshold': 10, 'icon': 'stories_sold_10'},
-    {'code': 'friends_5', 'title': '5 Friends', 'category': 'social', 'threshold': 5, 'icon': 'friends_5'},
-    {'code': 'friends_20', 'title': '20 Friends', 'category': 'social', 'threshold': 20, 'icon': 'friends_20'},
-    {'code': 'reviews_received_10', 'title': '10 Reviews Received', 'category': 'teacher', 'threshold': 10, 'icon': 'reviews_received_10'},
-    {'code': 'reviews_5', 'title': '5 Reviews Done', 'category': 'grinder', 'threshold': 5, 'icon': 'reviews_5'},
-    {'code': 'reviews_25', 'title': '25 Reviews Done', 'category': 'grinder', 'threshold': 25, 'icon': 'reviews_25'},
-]
+ACHIEVEMENTS = []
+
+# --- 1. Words Learned (30 achievements) ---
+word_thresholds = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 3000, 5000]
+for t in word_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'words_{t}',
+        'title': f'Vocabulary Level {t}',
+        'description': f'Learn a total of {t} words in your personal deck.',
+        'category': 'grinder',
+        'threshold': t,
+        'icon': 'menu_book'
+    })
+
+# --- 2. Streak Days (23 achievements) ---
+streak_thresholds = [1, 2, 3, 4, 5, 6, 7, 10, 14, 21, 30, 45, 60, 75, 90, 100, 120, 150, 180, 200, 250, 300, 365]
+for t in streak_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'streak_{t}',
+        'title': f'Consistency {t} Days',
+        'description': f'Maintain a streak of active study for {t} days.',
+        'category': 'learner',
+        'threshold': t,
+        'icon': 'local_fire_department'
+    })
+
+# --- 3. Friends (15 achievements) ---
+friends_thresholds = [1, 2, 3, 4, 5, 7, 10, 15, 20, 25, 30, 40, 50, 75, 100]
+for t in friends_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'friends_{t}',
+        'title': f'Socializer Level {t}',
+        'description': f'Connect with {t} friends in the community.',
+        'category': 'social',
+        'threshold': t,
+        'icon': 'group'
+    })
+
+# --- 4. Reviews Done (18 achievements) ---
+reviews_thresholds = [1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300, 500]
+for t in reviews_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'reviews_{t}',
+        'title': f'Spaced Reviewer Level {t}',
+        'description': f'Complete {t} reviews of vocabulary cards.',
+        'category': 'grinder',
+        'threshold': t,
+        'icon': 'rate_review'
+    })
+
+# --- 5. Stories Written (13 achievements) ---
+written_thresholds = [1, 2, 3, 4, 5, 7, 10, 15, 20, 25, 30, 40, 50]
+for t in written_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'stories_written_{t}',
+        'title': f'Author Level {t}',
+        'description': f'Write and publish {t} stories in the library.',
+        'category': 'teacher',
+        'threshold': t,
+        'icon': 'history_edu'
+    })
+
+# --- 6. Stories Sold (14 achievements) ---
+sold_thresholds = [1, 2, 3, 4, 5, 7, 10, 15, 20, 25, 30, 40, 50, 100]
+for t in sold_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'stories_sold_{t}',
+        'title': f'Publisher Level {t}',
+        'description': f'Sell your published stories to {t} learners.',
+        'category': 'teacher',
+        'threshold': t,
+        'icon': 'payments'
+    })
+
+# --- 7. Reviews Received (14 achievements) ---
+received_thresholds = [1, 2, 3, 4, 5, 7, 10, 15, 20, 25, 30, 40, 50, 100]
+for t in received_thresholds:
+    ACHIEVEMENTS.append({
+        'code': f'reviews_received_{t}',
+        'title': f'Acclaimed Author Level {t}',
+        'description': f'Receive {t} reviews on your published stories.',
+        'category': 'teacher',
+        'threshold': t,
+        'icon': 'stars'
+    })
 
 
 async def seed():
