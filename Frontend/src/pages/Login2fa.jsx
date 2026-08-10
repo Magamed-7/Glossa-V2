@@ -16,9 +16,7 @@ export default function Login2fa() {
   const pendingToken = location.state?.pending_token;
 
   const [code, setCode] = useState("");
-  const [useBackupCode, setUseBackupCode] = useState(false);
   const [error, setError] = useState(null);
-  const [expired, setExpired] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   if (!pendingToken) {
@@ -34,27 +32,14 @@ export default function Login2fa() {
       await loginWith2fa({ pending_token: pendingToken, code });
       navigate(location.state?.from?.pathname || "/dashboard", { replace: true });
     } catch (err) {
-      // pending_token одноразовый и живёт 5 минут — при ошибке он уже недействителен,
-      // повторная попытка тем же токеном не сработает, нужно начинать вход заново.
-      setExpired(true);
+      // Неверный код больше не сжигает pending_token (Backend/auth_service/users/two_factor.py:
+      // verify_login_code удаляет запись только при совпадении) — можно просто дать попробовать
+      // снова, пока не истёк 5-минутный TTL, вместо принудительного рестарта логина.
       setError(errorText(err));
+      setCode("");
     } finally {
       setSubmitting(false);
     }
-  }
-
-  if (expired) {
-    return (
-      <AuthLayout>
-        <div className="w-full max-w-lg bg-surface border-2 border-navy p-8 md:p-12 text-center">
-          <h1 className="font-headline text-headline-md text-navy uppercase tracking-widest mb-4">
-            {t("auth.login2fa.failedTitle")}
-          </h1>
-          <p className="font-body text-body-md text-on-surface-variant mb-8">{error}</p>
-          <NeoButton onClick={() => navigate("/login")}>{t("auth.login2fa.startOver")}</NeoButton>
-        </div>
-      </AuthLayout>
-    );
   }
 
   return (
@@ -68,29 +53,28 @@ export default function Login2fa() {
           </h1>
         </div>
 
+        <p className="font-body text-body-md text-on-surface-variant text-center -mt-4 mb-2">
+          {t("auth.login2fa.checkEmailNotice")}
+        </p>
+
         <form className="space-y-8" onSubmit={onSubmit}>
           <Field
-            label={useBackupCode ? t("auth.login2fa.backupLabel") : t("auth.login2fa.authenticatorLabel")}
+            label={t("auth.login2fa.codeLabel")}
             marker="bg-mustard"
             icon="pin"
             name="code"
-            inputMode="text"
-            maxLength={useBackupCode ? 8 : 6}
+            inputMode="numeric"
+            maxLength={6}
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required
           />
 
-          <button
-            type="button"
-            className="font-label text-label-md text-outline hover:text-secondary transition-colors underline"
-            onClick={() => {
-              setUseBackupCode((v) => !v);
-              setCode("");
-            }}
-          >
-            {useBackupCode ? t("auth.login2fa.useAuthenticator") : t("auth.login2fa.useBackup")}
-          </button>
+          {error && (
+            <p role="alert" className="font-label text-label-md text-error text-center">
+              {error}
+            </p>
+          )}
 
           <NeoButton type="submit" className="w-full flex items-center justify-center gap-3" loading={submitting}>
             <span>{t("auth.login2fa.verify")}</span>

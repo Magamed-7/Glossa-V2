@@ -21,6 +21,209 @@ function CardHeading({ icon, children }) {
   );
 }
 
+const CHANGE_COOLDOWN_DAYS = 40;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function daysRemaining(lastChangedAt) {
+  if (!lastChangedAt) return 0;
+  const remainingMs = CHANGE_COOLDOWN_DAYS * DAY_MS - (Date.now() - new Date(lastChangedAt).getTime());
+  return remainingMs > 0 ? Math.ceil(remainingMs / DAY_MS) : 0;
+}
+
+function ChangeUsername() {
+  const t = useT();
+  const toast = useToast();
+  const { user, refreshUser } = useAuth();
+  const [editing, setEditing] = useState(false);
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  const remaining = daysRemaining(user?.last_username_change_at);
+
+  function startEditing() {
+    setUsername(user?.username || "");
+    setError(null);
+    setEditing(true);
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setError(null);
+    setBusy(true);
+    try {
+      await authApi.updateMe({ username });
+      toast.success(t("settings.account.usernameChanged"));
+      await refreshUser();
+      setEditing(false);
+    } catch (err) {
+      setError(errorText(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <NeoCard>
+      <CardHeading icon="badge">{t("settings.account.usernameTitle")}</CardHeading>
+      {!editing ? (
+        <div className="space-y-3">
+          <p className="font-ledger text-xl">{user?.username}</p>
+          {remaining > 0 ? (
+            <p className="font-body text-body-md text-on-surface-variant">
+              {t("settings.account.changeAvailableIn", { days: remaining })}
+            </p>
+          ) : (
+            <NeoButton variant="ghost" size="md" onClick={startEditing}>
+              {t("settings.account.changeUsername")}
+            </NeoButton>
+          )}
+        </div>
+      ) : (
+        <form className="space-y-4 max-w-sm" onSubmit={onSubmit}>
+          <Field
+            label={t("settings.account.newUsernameLabel")}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          {error && (
+            <p role="alert" className="font-label text-label-md text-error">
+              {error}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <NeoButton type="submit" size="md" loading={busy}>
+              {t("settings.account.save")}
+            </NeoButton>
+            <NeoButton type="button" variant="ghost" size="md" onClick={() => setEditing(false)}>
+              {t("settings.account.cancel")}
+            </NeoButton>
+          </div>
+        </form>
+      )}
+    </NeoCard>
+  );
+}
+
+function ChangeEmail() {
+  const t = useT();
+  const toast = useToast();
+  const { user, refreshUser } = useAuth();
+  const [step, setStep] = useState("idle");
+  const [newEmail, setNewEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [error, setError] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  const remaining = daysRemaining(user?.last_email_change_at);
+
+  function start() {
+    setStep("email");
+    setNewEmail("");
+    setCode("");
+    setError(null);
+  }
+
+  function cancel() {
+    setStep("idle");
+    setNewEmail("");
+    setCode("");
+    setError(null);
+  }
+
+  async function onRequestCode(e) {
+    e.preventDefault();
+    setError(null);
+    setBusy(true);
+    try {
+      await authApi.requestEmailChange({ new_email: newEmail });
+      setStep("code");
+    } catch (err) {
+      setError(errorText(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onConfirmCode(e) {
+    e.preventDefault();
+    setError(null);
+    setBusy(true);
+    try {
+      await authApi.confirmEmailChange({ code });
+      toast.success(t("settings.account.emailChanged"));
+      await refreshUser();
+      cancel();
+    } catch (err) {
+      setError(errorText(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <NeoCard>
+      <CardHeading icon="mail">{t("settings.account.emailTitle")}</CardHeading>
+      {step === "idle" ? (
+        <div className="space-y-3">
+          <p className="font-ledger text-xl">{user?.email}</p>
+          {remaining > 0 ? (
+            <p className="font-body text-body-md text-on-surface-variant">
+              {t("settings.account.changeAvailableIn", { days: remaining })}
+            </p>
+          ) : (
+            <NeoButton variant="ghost" size="md" onClick={start}>
+              {t("settings.account.changeEmail")}
+            </NeoButton>
+          )}
+        </div>
+      ) : step === "email" ? (
+        <form className="space-y-4 max-w-sm" onSubmit={onRequestCode}>
+          <Field
+            label={t("settings.account.newEmailLabel")}
+            type="email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+            required
+          />
+          {error && (
+            <p role="alert" className="font-label text-label-md text-error">
+              {error}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <NeoButton type="submit" size="md" loading={busy}>
+              {t("settings.account.sendCode")}
+            </NeoButton>
+            <NeoButton type="button" variant="ghost" size="md" onClick={cancel}>
+              {t("settings.account.cancel")}
+            </NeoButton>
+          </div>
+        </form>
+      ) : (
+        <form className="space-y-4 max-w-sm" onSubmit={onConfirmCode}>
+          <p className="font-body text-body-md">{t("settings.account.checkNewEmailNotice", { email: newEmail })}</p>
+          <Field label={t("settings.account.codeLabel")} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} required />
+          {error && (
+            <p role="alert" className="font-label text-label-md text-error">
+              {error}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <NeoButton type="submit" size="md" loading={busy}>
+              {t("settings.account.confirm")}
+            </NeoButton>
+            <NeoButton type="button" variant="ghost" size="md" onClick={cancel}>
+              {t("settings.account.cancel")}
+            </NeoButton>
+          </div>
+        </form>
+      )}
+    </NeoCard>
+  );
+}
+
 function ChangePassword() {
   const t = useT();
   const toast = useToast();
@@ -80,34 +283,38 @@ function ChangePassword() {
 function TwoFactor() {
   const t = useT();
   const toast = useToast();
-  const [setupData, setSetupData] = useState(null);
+  const { user, refreshUser } = useAuth();
+  const [mode, setMode] = useState(null);
+  const [step, setStep] = useState("password");
+  const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
-  const [backupCodes, setBackupCodes] = useState(null);
-  const [disablePassword, setDisablePassword] = useState("");
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
-  const [showDisable, setShowDisable] = useState(false);
 
-  async function onStartSetup() {
-    setBusy(true);
-    try {
-      const data = await authApi.setup2fa();
-      setSetupData(data);
-    } catch (err) {
-      toast.error(errorText(err));
-    } finally {
-      setBusy(false);
-    }
+  function startFlow(nextMode) {
+    setMode(nextMode);
+    setStep("password");
+    setPassword("");
+    setCode("");
+    setError(null);
   }
 
-  async function onConfirm(e) {
+  function cancel() {
+    setMode(null);
+    setStep("password");
+    setPassword("");
+    setCode("");
+    setError(null);
+  }
+
+  async function onRequestCode(e) {
     e.preventDefault();
     setError(null);
     setBusy(true);
     try {
-      const { backup_codes } = await authApi.confirm2fa({ code });
-      setBackupCodes(backup_codes);
-      setSetupData(null);
+      if (mode === "enable") await authApi.requestEnable2fa({ password });
+      else await authApi.requestDisable2fa({ password });
+      setStep("code");
     } catch (err) {
       setError(errorText(err));
     } finally {
@@ -115,16 +322,16 @@ function TwoFactor() {
     }
   }
 
-  async function onDisable(e) {
+  async function onConfirmCode(e) {
     e.preventDefault();
     setError(null);
     setBusy(true);
     try {
-      await authApi.disable2fa({ password: disablePassword });
-      toast.success(t("settings.account.twoFactorDisabled"));
-      setDisablePassword("");
-      setBackupCodes(null);
-      setShowDisable(false);
+      if (mode === "enable") await authApi.confirmEnable2fa({ code });
+      else await authApi.confirmDisable2fa({ code });
+      toast.success(mode === "enable" ? t("settings.account.twoFactorEnabled") : t("settings.account.twoFactorDisabled"));
+      await refreshUser();
+      cancel();
     } catch (err) {
       setError(errorText(err));
     } finally {
@@ -139,53 +346,24 @@ function TwoFactor() {
         {t("settings.account.twoFactorDescription")}
       </p>
 
-      {backupCodes ? (
-        <div className="space-y-4">
-          <p className="font-body text-body-md">{t("settings.account.backupCodesNotice")}</p>
-          <div className="grid grid-cols-2 gap-2 font-ledger">
-            {backupCodes.map((c) => (
-              <span key={c} className="border-2 border-tertiary px-3 py-2">
-                {c}
-              </span>
-            ))}
-          </div>
-          <NeoButton variant="ghost" size="md" onClick={() => setBackupCodes(null)}>
-            {t("settings.account.done")}
+      {!mode ? (
+        user?.is_2fa_enabled ? (
+          <NeoButton variant="ghost" size="md" onClick={() => startFlow("disable")}>
+            {t("settings.account.disable2faSummary")}
           </NeoButton>
-        </div>
-      ) : setupData ? (
-        <form className="space-y-4 max-w-sm" onSubmit={onConfirm}>
-          <p className="font-body text-body-md">{t("settings.account.addSecretNotice")}</p>
-          <p className="font-ledger border-2 border-tertiary px-4 py-3 break-all">{setupData.secret}</p>
-          <Field label={t("settings.account.codeLabel")} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} />
-          {error && (
-            <p role="alert" className="font-label text-label-md text-error">
-              {error}
-            </p>
-          )}
-          <NeoButton type="submit" size="md" loading={busy}>
-            {t("settings.account.confirm")}
-          </NeoButton>
-        </form>
-      ) : (
-        <div className="flex flex-wrap items-center gap-3">
-          <NeoButton size="md" loading={busy} onClick={onStartSetup}>
+        ) : (
+          <NeoButton size="md" onClick={() => startFlow("enable")}>
             <Icon name="shield" className="text-sm mr-1" />
             {t("settings.account.enable2fa")}
           </NeoButton>
-          <NeoButton variant="ghost" size="md" onClick={() => setShowDisable((v) => !v)}>
-            {t("settings.account.disable2faSummary")}
-          </NeoButton>
-        </div>
-      )}
-
-      {showDisable && !setupData && !backupCodes && (
-        <form className="space-y-4 mt-6 pt-6 border-t border-dashed border-outline-variant max-w-sm" onSubmit={onDisable}>
+        )
+      ) : step === "password" ? (
+        <form className="space-y-4 max-w-sm" onSubmit={onRequestCode}>
           <Field
             label={t("settings.account.passwordLabel")}
             type="password"
-            value={disablePassword}
-            onChange={(e) => setDisablePassword(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           {error && (
@@ -193,9 +371,32 @@ function TwoFactor() {
               {error}
             </p>
           )}
-          <NeoButton type="submit" variant="ghost" size="md" loading={busy}>
-            {t("settings.account.disable")}
-          </NeoButton>
+          <div className="flex gap-3">
+            <NeoButton type="submit" size="md" loading={busy}>
+              {t("settings.account.sendCode")}
+            </NeoButton>
+            <NeoButton type="button" variant="ghost" size="md" onClick={cancel}>
+              {t("settings.account.cancel")}
+            </NeoButton>
+          </div>
+        </form>
+      ) : (
+        <form className="space-y-4 max-w-sm" onSubmit={onConfirmCode}>
+          <p className="font-body text-body-md">{t("settings.account.checkEmailNotice")}</p>
+          <Field label={t("settings.account.codeLabel")} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} required />
+          {error && (
+            <p role="alert" className="font-label text-label-md text-error">
+              {error}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <NeoButton type="submit" size="md" loading={busy}>
+              {t("settings.account.confirm")}
+            </NeoButton>
+            <NeoButton type="button" variant="ghost" size="md" onClick={cancel}>
+              {t("settings.account.cancel")}
+            </NeoButton>
+          </div>
         </form>
       )}
     </NeoCard>
@@ -286,6 +487,8 @@ export default function AccountSection() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
       <div className="lg:col-span-2 space-y-6">
+        <ChangeUsername />
+        <ChangeEmail />
         <ChangePassword />
         <TwoFactor />
         <DataExport />

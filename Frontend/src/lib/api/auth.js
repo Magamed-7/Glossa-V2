@@ -18,8 +18,16 @@ export function getMe() {
   return auth.get(`${BASE}/me`);
 }
 
-export function updateMe({ username, email }) {
-  return auth.patch(`${BASE}/me`, { username, email });
+export function updateMe({ username }) {
+  return auth.patch(`${BASE}/me`, { username });
+}
+
+export function requestEmailChange({ new_email }) {
+  return auth.post(`${BASE}/me/email/change/request`, { new_email });
+}
+
+export function confirmEmailChange({ code }) {
+  return auth.post(`${BASE}/me/email/change/confirm`, { code });
 }
 
 export function deleteMe({ password }) {
@@ -38,16 +46,20 @@ export function resendVerification() {
   return auth.post(`${BASE}/verify-email/resend`);
 }
 
-export function setup2fa() {
-  return auth.post(`${BASE}/2fa/setup`);
+export function requestEnable2fa({ password }) {
+  return auth.post(`${BASE}/2fa/enable/request`, { password });
 }
 
-export function confirm2fa({ code }) {
-  return auth.post(`${BASE}/2fa/confirm`, { code });
+export function confirmEnable2fa({ code }) {
+  return auth.post(`${BASE}/2fa/enable/confirm`, { code });
 }
 
-export function disable2fa({ password }) {
-  return auth.post(`${BASE}/2fa/disable`, { password });
+export function requestDisable2fa({ password }) {
+  return auth.post(`${BASE}/2fa/disable/request`, { password });
+}
+
+export function confirmDisable2fa({ code }) {
+  return auth.post(`${BASE}/2fa/disable/confirm`, { code });
 }
 
 export function requestPasswordReset({ email }) {
