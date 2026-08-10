@@ -51,6 +51,12 @@ class ChatReplyResponse(BaseModel):
     assistant_message: ChatMessageResponse
 
 
+class SessionAnalysisResponse(BaseModel):
+    recommendation: str
+    topics: list[str]
+    xp_earned: int
+
+
 class GenerateExerciseRequest(BaseModel):
     topic: str
     level: str

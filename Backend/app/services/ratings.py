@@ -14,6 +14,7 @@ XP_REWARDS = {
     'review_received': 15,
     'social': 2,
     'login': 15,
+    'ai_chat_practice': 2,
 }
 
 LEADERBOARD_GLOBAL_KEY = 'leaderboard:global'
@@ -35,13 +36,14 @@ def weekly_leaderboard_key(moment: datetime | None = None):
     return f'leaderboard:week:{year}-W{week:02d}'
 
 
-async def award_xp(user_id: int, reason: str, db: AsyncSession):
+async def award_xp(user_id: int, reason: str, db: AsyncSession, amount: int | None = None):
     settings = await crud_settings.get_settings(user_id, db)
 
     if not settings.ratings_enabled:
         return None
 
-    amount = XP_REWARDS[reason]
+    if amount is None:
+        amount = XP_REWARDS[reason]
 
     transaction = XpTransactions(user_id=user_id, amount=amount, reason=reason)
     db.add(transaction)

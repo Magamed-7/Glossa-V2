@@ -9,6 +9,7 @@ from app.schemas.schema_ai import (
     ChatMessageResponse,
     ChatSessionResponse,
     GenerateExerciseRequest,
+    SessionAnalysisResponse,
     UserErrorResponse,
 )
 from app.services import ai_chat
@@ -55,3 +56,17 @@ async def get_my_session_messages(
         raise AppError(code='SESSION_NOT_FOUND', message='Chat session not found', status_code=404)
 
     return await ai_chat.get_session_messages(session_id, db)
+
+
+@router_ai.get('/sessions/{session_id}/analysis', response_model=SessionAnalysisResponse)
+async def get_my_session_analysis(
+    session_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(require_ai_access),
+):
+    session = await ai_chat.get_session(session_id, db)
+
+    if session is None or session.user_id != current_user.id:
+        raise AppError(code='SESSION_NOT_FOUND', message='Chat session not found', status_code=404)
+
+    return await ai_chat.get_session_analysis(session, db)

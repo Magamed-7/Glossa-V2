@@ -172,7 +172,6 @@ async def ai_chat_ws(websocket: WebSocket):
                     'role': message.role,
                     'text': message.text,
                     'corrections': message.corrections,
-                    'encouragement': message.encouragement,
                 }
                 for message in history
             ],
@@ -202,8 +201,8 @@ async def ai_chat_ws(websocket: WebSocket):
             await websocket.send_json({
                 'type': 'message',
                 'reply': result['assistant_message'].text,
-                'encouragement': result['assistant_message'].encouragement,
                 'corrections': result['user_message'].corrections,
+                'xp_earned': result['xp_earned'],
             })
     except WebSocketDisconnect:
         pass

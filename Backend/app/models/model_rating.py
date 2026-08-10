@@ -7,6 +7,7 @@ from app.db.database import Base
 
 XpReason = Enum(
     'review_passed', 'word_learned', 'story_written', 'review_received', 'social', 'login',
+    'ai_chat_practice',
     name='xp_reason',
 )
 
