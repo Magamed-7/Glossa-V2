@@ -460,9 +460,8 @@ function StoryCard({ story, t }) {
         )}
       </div>
       <div className="p-5 flex flex-col flex-1">
-        <h4 className="font-headline text-lg font-bold leading-tight mb-1">{story.title}</h4>
-        {story.genre && <p className="font-body text-xs italic text-on-surface-variant mb-4">{story.genre}</p>}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-3 border-t border-dotted border-tertiary/50">
+        <h4 className="font-headline text-lg font-bold leading-tight mt-auto mb-3">{story.title}</h4>
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-dotted border-tertiary/50">
           <span className="font-label text-[9px] uppercase font-bold text-on-surface-variant flex items-center gap-1">
             <Icon name="bookmark" className="text-sm" />
             {story.attempts > 0 ? t.bestOf(Math.round(story.best_score_percent)) : t.indexed}
