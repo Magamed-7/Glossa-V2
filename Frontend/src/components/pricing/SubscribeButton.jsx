@@ -16,7 +16,7 @@ export default function SubscribeButton({ plan, period, isCurrent, onSubscribed 
     setSubmitting(true);
     try {
       await subscribe({ plan_code: plan.code, period });
-      toast.success(t("pricing.subscribed", { code: plan.code }));
+      toast.success(t("pricing.subscribed", { code: t(`pricing.plans.${plan.code}.name`) }));
       onSubscribed();
     } catch (err) {
       if (err.code === "INSUFFICIENT_FUNDS") {
@@ -40,7 +40,7 @@ export default function SubscribeButton({ plan, period, isCurrent, onSubscribed 
 
   return (
     <NeoButton className="w-full" loading={submitting} onClick={onSubscribe}>
-      {t("pricing.choose", { code: plan.code })}
+      {t(`pricing.plans.${plan.code}.cta`) || t("pricing.choose", { code: plan.code })}
     </NeoButton>
   );
 }

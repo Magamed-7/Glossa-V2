@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageHeader from "../components/layout/PageHeader.jsx";
+import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import PlanComparison from "../components/pricing/PlanComparison.jsx";
@@ -15,6 +16,8 @@ export default function Pricing() {
   const { data: mySubscription, reload: reloadMySubscription } = useApi(() => getMySubscription(), []);
   const [period, setPeriod] = useState("monthly");
 
+  const includedItems = t("pricing.includedItems");
+
   return (
     <div>
       <PageHeader
@@ -23,6 +26,22 @@ export default function Pricing() {
         accent={t("pricing.titleAccent")}
         subtitle={t("pricing.subtitle")}
       />
+
+      {Array.isArray(includedItems) && includedItems.length > 0 && (
+        <div className="border-2 border-tertiary bg-surface-container-low p-6 mb-10">
+          <h2 className="font-label text-label-md uppercase tracking-widest text-on-surface-variant mb-4">
+            {t("pricing.includedTitle")}
+          </h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+            {includedItems.map((item) => (
+              <li key={item} className="flex items-start gap-2 font-body text-body-md">
+                <Icon name="check_circle" className="text-secondary text-lg shrink-0 mt-0.5" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="flex justify-center mb-8">
         <div className="inline-flex border-2 border-tertiary">
@@ -51,7 +70,7 @@ export default function Pricing() {
       {error && <ErrorState error={error} onRetry={reload} />}
 
       {!loading && !error && plans && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {plans.map((plan) => {
             const price = period === "yearly" ? plan.price_yearly : plan.price_monthly;
             const monthlyEquivalent = period === "yearly" ? plan.price_yearly / 12 : plan.price_monthly;
@@ -60,6 +79,8 @@ export default function Pricing() {
                 ? Math.round((1 - plan.price_yearly / 12 / plan.price_monthly) * 100)
                 : 0;
             const isCurrent = mySubscription?.plan.code === plan.code && mySubscription?.is_active;
+            const features = t(`pricing.plans.${plan.code}.features`);
+            const locked = t(`pricing.plans.${plan.code}.locked`);
 
             return (
               <div
@@ -73,16 +94,46 @@ export default function Pricing() {
                     {t("pricing.mostPopular")}
                   </span>
                 )}
-                <h3 className="font-headline text-headline-md uppercase mb-2">{plan.code}</h3>
+                <h3 className="font-headline text-headline-md uppercase mb-1">
+                  {t(`pricing.plans.${plan.code}.name`) || plan.code}
+                </h3>
+                <p className="font-body text-sm text-on-surface-variant mb-4 min-h-[2.5em]">
+                  {t(`pricing.plans.${plan.code}.tagline`)}
+                </p>
                 <p className="font-display text-4xl mb-1">
                   {formatMoney(monthlyEquivalent)}
                   <span className="font-label text-label-md">{t("pricing.perMonth")}</span>
                 </p>
-                {period === "yearly" && plan.price_monthly > 0 && (
+                {period === "yearly" && plan.price_monthly > 0 ? (
                   <p className="font-label text-label-md text-secondary mb-4">
                     {t("pricing.billedYearly", { price: formatMoney(price), percent: savingsPercent })}
                   </p>
+                ) : (
+                  <div className="mb-4" />
                 )}
+
+                {Array.isArray(features) && features.length > 0 && (
+                  <ul className="space-y-2.5 mb-4">
+                    {features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 font-body text-body-md">
+                        <Icon name="check" className="text-secondary text-lg shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {Array.isArray(locked) && locked.length > 0 && (
+                  <ul className="space-y-2.5 mb-4">
+                    {locked.map((item) => (
+                      <li key={item} className="flex items-start gap-2 font-body text-body-md text-on-surface-variant opacity-60">
+                        <Icon name="lock" className="text-lg shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
                 <div className="mt-auto pt-4">
                   <SubscribeButton
                     plan={plan}
