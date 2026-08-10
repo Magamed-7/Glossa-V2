@@ -520,11 +520,9 @@ async def send_message(session_id: int, text: str, db: AsyncSession):
         raw_reply = await _run_tool_loop(llm_messages, session.user_id)
     except Exception:
         # Инструменты — дополнительная возможность, а не то, без чего наставник не может
-        # ответить вообще. Раунд с tool_calls мог уйти на один провайдер, а финальный вызов —
-        # на другой в цепочке фолбэка; протоколы function-calling у провайдеров несовместимы
-        # (например, Gemini требует свою thought_signature на чужих tool_calls) — если это
-        # случилось, откатываемся на обычный ответ без инструментов на чистой истории, а не
-        # роняем сообщение целиком.
+        # ответить вообще. Если раунд с tool_calls всё же упал (модель вернула что-то
+        # неразбираемое, транзиентная ошибка провайдера), откатываемся на обычный ответ без
+        # инструментов на чистой истории, а не роняем сообщение целиком.
         logger.exception('Tool-calling round failed for session %s, retrying without tools', session_id)
         raw_reply = await llm_client.call_llm(llm_messages[: len(history) + 2])
 

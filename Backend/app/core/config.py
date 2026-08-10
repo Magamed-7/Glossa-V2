@@ -42,34 +42,14 @@ class Settings:
     EMAIL_HOST_PASSWORD: str = os.getenv('EMAIL_HOST_PASSWORD')
     DEFAULT_FROM_EMAIL: str = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
+    # Единственный провайдер — DeepSeek, OpenAI-совместимый API.
     LLM_API_KEY: str = os.getenv('LLM_API_KEY', '')
-    LLM_BASE_URL: str = os.getenv('LLM_BASE_URL', 'https://api.groq.com/openai/v1')
-    # Список через запятую — call_llm идёт по нему по порядку и берёт первую модель этого
-    # провайдера, которая реально ответила, а не падает на первой же перегруженной/снятой модели.
+    LLM_BASE_URL: str = os.getenv('LLM_BASE_URL', 'https://api.deepseek.com')
+    # Список через запятую — call_llm идёт по нему по порядку и берёт первую модель, которая
+    # реально ответила, а не падает на первой же перегруженной/снятой модели.
     LLM_MODELS: list[str] = [
         m.strip()
-        for m in os.getenv(
-            'LLM_MODELS',
-            'llama-3.3-70b-versatile,openai/gpt-oss-120b,qwen/qwen3.6-27b,'
-            'openai/gpt-oss-20b,llama-3.1-8b-instant',
-        ).split(',')
-        if m.strip()
-    ]
-
-    # Второй провайдер (тоже со своим списком моделей) — call_llm переходит на него, только
-    # если ВСЕ модели основного провайдера подряд отказали, а не в норме. Необязателен: если
-    # ключ не задан, работает только основной провайдер.
-    LLM_FALLBACK_API_KEY: str = os.getenv('LLM_FALLBACK_API_KEY', '')
-    LLM_FALLBACK_BASE_URL: str = os.getenv(
-        'LLM_FALLBACK_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta/openai/'
-    )
-    LLM_FALLBACK_MODELS: list[str] = [
-        m.strip()
-        for m in os.getenv(
-            'LLM_FALLBACK_MODELS',
-            'gemini-flash-latest,gemini-3.6-flash,gemini-3.5-flash,'
-            'gemini-3.5-flash-lite,gemini-flash-lite-latest',
-        ).split(',')
+        for m in os.getenv('LLM_MODELS', 'deepseek-chat').split(',')
         if m.strip()
     ]
 
