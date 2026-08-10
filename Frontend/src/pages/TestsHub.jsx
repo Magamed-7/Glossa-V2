@@ -702,7 +702,7 @@ function FoundationalDrills({ t, eligibleLevels }) {
                     checked={vocabEntryIds.includes(entry.id)}
                     onChange={() => toggleVocabEntry(entry.id)}
                     tag={entry.cefr_level}
-                    label={entry.translation ? `${entry.word} — ${entry.translation}` : entry.word}
+                    label={`${entry.word}${entry.transcription ? ` /${entry.transcription}/` : ""}${entry.translation ? ` — ${entry.translation}` : ""}`}
                   />
                 ))
               )}

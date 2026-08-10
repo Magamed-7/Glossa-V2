@@ -183,6 +183,7 @@ export default function CourseUnitDetail() {
             translation: word.translation || word.word,
             example: word.example_en || null,
             source_story_id: sourceId,
+            transcription: word.transcription || null,
           });
           added += 1;
         } catch (e) {
@@ -252,6 +253,7 @@ export default function CourseUnitDetail() {
                       className="px-2 py-1 bg-surface-container border border-on-surface/20 font-body text-xs"
                     >
                       {w.word}
+                      {w.transcription ? ` /${w.transcription}/` : ""}
                       {w.translation ? ` — ${w.translation}` : ""}
                     </span>
                   ))}

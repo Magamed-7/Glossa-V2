@@ -23,7 +23,7 @@ function VocabularyRow({ entry }) {
   async function onAdd() {
     setSubmitting(true);
     try {
-      await createCard({ word: entry.word, translation: entry.translation, example: entry.example_en });
+      await createCard({ word: entry.word, translation: entry.translation, example: entry.example_en, transcription: entry.transcription });
       setAdded(true);
     } catch (err) {
       toast.error(errorText(err));
@@ -35,8 +35,11 @@ function VocabularyRow({ entry }) {
   return (
     <div className="flex items-center justify-between gap-4 border-2 border-tertiary px-5 py-4">
       <div>
-        <div className="flex items-baseline gap-3">
+        <div className="flex items-baseline gap-3 flex-wrap">
           <h3 className="font-display text-xl">{entry.word}</h3>
+          {entry.transcription && (
+            <span className="font-mono text-sm text-on-surface-variant italic">/{entry.transcription}/</span>
+          )}
           <span className="font-label text-label-md uppercase text-secondary">{entry.cefr_level}</span>
         </div>
         <p className="font-body text-body-md text-on-surface-variant">{entry.translation}</p>

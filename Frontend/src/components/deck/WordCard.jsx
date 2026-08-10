@@ -14,7 +14,12 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
   return (
     <NeoCard className="flex flex-col gap-3">
       <div className="flex justify-between items-start">
-        <h3 className="font-display text-2xl">{card.word}</h3>
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <h3 className="font-display text-2xl">{card.word}</h3>
+          {card.transcription && (
+            <span className="font-mono text-sm text-on-surface-variant italic">/{card.transcription}/</span>
+          )}
+        </div>
         <span
           className={`font-label text-label-md uppercase tracking-widest border-2 px-3 py-1 ${STATUS_CLASS[card.status]}`}
         >

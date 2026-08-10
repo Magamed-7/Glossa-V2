@@ -22,8 +22,11 @@ export default function Flashcard({ card, flipped, onFlip }) {
           }
         }}
       >
-        <div className="absolute inset-0 neo-card flex flex-col items-center justify-center p-8 [backface-visibility:hidden]">
+        <div className="absolute inset-0 neo-card flex flex-col items-center justify-center gap-2 p-8 [backface-visibility:hidden]">
           <span className="font-display text-5xl text-center">{card.word}</span>
+          {card.transcription && (
+            <span className="font-mono text-lg text-on-surface-variant italic">/{card.transcription}/</span>
+          )}
         </div>
         <div
           className="absolute inset-0 neo-card-secondary flex flex-col items-center justify-center gap-4 p-8 text-center [backface-visibility:hidden]"
