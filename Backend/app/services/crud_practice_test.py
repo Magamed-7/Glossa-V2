@@ -116,6 +116,7 @@ async def list_story_tests(user_id: int, db: AsyncSession, level: str | None = N
             'story_id': story.id,
             'title': pick_locale(story, 'title', locale),
             'cefr_level': story.cefr_level,
+            'genre': story.genre,
             'is_read': bool(read_map.get(story.id)),
             'attempts': len(scores),
             'best_score_percent': max(scores) if scores else None,

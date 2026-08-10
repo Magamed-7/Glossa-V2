@@ -43,6 +43,7 @@ class StoryPracticeSummary(BaseModel):
     story_id: int
     title: str
     cefr_level: str
+    genre: str | None = None
     is_read: bool
     attempts: int
     best_score_percent: float | None = None
