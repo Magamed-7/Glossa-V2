@@ -9,15 +9,15 @@ import { errorText } from "../lib/api/errorText.js";
 import { generateCustomTest, submitPracticeTest } from "../lib/api/practiceTests.js";
 
 const BG = {
-  backgroundColor: "#fcf9f6",
-  backgroundImage: "radial-gradient(#c6c6cd 1.5px, transparent 1.5px)",
+  backgroundColor: "var(--color-surface)",
+  backgroundImage: "radial-gradient(var(--color-outline-variant, #c6c6cd) 1.5px, transparent 1.5px)",
   backgroundSize: "24px 24px",
 };
 
 const CATEGORY_LABEL = {
-  en: { grammar: "Grammar practice", vocab: "Vocabulary practice", combined: "Grammar + vocabulary practice" },
-  ru: { grammar: "Практика: грамматика", vocab: "Практика: лексика", combined: "Практика: грамматика + лексика" },
-  tg: { grammar: "Машқи грамматика", vocab: "Машқи луғат", combined: "Машқи грамматика + луғат" },
+  en: { grammar: "Grammar practice", vocab: "Vocabulary practice", reading: "Literary comprehension practice", combined: "Combined practice" },
+  ru: { grammar: "Практика: грамматика", vocab: "Практика: лексика", reading: "Практика: понимание текста", combined: "Комбинированная практика" },
+  tg: { grammar: "Машқи грамматика", vocab: "Машқи луғат", reading: "Машқи фаҳмиши матн", combined: "Машқи омехта" },
 };
 
 const T = {

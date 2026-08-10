@@ -36,6 +36,7 @@ const TXT = {
     curricularFocus: "Curricular Focus",
     grammaticalArchitecture: "Grammatical Architecture",
     lexicalAcquisition: "Lexical Acquisition",
+    literaryComprehension: "Literary Comprehension",
     comprehensiveSynthesis: "Comprehensive Synthesis",
     commence: "Commence Training Drill",
     pickLevel: "Select at least one proficiency target",
@@ -85,6 +86,7 @@ const TXT = {
     curricularFocus: "Учебный фокус",
     grammaticalArchitecture: "Грамматическая архитектура",
     lexicalAcquisition: "Освоение лексики",
+    literaryComprehension: "Понимание текста",
     comprehensiveSynthesis: "Комплексный синтез",
     commence: "Начать тренировку",
     pickLevel: "Выбери хотя бы один целевой уровень",
@@ -134,6 +136,7 @@ const TXT = {
     curricularFocus: "Фокуси таълимӣ",
     grammaticalArchitecture: "Сохтори грамматикӣ",
     lexicalAcquisition: "Азхудкунии луғат",
+    literaryComprehension: "Фаҳмиши матн",
     comprehensiveSynthesis: "Синтези ҳамаҷониба",
     commence: "Машқро оғоз кунед",
     pickLevel: "Ҳадди ақал як сатҳи мақсаднокро интихоб кунед",
@@ -165,7 +168,7 @@ const TXT = {
 function RegistryTag({ children, align = "left" }) {
   return (
     <span
-      className={`font-ledger text-[10px] uppercase tracking-widest border-2 border-tertiary px-2.5 py-1 inline-block ${
+      className={`font-ledger text-[9px] uppercase tracking-widest border border-tertiary/70 px-2 py-1 inline-block ${
         align === "right" ? "text-right" : ""
       }`}
     >
@@ -176,7 +179,7 @@ function RegistryTag({ children, align = "left" }) {
 
 function SectionLabel({ children }) {
   return (
-    <h2 className="font-headline text-headline-md border-b-2 border-tertiary pb-2">{children}</h2>
+    <h2 className="font-headline text-headline-md border-b border-tertiary pb-2">{children}</h2>
   );
 }
 
@@ -185,16 +188,16 @@ function CheckRow({ checked, onClick, children }) {
     <button
       type="button"
       onClick={onClick}
-      className="w-full flex items-center gap-3 text-left group cursor-pointer py-1"
+      className="w-full flex items-center gap-2.5 text-left group cursor-pointer py-1"
     >
       <span
-        className={`w-5 h-5 shrink-0 border-2 border-tertiary flex items-center justify-center transition-colors ${
+        className={`w-4 h-4 shrink-0 border border-tertiary flex items-center justify-center transition-colors ${
           checked ? "bg-tertiary" : "bg-surface"
         }`}
       >
-        {checked && <Icon name="check" className="text-surface text-sm" />}
+        {checked && <Icon name="check" className="text-surface text-[11px]" />}
       </span>
-      <span className="font-label text-label-md group-hover:text-secondary transition-colors">{children}</span>
+      <span className="font-body text-sm group-hover:text-secondary transition-colors">{children}</span>
     </button>
   );
 }
@@ -203,7 +206,7 @@ function AcademicStanding({ analytics, history, t }) {
   const hasAttempts = analytics && analytics.total_attempts > 0;
 
   return (
-    <div className="neo-card p-6 md:p-8">
+    <div className="border border-tertiary p-6 md:p-8">
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-2 mb-6">
         <div>
           <h2 className="font-headline text-headline-md">{t.standingTitle}</h2>
@@ -214,7 +217,7 @@ function AcademicStanding({ analytics, history, t }) {
       {!analytics ? (
         <Skeleton className="h-24" />
       ) : !hasAttempts ? (
-        <div className="border-2 border-dashed border-tertiary p-6 flex items-center gap-3">
+        <div className="border border-dashed border-tertiary p-6 flex items-center gap-3">
           <Icon name="history_edu" className="text-3xl text-on-surface-variant/50" />
           <p className="font-body text-body-md text-on-surface-variant">{t.noAttemptsYet}</p>
         </div>
@@ -289,10 +292,10 @@ function FoundationalDrills({ t, eligibleLevels }) {
     setCategories((prev) => (prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]));
   }
 
-  const comprehensive = categories.includes("grammar") && categories.includes("vocab");
+  const comprehensive = ["grammar", "vocab", "reading"].every((c) => categories.includes(c));
 
   function toggleComprehensive() {
-    setCategories(comprehensive ? [] : ["grammar", "vocab"]);
+    setCategories(comprehensive ? [] : ["grammar", "vocab", "reading"]);
   }
 
   const canStart = levels.length > 0 && categories.length > 0;
@@ -304,16 +307,16 @@ function FoundationalDrills({ t, eligibleLevels }) {
   }
 
   return (
-    <div className="neo-card p-6 md:p-8 flex flex-col h-full">
+    <div className="border border-tertiary p-6 md:p-8 flex flex-col h-full">
       <div className="flex items-center gap-3 mb-4">
         <h3 className="font-headline text-headline-md">{t.drillsTitle}</h3>
         <span className="font-label text-[10px] uppercase font-bold border border-tertiary px-2 py-0.5 text-on-surface-variant">
           {t.ungraded}
         </span>
       </div>
-      <p className="font-body text-body-md text-on-surface-variant mb-6">{t.drillsBody}</p>
+      <p className="font-body text-sm text-on-surface-variant mb-6">{t.drillsBody}</p>
 
-      <p className="font-label text-label-md uppercase text-on-surface-variant mb-2">{t.targetProficiency}</p>
+      <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">{t.targetProficiency}</p>
       <div className="grid grid-cols-3 gap-2 mb-6">
         {(eligibleLevels || []).map((level) => {
           const active = levels.includes(level);
@@ -322,7 +325,7 @@ function FoundationalDrills({ t, eligibleLevels }) {
               key={level}
               type="button"
               onClick={() => toggleLevel(level)}
-              className={`font-headline text-base font-bold py-2.5 border-2 border-tertiary transition-colors cursor-pointer ${
+              className={`font-label text-xs font-bold py-2 border border-tertiary transition-colors cursor-pointer ${
                 active ? "bg-tertiary text-surface" : "bg-surface hover:bg-surface-container"
               }`}
             >
@@ -332,13 +335,16 @@ function FoundationalDrills({ t, eligibleLevels }) {
         })}
       </div>
 
-      <p className="font-label text-label-md uppercase text-on-surface-variant mb-2">{t.curricularFocus}</p>
+      <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">{t.curricularFocus}</p>
       <div className="mb-6 space-y-1">
         <CheckRow checked={categories.includes("grammar")} onClick={() => toggleCategory("grammar")}>
           {t.grammaticalArchitecture}
         </CheckRow>
         <CheckRow checked={categories.includes("vocab")} onClick={() => toggleCategory("vocab")}>
           {t.lexicalAcquisition}
+        </CheckRow>
+        <CheckRow checked={categories.includes("reading")} onClick={() => toggleCategory("reading")}>
+          {t.literaryComprehension}
         </CheckRow>
         <CheckRow checked={comprehensive} onClick={toggleComprehensive}>
           {t.comprehensiveSynthesis}
@@ -349,9 +355,9 @@ function FoundationalDrills({ t, eligibleLevels }) {
         type="button"
         onClick={start}
         disabled={!canStart}
-        className="mt-auto w-full bg-tertiary text-surface py-3.5 font-label text-label-md uppercase tracking-widest flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity cursor-pointer"
+        className="mt-auto w-full bg-tertiary text-surface py-3 font-label text-[11px] uppercase tracking-widest flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity cursor-pointer"
       >
-        <Icon name="play_arrow" className="text-lg" />
+        <Icon name="play_arrow" className="text-base" />
         {t.commence}
       </button>
       {!canStart && (
@@ -369,29 +375,31 @@ function RegistryAdvancement({ t, currentLevel }) {
   const nextLevel = idx !== undefined && idx < LEVELS.length - 1 ? LEVELS[idx + 1] : null;
 
   return (
-    <div className="border-2 border-secondary bg-surface p-6 md:p-8 flex flex-col h-full relative hard-shadow-coral">
+    <div className="border border-secondary bg-surface p-6 md:p-8 flex flex-col h-full relative">
       <div className="flex items-start justify-between mb-4">
         <span className="bg-secondary text-on-secondary font-label text-[10px] uppercase tracking-widest font-bold px-2.5 py-1">
           {t.officialAssessment}
         </span>
-        <Icon name="workspace_premium" className="text-secondary text-2xl" />
+        <span className="w-8 h-8 rounded-full border border-secondary flex items-center justify-center shrink-0">
+          <Icon name="workspace_premium" className="text-secondary text-base" />
+        </span>
       </div>
 
       {nextLevel ? (
         <>
           <h3 className="font-headline text-headline-md">{t.promotionExam}</h3>
           <p className="font-headline italic text-secondary text-lg mb-4">{t.promotionRange(currentLevel, nextLevel)}</p>
-          <p className="font-body text-body-md text-on-surface-variant mb-5">{t.promotionBody}</p>
+          <p className="font-body text-sm text-on-surface-variant mb-5">{t.promotionBody}</p>
 
           <div className="bg-secondary-fixed text-on-secondary-fixed p-4 flex items-start gap-3 mb-6">
-            <Icon name="verified" className="text-secondary shrink-0 mt-0.5" />
+            <Icon name="verified" className="text-secondary shrink-0 mt-0.5 text-lg" />
             <p className="font-body text-sm">{t.promotionNote}</p>
           </div>
 
           <button
             type="button"
             onClick={() => navigate(`/roadmap/level-test/${currentLevel}/placement`)}
-            className="mt-auto w-full bg-secondary text-on-secondary py-3.5 font-label text-label-md uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer"
+            className="mt-auto w-full bg-secondary text-on-secondary py-3 font-label text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer"
           >
             {t.initiate}
           </button>
@@ -412,13 +420,15 @@ function StoryCard({ story, t }) {
 
   if (!story.is_read) {
     return (
-      <div className="border-2 border-tertiary bg-surface flex flex-col">
-        <div className="aspect-[4/3] bg-surface-container-high border-b-2 border-tertiary border-dashed flex flex-col items-center justify-center gap-2">
-          <Icon name="lock" className="text-3xl text-on-surface-variant/50" />
-          <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">{t.sealed}</span>
+      <div className="border border-tertiary bg-surface flex flex-col">
+        <div className="aspect-[4/3] bg-surface-container-high border-b border-tertiary flex flex-col items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-secondary flex flex-col items-center justify-center gap-0.5 text-on-secondary">
+            <Icon name="lock" className="text-lg" />
+            <span className="font-label text-[8px] uppercase tracking-widest font-bold">{t.sealed}</span>
+          </div>
         </div>
         <div className="p-5 flex flex-col flex-1">
-          <span className="font-label text-[9px] uppercase font-bold text-secondary mb-2">{t.prerequisiteDeficient}</span>
+          <span className="font-label text-[9px] uppercase font-bold text-on-surface-variant mb-2">{t.prerequisiteDeficient}</span>
           <p className="font-body text-sm text-on-surface-variant mb-4 flex-1">{t.prerequisiteBody}</p>
           <button
             type="button"
@@ -433,8 +443,8 @@ function StoryCard({ story, t }) {
   }
 
   return (
-    <div className="border-2 border-tertiary bg-surface flex flex-col group">
-      <div className="aspect-[4/3] relative overflow-hidden border-b-2 border-tertiary">
+    <div className="border border-tertiary bg-surface flex flex-col group">
+      <div className="aspect-[4/3] relative overflow-hidden border-b border-tertiary">
         <img
           src={getBookCoverUrl(story.story_id)}
           alt=""
@@ -444,8 +454,8 @@ function StoryCard({ story, t }) {
           {story.cefr_level}
         </span>
         {story.attempts > 0 && (
-          <span className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-secondary border-2 border-tertiary flex items-center justify-center">
-            <Icon name="workspace_premium" className="text-on-secondary text-base" />
+          <span className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-secondary flex items-center justify-center">
+            <Icon name="workspace_premium" className="text-on-secondary text-sm" />
           </span>
         )}
       </div>
@@ -460,7 +470,7 @@ function StoryCard({ story, t }) {
           <button
             type="button"
             onClick={() => navigate(`/tests/story/${story.story_id}/run`)}
-            className="bg-surface border-2 border-tertiary px-3 py-1.5 font-label text-[9px] uppercase tracking-widest font-bold hover:bg-tertiary hover:text-surface transition-colors cursor-pointer"
+            className="bg-surface border border-tertiary px-3 py-1.5 font-label text-[9px] uppercase tracking-widest font-bold hover:bg-tertiary hover:text-surface transition-colors cursor-pointer"
           >
             {story.attempts > 0 ? t.retakeExam : t.commenceExam}
           </button>
@@ -497,11 +507,12 @@ export default function TestsHub() {
           <p className="font-body text-body-lg italic text-on-surface-variant max-w-2xl mx-auto mt-4">{t.subtitle}</p>
         </div>
 
-        <div className="flex items-center gap-3 mb-12">
-          <div className="flex-1 h-px bg-tertiary" />
-          <span className="text-tertiary">•</span>
-          <div className="flex-1 h-px bg-tertiary" />
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="w-16 h-px bg-tertiary" />
+          <span className="text-tertiary text-xs">•</span>
+          <div className="w-16 h-px bg-tertiary" />
         </div>
+        <div className="h-px bg-tertiary mb-12" />
 
         <div className="mb-12">
           <AcademicStanding analytics={analytics} history={history} t={t} />
@@ -520,10 +531,10 @@ export default function TestsHub() {
               <select
                 value={storyLevelFilter}
                 onChange={(e) => setStoryLevelFilter(e.target.value)}
-                className="appearance-none font-label text-[11px] uppercase font-bold border-2 border-tertiary bg-surface pl-3 pr-8 py-2 cursor-pointer"
+                className="appearance-none font-label text-[11px] uppercase font-bold border border-tertiary bg-surface pl-3 pr-8 py-2 cursor-pointer"
               >
                 <option value="">{t.completeIndex}</option>
-                {LEVELS.map((lv) => (
+                {(levelsData?.eligible_levels || []).map((lv) => (
                   <option key={lv} value={lv}>{lv}</option>
                 ))}
               </select>
@@ -543,7 +554,7 @@ export default function TestsHub() {
             ))}
           </div>
         ) : (
-          <div className="border-2 border-dashed border-tertiary p-10 text-center">
+          <div className="border border-dashed border-tertiary p-10 text-center">
             <p className="font-body text-body-md text-on-surface-variant">{t.noStories}</p>
           </div>
         )}

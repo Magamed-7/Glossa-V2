@@ -9,8 +9,8 @@ import { errorText } from "../lib/api/errorText.js";
 import { generateStoryTest, submitPracticeTest } from "../lib/api/practiceTests.js";
 
 const BG = {
-  backgroundColor: "#fcf9f6",
-  backgroundImage: "radial-gradient(#c6c6cd 1.5px, transparent 1.5px)",
+  backgroundColor: "var(--color-surface)",
+  backgroundImage: "radial-gradient(var(--color-outline-variant, #c6c6cd) 1.5px, transparent 1.5px)",
   backgroundSize: "24px 24px",
 };
 
