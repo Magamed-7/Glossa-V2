@@ -24,6 +24,7 @@ export const ru = {
     stories: "Истории",
     tutor: "ИИ-наставник",
     grammar: "Грамматика",
+    tests: "Тесты",
     market: "Маркет",
     ranking: "Рейтинг",
     roadmap: "Роадмап",

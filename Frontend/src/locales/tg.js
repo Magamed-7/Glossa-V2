@@ -24,6 +24,7 @@ export const tg = {
     stories: "Ҳикояҳо",
     tutor: "Муаллими ИИ",
     grammar: "Грамматика",
+    tests: "Санҷишҳо",
     market: "Бозор",
     ranking: "Рейтинг",
     roadmap: "Нақшаи роҳ",

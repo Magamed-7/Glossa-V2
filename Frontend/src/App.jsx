@@ -28,6 +28,9 @@ import Roadmap from "./pages/Roadmap.jsx";
 import CourseUnitDetail from "./pages/CourseUnitDetail.jsx";
 import UnitTest from "./pages/UnitTest.jsx";
 import LevelTest from "./pages/LevelTest.jsx";
+import TestsHub from "./pages/TestsHub.jsx";
+import PracticeTestRun from "./pages/PracticeTestRun.jsx";
+import StoryTestRun from "./pages/StoryTestRun.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Settings from "./pages/Settings.jsx";
 import SpacedRepetition from "./pages/SpacedRepetition.jsx";
@@ -108,6 +111,9 @@ export default function App() {
           <Route path="/stories/:id" element={page(StoryReader)} />
           <Route path="/grammar" element={page(GrammarHub)} />
           <Route path="/grammar/:id" element={page(GrammarLesson)} />
+          <Route path="/tests" element={page(TestsHub)} />
+          <Route path="/tests/practice/run" element={page(PracticeTestRun)} />
+          <Route path="/tests/story/:storyId/run" element={page(StoryTestRun)} />
           <Route path="/tutor" element={page(TutorScenarios)} />
           <Route path="/tutor/chat" element={page(TutorChat)} />
           <Route path="/leaderboard" element={page(Leaderboard)} />

@@ -24,6 +24,7 @@ export const en = {
     stories: "Stories",
     tutor: "AI Tutor",
     grammar: "Grammar",
+    tests: "Tests",
     market: "Market",
     ranking: "Ranking",
     roadmap: "Roadmap",

@@ -4,6 +4,7 @@ export const NAV_ITEMS = [
   { to: "/deck", labelKey: "nav.library", icon: "library_books" },
   { to: "/stories", labelKey: "nav.stories", icon: "auto_stories" },
   { to: "/grammar", labelKey: "nav.grammar", icon: "menu_book" },
+  { to: "/tests", labelKey: "nav.tests", icon: "quiz" },
   { to: "/tutor", labelKey: "nav.tutor", icon: "smart_toy" },
   { to: "/marketplace", labelKey: "nav.market", icon: "storefront" },
   { to: "/leaderboard", labelKey: "nav.ranking", icon: "leaderboard" },
