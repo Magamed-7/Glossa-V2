@@ -195,3 +195,38 @@ async def check_leveled_vocab_limit(user_id: int, db: AsyncSession):
                 status_code=403
             )
 
+
+async def check_transcription_quota(user_id: int, db: AsyncSession):
+    from app.services import crud_subscription
+    from app.models.model_card import Cards
+    from sqlalchemy import select, func
+    import datetime as dt
+
+    subscription = await crud_subscription.get_active_subscription(user_id, db)
+    plan_code = subscription['plan'].code
+
+    if plan_code == 'pro':
+        return True
+
+    if plan_code == 'free':
+        stmt = select(func.count()).select_from(Cards).where(
+            Cards.user_id == user_id,
+            Cards.source_story_id.is_(None),
+            Cards.transcription.is_not(None),
+        )
+        total = (await db.execute(stmt)).scalar() or 0
+        return total < 5
+
+    if plan_code == 'premium':
+        today_start = dt.datetime.now(dt.timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        stmt = select(func.count()).select_from(Cards).where(
+            Cards.user_id == user_id,
+            Cards.source_story_id.is_(None),
+            Cards.transcription.is_not(None),
+            Cards.created_at >= today_start,
+        )
+        total = (await db.execute(stmt)).scalar() or 0
+        return total < 50
+
+    return True
+
