@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.schema_course import TestQuestionItem
 
-PRACTICE_CATEGORIES = Literal['grammar', 'vocab']
+PRACTICE_CATEGORIES = Literal['grammar', 'vocab', 'reading']
 PRACTICE_SIZES = Literal['short', 'medium', 'long']
 
 

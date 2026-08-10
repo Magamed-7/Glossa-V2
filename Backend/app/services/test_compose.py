@@ -20,7 +20,7 @@ LEVEL_TEST_BLUEPRINTS = {
 UNIT_TEST_BLUEPRINT = {'grammar': 5, 'vocab': 3}
 
 PRACTICE_TEST_SIZES = {'short': 10, 'medium': 20, 'long': 30}
-PRACTICE_GRAMMAR_SHARE = 0.6
+PRACTICE_CATEGORY_WEIGHTS = {'grammar': 3, 'vocab': 2, 'reading': 2}
 
 
 def grammar_question_to_item(question: GrammarQuestions, locale: str):
@@ -95,6 +95,15 @@ async def _vocab_pool_for_levels(db: AsyncSession, cefr_levels: list[str]):
 
 async def _reading_pool_for_story(db: AsyncSession, story_id: int):
     result = await db.execute(select(StoryQuestions).where(StoryQuestions.story_id == story_id))
+    return result.scalars().all()
+
+
+async def _reading_pool_for_levels(db: AsyncSession, cefr_levels: list[str]):
+    result = await db.execute(
+        select(StoryQuestions)
+        .join(Stories, StoryQuestions.story_id == Stories.id)
+        .where(Stories.cefr_level.in_(cefr_levels))
+    )
     return result.scalars().all()
 
 
@@ -176,9 +185,26 @@ async def compose_level_test(cefr_level: str, test_type: str, db: AsyncSession, 
     return items
 
 
+def _allocate_category_targets(categories: list[str], size: int):
+    total_weight = sum(PRACTICE_CATEGORY_WEIGHTS[c] for c in categories)
+    targets = {}
+    allocated = 0
+
+    for index, category in enumerate(categories):
+        if index == len(categories) - 1:
+            targets[category] = size - allocated
+        else:
+            share = round(size * PRACTICE_CATEGORY_WEIGHTS[category] / total_weight)
+            targets[category] = share
+            allocated += share
+
+    return targets
+
+
 async def compose_practice_test(cefr_levels: list[str], categories: list[str], size: int, db: AsyncSession, locale: str = 'en', seed: str | None = None):
     seed_key = f"practice:{'-'.join(sorted(cefr_levels))}:{'-'.join(sorted(categories))}:{size}"
     rng = _seeded_rng(seed or seed_key)
+    targets = _allocate_category_targets(categories, size)
 
     items = []
     grammar_pool = []
@@ -186,13 +212,16 @@ async def compose_practice_test(cefr_levels: list[str], categories: list[str], s
     if 'grammar' in categories:
         grammar_pool = await _grammar_pool_for_levels(db, cefr_levels)
         rng.shuffle(grammar_pool)
-        grammar_target = size if categories == ['grammar'] else round(size * PRACTICE_GRAMMAR_SHARE)
-        items += [grammar_question_to_item(q, locale) for q in grammar_pool[:grammar_target]]
+        items += [grammar_question_to_item(q, locale) for q in grammar_pool[:targets['grammar']]]
 
     if 'vocab' in categories:
         vocab_pool = await _vocab_pool_for_levels(db, cefr_levels)
-        vocab_target = size - len(items)
-        items += build_vocab_questions(vocab_pool, vocab_pool, locale, rng, vocab_target)
+        items += build_vocab_questions(vocab_pool, vocab_pool, locale, rng, targets['vocab'])
+
+    if 'reading' in categories:
+        reading_pool = await _reading_pool_for_levels(db, cefr_levels)
+        rng.shuffle(reading_pool)
+        items += [reading_question_to_item(q, locale) for q in reading_pool[:targets['reading']]]
 
     if grammar_pool and len(items) < size:
         items = _fill_with_grammar(items, grammar_pool, size, locale, rng)

@@ -45,6 +45,10 @@ async def generate_story_test(user_id: int, story_id: int, locale: str, db: Asyn
     if story is None:
         raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
 
+    _, eligible_levels = await get_eligible_levels(user_id, db)
+    if story.cefr_level not in eligible_levels:
+        raise AppError(code='LEVEL_NOT_UNLOCKED', message='This story is above your unlocked level', status_code=403)
+
     progress = await crud_story.get_reading_progress(user_id, story_id, db)
     if progress is None or not progress.is_completed:
         raise AppError(code='STORY_NOT_READ', message='Read the story before taking its test', status_code=403)
@@ -86,10 +90,13 @@ async def submit_practice_test(user_id: int, attempt_id: int, answers: dict, db:
 
 
 async def list_story_tests(user_id: int, db: AsyncSession, level: str | None = None, locale: str = 'en'):
-    query = select(Stories).order_by(Stories.id)
+    _, eligible_levels = await get_eligible_levels(user_id, db)
     if level:
-        query = query.where(Stories.cefr_level == level)
+        allowed_levels = [level] if level in eligible_levels else []
+    else:
+        allowed_levels = eligible_levels
 
+    query = select(Stories).where(Stories.cefr_level.in_(allowed_levels)).order_by(Stories.id)
     stories = (await db.execute(query)).scalars().all()
     story_ids = [story.id for story in stories]
 
