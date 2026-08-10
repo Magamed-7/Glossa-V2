@@ -93,8 +93,18 @@ async def _vocab_pool_for_levels(db: AsyncSession, cefr_levels: list[str]):
     return result.scalars().all()
 
 
+async def _vocab_entries_by_ids(db: AsyncSession, entry_ids: list[int]):
+    result = await db.execute(select(VocabEntries).where(VocabEntries.id.in_(entry_ids)))
+    return result.scalars().all()
+
+
 async def _reading_pool_for_story(db: AsyncSession, story_id: int):
     result = await db.execute(select(StoryQuestions).where(StoryQuestions.story_id == story_id))
+    return result.scalars().all()
+
+
+async def _reading_pool_for_stories(db: AsyncSession, story_ids: list[int]):
+    result = await db.execute(select(StoryQuestions).where(StoryQuestions.story_id.in_(story_ids)))
     return result.scalars().all()
 
 
@@ -201,7 +211,11 @@ def _allocate_category_targets(categories: list[str], size: int):
     return targets
 
 
-async def compose_practice_test(cefr_levels: list[str], categories: list[str], size: int, db: AsyncSession, locale: str = 'en', seed: str | None = None):
+async def compose_practice_test(
+    cefr_levels: list[str], categories: list[str], size: int, db: AsyncSession, locale: str = 'en',
+    seed: str | None = None, grammar_lesson_ids: list[int] | None = None, vocab_entry_ids: list[int] | None = None,
+    story_ids: list[int] | None = None,
+):
     seed_key = f"practice:{'-'.join(sorted(cefr_levels))}:{'-'.join(sorted(categories))}:{size}"
     rng = _seeded_rng(seed or seed_key)
     targets = _allocate_category_targets(categories, size)
@@ -210,16 +224,23 @@ async def compose_practice_test(cefr_levels: list[str], categories: list[str], s
     grammar_pool = []
 
     if 'grammar' in categories:
-        grammar_pool = await _grammar_pool_for_levels(db, cefr_levels)
+        grammar_pool = (
+            await _grammar_pool(db, grammar_lesson_ids) if grammar_lesson_ids
+            else await _grammar_pool_for_levels(db, cefr_levels)
+        )
         rng.shuffle(grammar_pool)
         items += [grammar_question_to_item(q, locale) for q in grammar_pool[:targets['grammar']]]
 
     if 'vocab' in categories:
         vocab_pool = await _vocab_pool_for_levels(db, cefr_levels)
-        items += build_vocab_questions(vocab_pool, vocab_pool, locale, rng, targets['vocab'])
+        vocab_entries = await _vocab_entries_by_ids(db, vocab_entry_ids) if vocab_entry_ids else vocab_pool
+        items += build_vocab_questions(vocab_entries, vocab_pool, locale, rng, targets['vocab'])
 
     if 'reading' in categories:
-        reading_pool = await _reading_pool_for_levels(db, cefr_levels)
+        reading_pool = (
+            await _reading_pool_for_stories(db, story_ids) if story_ids
+            else await _reading_pool_for_levels(db, cefr_levels)
+        )
         rng.shuffle(reading_pool)
         items += [reading_question_to_item(q, locale) for q in reading_pool[:targets['reading']]]
 

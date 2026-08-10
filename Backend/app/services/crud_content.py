@@ -84,13 +84,15 @@ def question_to_result_response(question: GrammarQuestions, locale: str, is_corr
     }
 
 
-async def get_grammar_lessons(db: AsyncSession, level=None, unit=None, limit=20, offset=0):
+async def get_grammar_lessons(db: AsyncSession, level=None, unit=None, search=None, limit=20, offset=0):
     query = select(GrammarLessons)
 
     if level:
         query = query.where(GrammarLessons.cefr_level == level)
     if unit:
         query = query.where(GrammarLessons.unit == unit)
+    if search:
+        query = query.where(GrammarLessons.topic.ilike(f'%{search}%'))
 
     query = query.order_by(GrammarLessons.cefr_level, GrammarLessons.lesson).limit(limit).offset(offset)
     result = await db.execute(query)

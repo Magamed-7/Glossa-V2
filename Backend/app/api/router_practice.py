@@ -6,6 +6,7 @@ from app.core.errors import AppError
 from app.db.database import get_db
 from app.schemas.schema_course import TestSubmitResponse
 from app.schemas.schema_practice import (
+    LearnedContentResponse,
     PracticeAnalyticsResponse,
     PracticeEligibleLevelsResponse,
     PracticeHistoryItem,
@@ -35,6 +36,14 @@ async def get_analytics(
     current_user=Depends(get_current_user),
 ):
     return await crud_practice_test.get_analytics(current_user.id, db)
+
+
+@router_practice.get('/learned', response_model=LearnedContentResponse)
+async def get_learned_ids(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_practice_test.get_learned_ids(current_user.id, db)
 
 
 @router_practice.get('/history', response_model=list[PracticeHistoryItem])
@@ -82,7 +91,8 @@ async def generate_custom_test(
     current_user=Depends(get_current_user),
 ):
     attempt = await crud_practice_test.generate_custom_test(
-        current_user.id, data.cefr_levels, data.categories, data.size, locale, db
+        current_user.id, data.cefr_levels, data.categories, data.size, locale, db,
+        grammar_lesson_ids=data.grammar_lesson_ids, vocab_entry_ids=data.vocab_entry_ids, story_ids=data.story_ids,
     )
     return {
         'attempt_id': attempt.id,

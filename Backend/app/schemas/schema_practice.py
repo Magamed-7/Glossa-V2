@@ -18,6 +18,15 @@ class PracticeTestGenerateRequest(BaseModel):
     cefr_levels: list[str] = Field(min_length=1)
     categories: list[PRACTICE_CATEGORIES] = Field(min_length=1)
     size: PRACTICE_SIZES = 'medium'
+    grammar_lesson_ids: list[int] = []
+    vocab_entry_ids: list[int] = []
+    story_ids: list[int] = []
+
+
+class LearnedContentResponse(BaseModel):
+    grammar_lesson_ids: list[int]
+    vocab_entry_ids: list[int]
+    story_ids: list[int]
 
 
 class PracticeTestGenerateResponse(BaseModel):

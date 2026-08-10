@@ -1,10 +1,11 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
-from app.models.model_content import Stories
+from app.models.model_card import Cards
+from app.models.model_content import GrammarAttempts, GrammarLessons, GrammarQuestions, ReadingProgress, Stories, VocabEntries
 from app.models.model_course import PracticeTestAttempt
 from app.services import crud_course, crud_story, test_compose
 from app.services.localization import pick_locale
@@ -21,14 +22,68 @@ async def get_eligible_levels(user_id: int, db: AsyncSession):
     return current_level, crud_course.LEVEL_ORDER[:boundary]
 
 
-async def generate_custom_test(user_id: int, cefr_levels: list[str], categories: list[str], size: str, locale: str, db: AsyncSession):
+async def _assert_owned_by_levels(db: AsyncSession, model, ids: list[int], eligible_levels: list[str], error_code: str, error_message: str):
+    if not ids:
+        return
+
+    unique_ids = set(ids)
+    count = (
+        await db.execute(
+            select(func.count()).select_from(model).where(model.id.in_(unique_ids), model.cefr_level.in_(eligible_levels))
+        )
+    ).scalar_one()
+
+    if count != len(unique_ids):
+        raise AppError(code=error_code, message=error_message, status_code=403)
+
+
+async def _assert_stories_read(db: AsyncSession, user_id: int, story_ids: list[int]):
+    if not story_ids:
+        return
+
+    unique_ids = set(story_ids)
+    count = (
+        await db.execute(
+            select(func.count()).select_from(ReadingProgress).where(
+                ReadingProgress.user_id == user_id,
+                ReadingProgress.story_id.in_(unique_ids),
+                ReadingProgress.is_completed.is_(True),
+            )
+        )
+    ).scalar_one()
+
+    if count != len(unique_ids):
+        raise AppError(code='STORY_NOT_READ', message='Read the story before including it in a test', status_code=403)
+
+
+async def generate_custom_test(
+    user_id: int, cefr_levels: list[str], categories: list[str], size: str, locale: str, db: AsyncSession,
+    grammar_lesson_ids: list[int] | None = None, vocab_entry_ids: list[int] | None = None, story_ids: list[int] | None = None,
+):
     _, eligible_levels = await get_eligible_levels(user_id, db)
     invalid_levels = [level for level in cefr_levels if level not in eligible_levels]
     if invalid_levels:
         raise AppError(code='LEVEL_NOT_UNLOCKED', message='Selected level is not unlocked yet', status_code=403)
 
+    await _assert_owned_by_levels(
+        db, GrammarLessons, grammar_lesson_ids or [], eligible_levels,
+        'LEVEL_NOT_UNLOCKED', 'Selected grammar topic is above your unlocked level',
+    )
+    await _assert_owned_by_levels(
+        db, VocabEntries, vocab_entry_ids or [], eligible_levels,
+        'LEVEL_NOT_UNLOCKED', 'Selected word is above your unlocked level',
+    )
+    await _assert_owned_by_levels(
+        db, Stories, story_ids or [], eligible_levels,
+        'LEVEL_NOT_UNLOCKED', 'Selected story is above your unlocked level',
+    )
+    await _assert_stories_read(db, user_id, story_ids or [])
+
     target_size = test_compose.PRACTICE_TEST_SIZES[size]
-    items = await test_compose.compose_practice_test(cefr_levels, categories, target_size, db, locale=locale)
+    items = await test_compose.compose_practice_test(
+        cefr_levels, categories, target_size, db, locale=locale,
+        grammar_lesson_ids=grammar_lesson_ids, vocab_entry_ids=vocab_entry_ids, story_ids=story_ids,
+    )
 
     category = 'combined' if len(categories) > 1 else categories[0]
     attempt = PracticeTestAttempt(
@@ -38,6 +93,45 @@ async def generate_custom_test(user_id: int, cefr_levels: list[str], categories:
     await db.commit()
     await db.refresh(attempt)
     return attempt
+
+
+async def get_learned_ids(user_id: int, db: AsyncSession):
+    _, eligible_levels = await get_eligible_levels(user_id, db)
+
+    grammar_result = await db.execute(
+        select(GrammarLessons.id)
+        .join(GrammarQuestions, GrammarQuestions.lesson_id == GrammarLessons.id)
+        .join(GrammarAttempts, GrammarAttempts.question_id == GrammarQuestions.id)
+        .where(GrammarAttempts.user_id == user_id, GrammarLessons.cefr_level.in_(eligible_levels))
+        .distinct()
+    )
+    grammar_lesson_ids = [row[0] for row in grammar_result.all()]
+
+    deck_words = (
+        await db.execute(select(func.lower(Cards.word)).where(Cards.user_id == user_id))
+    ).scalars().all()
+    deck_word_set = set(deck_words)
+
+    vocab_result = await db.execute(
+        select(VocabEntries.id, VocabEntries.word).where(VocabEntries.cefr_level.in_(eligible_levels))
+    )
+    vocab_entry_ids = [row[0] for row in vocab_result.all() if row[1].lower() in deck_word_set]
+
+    story_result = await db.execute(
+        select(Stories.id)
+        .join(ReadingProgress, ReadingProgress.story_id == Stories.id)
+        .where(
+            ReadingProgress.user_id == user_id, ReadingProgress.is_completed.is_(True),
+            Stories.cefr_level.in_(eligible_levels),
+        )
+    )
+    story_ids = [row[0] for row in story_result.all()]
+
+    return {
+        'grammar_lesson_ids': grammar_lesson_ids,
+        'vocab_entry_ids': vocab_entry_ids,
+        'story_ids': story_ids,
+    }
 
 
 async def generate_story_test(user_id: int, story_id: int, locale: str, db: AsyncSession):
