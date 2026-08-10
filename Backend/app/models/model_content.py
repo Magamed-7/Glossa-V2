@@ -129,6 +129,17 @@ class StoryQuestions(Base):
     explanation_tg: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
+class WordTranscriptions(Base):
+    __tablename__ = 'word_transcriptions'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    word: Mapped[str] = mapped_column(String, nullable=False, unique=True, index=True)
+    transcription: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
 class ReadingProgress(Base):
     __tablename__ = 'reading_progress'
     __table_args__ = (UniqueConstraint('user_id', 'story_id', name='uq_reading_progress_user_story'),)

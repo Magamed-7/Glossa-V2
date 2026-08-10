@@ -15,6 +15,7 @@ class Cards(Base):
     translation: Mapped[str] = mapped_column(String, nullable=False)
     example: Mapped[str | None] = mapped_column(String, nullable=True)
     audio_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    transcription: Mapped[str | None] = mapped_column(String, nullable=True)
     status: Mapped[str] = mapped_column(String, nullable=False, default='learning')
     source_story_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
