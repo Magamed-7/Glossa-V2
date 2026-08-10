@@ -1656,8 +1656,8 @@ export default function WordDeck() {
                 <label className="font-label text-[11px] uppercase tracking-widest font-bold text-on-surface-variant block mb-2">
                   {lang === "tg" ? "Сатҳро интихоб кунед" : lang === "ru" ? "Выбрать уровень" : "Select Level"}
                 </label>
-                <div className="grid grid-cols-5 gap-1 border-2 border-on-surface p-1">
-                  {["A1", "A2", "B1", "B2", "C1"].map((lvl) => (
+                <div className="grid grid-cols-6 gap-1 border-2 border-on-surface p-1">
+                  {["A1", "A2", "B1", "B2", "C1", "C2"].map((lvl) => (
                     <button
                       key={lvl}
                       type="button"

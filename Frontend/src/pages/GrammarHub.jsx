@@ -8,16 +8,16 @@ import { getWeakTopics, getGrammarProgress } from "../lib/api/grammar.js";
 import { getCourseUnits } from "../lib/api/learning.js";
 import { useI18n } from "../lib/i18n.jsx";
 
-// ── Constant CEFR list — matches the Roadmap; no C2 content exists yet ─────────
-const LEVELS = ["A1", "A2", "B1", "B2", "C1"];
+// ── Constant CEFR list — matches the Roadmap ────────────────────────────────
+const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 const LEVEL_LABELS = {
-  en: { A1: "A1 Beginner", A2: "A2 Elementary", B1: "B1 Intermediate", B2: "B2 Upper-Int", C1: "C1 Advanced" },
-  ru: { A1: "A1 Начинающий", A2: "A2 Элементарный", B1: "B1 Средний", B2: "B2 Выше среднего", C1: "C1 Продвинутый" },
-  tg: { A1: "A1 Ибтидоӣ", A2: "A2 Оддӣ", B1: "B1 Миёна", B2: "B2 Аз миёна боло", C1: "C1 Пешрафта" },
+  en: { A1: "A1 Beginner", A2: "A2 Elementary", B1: "B1 Intermediate", B2: "B2 Upper-Int", C1: "C1 Advanced", C2: "C2 Mastery" },
+  ru: { A1: "A1 Начинающий", A2: "A2 Элементарный", B1: "B1 Средний", B2: "B2 Выше среднего", C1: "C1 Продвинутый", C2: "C2 Мастерский" },
+  tg: { A1: "A1 Ибтидоӣ", A2: "A2 Оддӣ", B1: "B1 Миёна", B2: "B2 Аз миёна боло", C1: "C1 Пешрафта", C2: "C2 Устодӣ" },
 };
 
-const LEVEL_SHORT = { A1: "A1", A2: "A2", B1: "B1", B2: "B2", C1: "C1" };
+const LEVEL_SHORT = { A1: "A1", A2: "A2", B1: "B1", B2: "B2", C1: "C1", C2: "C2" };
 
 // ── Small lesson card ─────────────────────────────────────────────────────────
 function LessonCard({ unit, index, locked, lockedLabel }) {
@@ -122,7 +122,7 @@ export default function GrammarHub() {
   const { languages } = useAuth();
 
   const rawLevel = languages?.find((l) => l.is_target)?.level || "A1";
-  const targetLevel = LEVELS.includes(rawLevel) ? rawLevel : "C1";
+  const targetLevel = LEVELS.includes(rawLevel) ? rawLevel : "C2";
   const currentRank = LEVELS.indexOf(targetLevel);
 
   const [activeLevel, setActiveLevel] = useState(targetLevel);

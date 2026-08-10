@@ -16,7 +16,7 @@ from app.models.model_course import (
 )
 from app.services import ratings, test_compose
 
-LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1']
+LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
 
 async def get_or_create_progress(user_id: int, db: AsyncSession):

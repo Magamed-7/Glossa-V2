@@ -13,14 +13,14 @@ import {
   getCourseUnits,
 } from "../lib/api/learning.js";
 
-const LEVELS = ["A1", "A2", "B1", "B2", "C1"];
-const CHAPTER_NUMERALS = { A1: "I", A2: "II", B1: "III", B2: "IV", C1: "V" };
+const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const CHAPTER_NUMERALS = { A1: "I", A2: "II", B1: "III", B2: "IV", C1: "V", C2: "VI" };
 const MINUTE_OPTIONS = [15, 30, 60];
 
 const LEVEL_NAMES = {
-  en: { A1: "Beginner", A2: "Elementary", B1: "Pre-Intermediate", B2: "Intermediate", C1: "Upper-Intermediate" },
-  ru: { A1: "Начальный", A2: "Элементарный", B1: "Предсредний", B2: "Средний", C1: "Выше среднего" },
-  tg: { A1: "Ибтидоӣ", A2: "Оддӣ", B1: "Пеш аз миёна", B2: "Миёна", C1: "Аз миёна боло" },
+  en: { A1: "Beginner", A2: "Elementary", B1: "Pre-Intermediate", B2: "Intermediate", C1: "Upper-Intermediate", C2: "Mastery" },
+  ru: { A1: "Начальный", A2: "Элементарный", B1: "Предсредний", B2: "Средний", C1: "Выше среднего", C2: "Мастерский" },
+  tg: { A1: "Ибтидоӣ", A2: "Оддӣ", B1: "Пеш аз миёна", B2: "Миёна", C1: "Аз миёна боло", C2: "Устодӣ" },
 };
 
 const PAGE_TEXT = {
@@ -28,7 +28,7 @@ const PAGE_TEXT = {
     eyebrow: "Study Plan",
     titleLine1: "Your",
     titleLine2: "roadmap",
-    sub: "The full path from your first word to fluent C1. Finish a chapter to open the next page of your story.",
+    sub: "The full path from your first word to native-level C2 mastery. Finish a chapter to open the next page of your story.",
     overall: "Overall progress",
     units: (n, total) => `${n}/${total} units`,
     target: "Target",
@@ -50,7 +50,7 @@ const PAGE_TEXT = {
     eyebrow: "Учебный план",
     titleLine1: "Твой",
     titleLine2: "роадмап",
-    sub: "Полный путь от первого слова до свободного C1. Заверши главу, чтобы открыть следующую страницу своей истории.",
+    sub: "Полный путь от первого слова до мастерского уровня C2. Заверши главу, чтобы открыть следующую страницу своей истории.",
     overall: "Общий прогресс",
     units: (n, total) => `${n}/${total} юнитов`,
     target: "Ориентир",
@@ -72,7 +72,7 @@ const PAGE_TEXT = {
     eyebrow: "Нақшаи таълим",
     titleLine1: "Нақшаи",
     titleLine2: "роҳи ту",
-    sub: "Роҳи пурра аз калимаи аввал то C1-и озод. Бобро ба итмом расонед, то саҳифаи навбатии таърихи худро кушоед.",
+    sub: "Роҳи пурра аз калимаи аввал то сатҳи устодии C2. Бобро ба итмом расонед, то саҳифаи навбатии таърихи худро кушоед.",
     overall: "Пешрафти умумӣ",
     units: (n, total) => `${n}/${total} воҳид`,
     target: "Ҳадаф",
@@ -92,7 +92,7 @@ const PAGE_TEXT = {
   },
 };
 
-const LAST_LEVEL = "C1";
+const LAST_LEVEL = "C2";
 
 function splitTitle(title) {
   const idx = title.indexOf(",");
