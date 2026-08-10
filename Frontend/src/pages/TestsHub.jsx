@@ -12,6 +12,12 @@ const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const LEVEL_ORDER_INDEX = Object.fromEntries(LEVELS.map((l, i) => [l, i]));
 const PRACTICE_SIZE = "medium";
 
+const STORY_ILLUSTRATIONS = [
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuDqJ6orvya99Kgj7mUf95ezdxhEvuN0yhihTQJY091-FslFnUv6XK-TAHFA9nnU22zO4aVXLZEeMayA-A2AePSM5Jg0Ak6AhyGaurgt0IENLDxXe6RDZKv-cUQ-QX_BhaMOjt71-O4VILCOFOWCi-RV2jMSYvDhjzCpvgu9mLN0qfLyBhPkh4EO4ngyF8odoOGkQC44gUMglqTygZJfpXMwjqAS-OzllckWUxF3D1_9n4Dsf1THDB2DmQ",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuC5gzmKgzJSVcnp7_Mjh-_hXRWq0BadfPyIh-Po9aAt_lVnmOF_9z7rNiyrWDeyGRlsfcgivM9xwwIpgkfkUOrNmzHQI9vgG-N-uk2nUd9UUAj59l8MeyizEAcmWUy6H8XuapC5vJMbta_YcNwxTeSoRyaIQdG0r4uqpjrr6Qeq4UzQOP0HRbGkwIs3kVPggtV0ZGS3lXog2dlDQMyEy7ahc3RZ9QqiKCukNUy75aAyoee3uhsai-nI_g",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuBfc51GYpyAajX8HTo1ZzWCX9qoAGdQHPFt9DLvPZq7wDmg9fK-v1ZEIHRMyU-HOsXJTt4bu4avnrzQT9DCa1BF_ayhX8KX9KPKcOEG9Ef30QicvT9hycLRabcHyGi1-ghYro42Q7SEPAgSUxvshv1aoXd8rs1H6iGmiCC2IrhOupog_MXMRIBCovskKbMxfCnLfSET24A44A2c6qqZnubWnMBzBlX0IJQqqUMTitqLSAWM-kZeKe0Spw"
+];
+
 const TXT = {
   en: {
     registryNo: "Registry No. EXM-74",
@@ -63,6 +69,9 @@ const TXT = {
     commenceExam: "Commence Exam",
     retakeExam: "Retake Exam",
     noStories: "No texts archived for this filter yet.",
+    performanceBreakdown: "Performance breakdown",
+    levelLabel: (level) => `Level ${level}`,
+    volLabel: (roman, level) => `Vol. ${roman} - ${level}`,
   },
   ru: {
     registryNo: "Реестр № ЭКЗ-74",
@@ -80,40 +89,43 @@ const TXT = {
     story: "Литература",
     grammarCat: "Грамматика",
     vocabCat: "Лексика",
-    drillsTitle: "Foundational Drills",
-    ungraded: "Ungraded",
-    drillsBody: "Configure modular pedagogical exercises tailored to your current scholarly focus. These iterations do not influence formal registry standing.",
-    targetProficiency: "Target Proficiency",
-    curricularFocus: "Curricular Focus",
-    grammaticalArchitecture: "Grammatical Architecture",
-    lexicalAcquisition: "Lexical Acquisition",
-    literaryComprehension: "Literary Comprehension",
-    comprehensiveSynthesis: "Comprehensive Synthesis",
-    commence: "Commence Training Drill",
+    drillsTitle: "Базовые тренировки",
+    ungraded: "Без оценки",
+    drillsBody: "Настрой модульные тренировочные упражнения под текущий научный фокус. Эти попытки не влияют на официальную репутацию в реестре.",
+    targetProficiency: "Целевой уровень",
+    curricularFocus: "Учебный фокус",
+    grammaticalArchitecture: "Грамматическая архитектура",
+    lexicalAcquisition: "Освоение лексики",
+    literaryComprehension: "Понимание текста",
+    comprehensiveSynthesis: "Комплексный синтез",
+    commence: "Начать тренировку",
     pickLevel: "Выбери хотя бы один целевой уровень",
     pickCategory: "Выбери хотя бы один учебный фокус",
-    advancementTitle: "Registry Advancement",
-    officialAssessment: "Official Assessment",
-    promotionExam: "Promotion Exam",
+    advancementTitle: "Продвижение по реестру",
+    officialAssessment: "Официальная аттестация",
+    promotionExam: "Экзамен на повышение",
     promotionRange: (a, b) => `${a} в ${b}`,
-    promotionBody: "This formal adjudication evaluates your scholarly readiness to progress. It encompasses advanced grammatical architectures, extended lexical mastery, and complex textual comprehension.",
-    promotionNote: "Successful navigation of this rigorous assessment permanently advances your academic standing within the registry.",
-    initiate: "Initiate Official Examination",
+    promotionBody: "Эта формальная аттестация оценивает твою научную готовность к продвижению. Она охватывает продвинутые грамматические конструкции, расширенное владение лексикой и сложное понимание текста.",
+    promotionNote: "Успешное прохождение этой строгой аттестации навсегда повышает твою академическую репутацию в реестре.",
+    initiate: "Начать официальный экзамен",
     maxLevelTitle: "Высшая репутация достигнута",
     maxLevelBody: "Ты уже достиг высшей официальной репутации в реестре. Экзамен на повышение больше недоступен.",
-    archivesTitle: "Literature Comprehension Archives",
+    archivesTitle: "Архив понимания текста",
     indexFilter: "Фильтр каталога",
     completeIndex: "Весь каталог",
-    sealed: "Sealed",
-    prerequisiteDeficient: "Prerequisite Deficient",
-    prerequisiteBody: "Scholarly review of the foundational text is mandatory prior to examination access.",
-    consultText: "Consult Text First",
+    sealed: "Опечатано",
+    prerequisiteDeficient: "Не выполнено предусловие",
+    prerequisiteBody: "Перед доступом к экзамену необходимо прочитать первоисточник.",
+    consultText: "Сначала читать текст",
     read: "Прочитано",
     unread: "Не прочитано",
     bestOf: (n) => `Лучший ${n}%`,
-    commenceExam: "Commence Exam",
-    retakeExam: "Retake Exam",
+    commenceExam: "Сдать экзамен",
+    retakeExam: "Пересдать",
     noStories: "Для этого фильтра пока нет текстов в архиве.",
+    performanceBreakdown: "Разбивка по результатам",
+    levelLabel: (level) => `Уровень ${level}`,
+    volLabel: (roman, level) => `Вып. ${roman} - ${level}`,
   },
   tg: {
     registryNo: "Феҳрист № ИМТ-74",
@@ -131,28 +143,28 @@ const TXT = {
     story: "Адабиёт",
     grammarCat: "Грамматика",
     vocabCat: "Луғат",
-    drillsTitle: "Foundational Drills",
-    ungraded: "Ungraded",
-    drillsBody: "Configure modular pedagogical exercises tailored to your current scholarly focus. These iterations do not influence formal registry standing.",
-    targetProficiency: "Target Proficiency",
-    curricularFocus: "Curricular Focus",
-    grammaticalArchitecture: "Grammatical Architecture",
-    lexicalAcquisition: "Lexical Acquisition",
-    literaryComprehension: "Literary Comprehension",
-    comprehensiveSynthesis: "Comprehensive Synthesis",
-    commence: "Commence Training Drill",
+    drillsTitle: "Машқҳои асосӣ",
+    ungraded: "Бе баҳо",
+    drillsBody: "Машқҳои таълимии модулиро мутобиқи фокуси илмии ҷории худ танзим кунед. Ин такрорҳо ба мақоми расмии феҳрист таъсир намерасонанд.",
+    targetProficiency: "Сатҳи мақсаднок",
+    curricularFocus: "Фокуси таълимӣ",
+    grammaticalArchitecture: "Сохтори грамматикӣ",
+    lexicalAcquisition: "Азхудкунии луғат",
+    literaryComprehension: "Фаҳмиши матн",
+    comprehensiveSynthesis: "Синтези ҳамаҷониба",
+    commence: "Машқро оғоз кунед",
     pickLevel: "Ҳадди ақал як сатҳи мақсаднокро интихоб кунед",
     pickCategory: "Ҳадди ақал як фокуси таълимиро интихоб кунед",
-    advancementTitle: "Registry Advancement",
-    officialAssessment: "Official Assessment",
-    promotionExam: "Promotion Exam",
+    advancementTitle: "Пешравӣ дар феҳрист",
+    officialAssessment: "Арзёбии расмӣ",
+    promotionExam: "Имтиҳони гузариш",
     promotionRange: (a, b) => `${a} ба ${b}`,
-    promotionBody: "This formal adjudication evaluates your scholarly readiness to progress. It encompasses advanced grammatical structures, extended lexical mastery, and complex textual comprehension.",
-    promotionNote: "Successful navigation of this rigorous assessment permanently advances your academic standing within the registry.",
-    initiate: "Initiate Official Examination",
+    promotionBody: "Ин арзёбии расмӣ омодагии илмии шуморо барои пешравӣ месанҷад. Он сохторҳои грамматикии пешрафта, азхудкунии васеи луғат ва фаҳмиши мураккаби матнро дар бар мегирад.",
+    promotionNote: "Гузаштани муваффақонаи ин арзёбии қатъӣ мақоми шуморо дар феҳрист ба таври доимӣ баланд мебардорад.",
+    initiate: "Имтиҳони расмиро оғоз кунед",
     maxLevelTitle: "Мақоми баландтарин ба даст омад",
     maxLevelBody: "Шумо аллакай ба мақоми баландтарини расмии феҳрист расидед. Имтиҳони гузариш дигар дастрас нест.",
-    archivesTitle: "Literature Comprehension Archives",
+    archivesTitle: "Бойгонии фаҳмиши матн",
     indexFilter: "Филтри феҳрист",
     completeIndex: "Феҳристи пурра",
     sealed: "Мӯҳршуда",
@@ -162,9 +174,12 @@ const TXT = {
     read: "Хондашуда",
     unread: "Хонданашуда",
     bestOf: (n) => `Беҳтарин ${n}%`,
-    commenceExam: "Commence Exam",
-    retakeExam: "Retake Exam",
+    commenceExam: "Имтиҳонро супоред",
+    retakeExam: "Такрор супоред",
     noStories: "Барои ин филтр ҳанӯз матне дар бойгонӣ нест.",
+    performanceBreakdown: "Тақсимоти натиҷаҳо",
+    levelLabel: (level) => `Сатҳи ${level}`,
+    volLabel: (roman, level) => `Ҷилди ${roman} - ${level}`,
   },
 };
 
@@ -194,14 +209,12 @@ function CheckRow({ checked, onClick, children }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-3 text-left group cursor-pointer py-1.5 select-none"
+      className="flex items-center gap-4 text-left group cursor-pointer py-1.5 select-none"
     >
-      <span
-        className="w-4 h-4 shrink-0 border border-on-surface flex items-center justify-center transition-all bg-surface"
-      >
-        {checked && <div className="w-2 h-2 bg-on-surface" />}
-      </span>
-      <span className="font-body text-xs font-semibold text-on-surface/85 group-hover:text-secondary transition-colors">
+      <div className="w-6 h-6 editorial-border flex items-center justify-center bg-surface group-hover:bg-surface-container shadow-[2px_2px_0px_var(--color-on-surface)] transition-all shrink-0">
+        {checked && <div className="w-3 h-3 bg-on-surface" />}
+      </div>
+      <span className="font-serif text-lg text-on-surface leading-tight">
         {children}
       </span>
     </button>
@@ -265,7 +278,7 @@ function AcademicStandingLedger({ analytics, history, t }) {
               </div>
               {/* Stats by Level / Category */}
               <div className="flex flex-col gap-3">
-                <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Performance breakdown</p>
+                <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">{t.performanceBreakdown}</p>
                 <div className="flex flex-wrap gap-2">
                   {analytics.by_category.map((c) => (
                     <span key={c.category} className="font-mono text-[10px] uppercase font-bold border border-on-surface/40 bg-surface px-2.5 py-1">
@@ -275,7 +288,7 @@ function AcademicStandingLedger({ analytics, history, t }) {
                   ))}
                   {analytics.by_level.map((l) => (
                     <span key={l.cefr_level} className="font-mono text-[10px] uppercase font-bold border border-on-surface/40 bg-surface px-2.5 py-1">
-                      Level {l.cefr_level}: {Math.round(l.average_score_percent)}%
+                      {t.levelLabel(l.cefr_level)}: {Math.round(l.average_score_percent)}%
                     </span>
                   ))}
                 </div>
@@ -320,44 +333,51 @@ function FoundationalDrills({ t, eligibleLevels }) {
   }
 
   return (
-    <div className="border border-on-surface bg-surface p-6 md:p-8 flex flex-col h-full shadow-[5px_5px_0px_0px_#000] neo-card">
-      <div className="flex items-center gap-3 mb-4">
+    <div className="border border-on-surface bg-surface p-6 md:p-8 flex flex-col h-full shadow-hard-black relative overflow-hidden neo-card">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:10px_10px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+        <Icon name="history_edu" className="text-6xl" />
+      </div>
+
+      <div className="flex items-center gap-3 mb-4 relative z-10">
         <h3 className="font-serif text-2xl font-normal text-on-surface">{t.drillsTitle}</h3>
-        <span className="font-mono text-[9px] uppercase tracking-widest border border-on-surface/40 px-2 py-0.5 text-on-surface/60 font-bold">
+        <span className="font-mono text-[9px] uppercase tracking-widest bg-surface-container px-3 py-1 border border-on-surface/40 text-on-surface-variant font-bold shadow-stamp">
           {t.ungraded}
         </span>
       </div>
-      <p className="font-body text-xs text-on-surface-variant mb-6 leading-relaxed">{t.drillsBody}</p>
+      <p className="font-body text-xs text-on-surface-variant mb-6 leading-relaxed relative z-10 italic">{t.drillsBody}</p>
 
-      <p className="font-label text-[10px] uppercase tracking-widest text-on-surface/70 mb-2 font-bold flex items-center gap-1.5">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface mb-4 font-bold flex items-center gap-1.5 relative z-10">
         <span className="w-1.5 h-1.5 rounded-full bg-on-surface" />
         {t.targetProficiency}
       </p>
-      <div className="grid grid-cols-5 gap-2 mb-6 max-w-xs">
-        {(eligibleLevels || []).map((level) => {
+      <div className="flex flex-wrap gap-3 mb-6 relative z-10">
+        {LEVELS.map((level) => {
           const active = levels.includes(level);
           return (
             <button
               key={level}
               type="button"
               onClick={() => toggleLevel(level)}
-              className={`w-10 h-10 flex items-center justify-center font-bold font-serif text-xs border cursor-pointer select-none transition-all ${
+              className={`stamp-border font-serif text-xl hover:bg-surface-container transition-colors shadow-stamp neo-button ${
                 active
-                  ? "border-4 border-double border-on-surface font-black bg-surface text-on-surface shadow-[1px_1px_0px_rgba(0,0,0,0.15)]"
-                  : "border-on-surface/30 text-on-surface/60 bg-surface hover:border-on-surface/60 hover:text-on-surface"
+                  ? "bg-on-surface text-surface"
+                  : "bg-surface text-on-surface"
               }`}
             >
-              {level}
+              <div className={`inner-dash ${active ? "border-surface" : "border-on-surface/40"}`}>
+                {level}
+              </div>
             </button>
           );
         })}
       </div>
 
-      <p className="font-label text-[10px] uppercase tracking-widest text-on-surface/70 mb-2 font-bold flex items-center gap-1.5">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface mb-2 font-bold flex items-center gap-1.5 relative z-10">
         <span className="w-1.5 h-1.5 rounded-full bg-on-surface" />
         {t.curricularFocus}
       </p>
-      <div className="mb-6 space-y-1">
+      <div className="mb-6 space-y-1 relative z-10">
         <CheckRow checked={categories.includes("grammar")} onClick={() => toggleCategory("grammar")}>
           {t.grammaticalArchitecture}
         </CheckRow>
@@ -376,13 +396,13 @@ function FoundationalDrills({ t, eligibleLevels }) {
         type="button"
         onClick={start}
         disabled={!canStart}
-        className="mt-auto w-full bg-on-surface text-surface py-3 font-label text-[11px] uppercase tracking-widest flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity cursor-pointer font-bold border border-on-surface shadow-[3px_3px_0px_rgba(0,0,0,0.15)]"
+        className="mt-auto w-full border-[3px] border-on-surface py-4 bg-on-surface text-surface font-mono text-[10px] uppercase tracking-widest shadow-hard-black hover:opacity-90 neo-button flex justify-center items-center gap-3 relative overflow-hidden group disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer font-bold relative z-10"
       >
-        <span>▶</span>
-        {t.commence}
+        <span className="material-symbols-outlined relative z-10">play_arrow</span>
+        <span className="relative z-10">{t.commence}</span>
       </button>
       {!canStart && (
-        <p className="font-label text-[10px] text-on-surface-variant mt-2 text-center">
+        <p className="font-mono text-[9px] text-on-surface-variant mt-2 text-center relative z-10 uppercase tracking-wider">
           {levels.length === 0 ? t.pickLevel : t.pickCategory}
         </p>
       )}
@@ -396,43 +416,53 @@ function RegistryAdvancement({ t, currentLevel }) {
   const nextLevel = idx !== undefined && idx < LEVELS.length - 1 ? LEVELS[idx + 1] : null;
 
   return (
-    <div className="border border-secondary bg-surface p-6 md:p-8 flex flex-col h-full shadow-[5px_5px_0px_0px_var(--color-secondary)] relative neo-card">
-      <div className="flex items-start justify-between mb-4 border-b border-secondary/15 pb-2">
-        <h3 className="font-serif text-2xl font-normal text-secondary">{t.advancementTitle}</h3>
-        <span className="w-7 h-7 rounded-full border border-secondary flex items-center justify-center shrink-0">
-          <Icon name="workspace_premium" className="text-secondary text-base" />
-        </span>
+    <div className="bg-surface p-8 md:p-10 shadow-hard-crimson border-4 border-secondary relative overflow-hidden group h-full flex flex-col justify-between neo-card min-h-[400px]">
+      {/* Certificate Inner Border */}
+      <div className="absolute inset-3 border-2 border-dashed border-secondary/40 pointer-events-none"></div>
+      {/* Decorative background elements */}
+      <div className="absolute -right-16 -bottom-16 w-56 h-56 bg-secondary/5 rounded-full opacity-40 blur-2xl pointer-events-none"></div>
+      <div className="absolute top-6 right-6">
+        <Icon name="workspace_premium" className="text-secondary text-4xl" />
       </div>
 
       {nextLevel ? (
         <>
-          <div className="mb-4">
-            <span className="bg-secondary text-on-secondary font-label text-[9px] uppercase tracking-widest font-black px-2 py-0.5 inline-block">
+          <div className="mb-6 relative z-10">
+            <span className="bg-secondary text-on-secondary px-3 py-1 font-mono text-[9px] uppercase tracking-widest border-2 border-on-surface shadow-stamp inline-block mb-4 font-bold">
               {t.officialAssessment}
             </span>
+            <h3 className="font-serif text-4xl text-on-surface leading-none mb-2 font-normal">
+              {t.promotionExam}
+            </h3>
+            <h4 className="font-serif text-3xl text-secondary italic font-normal">
+              {t.promotionRange(currentLevel, nextLevel)}
+            </h4>
           </div>
-          <h4 className="font-serif text-3xl font-normal leading-tight text-on-surface">{t.promotionExam}</h4>
-          <p className="font-serif italic text-secondary text-lg mb-4">{t.promotionRange(currentLevel, nextLevel)}</p>
-          <p className="font-body text-xs text-on-surface-variant mb-5 leading-relaxed">{t.promotionBody}</p>
 
-          <div className="bg-secondary/10 border-l-4 border-secondary p-4 flex items-start gap-3 mb-6">
-            <Icon name="verified_user" className="text-secondary shrink-0 mt-0.5 text-lg" style={{ fontVariationSettings: "'FILL' 1" }} />
-            <p className="font-body text-xs text-on-surface font-medium">{t.promotionNote}</p>
+          <p className="font-body text-sm mb-6 relative z-10 italic text-on-surface-variant leading-relaxed">
+            {t.promotionBody}
+          </p>
+
+          <div className="bg-secondary/10 border-l-4 border-secondary p-5 mb-8 flex items-start gap-4 relative z-10">
+            <Icon name="gavel" className="text-secondary shrink-0 mt-0.5 text-lg" />
+            <p className="font-mono text-xs leading-relaxed text-on-surface font-bold">
+              {t.promotionNote}
+            </p>
           </div>
 
           <button
             type="button"
             onClick={() => navigate(`/roadmap/level-test/${currentLevel}/placement`)}
-            className="mt-auto w-full bg-secondary text-on-secondary py-3 font-label text-[11px] uppercase tracking-widest font-bold shadow-[3px_3px_0px_0px_#000] hover:opacity-90 transition-opacity cursor-pointer border border-secondary"
+            className="w-full border-2 border-secondary py-4 bg-secondary text-on-secondary font-mono text-[10px] uppercase tracking-widest shadow-[4px_4px_0px_0px_#40000e] hover:bg-secondary/90 neo-button-crimson relative z-10 transition-colors cursor-pointer font-bold"
           >
             {t.initiate}
           </button>
         </>
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
-          <Icon name="military_tech" className="text-4xl text-secondary mb-3" />
-          <h3 className="font-headline text-headline-md mb-2">{t.maxLevelTitle}</h3>
-          <p className="font-body text-body-md text-on-surface-variant max-w-xs">{t.maxLevelBody}</p>
+        <div className="flex-1 flex flex-col items-center justify-center text-center py-6 relative z-10">
+          <Icon name="military_tech" className="text-5xl text-secondary mb-3" />
+          <h3 className="font-serif text-2xl font-normal mb-2 text-on-surface">{t.maxLevelTitle}</h3>
+          <p className="font-body text-xs text-on-surface-variant max-w-xs">{t.maxLevelBody}</p>
         </div>
       )}
     </div>
@@ -441,67 +471,107 @@ function RegistryAdvancement({ t, currentLevel }) {
 
 function StoryCard({ story, t }) {
   const navigate = useNavigate();
+  const illustration = STORY_ILLUSTRATIONS[story.story_id % STORY_ILLUSTRATIONS.length];
 
   if (!story.is_read) {
     return (
-      <div className="border border-on-surface bg-surface flex flex-col p-6 shadow-[4px_4px_0_0_#000] text-center relative h-full min-h-[350px] neo-card">
-        <div className="border border-dashed border-on-surface/35 p-5 flex flex-col items-center justify-center flex-1 h-full">
-          <div className="w-14 h-14 rounded-full bg-secondary flex flex-col items-center justify-center gap-0.5 text-on-secondary shadow-md mb-4 animate-pulse">
-            <Icon name="lock" className="text-xl" style={{ fontVariationSettings: "'FILL' 1" }} />
-            <span className="font-label text-[8px] uppercase tracking-widest font-black">{t.sealed}</span>
+      <article className="bg-surface-container-low editorial-border flex flex-col shadow-hard-black relative p-3 h-full min-h-[400px]">
+        {/* Locked Overlay with Wax Seal Aesthetic */}
+        <div className="absolute inset-0 bg-surface/75 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center p-4">
+          <div className="w-28 h-28 rounded-full bg-secondary text-on-secondary flex flex-col items-center justify-center shadow-lg border-4 border-secondary-fixed transform -rotate-[6deg] mb-3">
+            <Icon name="lock" className="text-3xl mb-0.5" style={{ fontVariationSettings: "'FILL' 1" }} />
+            <span className="font-serif text-[11px] uppercase tracking-widest font-black">{t.sealed}</span>
           </div>
-          <span className="font-label text-[9px] uppercase font-black text-secondary tracking-wider mb-2">
-            {t.prerequisiteDeficient}
-          </span>
-          <p className="font-body text-xs text-on-surface-variant/80 mb-5 leading-normal max-w-xs">
-            {t.prerequisiteBody}
-          </p>
-          <button
-            type="button"
-            onClick={() => navigate(`/stories/${story.story_id}`)}
-            className="w-full bg-on-surface hover:bg-on-surface/90 text-surface py-2.5 font-label text-[10px] uppercase tracking-widest font-bold transition-colors cursor-pointer border border-on-surface shadow-[2px_2px_0_0_rgba(0,0,0,0.15)]"
-          >
-            {t.consultText}
-          </button>
+          <div className="bg-surface editorial-border p-4 shadow-stamp text-center max-w-[90%] border-dashed">
+            <p className="font-mono text-[9px] uppercase mb-1 tracking-widest text-secondary font-bold">
+              {t.prerequisiteDeficient}
+            </p>
+            <p className="font-body text-[11px] mb-3 italic text-on-surface-variant">
+              {t.prerequisiteBody}
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate(`/stories/${story.story_id}`)}
+              className="border border-on-surface px-4 py-2 bg-on-surface text-surface font-mono text-[9px] hover:bg-on-surface/90 transition-colors shadow-stamp neo-button uppercase tracking-widest w-full text-center block font-bold cursor-pointer"
+            >
+              {t.consultText}
+            </button>
+          </div>
         </div>
-      </div>
+
+        {/* Inner book plate border underneath overlay */}
+        <div className="border border-outline-variant h-full flex flex-col opacity-40 filter grayscale">
+          <div className="h-48 border-b border-outline-variant relative overflow-hidden p-1">
+            <img
+              src={illustration}
+              alt=""
+              className="w-full h-full object-cover mix-blend-multiply"
+            />
+            <div className="absolute top-3 left-3 bg-surface text-on-surface px-3 py-1 font-mono text-[9px] uppercase tracking-widest border border-on-surface shadow-stamp font-bold">
+              {t.volLabel("II", story.cefr_level)}
+            </div>
+          </div>
+          <div className="p-5 flex flex-col flex-grow bg-surface">
+            <h3 className="font-serif text-xl font-bold mb-2 leading-tight text-outline">
+              {story.title}
+            </h3>
+            <p className="font-body text-xs italic text-outline mb-4 line-clamp-2">
+              {story.body_preview || story.body?.substring(0, 100) + "..."}
+            </p>
+            <div className="mt-auto pt-3 border-t border-outline-variant flex items-center justify-between">
+              <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-outline font-bold">
+                <Icon name="visibility_off" className="text-base" />
+                {t.unread}
+              </span>
+            </div>
+          </div>
+        </div>
+      </article>
     );
   }
 
   return (
-    <div className="border border-on-surface bg-surface flex flex-col shadow-[4px_4px_0_0_#000] hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#000] transition-all duration-200 group relative neo-card">
-      <div className="aspect-[4/3] relative overflow-hidden border-b border-on-surface">
-        <img
-          src={getBookCoverUrl(story.story_id)}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-300"
-        />
-        <span className="absolute top-2 left-2 bg-on-surface text-surface font-ledger text-[8px] uppercase tracking-widest px-2.5 py-0.5 font-bold z-10 border border-on-surface">
-          VOL. I - {story.cefr_level}
-        </span>
-        {story.attempts > 0 && (
-          <span className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-secondary flex items-center justify-center">
-            <Icon name="workspace_premium" className="text-on-secondary text-sm" />
-          </span>
-        )}
-      </div>
-      <div className="p-5 flex flex-col flex-1 justify-between">
-        <h4 className="font-serif text-lg font-bold leading-tight mb-4 text-on-surface">{story.title}</h4>
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-dotted border-on-surface/20">
-          <span className="font-label text-[9px] uppercase font-bold text-on-surface flex items-center gap-1.5 select-none">
-            <Icon name="check_circle" className="text-secondary text-sm" style={{ fontVariationSettings: "'FILL' 1" }} />
-            {story.is_read ? t.read : t.unread}
-          </span>
-          <button
-            type="button"
-            onClick={() => navigate(`/tests/story/${story.story_id}/run`)}
-            className="bg-surface border border-on-surface px-3 py-1.5 font-label text-[9px] uppercase tracking-widest font-bold hover:bg-on-surface hover:text-surface transition-colors cursor-pointer"
-          >
-            {story.attempts > 0 ? t.retakeExam : t.commenceExam}
-          </button>
+    <article className="bg-surface editorial-border flex flex-col shadow-hard-black hover:-translate-y-1.5 transition-all duration-300 relative p-3 h-full min-h-[400px]">
+      {/* Inner book plate border */}
+      <div className="border border-on-surface h-full flex flex-col">
+        <div className="h-48 border-b border-on-surface relative overflow-hidden bg-on-surface p-1">
+          <img
+            src={illustration}
+            alt=""
+            className="w-full h-full object-cover grayscale opacity-90 mix-blend-screen group-hover:grayscale-0 transition-all duration-300"
+          />
+          <div className="absolute top-3 left-3 bg-on-surface text-surface px-3 py-1 font-mono text-[9px] uppercase tracking-widest border border-surface shadow-[2px_2px_0px_var(--color-surface)] font-bold">
+            {t.volLabel("I", story.cefr_level)}
+          </div>
+          {story.attempts > 0 && (
+            <span className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-secondary flex items-center justify-center shadow-md">
+              <Icon name="workspace_premium" className="text-on-secondary text-sm" />
+            </span>
+          )}
+        </div>
+        <div className="p-5 flex flex-col flex-grow bg-surface">
+          <h3 className="font-serif text-xl font-bold mb-2 leading-tight text-on-surface">
+            {story.title}
+          </h3>
+          <p className="font-body text-xs italic text-on-surface-variant mb-4 line-clamp-2">
+            {story.body_preview || story.body?.substring(0, 100) + "..."}
+          </p>
+          <div className="mt-auto pt-3 border-t border-on-surface flex items-center justify-between">
+            <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-on-surface font-bold">
+              <Icon name="verified" className="text-base text-secondary" style={{ fontVariationSettings: "'FILL' 1" }} />
+              {t.read}
+            </span>
+            <button
+              type="button"
+              onClick={() => navigate(`/tests/story/${story.story_id}/run`)}
+              className="border border-on-surface px-4 py-2 bg-surface text-on-surface font-mono text-[9px] uppercase tracking-widest hover:bg-on-surface hover:text-surface transition-all shadow-stamp neo-button font-bold cursor-pointer"
+            >
+              {story.attempts > 0 ? t.retakeExam : t.commenceExam}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -520,64 +590,115 @@ export default function TestsHub() {
   );
 
   return (
-    <div className="min-h-screen text-on-surface bg-surface">
-      <main className="max-w-5xl mx-auto px-4 md:px-8 py-14 pb-24">
-        <div className="flex items-start justify-between mb-4">
-          <RegistryTag>{t.registryNo}</RegistryTag>
-          <RegistryTag align="right">{t.volume}</RegistryTag>
-        </div>
+    <div className="min-h-screen text-on-surface bg-surface font-body-md antialiased flex flex-col">
+      <style>{`
+        .editorial-border {
+          border: 2px solid var(--color-on-surface, #000000);
+        }
+        
+        .neo-button {
+          transition: all 0.15s ease-in-out;
+        }
 
-        <div className="text-center mb-6">
-          <h1 className="font-serif text-5xl md:text-6xl font-normal uppercase tracking-tight text-on-surface">
+        .neo-button:active {
+          transform: translate(2px, 2px);
+          box-shadow: 1px 1px 0px 0px var(--color-on-surface, #000000);
+        }
+        
+        .neo-button-crimson:active {
+          transform: translate(2px, 2px);
+          box-shadow: 1px 1px 0px 0px var(--color-secondary, #dc2c4f);
+        }
+        
+        .stamp-border {
+          border: 2px solid var(--color-on-surface, #000000);
+          padding: 2px;
+          background-clip: content-box;
+        }
+        
+        .inner-dash {
+          border: 1px dashed var(--color-on-surface, #000000);
+          padding: 8px 16px;
+        }
+
+        .shadow-stamp {
+          box-shadow: 2px 2px 0px 0px var(--color-on-surface, #000000);
+        }
+        
+        .shadow-hard-black {
+          box-shadow: 4px 4px 0px 0px var(--color-on-surface, #000000);
+        }
+
+        .shadow-hard-crimson {
+          box-shadow: 4px 4px 0px 0px var(--color-secondary, #dc2c4f);
+        }
+      `}</style>
+
+      <main className="w-full max-w-[1440px] mx-auto px-4 md:px-12 py-16">
+        {/* Page Header block from the mockup */}
+        <div className="mb-16 border-b-[6px] border-double border-on-surface pb-10 relative text-center pt-8">
+          <div className="absolute top-0 left-0 text-[10px] font-mono tracking-widest text-on-surface-variant uppercase bg-surface px-2 py-1 editorial-border">
+            {t.registryNo}
+          </div>
+          <div className="absolute top-0 right-0 text-[10px] font-mono tracking-widest text-on-surface-variant uppercase bg-surface px-2 py-1 editorial-border">
+            {t.volume}
+          </div>
+          <h1 className="font-serif text-5xl md:text-6xl font-normal uppercase tracking-tight text-on-surface mt-4">
             {t.title}
           </h1>
-          <div className="flex items-center justify-center gap-2 mt-4 mb-2">
-            <div className="w-12 h-0.5 bg-on-surface/30" />
-            <span className="font-serif text-sm italic text-on-surface/60">8</span>
-            <div className="w-12 h-0.5 bg-on-surface/30" />
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <span className="w-16 h-[2px] bg-on-surface"></span>
+            <Icon name="local_florist" className="text-sm text-on-surface" />
+            <span className="w-16 h-[2px] bg-on-surface"></span>
           </div>
-          <p className="font-body text-sm italic text-on-surface-variant max-w-xl mx-auto mt-2 leading-relaxed">
+          <p className="font-serif text-lg italic text-on-surface-variant max-w-3xl mx-auto mt-6 leading-relaxed">
             {t.subtitle}
           </p>
         </div>
-
-        <div className="border-t-4 border-double border-on-surface mb-8"></div>
 
         <div className="mb-8">
           <AcademicStandingLedger analytics={analytics} history={history} t={t} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          <FoundationalDrills t={t} eligibleLevels={levelsData?.eligible_levels} />
-          <RegistryAdvancement t={t} currentLevel={levelsData?.current_level || "A1"} />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+          <div className="lg:col-span-7">
+            <FoundationalDrills t={t} eligibleLevels={levelsData?.eligible_levels} />
+          </div>
+          <div className="lg:col-span-5">
+            <RegistryAdvancement t={t} currentLevel={levelsData?.current_level || "A1"} />
+          </div>
         </div>
 
-        <div className="flex items-end justify-between gap-4 mb-6">
-          <SectionLabel>{t.archivesTitle}</SectionLabel>
-          <div className="shrink-0 flex items-center gap-2">
-            <span className="font-label text-[10px] uppercase text-on-surface-variant hidden sm:inline">{t.indexFilter}</span>
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b-[3px] border-on-surface pb-4 mb-8">
+          <h2 className="font-serif text-2xl font-normal text-on-surface flex items-center gap-3">
+            <Icon name="menu_book" className="text-2xl text-on-surface" />
+            {t.archivesTitle}
+          </h2>
+          {/* Filter */}
+          <div className="flex gap-3 items-center">
+            <span className="font-mono text-[10px] uppercase text-on-surface-variant tracking-widest">{t.indexFilter}:</span>
             <div className="relative">
               <select
                 value={storyLevelFilter}
                 onChange={(e) => setStoryLevelFilter(e.target.value)}
-                className="appearance-none font-label text-[11px] uppercase font-bold border border-on-surface bg-surface pl-3 pr-8 py-2 cursor-pointer focus:outline-none"
+                className="editorial-border bg-surface font-serif text-lg px-4 py-1 shadow-stamp cursor-pointer appearance-none pr-10 focus:outline-none"
               >
                 <option value="">{t.completeIndex}</option>
-                {(levelsData?.eligible_levels || []).map((lv) => (
+                {LEVELS.map((lv) => (
                   <option key={lv} value={lv}>{lv}</option>
                 ))}
               </select>
-              <Icon name="expand_more" className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-base" />
+              <Icon name="arrow_drop_down" className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-xl" />
             </div>
           </div>
         </div>
 
         {storiesLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-72" />)}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-96" />)}
           </div>
         ) : storyTests && storyTests.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {storyTests.map((story) => (
               <StoryCard key={story.story_id} story={story} t={t} />
             ))}
