@@ -43,6 +43,10 @@ export default function TopAppBar({ hasUnread, user }) {
           </span>
         </Link>
 
+        <Link to="/messenger" className={ICON_BOX} aria-label={t("nav.messenger")}>
+          <Icon name="chat" className="text-tertiary" />
+        </Link>
+
         <Link to="/notifications" className={`relative ${ICON_BOX}`} aria-label={t("nav.notifications")}>
           <Icon name="notifications" className="text-tertiary" />
           {hasUnread && (

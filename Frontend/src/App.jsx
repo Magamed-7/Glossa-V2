@@ -26,6 +26,7 @@ const Leaderboard = lazy(() => import("./pages/Leaderboard.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Login2fa = lazy(() => import("./pages/Login2fa.jsx"));
 const Marketplace = lazy(() => import("./pages/Marketplace.jsx"));
+const Messenger = lazy(() => import("./pages/Messenger.jsx"));
 const MarketplaceStory = lazy(() => import("./pages/MarketplaceStory.jsx"));
 const MarketplaceStories = lazy(() => import("./pages/MarketplaceStories.jsx"));
 const MyProfile = lazy(() => import("./pages/MyProfile.jsx"));
@@ -119,6 +120,8 @@ export default function App() {
           <Route path="/tutor" element={page(TutorScenarios)} />
           <Route path="/tutor/chat" element={page(TutorChat)} />
           <Route path="/leaderboard" element={page(Leaderboard)} />
+          <Route path="/messenger" element={page(Messenger)} />
+          <Route path="/messenger/:conversationId" element={page(Messenger)} />
           <Route path="/marketplace/:id" element={page(MarketplaceStory)} />
           <Route path="/studio" element={page(AuthorStudio)} />
           <Route path="/studio/new" element={page(StoryEditor)} />

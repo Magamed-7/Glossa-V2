@@ -66,6 +66,8 @@ export default function AppLayout({ fab }) {
                   targetUrl = "/leaderboard";
                 } else if (activeToast.type === "achievement") {
                   targetUrl = "/profile";
+                } else if (activeToast.type === "new_message") {
+                  targetUrl = "/messenger";
                 }
                 navigate(targetUrl);
                 clearToast();

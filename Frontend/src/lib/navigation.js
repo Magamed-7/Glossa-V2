@@ -6,6 +6,7 @@ export const NAV_ITEMS = [
   { to: "/grammar", labelKey: "nav.grammar", icon: "menu_book" },
   { to: "/tests", labelKey: "nav.tests", icon: "quiz" },
   { to: "/tutor", labelKey: "nav.tutor", icon: "smart_toy" },
+  { to: "/messenger", labelKey: "nav.messenger", icon: "chat" },
   { to: "/marketplace", labelKey: "nav.market", icon: "storefront" },
   { to: "/leaderboard", labelKey: "nav.ranking", icon: "leaderboard" },
 ];

@@ -50,7 +50,7 @@ export default function SideNavBar() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="flex flex-col gap-2" aria-label={t("nav.primaryNav")}>
+      <nav className="neo-scroll flex-1 flex flex-col gap-2 overflow-y-auto min-h-0" aria-label={t("nav.primaryNav")}>
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.to}
