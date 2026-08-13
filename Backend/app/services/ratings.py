@@ -53,6 +53,7 @@ async def award_xp(user_id: int, reason: str, db: AsyncSession, amount: int | No
     global_key = await resolve_key(LEADERBOARD_GLOBAL_KEY)
     await redis_client.zincrby(global_key, amount, user_id)
     await redis_client.zincrby(weekly_leaderboard_key(), amount, user_id)
+    await redis_client.publish('leaderboard_updates', 'update')
 
     return transaction
 

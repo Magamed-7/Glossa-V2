@@ -12,7 +12,49 @@ from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
 from app.services import ai_chat, ai_mcp, crud_user
 
+from app.core.redis_client import redis_client
+
 logger = logging.getLogger(__name__)
+
+
+class LeaderboardManager:
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        if websocket in self.active_connections:
+            self.active_connections.remove(websocket)
+
+    async def broadcast_update(self):
+        for connection in list(self.active_connections):
+            try:
+                await connection.send_json({'type': 'update'})
+            except Exception:
+                pass
+
+
+leaderboard_manager = LeaderboardManager()
+
+
+async def listen_leaderboard_updates():
+    pubsub = redis_client.pubsub()
+    await pubsub.subscribe('leaderboard_updates')
+    try:
+        while True:
+            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
+            if message:
+                await leaderboard_manager.broadcast_update()
+            await asyncio.sleep(0.5)
+    except asyncio.CancelledError:
+        pass
+    except Exception:
+        logger.exception('Error in leaderboard pubsub listener')
+    finally:
+        await pubsub.unsubscribe('leaderboard_updates')
 
 
 @asynccontextmanager
@@ -21,11 +63,17 @@ async def lifespan(app: FastAPI):
     # отдельный процесс от app.main (там свой ai_mcp.connect() в своём lifespan), поэтому
     # у websocket_app должен быть свой собственный подключённый клиент, не общий с ним.
     await ai_mcp.connect()
+    listener_task = asyncio.create_task(listen_leaderboard_updates())
     yield
+    listener_task.cancel()
+    try:
+        await listener_task
+    except asyncio.CancelledError:
+        pass
     await ai_mcp.disconnect()
 
 
-app = FastAPI(title='Glossa WebSocket AI Chat', lifespan=lifespan)
+app = FastAPI(title='Glossa WebSocket AI Chat & Leaderboard', lifespan=lifespan)
 
 TICK_SECONDS = 10
 # DB-запись seconds_spent и проверка лимита — не каждый тик (было 4 обращения к БД/Redis в
@@ -208,3 +256,13 @@ async def ai_chat_ws(websocket: WebSocket):
         pass
     finally:
         ticker.cancel()
+
+
+@app.websocket('/ws/leaderboard')
+async def leaderboard_ws(websocket: WebSocket):
+    await leaderboard_manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        leaderboard_manager.disconnect(websocket)
