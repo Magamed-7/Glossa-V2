@@ -19,6 +19,7 @@ from app.api.router_search import router_search
 from app.api.router_settings import router_settings
 from app.api.router_social import router_social
 from app.api.router_story import router_stories
+from app.api.router_streak import router_streak
 from app.api.router_subscription import router_subscription
 from app.api.router_telegram import router_telegram
 from app.api.router_user_story import router_user_story
@@ -72,6 +73,7 @@ app.include_router(router_grammar)
 app.include_router(router_stories)
 app.include_router(router_social)
 app.include_router(router_achievement)
+app.include_router(router_streak)
 app.include_router(router_ai)
 app.include_router(router_rating)
 app.include_router(router_subscription)
