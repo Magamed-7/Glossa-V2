@@ -104,11 +104,11 @@ export default function Achievements() {
   const earnedCount = data.mine.length;
   const totalCount = data.all.length;
 
-  // Compute prestige level
+  // Compute prestige level based on mockup visual thresholds (e.g. 14 earned = Gold)
   let prestigeKey = "prestigeBronze";
-  if (earnedCount >= 40) prestigeKey = "prestigePlatinum";
-  else if (earnedCount >= 20) prestigeKey = "prestigeGold";
-  else if (earnedCount >= 10) prestigeKey = "prestigeSilver";
+  if (earnedCount >= 20) prestigeKey = "prestigePlatinum";
+  else if (earnedCount >= 10) prestigeKey = "prestigeGold";
+  else if (earnedCount >= 5) prestigeKey = "prestigeSilver";
 
   // Group achievements by category for the Registry view
   const groups = new Map();
