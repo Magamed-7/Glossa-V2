@@ -30,7 +30,7 @@ function daysRemaining(lastChangedAt) {
   return remainingMs > 0 ? Math.ceil(remainingMs / DAY_MS) : 0;
 }
 
-function ChangeUsername() {
+export function ChangeUsername() {
   const t = useT();
   const toast = useToast();
   const { user, refreshUser } = useAuth();
@@ -106,7 +106,7 @@ function ChangeUsername() {
   );
 }
 
-function ChangeEmail() {
+export function ChangeEmail() {
   const t = useT();
   const toast = useToast();
   const { user, refreshUser } = useAuth();

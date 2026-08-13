@@ -5,32 +5,34 @@ import PhotoUpload from "../components/profile/PhotoUpload.jsx";
 import PrivacySettings from "../components/profile/PrivacySettings.jsx";
 import LanguagesSection from "../components/profile/LanguagesSection.jsx";
 import ConnectionLists from "../components/profile/ConnectionLists.jsx";
+import CredentialsEditor from "../components/profile/CredentialsEditor.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
-import * as authApi from "../lib/api/auth.js";
 import { getMyAchievements } from "../lib/api/achievements.js";
 import { useT } from "../lib/i18n.jsx";
 
 export default function MyProfile() {
   const t = useT();
-  const { profile, languages, refreshUser } = useAuth();
-  const { data: account, loading, error, reload } = useApi(() => authApi.getMe(), []);
+  const { user, profile, languages, refreshUser } = useAuth();
   const { data: earnedAchievements, loading: loadingAch, error: errorAch } = useApi(() => getMyAchievements(), []);
-
-  if (loading) return <Skeleton className="h-64" />;
-  if (error) return <ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center gap-6 mb-section-gap">
-        <PhotoUpload photoUrl={profile?.photo_url} name={account.username} onUploaded={refreshUser} />
+        <PhotoUpload photoUrl={profile?.photo_url} name={user?.username} onUploaded={refreshUser} />
         <div>
-          <h1 className="font-headline italic text-headline-lg text-secondary">{account.username}</h1>
+          <h1 className="font-headline italic text-headline-lg text-secondary">{user?.username}</h1>
           {profile?.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
       </div>
+      
       {profile && <ProfileEditor profile={profile} onUpdated={refreshUser} />}
+      
+      <div className="mt-6">
+        <CredentialsEditor />
+      </div>
+
       <div className="mt-6">
         <LanguagesSection languages={languages} onAdded={refreshUser} />
       </div>
