@@ -5,10 +5,11 @@ import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Modal from "../components/ui/Modal.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
+import WordAudioButton from "../components/ui/WordAudioButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
-import { deleteCard, getCards, setCardStatus, createCard } from "../lib/api/deck.js";
+import { deleteCard, getCards, setCardStatus, createCard, generateAudio } from "../lib/api/deck.js";
 import { getStats, getDailyMissions } from "../lib/api/learning.js";
 import { getMySubscription } from "../lib/api/subscriptions.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
@@ -183,7 +184,8 @@ export default function WordDeck() {
       setRecallTimeLeft((t) => {
         if (t <= 1) {
           clearInterval(secondsTimer);
-          setGameMode("speed-recall-results");
+          setGameMode("archive");
+          setShowRecallResults(true);
           return 0;
         }
         return t - 1;
@@ -218,7 +220,8 @@ export default function WordDeck() {
           clearInterval(interval);
           clearInterval(secondsTimer);
           setTimeout(() => {
-            setGameMode("speed-recall-results");
+            setGameMode("archive");
+            setShowRecallResults(true);
           }, 500);
         }
 
@@ -360,14 +363,16 @@ export default function WordDeck() {
           translation: lang === "tg" ? item.translation_tg : item.translation_ru,
           example: item.example_en,
           source_story_id: sourceId,
-          transcription: item.transcription ? item.transcription.replace(/^\/+|\/+$/g, "") : null
+          transcription: item.transcription ? item.transcription.replace(/^\/+|\/+$/g, "") : null,
+          audio_url: item.audio_url || null,
+          accent: item.accent || null
         });
         addedCount++;
       } catch (err) {
         skippedCount++;
       }
     }
-    
+
     toast.success(`${addedCount} words added. ${skippedCount} skipped (already in deck).`);
     setImporting(false);
     reload();
@@ -394,14 +399,16 @@ export default function WordDeck() {
           translation: lang === "tg" ? item.translation_tg : item.translation_ru,
           example: item.example_en,
           source_story_id: sourceId,
-          transcription: item.transcription ? item.transcription.replace(/^\/+|\/+$/g, "") : null
+          transcription: item.transcription ? item.transcription.replace(/^\/+|\/+$/g, "") : null,
+          audio_url: item.audio_url || null,
+          accent: item.accent || null
         });
         addedCount++;
       } catch (err) {
         skippedCount++;
       }
     }
-    
+
     toast.success(`${addedCount} words added. ${skippedCount} skipped.`);
     setImporting(false);
     setShowManualImportModal(false);
@@ -626,10 +633,12 @@ export default function WordDeck() {
           current.map((c) => (c.id === card.id ? { ...c, status: nextStatus } : c))
         );
         
-        await submitReview(card.id, quality);
-        
-        reloadStats();
-        reloadMissions();
+        submitReview(card.id, quality)
+          .then(() => {
+            reloadStats();
+            reloadMissions();
+          })
+          .catch((err) => console.error(err));
       } catch (err) {
         console.error(err);
       }
@@ -1516,6 +1525,20 @@ export default function WordDeck() {
                           <h3 className="font-serif text-3xl font-bold uppercase tracking-tight text-on-surface">
                             {card.word}
                           </h3>
+                          {card.transcription && (
+                            <span className="font-mono text-sm text-on-surface-variant italic">
+                              /{card.transcription.replace(/^\/+|\/+$/g, "")}/
+                            </span>
+                          )}
+                          <WordAudioButton
+                            audioUrl={card.audio_url}
+                            accent={card.accent}
+                            onGenerate={async () => {
+                              const updated = await generateAudio(card.id);
+                              setItems((current) => current.map((c) => (c.id === card.id ? updated : c)));
+                              return updated.audio_url;
+                            }}
+                          />
                           <div className="flex-shrink-0">
                             <BadgeSelect card={card} />
                           </div>
@@ -1791,9 +1814,12 @@ export default function WordDeck() {
                   
                   {/* Word Details */}
                   <div className="flex-1 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
-                    <div>
-                      <span className="font-serif text-lg font-bold uppercase text-primary mr-2">{w.word}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif text-lg font-bold uppercase text-primary">{w.word}</span>
                       <span className="font-mono text-xs text-outline italic">/{w.transcription?.replace(/^\/+|\/+$/g, "")}/</span>
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <WordAudioButton audioUrl={w.audio_url} accent={w.accent} />
+                      </span>
                     </div>
                     <div className="text-right">
                       <span className="font-label text-xs uppercase font-bold text-on-surface-variant bg-surface px-2 py-0.5 border border-on-surface/20 mr-2">{w.part_of_speech}</span>
@@ -1833,6 +1859,21 @@ export default function WordDeck() {
         correctCount={typewriterCorrectCount}
         totalCount={gameItems.length}
         gameType="typewriter"
+        lang={lang}
+      />
+
+      <XpGainSummaryModal
+        isOpen={showRecallResults}
+        onClose={() => {
+          setShowRecallResults(false);
+          reload();
+          reloadStats();
+          reloadMissions();
+        }}
+        xpGained={recallResultsStats.correct * 10}
+        correctCount={recallResultsStats.correct}
+        totalCount={recallResultsStats.correct + recallResultsStats.missed}
+        gameType="speed-recall"
         lang={lang}
       />
     </div>

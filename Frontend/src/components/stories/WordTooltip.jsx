@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { addWordToDeck } from "../../lib/api/stories.js";
 import { createCard } from "../../lib/api/deck.js";
-import { getWordTranscription } from "../../lib/api/vocabulary.js";
+import { getWordTranscription, getWordAudio } from "../../lib/api/vocabulary.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useI18n, useT } from "../../lib/i18n.jsx";
+import WordAudioButton from "../ui/WordAudioButton.jsx";
 
-export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
+export default function WordTooltip({ wordData, storyId, level, onAdded, onClose }) {
   const t = useT();
   const { lang } = useI18n();
   const [status, setStatus] = useState("idle");
@@ -35,6 +36,25 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
       active = false;
     };
   }, [lemma, wordData.transcription]);
+
+  const [dynamicAudio, setDynamicAudio] = useState(null);
+  const audioUrl = wordData.audioUrl || dynamicAudio?.audio_url;
+  const accent = wordData.accent || dynamicAudio?.accent;
+
+  useEffect(() => {
+    if (wordData.audioUrl) return;
+
+    let active = true;
+    getWordAudio(lemma, level)
+      .then((res) => {
+        if (active) setDynamicAudio(res);
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, [lemma, level, wordData.audioUrl]);
 
   useEffect(() => {
     if (initialTranslation) return;
@@ -70,7 +90,7 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
       if (wordData.id) {
         card = await addWordToDeck(storyId, wordData.id, { locale: lang });
       } else {
-        card = await createCard({ word: lemma, translation, transcription });
+        card = await createCard({ word: lemma, translation, transcription, audio_url: audioUrl, accent });
       }
       setStatus("added");
       onAdded?.(card);
@@ -118,6 +138,7 @@ export default function WordTooltip({ wordData, storyId, onAdded, onClose }) {
         {transcription && (
           <span className="font-mono text-xs text-on-surface-variant italic">/{transcription}/</span>
         )}
+        <WordAudioButton audioUrl={audioUrl} accent={accent} />
       </div>
 
       <div className="font-body text-xs italic text-on-surface-variant leading-relaxed">

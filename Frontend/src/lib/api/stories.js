@@ -20,6 +20,12 @@ export function getStory(storyId, { locale } = {}) {
   return api.get(`/stories/${storyId}${query ? `?${query}` : ""}`);
 }
 
+// Списывает дневной лимит аудиокниг (audiobooks_per_day), кроме повторного прослушивания уже
+// начатой сегодня истории — см. check_audiobook_limit на бэкенде.
+export function listenToStory(storyId) {
+  return api.post(`/stories/${storyId}/listen`);
+}
+
 export function saveProgress(storyId, { is_completed, last_position }) {
   return api.post(`/stories/${storyId}/progress`, { is_completed, last_position });
 }

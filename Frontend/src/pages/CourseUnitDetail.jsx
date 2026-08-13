@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import WordAudioButton from "../components/ui/WordAudioButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useI18n } from "../lib/i18n.jsx";
 import { useToast } from "../lib/toast.jsx";
@@ -184,6 +185,8 @@ export default function CourseUnitDetail() {
             example: word.example_en || null,
             source_story_id: sourceId,
             transcription: word.transcription || null,
+            audio_url: word.audio_url || null,
+            accent: word.accent || null,
           });
           added += 1;
         } catch (e) {
@@ -250,11 +253,12 @@ export default function CourseUnitDetail() {
                   {vocabWords.slice(0, 24).map((w) => (
                     <span
                       key={w.id}
-                      className="px-2 py-1 bg-surface-container border border-on-surface/20 font-body text-xs"
+                      className="flex items-center gap-1 px-2 py-1 bg-surface-container border border-on-surface/20 font-body text-xs"
                     >
                       {w.word}
                       {w.transcription ? ` /${w.transcription}/` : ""}
                       {w.translation ? ` — ${w.translation}` : ""}
+                      <WordAudioButton audioUrl={w.audio_url} accent={w.accent} className="text-sm" />
                     </span>
                   ))}
                 </div>

@@ -18,7 +18,7 @@ function buildWordsRegex(words) {
 }
 
 
-export default function StoryBody({ body, words, wordDictionary, storyId, onWordAdded }) {
+export default function StoryBody({ body, words, wordDictionary, storyId, level, onWordAdded }) {
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
@@ -42,6 +42,8 @@ export default function StoryBody({ body, words, wordDictionary, storyId, onWord
           ru: w.translation_ru,
           tg: w.translation_tg,
           transcription: w.transcription,
+          audioUrl: w.audio_url,
+          accent: w.accent,
         });
       });
     }
@@ -109,6 +111,7 @@ export default function StoryBody({ body, words, wordDictionary, storyId, onWord
                   <WordTooltip
                     wordData={entry}
                     storyId={storyId}
+                    level={level}
                     onAdded={onWordAdded}
                     onClose={() => setActiveId(null)}
                   />

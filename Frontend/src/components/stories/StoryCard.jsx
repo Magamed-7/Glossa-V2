@@ -35,6 +35,14 @@ export default function StoryCard({ story, progress }) {
             <Icon name="check" className="text-sm" />
           </span>
         )}
+        {story.audio_url && (
+          <span
+            className="absolute top-3 left-3 bg-surface text-on-surface rounded-full p-1"
+            title={t("stories.listenAudiobook")}
+          >
+            <Icon name="headphones" className="text-sm" />
+          </span>
+        )}
       </div>
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">

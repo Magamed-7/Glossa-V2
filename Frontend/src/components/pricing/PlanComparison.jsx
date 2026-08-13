@@ -14,6 +14,8 @@ const ROW_ICONS = {
   readyVocab: "collections_bookmark",
   own_stories_per_week: "edit_note",
   ai_seconds_per_day: "smart_toy",
+  audioWords: "volume_up",
+  audiobooks_per_day: "headphones",
   buyStories: "storefront",
   telegram: "send",
 };
@@ -22,6 +24,7 @@ const NUMERIC_ROWS = [
   { key: "stories_per_day", labelKey: "pricing.rows.storiesPerDay" },
   { key: "deck_words_per_day", labelKey: "pricing.rows.wordsPerDay" },
   { key: "own_stories_per_week", labelKey: "pricing.rows.ownStoriesPerWeek" },
+  { key: "audiobooks_per_day", labelKey: "pricing.rows.audiobooksPerDay" },
 ];
 
 function divider(i, total) {
@@ -145,6 +148,22 @@ export default function PlanComparison({ plans }) {
                   <span className="font-body text-sm text-on-surface-variant">{t(`pricing.readyVocabByPlan.${plan.code}`)}</span>
                 ) : (
                   <span className="font-display text-2xl font-bold text-secondary">{t(`pricing.readyVocabByPlan.${plan.code}`)}</span>
+                )}
+              </td>
+            ))}
+          </tr>
+
+          <tr className="border-b border-surface-container-highest">
+            <RowLabel icon={ROW_ICONS.audioWords}>{t("pricing.rows.audioWordsPerDay")}</RowLabel>
+            {plans.map((plan, i) => (
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                {plan.code === "free" ? (
+                  <span className="font-body text-sm text-on-surface-variant">{t(`pricing.audioWordsByPlan.${plan.code}`)}</span>
+                ) : (
+                  <span className="font-display text-2xl font-bold text-secondary">{t(`pricing.audioWordsByPlan.${plan.code}`)}</span>
                 )}
               </td>
             ))}

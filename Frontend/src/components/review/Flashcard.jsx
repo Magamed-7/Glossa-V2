@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useT } from "../../lib/i18n.jsx";
+import WordAudioButton from "../ui/WordAudioButton.jsx";
 
 export default function Flashcard({ card, flipped, onFlip }) {
   const reduceMotion = useReducedMotion();
@@ -26,6 +27,11 @@ export default function Flashcard({ card, flipped, onFlip }) {
           <span className="font-display text-5xl text-center">{card.word}</span>
           {card.transcription && (
             <span className="font-mono text-lg text-on-surface-variant italic">/{card.transcription}/</span>
+          )}
+          {card.audio_url && (
+            <span onClick={(e) => e.stopPropagation()}>
+              <WordAudioButton audioUrl={card.audio_url} accent={card.accent} />
+            </span>
           )}
         </div>
         <div

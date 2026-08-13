@@ -6,6 +6,7 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import NeoButton from "../components/ui/NeoButton.jsx";
 import StoryCard from "../components/stories/StoryCard.jsx";
+import WordAudioButton from "../components/ui/WordAudioButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { searchStories } from "../lib/api/_pending/search.js";
 import { getVocabulary } from "../lib/api/vocabulary.js";
@@ -23,7 +24,14 @@ function VocabularyRow({ entry }) {
   async function onAdd() {
     setSubmitting(true);
     try {
-      await createCard({ word: entry.word, translation: entry.translation, example: entry.example_en, transcription: entry.transcription });
+      await createCard({
+        word: entry.word,
+        translation: entry.translation,
+        example: entry.example_en,
+        transcription: entry.transcription,
+        audio_url: entry.audio_url,
+        accent: entry.accent,
+      });
       setAdded(true);
     } catch (err) {
       toast.error(errorText(err));
@@ -40,6 +48,7 @@ function VocabularyRow({ entry }) {
           {entry.transcription && (
             <span className="font-mono text-sm text-on-surface-variant italic">/{entry.transcription}/</span>
           )}
+          <WordAudioButton audioUrl={entry.audio_url} accent={entry.accent} />
           <span className="font-label text-label-md uppercase text-secondary">{entry.cefr_level}</span>
         </div>
         <p className="font-body text-body-md text-on-surface-variant">{entry.translation}</p>

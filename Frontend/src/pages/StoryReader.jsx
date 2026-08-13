@@ -7,11 +7,13 @@ import NeoButton from "../components/ui/NeoButton.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import StoryBody from "../components/stories/StoryBody.jsx";
 import StoryQuestions from "../components/stories/StoryQuestions.jsx";
+import StoryAudioPlayer from "../components/stories/StoryAudioPlayer.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyProgress, getStory, getStories, saveProgress } from "../lib/api/stories.js";
 import { useI18n, useT } from "../lib/i18n.jsx";
 import { getBookCoverUrl } from "./StoriesCatalog.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
+import XpGainSummaryModal from "../components/ui/XpGainSummaryModal.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -50,6 +52,7 @@ export default function StoryReader() {
 
   const [completed, setCompleted] = useState(false);
   const [showTranslation, setShowTranslation] = useState(false);
+  const [showXpModal, setShowXpModal] = useState(false);
   const restoredRef = useRef(false);
 
   useEffect(() => {
@@ -87,6 +90,9 @@ export default function StoryReader() {
     setCompleted(nextState);
     try {
       await saveProgress(story.id, { is_completed: nextState });
+      if (nextState) {
+        setShowXpModal(true);
+      }
     } catch (e) {
       setCompleted(!nextState);
     }
@@ -175,6 +181,7 @@ export default function StoryReader() {
             {story.genre && (
               <span className="font-label text-sm font-bold uppercase tracking-widest">{story.genre}</span>
             )}
+            <StoryAudioPlayer storyId={story.id} hasAudio={!!story.audio_url} />
           </div>
           {hasTranslation && (
             <button
@@ -198,14 +205,14 @@ export default function StoryReader() {
         <div className="grid grid-cols-1 md:grid-cols-1 gap-10">
           {showTranslation ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <StoryBody body={story.body} words={story.words} wordDictionary={story.word_dictionary} storyId={story.id} />
+              <StoryBody body={story.body} words={story.words} wordDictionary={story.word_dictionary} storyId={story.id} level={story.cefr_level} />
               <div className="font-headline text-lg leading-[2.5] text-on-surface-variant border-l-2 border-on-surface/20 pl-6">
                 {story.body_translated}
               </div>
             </div>
           ) : (
             <div className="font-headline text-xl leading-[2.5]">
-              <StoryBody body={story.body} words={story.words} wordDictionary={story.word_dictionary} storyId={story.id} />
+              <StoryBody body={story.body} words={story.words} wordDictionary={story.word_dictionary} storyId={story.id} level={story.cefr_level} />
             </div>
           )}
         </div>
@@ -266,6 +273,16 @@ export default function StoryReader() {
           {t("stories.translateView")}
         </button>
       )}
+
+      <XpGainSummaryModal
+        isOpen={showXpModal}
+        onClose={() => setShowXpModal(false)}
+        xpGained={10}
+        correctCount={1}
+        totalCount={1}
+        gameType="story"
+        lang={lang}
+      />
     </div>
   );
 }

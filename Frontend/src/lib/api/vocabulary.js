@@ -27,3 +27,8 @@ export function getWordTranscription(word) {
   const params = new URLSearchParams({ word });
   return api.get(`/vocabulary/transcription?${params}`);
 }
+
+export function getWordAudio(word, level) {
+  const params = new URLSearchParams({ word, level: level || "A1" });
+  return api.get(`/vocabulary/audio?${params}`);
+}
