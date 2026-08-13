@@ -644,6 +644,7 @@ export default function WordDeck() {
     } else {
       setTypeIndex(0);
       setShowTypewriterResults(true);
+      setGameMode("archive");
     }
   };
 
