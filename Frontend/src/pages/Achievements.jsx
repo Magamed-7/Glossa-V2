@@ -4,7 +4,8 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getAllAchievements, getMyAchievements } from "../lib/api/achievements.js";
-import { useT } from "../lib/i18n.jsx";
+import { useT, useI18n } from "../lib/i18n.jsx";
+import { translateAchievement } from "../lib/achievementsTranslation.js";
 
 const resolveIcon = (iconName) => {
   if (!iconName) return "military_tech";
@@ -76,6 +77,7 @@ const getAchievementStyle = (achievement, index) => {
 
 export default function Achievements() {
   const t = useT();
+  const { lang } = useI18n();
   const [filter, setFilter] = useState("all"); // "all" or "earned"
 
   const { data, loading, error, reload } = useApi(async () => {
@@ -104,11 +106,14 @@ export default function Achievements() {
   const earnedCount = data.mine.length;
   const totalCount = data.all.length;
 
-  // Compute prestige level based on mockup visual thresholds (e.g. 14 earned = Gold)
-  let prestigeKey = "prestigeBronze";
-  if (earnedCount >= 20) prestigeKey = "prestigePlatinum";
-  else if (earnedCount >= 10) prestigeKey = "prestigeGold";
-  else if (earnedCount >= 5) prestigeKey = "prestigeSilver";
+  // Compute 7 levels of prestige based on earned achievements count
+  let prestigeKey = "prestigeBronze"; // Level 1 (0+ earned)
+  if (earnedCount >= 100) prestigeKey = "prestigeLegendary"; // Level 7
+  else if (earnedCount >= 70) prestigeKey = "prestigeMaster"; // Level 6
+  else if (earnedCount >= 40) prestigeKey = "prestigeDiamond"; // Level 5
+  else if (earnedCount >= 20) prestigeKey = "prestigePlatinum"; // Level 4
+  else if (earnedCount >= 10) prestigeKey = "prestigeGold"; // Level 3
+  else if (earnedCount >= 5) prestigeKey = "prestigeSilver"; // Level 2
 
   // Group achievements by category for the Registry view
   const groups = new Map();
@@ -225,6 +230,7 @@ export default function Achievements() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {data.mine.map((a, index) => {
                 const style = getAchievementStyle(a, index);
+                const translated = translateAchievement(a, lang);
                 return (
                   <div key={a.id} className={`p-4 flex items-center gap-3 hard-shadow relative ${style.cardClass}`}>
                     {style.isMax && (
@@ -235,7 +241,7 @@ export default function Achievements() {
                     </div>
                     <div className="flex flex-col select-none pr-3">
                       <h4 className="font-label text-xs uppercase font-bold tracking-tight leading-tight flex items-center gap-1">
-                        {a.title.toUpperCase()}
+                        {translated.title.toUpperCase()}
                         {style.isMax && (
                           <span className="bg-black text-white px-1.5 py-0.5 text-[8px] font-bold uppercase rounded-sm leading-none ml-1">
                             MAX
@@ -273,6 +279,7 @@ export default function Achievements() {
                 {items.map((a) => {
                   const earned = earnedByCode.get(a.code);
                   const resolvedIcon = resolveIcon(a.icon);
+                  const translated = translateAchievement(a, lang);
 
                   if (earned) {
                     return (
@@ -288,10 +295,10 @@ export default function Achievements() {
                           </div>
                           <div>
                             <h3 className="font-headline text-lg font-bold text-on-surface uppercase tracking-tight">
-                              {a.title}
+                              {translated.title}
                             </h3>
                             <p className="font-body text-xs text-on-surface-variant mt-1 max-w-xl">
-                              {a.description}
+                              {translated.description}
                             </p>
                           </div>
                         </div>
@@ -329,10 +336,10 @@ export default function Achievements() {
                           </div>
                           <div>
                             <h3 className="font-headline text-lg font-bold text-on-surface/80 uppercase tracking-tight">
-                              {a.title}
+                              {translated.title}
                             </h3>
                             <p className="font-body text-xs text-on-surface-variant/80 mt-1 max-w-xl">
-                              {a.description}
+                              {translated.description}
                             </p>
                           </div>
                         </div>

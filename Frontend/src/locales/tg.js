@@ -272,6 +272,9 @@ export const tg = {
     prestigeSilver: "Нуқрагин",
     prestigeBronze: "Бронзӣ",
     prestigePlatinum: "Платинагӣ",
+    prestigeDiamond: "Алмосӣ",
+    prestigeMaster: "Устод",
+    prestigeLegendary: "Афсонавӣ",
     all: "Ҳамаи дастовардҳо",
     earnedOnly: "Ба даст овардашуда",
     categories: {

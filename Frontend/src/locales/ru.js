@@ -272,6 +272,9 @@ export const ru = {
     prestigeSilver: "Серебряный",
     prestigeBronze: "Бронзовый",
     prestigePlatinum: "Платиновый",
+    prestigeDiamond: "Алмазный",
+    prestigeMaster: "Мастер",
+    prestigeLegendary: "Легендарный",
     all: "Все достижения",
     earnedOnly: "Заработанные",
     categories: {

@@ -9,7 +9,8 @@ import Icon from "../components/ui/Icon.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyAchievements } from "../lib/api/achievements.js";
-import { useT } from "../lib/i18n.jsx";
+import { useT, useI18n } from "../lib/i18n.jsx";
+import { translateAchievement } from "../lib/achievementsTranslation.js";
 
 const resolveIcon = (iconName) => {
   if (!iconName) return "military_tech";
@@ -81,6 +82,7 @@ const getAchievementStyle = (achievement, index) => {
 
 export default function MyProfile() {
   const t = useT();
+  const { lang } = useI18n();
   const { user, profile, languages, refreshUser } = useAuth();
   const { data: earnedAchievements, loading: loadingAch, error: errorAch } = useApi(() => getMyAchievements(), []);
 
@@ -122,6 +124,7 @@ export default function MyProfile() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {earnedAchievements.map((a, index) => {
                 const style = getAchievementStyle(a, index);
+                const translated = translateAchievement(a, lang);
                 return (
                   <div key={a.id} className={`p-4 flex items-center gap-3 hard-shadow relative ${style.cardClass}`}>
                     {style.isMax && (
@@ -132,7 +135,7 @@ export default function MyProfile() {
                     </div>
                     <div className="flex flex-col select-none pr-3">
                       <h4 className="font-label text-xs uppercase font-bold tracking-tight leading-tight flex items-center gap-1">
-                        {a.title.toUpperCase()}
+                        {translated.title.toUpperCase()}
                         {style.isMax && (
                           <span className="bg-black text-white px-1.5 py-0.5 text-[8px] font-bold uppercase rounded-sm leading-none ml-1">
                             MAX

@@ -272,6 +272,9 @@ export const en = {
     prestigeSilver: "Silver",
     prestigeBronze: "Bronze",
     prestigePlatinum: "Platinum",
+    prestigeDiamond: "Diamond",
+    prestigeMaster: "Master",
+    prestigeLegendary: "Legendary",
     all: "All Achievements",
     earnedOnly: "Earned Only",
     categories: {
