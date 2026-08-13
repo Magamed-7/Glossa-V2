@@ -11,66 +11,70 @@ import { useApi } from "../lib/useApi.js";
 import { getMyAchievements } from "../lib/api/achievements.js";
 import { useT } from "../lib/i18n.jsx";
 
+const resolveIcon = (iconName) => {
+  if (!iconName) return "military_tech";
+  const name = iconName.toLowerCase();
+  if (name.startsWith("words_") || name === "menu_book") return "menu_book";
+  if (name.startsWith("streak_") || name === "local_fire_department") return "local_fire_department";
+  if (name.startsWith("reviews_received") || name === "stars") return "stars";
+  if (name.startsWith("reviews_") || name === "rate_review") return "rate_review";
+  if (name.startsWith("stories_written") || name === "history_edu") return "history_edu";
+  if (name.startsWith("stories_sold") || name === "payments") return "payments";
+  if (name.startsWith("friends_") || name === "group") return "group";
+  return iconName;
+};
+
 const getAchievementStyle = (achievement, index) => {
   const { code, threshold, icon } = achievement;
+  const resolved = resolveIcon(icon);
   
+  let cardClass = "";
+  let leftBoxClass = "";
+  let leftContent = null;
+  let isMax = threshold >= 10 || code.endsWith("_100") || code.endsWith("_500");
+
+  // Determine left side container content
+  if (code === "reviews_5" || code.startsWith("words_")) {
+    leftContent = threshold.toString();
+    leftBoxClass = "bg-black text-white font-display text-xl italic font-bold";
+  } else if (code.startsWith("streak_")) {
+    leftContent = <Icon name="local_fire_department" className="text-2xl filled" />;
+  } else {
+    leftContent = <Icon name={resolved} className="text-2xl" />;
+  }
+
+  // Determine card gradient background class
   if (code === "reviews_5") {
-    return {
-      cardClass: "bg-[#c59b27] text-black border-2 border-tertiary",
-      leftBoxClass: "bg-black text-white font-display text-xl italic font-bold",
-      leftContent: "5",
-      isMax: false,
-    };
-  }
-  if (code === "streak_1") {
-    return {
-      cardClass: "bg-secondary text-white border-2 border-tertiary",
-      leftBoxClass: "bg-black text-white",
-      leftContent: <Icon name="local_fire_department" className="text-2xl filled" />,
-      isMax: false,
-    };
-  }
-  if (code === "streak_2") {
-    return {
-      cardClass: "bg-black text-white border-2 border-tertiary",
-      leftBoxClass: "bg-white text-black",
-      leftContent: <Icon name="local_fire_department" className="text-2xl filled" />,
-      isMax: false,
-    };
-  }
-
-  // Dynamic levels mapping
-  if (threshold === 2 || (index % 4 === 1)) {
-    return {
-      cardClass: "bg-[#ffdadb] text-secondary border-2 border-tertiary",
-      leftBoxClass: "bg-secondary text-white",
-      leftContent: <Icon name={icon || "rate_review"} className="text-2xl" />,
-      isMax: threshold >= 10,
-    };
-  }
-  if (threshold === 3 || (index % 4 === 2)) {
-    return {
-      cardClass: "bg-[#ffe6cc] text-black border-2 border-tertiary",
-      leftBoxClass: "bg-black text-white",
-      leftContent: <Icon name={icon || "rate_review"} className="text-2xl" />,
-      isMax: threshold >= 10,
-    };
-  }
-  if (threshold >= 10) {
-    return {
-      cardClass: "bg-[#e5e2df] text-black border-2 border-tertiary relative overflow-hidden",
-      leftBoxClass: "bg-secondary text-white",
-      leftContent: <Icon name={icon || "rate_review"} className="text-2xl" />,
-      isMax: true,
-    };
+    cardClass = "bg-gradient-to-br from-[#ca8a04] via-[#eab308] to-[#fef08a] text-black border-2 border-primary";
+    leftBoxClass = "bg-black text-white font-display text-xl italic font-bold";
+  } else if (code === "streak_1") {
+    cardClass = "bg-gradient-to-br from-[#dc2c4f] to-[#b90538] text-white border-2 border-primary";
+    leftBoxClass = "bg-black text-white";
+  } else if (code === "streak_2") {
+    cardClass = "bg-gradient-to-br from-[#2c2c2c] to-[#000000] text-white border-2 border-primary";
+    leftBoxClass = "bg-white text-black";
+  } else {
+    const val = index % 4;
+    if (val === 0) {
+      cardClass = "bg-gradient-to-br from-[#e5e2df] to-[#c8c5c2] text-black border-2 border-primary";
+      if (!leftBoxClass) leftBoxClass = "bg-black text-white";
+    } else if (val === 1) {
+      cardClass = "bg-gradient-to-br from-[#ffd6e0] to-[#ffa3b1] text-secondary border-2 border-primary";
+      if (!leftBoxClass) leftBoxClass = "bg-secondary text-white";
+    } else if (val === 2) {
+      cardClass = "bg-gradient-to-br from-[#ffe6cc] to-[#ffcc99] text-black border-2 border-primary";
+      if (!leftBoxClass) leftBoxClass = "bg-black text-white";
+    } else {
+      cardClass = "bg-gradient-to-br from-[#d2f4ea] to-[#a3e4d7] text-teal-900 border-2 border-primary";
+      if (!leftBoxClass) leftBoxClass = "bg-teal-800 text-white";
+    }
   }
 
-  // Default grey style
   return {
-    cardClass: "bg-[#e5e2df] text-black border-2 border-tertiary",
-    leftBoxClass: "bg-black text-white",
-    leftContent: <Icon name={icon || "rate_review"} className="text-2xl" />,
-    isMax: false,
+    cardClass,
+    leftBoxClass,
+    leftContent,
+    isMax,
   };
 };
 
