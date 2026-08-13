@@ -20,8 +20,9 @@ const resolveIcon = (iconName) => {
 };
 
 const getAchievementStyle = (achievement, index) => {
-  const { code, threshold, icon } = achievement;
+  const { code, icon } = achievement;
   const resolved = resolveIcon(icon);
+  const threshold = parseInt(code.split("_").pop(), 10) || 0;
   
   let cardClass = "";
   let leftBoxClass = "";
