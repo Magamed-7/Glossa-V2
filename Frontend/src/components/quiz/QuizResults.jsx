@@ -1,4 +1,6 @@
+import { useState } from "react";
 import Icon from "../ui/Icon.jsx";
+import XpGainSummaryModal from "../ui/XpGainSummaryModal.jsx";
 
 const BG = {
   backgroundColor: "#fcf9f6",
@@ -6,15 +8,40 @@ const BG = {
   backgroundSize: "24px 24px",
 };
 
-export default function QuizResults({ result, title, passed, lang, onRetry, onBack, retryLabel, backLabel }) {
+export default function QuizResults({
+  result,
+  title,
+  passed,
+  lang,
+  onRetry,
+  onBack,
+  retryLabel,
+  backLabel,
+  gameType = "practice_test"
+}) {
+  const [showXpModal, setShowXpModal] = useState(true);
   const pct = result.total > 0 ? Math.round((result.correct / result.total) * 100) : 0;
   const perfect = pct === 100;
   const showPassFail = passed !== undefined;
 
+  // Dynamic XP calculation based on test type (matching backend ratings.py awards)
+  let xpGained = 0;
+  if (gameType === "practice_test") {
+    xpGained = 15 + (passed ? 5 : 0) + (pct >= 90 ? 10 : 0);
+  } else if (gameType === "unit_test") {
+    xpGained = passed ? (pct >= 90 ? 50 : 35) : 10;
+  } else if (gameType === "level_test") {
+    xpGained = passed ? 100 : 25;
+  } else if (gameType === "grammar") {
+    xpGained = result.correct * 10;
+  } else if (gameType === "story_test") {
+    xpGained = passed ? 10 : 0;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-20" style={BG}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-20 animate-in fade-in duration-300" style={BG}>
       <div className="w-full max-w-2xl">
-        <div className="bg-surface border-2 border-on-surface shadow-[8px_8px_0px_0px_#b90538] p-8 md:p-12 mb-6">
+        <div className="bg-surface border-2 border-on-surface shadow-[8px_8px_0px_0px_#b90538] p-8 md:p-12 mb-6 relative">
           <span className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant block mb-4">
             {lang === "ru" ? "Результаты" : lang === "tg" ? "Натиҷаҳо" : "Results"}
           </span>
@@ -32,7 +59,7 @@ export default function QuizResults({ result, title, passed, lang, onRetry, onBa
           </p>
 
           <div className="w-full h-4 border-2 border-on-surface bg-surface-container">
-            <div className="h-full bg-secondary transition-all" style={{ width: `${pct}%` }} />
+            <div className="h-full bg-secondary transition-all animate-pulse" style={{ width: `${pct}%` }} />
           </div>
 
           {showPassFail && (
@@ -97,6 +124,16 @@ export default function QuizResults({ result, title, passed, lang, onRetry, onBa
           </button>
         </div>
       </div>
+
+      <XpGainSummaryModal
+        isOpen={showXpModal}
+        onClose={() => setShowXpModal(false)}
+        xpGained={xpGained}
+        correctCount={result.correct}
+        totalCount={result.total}
+        gameType={gameType}
+        lang={lang}
+      />
     </div>
   );
 }

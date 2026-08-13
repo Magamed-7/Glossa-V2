@@ -1,38 +1,95 @@
 import React, { useEffect, useState } from "react";
 import Icon from "./Icon.jsx";
+import { useAuth } from "../../lib/auth/AuthContext.jsx";
 
-const TIPS = [
-  {
+function getAdaptiveTip({ gameType, userLevel, isPremium, lang, pct }) {
+  const isALevel = ["A1", "A2"].includes(userLevel);
+
+  if (gameType === "typewriter" || gameType === "speed-recall" || gameType === "spaced-repetition") {
+    if (!isPremium) {
+      return {
+        ru: "Учите слова без ограничений! Перейдите на Premium-подписку, чтобы расширить дневной лимит колоды до 55 слов и открыть все разделы!",
+        en: "Learn words without limits! Upgrade to Premium to expand your daily deck limit to 55 words and unlock all sections!",
+        tg: "Калимаҳоро бе маҳдудият омӯзед! Ба тарифи Premium гузаред, то лимити кортҳои рӯзонаро то 55 калима зиёд кунед!"
+      }[lang] || "";
+    }
+    if (isALevel) {
+      return {
+        ru: "Слова изучены! Рекомендуем перейти в раздел Истории и прочитать простую историю уровня A1/A2, чтобы увидеть их в контексте и получить +10 XP!",
+        en: "Words learned! We recommend reading a simple A1/A2 story in the library to see them in context and earn +10 XP!",
+        tg: "Калимаҳо омӯхта шуданд! Тавсия медиҳем, ки ҳикояи оддии сатҳи A1/A2-ро дар китобхона хонед, то онҳоро дар матн бинед ва +10 XP гиред!"
+      }[lang] || "";
+    } else {
+      return {
+        ru: "Прекрасный словарный запас! Теперь пройдите тест юнита на дорожной карте, чтобы закрепить материал и заработать от 35 до 50 XP!",
+        en: "Great vocabulary! Now complete a Unit Test on the roadmap to reinforce your learning and earn 35 to 50 XP!",
+        tg: "Захираи калимаҳои олӣ! Акнун тести юнитро дар харитаи роҳ иҷро кунед, то дониши худро мустаҳкам карда, 35-50 XP ба даст оред!"
+      }[lang] || "";
+    }
+  }
+
+  if (gameType === "grammar") {
+    if (isALevel) {
+      return {
+        ru: "Грамматика пройдена! Пройдите тест юнита на дорожной карте, чтобы закрепить правила и получить дополнительные 35-50 XP!",
+        en: "Grammar lesson completed! Try the Unit Test on the roadmap to verify your skills and grab another 35-50 XP!",
+        tg: "Дарси грамматика тамом шуд! Тести юнитро дар харитаи роҳ супоред, то қоидаҳоро санҷида, 35-50 XP-и иловагӣ гиред!"
+      }[lang] || "";
+    } else {
+      return {
+        ru: "Отличный уровень грамматики! Самое время пообщаться с ИИ-репетитором на эту тему в чате для практики живого общения!",
+        en: "Excellent grammar score! Now is a great time to practice this topic live with the AI tutor in the chat!",
+        tg: "Сатҳи олии грамматика! Вақти он расидааст, ки бо репетитори ИИ дар чат барои таҷрибаи зинда сӯҳбат кунед!"
+      }[lang] || "";
+    }
+  }
+
+  if (gameType === "practice_test" || gameType === "unit_test" || gameType === "level_test" || gameType === "story_test") {
+    if (pct < 75) {
+      return {
+        ru: "Не расстраивайтесь! Попробуйте повторить слова из колоды с помощью интервального повторения (+10 XP за слово) и пройдите тест повторно!",
+        en: "Don't worry! Try reviewing deck words using spaced repetition (+10 XP per word) and run the test again!",
+        tg: "Хафа нашавед! Кӯшиш кунед калимаҳоро дар даста тавассути такрори фосилавӣ (+10 XP) машқ кунед ва тесткуниро такрор намоед!"
+      }[lang] || "";
+    }
+    if (pct >= 90) {
+      if (gameType === "level_test") {
+        return {
+          ru: "Выдающийся результат! Вы подтвердили свой уровень. Попробуйте сдать экзамен на следующий уровень или изучить новые темы!",
+          en: "Outstanding! You proved your proficiency. Try taking the exam for the next level or exploring new topics!",
+          tg: "Натиҷаи олӣ! Шумо сатҳи худро тасдиқ кардед. Имтиҳони сатҳи навбатиро супоред ё мавзӯъҳои навро омӯзед!"
+        }[lang] || "";
+      }
+      return {
+        ru: "Потрясающе! Вы отлично усвоили тему. Самое время прочитать новую историю в библиотеке (+10 XP)!",
+        en: "Excellent score! You've mastered this topic. It's the perfect time to read a new library story (+10 XP)!",
+        tg: "Олиҷаноб! Шумо мавзӯъро хуб азхуд кардед. Вақти хубест барои хондани ҳикояи нав дар китобхона (+10 XP)!"
+      }[lang] || "";
+    }
+    if (!isPremium) {
+      return {
+        ru: "Поднимитесь на новый уровень: с Premium-подпиской вам станут доступны подробные аудиокниги для тренировки аудирования!",
+        en: "Level up your learning: Premium subscription unlocks comprehensive audiobooks for listening practice!",
+        tg: "Сатҳи дониши худро боло баред: бо тарифи Premium китобҳои аудиоӣ барои машқи шунавоӣ дастрас мешаванд!"
+      }[lang] || "";
+    }
+  }
+
+  if (gameType === "story") {
+    return {
+      ru: "Отличная тренировка чтения! Пройдите тест по этой истории в библиотеке, чтобы закрепить понимание и заработать дополнительные XP!",
+      en: "Great reading practice! Complete the comprehension test for this story to verify your understanding and gain extra XP!",
+      tg: "Машқи хониши олӣ! Тестро оид ба ин ҳикоя дар китобхона иҷро кунед, то фаҳмиши худро санҷед ва холҳои иловагӣ гиред!"
+    }[lang] || "";
+  }
+
+  // Fallback generic tips
+  return {
     ru: "Повторяйте слова каждый день: интервальное повторение даёт по 10 XP за слово!",
     en: "Review words daily: spaced repetition reviews grant 10 XP per word!",
     tg: "Калимаҳоро ҳар рӯз такрор кунед: такрори фосилавӣ барои як вожа 10 XP медиҳад!"
-  },
-  {
-    ru: "Проходите тесты юнитов на дорожной карте: сдача теста даёт от 35 до 50 XP!",
-    en: "Complete Unit Tests on the roadmap: passing a test awards 35 to 50 XP!",
-    tg: "Тестҳои юнитҳоро дар харитаи роҳ иҷро кунед: супоридани тест аз 35 то 50 XP медиҳад!"
-  },
-  {
-    ru: "Сдавайте тесты уровней (A1, A2, B1...): успешный экзамен приносит сразу 100 XP!",
-    en: "Pass CEFR level tests (A1, A2, B1...): a successful exam awards 100 XP instantly!",
-    tg: "Тестҳои сатҳҳоро (A1, A2, B1...) супоред: имтиҳони муваффақ якбора 100 XP меорад!"
-  },
-  {
-    ru: "Общайтесь с ИИ-репетитором: живой диалог даёт ценный опыт для рейтинга!",
-    en: "Chat with the AI tutor: real-time dialogue grants valuable experience points!",
-    tg: "Бо репетитори ИИ сӯҳбат кунед: муоширати зинда барои рейтинг холҳои қиматбаҳо медиҳад!"
-  },
-  {
-    ru: "Добавляйте новые слова в свою колоду: за каждое создание карточки вы получаете 2 XP!",
-    en: "Add new words to your deck: creating a flashcard awards 2 XP!",
-    tg: "Калимаҳои навро ба дастаи худ илова кунед: сохтани ҳар як корт 2 XP медиҳад!"
-  },
-  {
-    ru: "Пишите и публикуйте истории: авторы получают по 50 XP за каждую статью!",
-    en: "Write and publish stories: authors earn 50 XP per published library story!",
-    tg: "Ҳикояҳо нависед ва нашр кунед: муаллифон барои ҳар як мақола 50 XP мегиранд!"
-  }
-];
+  }[lang] || "";
+}
 
 export default function XpGainSummaryModal({
   isOpen,
@@ -43,14 +100,30 @@ export default function XpGainSummaryModal({
   gameType = "typewriter",
   lang = "ru"
 }) {
+  const { user, languages } = useAuth();
+  const [isPremium, setIsPremium] = useState(false);
   const [randomTip, setRandomTip] = useState("");
 
   useEffect(() => {
     if (isOpen) {
-      const idx = Math.floor(Math.random() * TIPS.length);
-      setRandomTip(TIPS[idx][lang] || TIPS[idx]["en"]);
+      // Async import to avoid top-level bundle weight issues or dependency loops
+      import("../../lib/api/subscriptions.js")
+        .then(({ getMySubscription }) => getMySubscription())
+        .then((sub) => {
+          setIsPremium(sub && sub.plan_code !== "free");
+        })
+        .catch(() => setIsPremium(false));
     }
-  }, [isOpen, lang]);
+  }, [isOpen, user]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const userLevel = languages?.find((l) => l.is_target)?.level || "A1";
+      const pct = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+      const tip = getAdaptiveTip({ gameType, userLevel, isPremium, lang, pct });
+      setRandomTip(tip);
+    }
+  }, [isOpen, lang, isPremium, languages, gameType, correctCount, totalCount]);
 
   if (!isOpen) return null;
 
@@ -96,8 +169,18 @@ export default function XpGainSummaryModal({
     tg: "ИДОМА ДИҲЕД"
   }[lang] || "CONTINUE";
 
+  const getIconName = () => {
+    if (gameType === "typewriter") return "keyboard";
+    if (gameType === "speed-recall") return "bolt";
+    if (gameType === "spaced-repetition") return "psychology";
+    if (gameType === "grammar") return "edit_note";
+    if (gameType === "story") return "menu_book";
+    if (gameType.endsWith("_test")) return "assignment_turned_in";
+    return "stars";
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 select-none">
       {/* Neo-retro Card container */}
       <div 
         className="w-full max-w-md bg-[#FAF8F5] border-4 border-black p-6 relative shadow-[8px_8px_0px_#000] animate-in fade-in zoom-in-95 duration-200 flex flex-col gap-6"
@@ -108,7 +191,7 @@ export default function XpGainSummaryModal({
         {/* Main Header */}
         <div className="text-center mt-3">
           <div className="w-16 h-16 bg-mustard border-3 border-black text-black flex items-center justify-center mx-auto rounded-none rotate-3 shadow-[3px_3px_0px_#000] mb-4">
-            <Icon name={gameType === "typewriter" ? "keyboard" : "stars"} className="text-3xl font-black" />
+            <Icon name={getIconName()} className="text-3xl font-black" />
           </div>
           <h2 className="font-display text-2xl font-black text-black tracking-tight uppercase leading-none">
             {titleText}

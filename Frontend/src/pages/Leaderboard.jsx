@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import Podium from "../components/leaderboard/Podium.jsx";
 import RankTable from "../components/leaderboard/RankTable.jsx";
@@ -6,13 +7,14 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import Avatar from "../components/ui/Avatar.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getGlobal, getWeekly, getMyRank, resetLeaderboard } from "../lib/api/leaderboard.js";
-import { readUserId } from "../lib/auth/tokens.js";
+import { readUserId, getAccessToken } from "../lib/auth/tokens.js";
 import { useT } from "../lib/i18n.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
+import { WS_URL } from "../lib/config.js";
 
 export default function Leaderboard() {
   const t = useT();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const period = searchParams.get("period") === "weekly" ? "weekly" : "global";
   const myUserId = Number(readUserId());
@@ -22,6 +24,29 @@ export default function Leaderboard() {
     [period]
   );
   const { data: myEntry, reload: reloadMyRank } = useApi(() => getMyRank(period), [period]);
+
+  // Real-time leaderboard updates via WebSocket
+  const wsRef = useRef(null);
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return;
+    const ws = new WebSocket(`${WS_URL}/ws/leaderboard?token=${token}`);
+    wsRef.current = ws;
+    ws.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.type === "update") {
+          reload();
+          reloadMyRank();
+        }
+      } catch {}
+    };
+    ws.onerror = () => {};
+    return () => {
+      ws.close();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [period]);
 
   function onPeriodChange(value) {
     const next = new URLSearchParams(searchParams);
@@ -143,9 +168,9 @@ export default function Leaderboard() {
                   <>
                     <div className="flex items-center gap-4 mb-6">
                       <Avatar
-                        photoUrl={myEntry.photo_url}
-                        name={myEntry.username}
-                        userId={myEntry.user_id}
+                        photoUrl={profile?.photo_url}
+                        name={user?.username}
+                        userId={user?.id}
                         size="lg"
                         className="border-2 border-tertiary"
                       />
