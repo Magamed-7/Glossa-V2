@@ -18,8 +18,24 @@ export function AuthProvider({ children }) {
   const [languages, setLanguages] = useState(undefined);
 
   const loadUser = useCallback(async () => {
+    const userId = readUserId();
+
     try {
-      const [me, myProfile] = await Promise.all([authApi.getMe(), profileApi.getMyProfile()]);
+      // Ни getSettings, ни getPublicProfile не зависят от результата getMe/getMyProfile
+      // (userId берётся из токена, а не из ответа API) — запускаем все четыре запроса
+      // одной волной вместо трёх последовательных, иначе на каждой перезагрузке страницы
+      // суммируется задержка всех round-trip'ов подряд.
+      const [[me, myProfile], settingsResult, languagesResult] = await Promise.all([
+        Promise.all([authApi.getMe(), profileApi.getMyProfile()]),
+        getSettings().catch(() => null),
+        userId
+          ? profileApi
+              .getPublicProfile(userId)
+              .then((pub) => pub.languages || [])
+              .catch(() => [])
+          : Promise.resolve([]),
+      ]);
+
       setUser(me);
       setProfile(myProfile);
       setStatus("authenticated");
@@ -27,26 +43,13 @@ export function AuthProvider({ children }) {
       // Аккаунт — источник истины для языка интерфейса: без этого `glossa-lang` живёт
       // только в localStorage конкретного браузера и теряется/расходится при заходе
       // с другого устройства или после очистки данных.
-      try {
-        const settings = await getSettings();
-        if (settings?.interface_language) setLang(settings.interface_language);
-      } catch (e) {}
+      if (settingsResult?.interface_language) setLang(settingsResult.interface_language);
 
-      const userId = readUserId();
-      if (userId) {
-        // Дожидаемся явно: callers (например, Onboarding.jsx) делают `await refreshUser()`
-        // и сразу `navigate("/")`, рассчитывая, что languages уже актуальны к этому моменту —
-        // ProtectedRoute иначе увидит старое значение (ещё [] от первой загрузки) и вернёт
-        // обратно на /onboarding, сбросив весь прогресс формы.
-        try {
-          const pub = await profileApi.getPublicProfile(userId);
-          setLanguages(pub.languages || []);
-        } catch (e) {
-          setLanguages([]);
-        }
-      } else {
-        setLanguages([]);
-      }
+      // Дожидаемся явно: callers (например, Onboarding.jsx) делают `await refreshUser()`
+      // и сразу `navigate("/")`, рассчитывая, что languages уже актуальны к этому моменту —
+      // ProtectedRoute иначе увидит старое значение (ещё [] от первой загрузки) и вернёт
+      // обратно на /onboarding, сбросив весь прогресс формы.
+      setLanguages(languagesResult);
     } catch (e) {
       clearTokens();
       setUser(null);

@@ -6,8 +6,10 @@ import { getMySubscription } from "../subscriptions.js";
 
 // used: null означает "неизвестно" — UI обязан уметь скрывать счётчик использования,
 // показывая только потолок тарифа (limit), а не выдуманное "осталось".
-export async function getMyLimits() {
-  const { plan } = await getMySubscription();
+// subscription: опционально — если уже загружена вызывающим кодом, передать сюда,
+// чтобы не дёргать GET /subscriptions/my второй раз за один и тот же цикл загрузки.
+export async function getMyLimits(subscription) {
+  const { plan } = subscription || (await getMySubscription());
   const cap = (value) => ({ used: null, limit: value });
 
   return {

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useAuth } from "./auth/AuthContext.jsx";
-import { getStreak } from "./api/_pending/streak.js";
+import { getStreak } from "./api/streak.js";
 import { getMyLimits } from "./api/_pending/limits.js";
 import { getMySubscription } from "./api/subscriptions.js";
 
@@ -22,12 +22,16 @@ export function AppDataProvider({ children }) {
 
   const refreshAll = useCallback(() => {
     refreshStreak();
-    getMyLimits()
-      .then(setLimits)
-      .catch(() => setLimits(null));
     getMySubscription()
-      .then(setSubscription)
-      .catch(() => setSubscription(null));
+      .then((subscription) => {
+        setSubscription(subscription);
+        return getMyLimits(subscription);
+      })
+      .then(setLimits)
+      .catch(() => {
+        setSubscription(null);
+        setLimits(null);
+      });
   }, [refreshStreak]);
 
   useEffect(() => {
