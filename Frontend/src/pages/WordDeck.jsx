@@ -14,6 +14,7 @@ import { getMySubscription } from "../lib/api/subscriptions.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
 import { submitReview } from "../lib/api/reviews.js";
 import leveledVocab from "../data/leveled_vocab.json";
+import XpGainSummaryModal from "../components/ui/XpGainSummaryModal.jsx";
 
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 
@@ -96,6 +97,8 @@ export default function WordDeck() {
   // Typewriter Game States
   const [typeIndex, setTypeIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
+  const [showTypewriterResults, setShowTypewriterResults] = useState(false);
+  const [typewriterCorrectCount, setTypewriterCorrectCount] = useState(0);
   const [typeTimeLeft, setTypeTimeLeft] = useState(15); // 15 seconds per word
   const [showSuccessStamp, setShowSuccessStamp] = useState(false);
   const [showErrorStamp, setShowErrorStamp] = useState(false);
@@ -231,7 +234,7 @@ export default function WordDeck() {
 
   // Typewriter Game Timer
   useEffect(() => {
-    if (gameMode !== "typewriter" || gameItems.length === 0) return;
+    if (gameMode !== "typewriter" || gameItems.length === 0 || showTypewriterResults) return;
 
     setTypedText("");
     setShowSuccessStamp(false);
@@ -486,6 +489,9 @@ export default function WordDeck() {
           missed: false
         }));
         setRecallWords(initial);
+      } else if (gameToLaunch === "typewriter") {
+        setTypewriterCorrectCount(0);
+        setShowTypewriterResults(false);
       }
 
       setGameMode(gameToLaunch);
@@ -600,6 +606,9 @@ export default function WordDeck() {
 
   const handleNextTypewriter = async (success) => {
     const card = gameItems[typeIndex];
+    if (success) {
+      setTypewriterCorrectCount((c) => c + 1);
+    }
     if (card) {
       let quality = 0;
       if (success) {
@@ -634,8 +643,7 @@ export default function WordDeck() {
       setTypeIndex((i) => i + 1);
     } else {
       setTypeIndex(0);
-      toast.success("Typewriter Speed Check complete!");
-      setGameMode("archive");
+      setShowTypewriterResults(true);
     }
   };
 
@@ -1812,6 +1820,20 @@ export default function WordDeck() {
           </div>
         </div>
       </Modal>
+
+      <XpGainSummaryModal
+        isOpen={showTypewriterResults}
+        onClose={() => {
+          setShowTypewriterResults(false);
+          setTypewriterCorrectCount(0);
+          setGameMode("archive");
+        }}
+        xpGained={typewriterCorrectCount * 10}
+        correctCount={typewriterCorrectCount}
+        totalCount={gameItems.length}
+        gameType="typewriter"
+        lang={lang}
+      />
     </div>
   );
 }
