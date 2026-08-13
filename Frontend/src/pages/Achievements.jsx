@@ -20,56 +20,99 @@ const resolveIcon = (iconName) => {
   return iconName;
 };
 
+// Light-mode card gradients → Dark-mode equivalents (deep, saturated, readable)
+const CARD_PALETTES = [
+  {
+    // Neutral grey
+    light: "bg-gradient-to-br from-[#e5e2df] to-[#c8c5c2] text-black border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#2a2825] dark:to-[#1a1816] dark:text-stone-100 dark:border-stone-600",
+    iconLight: "bg-black text-white",
+    iconDark:  "dark:bg-stone-200 dark:text-stone-900",
+  },
+  {
+    // Rose / crimson
+    light: "bg-gradient-to-br from-[#ffd6e0] to-[#ffa3b1] text-secondary border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#4a0d1f] dark:to-[#2d0510] dark:text-rose-200 dark:border-rose-900",
+    iconLight: "bg-secondary text-white",
+    iconDark:  "dark:bg-rose-700 dark:text-white",
+  },
+  {
+    // Amber / warm orange
+    light: "bg-gradient-to-br from-[#ffe6cc] to-[#ffcc99] text-black border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#3d2000] dark:to-[#251200] dark:text-amber-200 dark:border-amber-900",
+    iconLight: "bg-black text-white",
+    iconDark:  "dark:bg-amber-700 dark:text-white",
+  },
+  {
+    // Teal
+    light: "bg-gradient-to-br from-[#d2f4ea] to-[#a3e4d7] text-teal-900 border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#042e26] dark:to-[#021a16] dark:text-teal-200 dark:border-teal-900",
+    iconLight: "bg-teal-800 text-white",
+    iconDark:  "dark:bg-teal-600 dark:text-white",
+  },
+];
+
+// Special palettes for fixed achievement codes
+const SPECIAL_PALETTES = {
+  reviews_5: {
+    light: "bg-gradient-to-br from-[#ca8a04] via-[#eab308] to-[#fef08a] text-black border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#3d2800] dark:to-[#1f1400] dark:text-yellow-200 dark:border-yellow-800",
+    iconLight: "bg-black text-white font-display text-xl italic font-bold",
+    iconDark:  "dark:bg-yellow-700 dark:text-white",
+  },
+  streak_1: {
+    light: "bg-gradient-to-br from-[#dc2c4f] to-[#b90538] text-white border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#5a0a1e] dark:to-[#350310] dark:text-rose-100 dark:border-rose-800",
+    iconLight: "bg-black text-white",
+    iconDark:  "dark:bg-rose-900 dark:text-white",
+  },
+  streak_2: {
+    light: "bg-gradient-to-br from-[#2c2c2c] to-[#000000] text-white border-2 border-primary",
+    dark:  "dark:bg-gradient-to-br dark:from-[#111111] dark:to-[#000000] dark:text-stone-100 dark:border-stone-700",
+    iconLight: "bg-white text-black",
+    iconDark:  "dark:bg-stone-300 dark:text-black",
+  },
+};
+
 const getAchievementStyle = (achievement, index) => {
   const { code, icon } = achievement;
   const resolved = resolveIcon(icon);
   const threshold = parseInt(code.split("_").pop(), 10) || 0;
-  
-  let cardClass = "";
-  let leftBoxClass = "";
-  let leftContent = null;
-  let isMax = threshold >= 10 || code.endsWith("_100") || code.endsWith("_500");
+  const isMax = threshold >= 10 || code.endsWith("_100") || code.endsWith("_500");
 
-  // Determine left side container content
+  // Special codes override palette
+  if (SPECIAL_PALETTES[code]) {
+    const sp = SPECIAL_PALETTES[code];
+    let leftContent = null;
+    if (code === "reviews_5" || code.startsWith("words_")) {
+      leftContent = threshold.toString();
+    } else if (code.startsWith("streak_")) {
+      leftContent = <Icon name="local_fire_department" className="text-2xl filled" />;
+    } else {
+      leftContent = <Icon name={resolved} className="text-2xl" />;
+    }
+    return {
+      cardClass: `${sp.light} ${sp.dark}`,
+      leftBoxClass: `${sp.iconLight} ${sp.iconDark}`,
+      leftContent,
+      isMax,
+    };
+  }
+
+  // Cyclic palette
+  const palette = CARD_PALETTES[index % 4];
+  let leftContent = null;
   if (code === "reviews_5" || code.startsWith("words_")) {
     leftContent = threshold.toString();
-    leftBoxClass = "bg-black text-white font-display text-xl italic font-bold";
   } else if (code.startsWith("streak_")) {
     leftContent = <Icon name="local_fire_department" className="text-2xl filled" />;
   } else {
     leftContent = <Icon name={resolved} className="text-2xl" />;
   }
 
-  // Determine card gradient background class
-  if (code === "reviews_5") {
-    cardClass = "bg-gradient-to-br from-[#ca8a04] via-[#eab308] to-[#fef08a] text-black border-2 border-primary";
-    leftBoxClass = "bg-black text-white font-display text-xl italic font-bold";
-  } else if (code === "streak_1") {
-    cardClass = "bg-gradient-to-br from-[#dc2c4f] to-[#b90538] text-white border-2 border-primary";
-    leftBoxClass = "bg-black text-white";
-  } else if (code === "streak_2") {
-    cardClass = "bg-gradient-to-br from-[#2c2c2c] to-[#000000] text-white border-2 border-primary";
-    leftBoxClass = "bg-white text-black";
-  } else {
-    const val = index % 4;
-    if (val === 0) {
-      cardClass = "bg-gradient-to-br from-[#e5e2df] to-[#c8c5c2] text-black border-2 border-primary";
-      if (!leftBoxClass) leftBoxClass = "bg-black text-white";
-    } else if (val === 1) {
-      cardClass = "bg-gradient-to-br from-[#ffd6e0] to-[#ffa3b1] text-secondary border-2 border-primary";
-      if (!leftBoxClass) leftBoxClass = "bg-secondary text-white";
-    } else if (val === 2) {
-      cardClass = "bg-gradient-to-br from-[#ffe6cc] to-[#ffcc99] text-black border-2 border-primary";
-      if (!leftBoxClass) leftBoxClass = "bg-black text-white";
-    } else {
-      cardClass = "bg-gradient-to-br from-[#d2f4ea] to-[#a3e4d7] text-teal-900 border-2 border-primary";
-      if (!leftBoxClass) leftBoxClass = "bg-teal-800 text-white";
-    }
-  }
-
   return {
-    cardClass,
-    leftBoxClass,
+    cardClass: `${palette.light} ${palette.dark}`,
+    leftBoxClass: `${palette.iconLight} ${palette.iconDark}`,
     leftContent,
     isMax,
   };
@@ -124,43 +167,39 @@ export default function Achievements() {
 
   const getLeftBorderClass = (category) => {
     switch (category) {
-      case "grinder":
-        return "border-l-8 border-green-600";
-      case "learner":
-        return "border-l-8 border-secondary";
-      case "social":
-        return "border-l-8 border-mustard";
-      case "teacher":
-        return "border-l-8 border-blue-600";
-      default:
-        return "border-l-8 border-tertiary";
+      case "grinder":  return "border-l-8 border-green-600 dark:border-green-700";
+      case "learner":  return "border-l-8 border-secondary dark:border-rose-700";
+      case "social":   return "border-l-8 border-mustard dark:border-yellow-600";
+      case "teacher":  return "border-l-8 border-blue-600 dark:border-blue-700";
+      default:         return "border-l-8 border-tertiary dark:border-stone-600";
     }
   };
 
+  // Light-mode soft pastel + dark-mode deep bg
   const getSoftGradientClass = (category) => {
     switch (category) {
       case "grinder":
-        return "bg-gradient-to-r from-[#e6f4ea] to-[#f0f9f4]";
+        return "bg-gradient-to-r from-[#e6f4ea] to-[#f0f9f4] dark:bg-none dark:bg-stone-900/80";
       case "learner":
-        return "bg-gradient-to-r from-[#fce8e6] to-[#fdf2f0]";
+        return "bg-gradient-to-r from-[#fce8e6] to-[#fdf2f0] dark:bg-none dark:bg-stone-900/80";
       case "social":
-        return "bg-gradient-to-r from-[#e8f0fe] to-[#f1f3f4]";
+        return "bg-gradient-to-r from-[#e8f0fe] to-[#f1f3f4] dark:bg-none dark:bg-stone-900/80";
       case "teacher":
-        return "bg-gradient-to-r from-[#fef7e0] to-[#fffbf0]";
+        return "bg-gradient-to-r from-[#fef7e0] to-[#fffbf0] dark:bg-none dark:bg-stone-900/80";
       default:
-        return "bg-gradient-to-r from-[#f5f5f4] to-[#f5f2eb]";
+        return "bg-gradient-to-r from-[#f5f5f4] to-[#f5f2eb] dark:bg-none dark:bg-stone-900/80";
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 pb-12">
-      {/* Header section with Stats side-by-side (Titles switch based on filter) */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b-4 border-double border-primary pb-6">
+      {/* Header section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b-4 border-double border-primary dark:border-rose-900 pb-6">
         <div>
-          <h1 className="font-headline text-headline-lg uppercase tracking-tight leading-none text-secondary">
+          <h1 className="font-headline text-headline-lg uppercase tracking-tight leading-none text-secondary dark:text-rose-400">
             {filter === "all" ? t("achievements.registryTitle") : t("achievements.hallOfFame")}
           </h1>
-          <p className="font-body text-sm text-on-surface-variant mt-2 max-w-xl">
+          <p className="font-body text-sm text-on-surface-variant dark:text-stone-400 mt-2 max-w-xl">
             {filter === "all" ? t("achievements.registrySubtitle") : t("achievements.hallOfFameSubtitle")}
           </p>
         </div>
@@ -168,17 +207,17 @@ export default function Achievements() {
         {/* Stats cards container */}
         <div className="flex items-center gap-4 flex-shrink-0">
           {/* Total earned block */}
-          <div className="border-b-4 border-primary pb-1 flex flex-col justify-end min-w-[120px]">
-            <span className="font-label text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">
+          <div className="border-b-4 border-primary dark:border-rose-800 pb-1 flex flex-col justify-end min-w-[120px]">
+            <span className="font-label text-[10px] text-on-surface-variant dark:text-stone-500 uppercase tracking-widest font-bold">
               {t("achievements.totalEarned")}
             </span>
-            <span className="font-ledger text-3xl font-black mt-1 text-primary">
+            <span className="font-ledger text-3xl font-black mt-1 text-primary dark:text-rose-400">
               {earnedCount}/{totalCount}
             </span>
           </div>
 
           {/* Prestige block */}
-          <div className="border-2 border-primary bg-secondary text-on-secondary px-5 py-2.5 flex flex-col items-center justify-center hard-shadow min-w-[150px]">
+          <div className="border-2 border-primary dark:border-rose-800 bg-secondary dark:bg-rose-950 text-on-secondary dark:text-rose-200 px-5 py-2.5 flex flex-col items-center justify-center hard-shadow min-w-[150px]">
             <span className="font-label text-[9px] uppercase tracking-widest font-bold opacity-90 leading-none">
               {t("achievements.prestigeTitle")}
             </span>
@@ -189,22 +228,26 @@ export default function Achievements() {
         </div>
       </div>
 
-      {/* Filter and navigation actions */}
+      {/* Filter tabs */}
       <div className="flex justify-end mb-8">
-        <div className="border-2 border-primary bg-white flex items-center shadow-[3px_3px_0_px_#000] overflow-hidden">
+        <div className="border-2 border-primary dark:border-stone-700 bg-white dark:bg-stone-900 flex items-center shadow-[3px_3px_0px_#000] dark:shadow-[3px_3px_0px_#3a3a3a] overflow-hidden">
           <button
             onClick={() => setFilter("all")}
             className={`px-4 py-2 font-label text-xs uppercase tracking-wider font-bold transition-colors ${
-              filter === "all" ? "bg-black text-white" : "bg-white text-black hover:bg-surface-container-low"
+              filter === "all"
+                ? "bg-black dark:bg-stone-100 text-white dark:text-black"
+                : "bg-white dark:bg-stone-900 text-black dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
             }`}
           >
             {t("achievements.all")}
           </button>
-          <div className="w-[2px] h-6 bg-primary" />
+          <div className="w-[2px] h-6 bg-primary dark:bg-stone-700" />
           <button
             onClick={() => setFilter("earned")}
             className={`px-4 py-2 font-label text-xs uppercase tracking-wider font-bold transition-colors ${
-              filter === "earned" ? "bg-black text-white" : "bg-white text-black hover:bg-surface-container-low"
+              filter === "earned"
+                ? "bg-black dark:bg-stone-100 text-white dark:text-black"
+                : "bg-white dark:bg-stone-900 text-black dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800"
             }`}
           >
             {t("achievements.earnedOnly")}
@@ -216,13 +259,13 @@ export default function Achievements() {
       {filter === "earned" ? (
         /* Hall of Fame view: Grid of Dynamic Gradient Cards */
         <div>
-          <h2 className="font-headline text-headline-md mb-6 text-on-surface uppercase tracking-tight flex items-center gap-2">
+          <h2 className="font-headline text-headline-md mb-6 text-on-surface dark:text-stone-100 uppercase tracking-tight flex items-center gap-2">
             <span className="text-2xl">🏆</span>
             {t("achievements.eyebrow")}
           </h2>
           {data.mine.length === 0 ? (
-            <div className="border-2 border-primary bg-surface p-8 text-center hard-shadow">
-              <p className="font-body text-sm text-on-surface-variant italic">
+            <div className="border-2 border-primary dark:border-stone-700 bg-surface dark:bg-stone-900 p-8 text-center hard-shadow">
+              <p className="font-body text-sm text-on-surface-variant dark:text-stone-400 italic">
                 {t("achievements.emptyTitle") || "You haven't earned any achievements yet. Keep studying!"}
               </p>
             </div>
@@ -234,16 +277,16 @@ export default function Achievements() {
                 return (
                   <div key={a.id} className={`p-4 flex items-center gap-3 hard-shadow relative ${style.cardClass}`}>
                     {style.isMax && (
-                      <div className="absolute top-0 right-0 w-0 h-0 border-t-[16px] border-r-[16px] border-t-secondary border-r-secondary border-b-[16px] border-b-transparent border-l-[16px] border-l-transparent" />
+                      <div className="absolute top-0 right-0 w-0 h-0 border-t-[16px] border-r-[16px] border-t-secondary dark:border-t-rose-600 border-r-secondary dark:border-r-rose-600 border-b-[16px] border-b-transparent border-l-[16px] border-l-transparent" />
                     )}
-                    <div className={`w-12 h-12 flex items-center justify-center flex-shrink-0 border-2 border-primary ${style.leftBoxClass}`}>
+                    <div className={`w-12 h-12 flex items-center justify-center flex-shrink-0 border-2 border-primary dark:border-stone-600 ${style.leftBoxClass}`}>
                       {style.leftContent}
                     </div>
                     <div className="flex flex-col select-none pr-3">
                       <h4 className="font-label text-xs uppercase font-bold tracking-tight leading-tight flex items-center gap-1">
                         {translated.title.toUpperCase()}
                         {style.isMax && (
-                          <span className="bg-black text-white px-1.5 py-0.5 text-[8px] font-bold uppercase rounded-sm leading-none ml-1">
+                          <span className="bg-black dark:bg-stone-200 text-white dark:text-black px-1.5 py-0.5 text-[8px] font-bold uppercase rounded-sm leading-none ml-1">
                             MAX
                           </span>
                         )}
@@ -259,23 +302,23 @@ export default function Achievements() {
           )}
         </div>
       ) : (
-        /* Registry of Achievements view: Categories with Soft Gradient rows and watermarks */
+        /* Registry of Achievements view: Categories with rows */
         Array.from(groups.entries()).map(([category, items]) => {
           if (items.length === 0) return null;
           const categoryLabel = t(`achievements.categories.${category}`) || category;
 
           return (
             <div key={category} className="mb-10">
-              {/* Category header box */}
+              {/* Category header */}
               <div className="flex items-center mb-6">
-                <div className="border-2 border-primary bg-white text-black px-4 py-1.5 font-label text-xs uppercase tracking-widest font-bold shadow-[2px_2px_0_px_#000] flex-shrink-0">
+                <div className="border-2 border-primary dark:border-stone-700 bg-white dark:bg-stone-900 text-black dark:text-stone-100 px-4 py-1.5 font-label text-xs uppercase tracking-widest font-bold shadow-[2px_2px_0px_#000] dark:shadow-[2px_2px_0px_#3a3a3a] flex-shrink-0">
                   {categoryLabel}
                 </div>
-                <div className="flex-grow border-t-2 border-primary ml-4" />
+                <div className="flex-grow border-t-2 border-primary dark:border-stone-700 ml-4" />
               </div>
 
               {/* Achievements row container */}
-              <div className="border-2 border-primary bg-surface shadow-[4px_4px_0_px_#000] divide-y-2 divide-primary">
+              <div className="border-2 border-primary dark:border-stone-700 bg-surface dark:bg-stone-950 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#3a3a3a] divide-y-2 divide-primary dark:divide-stone-700">
                 {items.map((a) => {
                   const earned = earnedByCode.get(a.code);
                   const resolvedIcon = resolveIcon(a.icon);
@@ -285,34 +328,32 @@ export default function Achievements() {
                     return (
                       <div
                         key={a.id}
-                        className={`p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors relative ${getLeftBorderClass(
-                          a.category
-                        )} ${getSoftGradientClass(a.category)}`}
+                        className={`p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors relative ${getLeftBorderClass(a.category)} ${getSoftGradientClass(a.category)}`}
                       >
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-black border-2 border-black flex items-center justify-center flex-shrink-0 text-white">
+                          <div className="w-12 h-12 bg-black dark:bg-stone-100 border-2 border-black dark:border-stone-600 flex items-center justify-center flex-shrink-0 text-white dark:text-stone-900">
                             <Icon name={resolvedIcon} className="text-2xl" />
                           </div>
                           <div>
-                            <h3 className="font-headline text-lg font-bold text-on-surface uppercase tracking-tight">
+                            <h3 className="font-headline text-lg font-bold text-on-surface dark:text-stone-100 uppercase tracking-tight">
                               {translated.title}
                             </h3>
-                            <p className="font-body text-xs text-on-surface-variant mt-1 max-w-xl">
+                            <p className="font-body text-xs text-on-surface-variant dark:text-stone-400 mt-1 max-w-xl">
                               {translated.description}
                             </p>
                           </div>
                         </div>
 
-                        {/* Right-hand metadata */}
+                        {/* Right-hand earned metadata */}
                         <div className="flex flex-col items-end justify-between h-full min-h-[48px] md:self-stretch flex-shrink-0">
-                          <span className="bg-secondary text-on-secondary px-2 py-0.5 text-[9px] font-bold uppercase rounded-sm tracking-wider">
+                          <span className="bg-secondary dark:bg-rose-800 text-on-secondary dark:text-rose-100 px-2 py-0.5 text-[9px] font-bold uppercase rounded-sm tracking-wider">
                             EARNED
                           </span>
                           <div className="flex items-center gap-2 mt-auto">
-                            <span className="font-ledger text-[10px] text-on-surface-variant">
+                            <span className="font-ledger text-[10px] text-on-surface-variant dark:text-stone-500">
                               ACHIEVED {new Date(earned.earned_at).toLocaleDateString()}
                             </span>
-                            <Icon name="check_circle" className="text-secondary text-base" />
+                            <Icon name="check_circle" className="text-secondary dark:text-rose-500 text-base" />
                           </div>
                         </div>
                       </div>
@@ -321,33 +362,33 @@ export default function Achievements() {
                     return (
                       <div
                         key={a.id}
-                        className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-[#f6f3f0] opacity-60 relative overflow-hidden select-none border-l-8 border-outline-variant"
+                        className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-[#f6f3f0] dark:bg-stone-900/60 opacity-60 dark:opacity-50 relative overflow-hidden select-none border-l-8 border-outline-variant dark:border-stone-700"
                       >
-                        {/* SEALED Watermark background */}
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-                          <span className="font-headline text-7xl uppercase tracking-widest font-black rotate-12">
+                        {/* SEALED Watermark */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] dark:opacity-[0.06]">
+                          <span className="font-headline text-7xl uppercase tracking-widest font-black rotate-12 text-black dark:text-stone-300">
                             SEALED
                           </span>
                         </div>
 
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-[#c0b9b3] border-2 border-[#a89e96] flex items-center justify-center flex-shrink-0 text-white">
+                          <div className="w-12 h-12 bg-[#c0b9b3] dark:bg-stone-700 border-2 border-[#a89e96] dark:border-stone-600 flex items-center justify-center flex-shrink-0 text-white">
                             <Icon name={resolvedIcon} className="text-2xl" />
                           </div>
                           <div>
-                            <h3 className="font-headline text-lg font-bold text-on-surface/80 uppercase tracking-tight">
+                            <h3 className="font-headline text-lg font-bold text-on-surface/80 dark:text-stone-400 uppercase tracking-tight">
                               {translated.title}
                             </h3>
-                            <p className="font-body text-xs text-on-surface-variant/80 mt-1 max-w-xl">
+                            <p className="font-body text-xs text-on-surface-variant/80 dark:text-stone-500 mt-1 max-w-xl">
                               {translated.description}
                             </p>
                           </div>
                         </div>
 
-                        {/* Right-hand lock status */}
+                        {/* Right-hand lock */}
                         <div className="flex flex-col items-end justify-between h-full min-h-[48px] md:self-stretch flex-shrink-0">
-                          <Icon name="lock" className="text-on-surface-variant opacity-70 text-lg" />
-                          <span className="font-ledger text-[10px] text-on-surface-variant/80 mt-auto uppercase tracking-wide">
+                          <Icon name="lock" className="text-on-surface-variant dark:text-stone-600 opacity-70 text-lg" />
+                          <span className="font-ledger text-[10px] text-on-surface-variant/80 dark:text-stone-600 mt-auto uppercase tracking-wide">
                             PENDING CONDITIONS
                           </span>
                         </div>
@@ -357,7 +398,7 @@ export default function Achievements() {
                 })}
               </div>
             </div>
-          )
+          );
         })
       )}
     </div>
