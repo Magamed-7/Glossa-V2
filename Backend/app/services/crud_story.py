@@ -1,9 +1,12 @@
+import datetime as dt
+
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.model_content import ReadingProgress, Stories, StoryQuestions, StoryWords
+from app.models.model_content import ReadingProgress, Stories, StoryListens, StoryQuestions, StoryWords
 from app.schemas.schema_learning import CardCreate
-from app.services import crud_card, ratings, streaks, transcription
+from app.services import crud_card, ratings, streaks, transcription, word_audio
 from app.services.localization import pick_locale
 
 
@@ -18,6 +21,8 @@ def story_to_response(story: Stories):
         'genre': story.genre,
         'grammar_topic': story.grammar_topic,
         'image_url': story.image_url,
+        'audio_url': story.audio_url,
+        'accent': story.accent,
     }
 
 
@@ -74,6 +79,12 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
     questions = await get_story_questions(story_id, db)
     transcriptions = await transcription.get_many([w.word for w in words], db)
 
+    audio = await word_audio.get_many_cached([w.word for w in words], story.cefr_level, db)
+    missing_audio = [w.word for w in words if w.word.strip().lower() not in audio]
+    if missing_audio:
+        from app.tasks.ai import generate_word_audio_batch_task
+        generate_word_audio_batch_task.delay(missing_audio, story.cefr_level)
+
     return {
         **story_to_response(story),
         'body': story.body_en,
@@ -89,6 +100,8 @@ async def get_story_detail(story_id: int, locale: str, db: AsyncSession):
                 'part_of_speech': w.part_of_speech,
                 'context': w.context,
                 'transcription': transcriptions.get(w.word.strip().lower()),
+                'audio_url': audio.get(w.word.strip().lower(), {}).get('audio_url'),
+                'accent': audio.get(w.word.strip().lower(), {}).get('accent'),
             }
             for w in words
         ],
@@ -130,6 +143,13 @@ async def get_my_reading_progress(user_id: int, db: AsyncSession):
     return result.scalars().all()
 
 
+async def record_listen(user_id: int, story_id: int, db: AsyncSession):
+    stmt = pg_insert(StoryListens).values(user_id=user_id, story_id=story_id, listened_on=dt.date.today())
+    stmt = stmt.on_conflict_do_nothing(index_elements=['user_id', 'story_id', 'listened_on'])
+    await db.execute(stmt)
+    await db.commit()
+
+
 async def add_story_word_to_deck(word_id: int, user_id: int, locale: str, db: AsyncSession):
     word = await get_story_word(word_id, db)
 
@@ -139,8 +159,17 @@ async def add_story_word_to_deck(word_id: int, user_id: int, locale: str, db: As
     translation = word.translation_tg if locale == 'tg' else word.translation_ru
     word_transcription = await transcription.get_one(word.word, db)
 
+    story = await get_story(word.story_id, db)
+    level = story.cefr_level if story else 'A1'
+    audio = await word_audio.get_one(word.word, level, db)
+
     data = CardCreate(word=word.word, translation=translation, example=word.context, transcription=word_transcription)
-    return await crud_card.create_card(data, user_id, db, source_story_id=word.story_id)
+    card = await crud_card.create_card(data, user_id, db, source_story_id=word.story_id)
+
+    if audio is not None:
+        card = await crud_card.update_audio(card.id, user_id, audio['audio_url'], db, accent=audio['accent'])
+
+    return card
 
 
 async def submit_story_questions(story_id: int, user_id: int, answers, locale: str, db: AsyncSession):

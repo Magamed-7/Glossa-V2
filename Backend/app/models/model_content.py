@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import date, datetime
 
-from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy import JSON, Boolean, Date, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -97,6 +97,8 @@ class Stories(Base):
     is_system: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     word_dictionary: Mapped[dict | None] = mapped_column(JSON().with_variant(JSONB(), 'postgresql'), nullable=True)
     source_key: Mapped[str | None] = mapped_column(String, nullable=True, unique=True, index=True)
+    audio_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    accent: Mapped[str | None] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -151,4 +153,32 @@ class ReadingProgress(Base):
     last_position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class WordAudio(Base):
+    __tablename__ = 'word_audio'
+    __table_args__ = (UniqueConstraint('word', 'accent', name='uq_word_audio_word_accent'),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    word: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    accent: Mapped[str] = mapped_column(String, nullable=False)
+    audio_url: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
+class StoryListens(Base):
+    __tablename__ = 'story_listens'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'story_id', 'listened_on', name='uq_story_listens_user_story_day'),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False, index=True)
+    story_id: Mapped[int] = mapped_column(ForeignKey('stories.id'), nullable=False, index=True)
+    listened_on: Mapped[date] = mapped_column(Date, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
     )

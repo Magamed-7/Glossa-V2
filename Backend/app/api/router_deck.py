@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
 from app.core.errors import AppError
 from app.core.limits import enforce_deck_word_limit
-from app.core.storage import ALLOWED_AUDIO_TYPES, read_upload, upload_file
 from app.db.database import get_db
 from app.schemas.schema_learning import (
     CardCreate,
@@ -102,20 +101,25 @@ async def delete_card(
 
 
 @router_deck.post('/{card_id}/audio', response_model=CardResponse)
-async def upload_card_audio(
+async def generate_card_audio(
     card_id: int,
-    file: UploadFile,
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    file_bytes = await read_upload(file)
-    audio_url = upload_file('pronunciations', file_bytes, file.filename, file.content_type, ALLOWED_AUDIO_TYPES)
-    card = await crud_card.update_audio(card_id, current_user.id, audio_url, db)
+    from app.services import word_audio
+
+    card = await crud_card.get_card(card_id, current_user.id, db)
 
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
 
-    return card
+    level = await word_audio.level_for_user(current_user.id, db)
+    audio = await word_audio.get_one(card.word, level, db)
+
+    if audio is None:
+        raise AppError(code='AUDIO_GENERATION_FAILED', message='Could not generate pronunciation audio', status_code=502)
+
+    return await crud_card.update_audio(card_id, current_user.id, audio['audio_url'], db, accent=audio['accent'])
 
 
 @router_reviews.get('/today', response_model=list[CardResponse])

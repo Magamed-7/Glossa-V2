@@ -12,6 +12,8 @@ class CardCreate(BaseModel):
     example: str | None = None
     source_story_id: int | None = None
     transcription: str | None = None
+    audio_url: str | None = None
+    accent: str | None = None
 
 
 class CardStatusUpdate(BaseModel):

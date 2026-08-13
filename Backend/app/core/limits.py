@@ -196,6 +196,37 @@ async def check_leveled_vocab_limit(user_id: int, db: AsyncSession):
             )
 
 
+async def check_audiobook_limit(user_id: int, story_id: int, db: AsyncSession):
+    from app.services import crud_subscription
+    from app.models.model_content import StoryListens
+    from sqlalchemy import select, func
+    import datetime as dt
+
+    today = dt.date.today()
+
+    already_today = await db.execute(
+        select(StoryListens).where(
+            StoryListens.user_id == user_id,
+            StoryListens.story_id == story_id,
+            StoryListens.listened_on == today,
+        )
+    )
+    if already_today.scalar_one_or_none() is not None:
+        return True
+
+    subscription = await crud_subscription.get_active_subscription(user_id, db)
+    limit = subscription['plan'].audiobooks_per_day
+
+    if limit is None:
+        return True
+
+    count_stmt = select(func.count(func.distinct(StoryListens.story_id))).where(
+        StoryListens.user_id == user_id, StoryListens.listened_on == today
+    )
+    count = (await db.execute(count_stmt)).scalar() or 0
+    return count < limit
+
+
 async def check_transcription_quota(user_id: int, db: AsyncSession):
     from app.services import crud_subscription
     from app.models.model_card import Cards

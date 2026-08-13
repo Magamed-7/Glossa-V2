@@ -24,6 +24,8 @@ async def create_card(data: CardCreate, user_id: int, db: AsyncSession, source_s
         example=data.example,
         source_story_id=source_story_id,
         transcription=data.transcription,
+        audio_url=data.audio_url,
+        accent=data.accent,
     )
 
     db.add(card)
@@ -96,13 +98,15 @@ async def delete_card(card_id: int, user_id: int, db: AsyncSession):
     return card
 
 
-async def update_audio(card_id: int, user_id: int, audio_url: str, db: AsyncSession):
+async def update_audio(card_id: int, user_id: int, audio_url: str, db: AsyncSession, accent: str | None = None):
     card = await get_card(card_id, user_id, db)
 
     if card is None:
         return None
 
     card.audio_url = audio_url
+    if accent is not None:
+        card.accent = accent
 
     await db.commit()
     await db.refresh(card)

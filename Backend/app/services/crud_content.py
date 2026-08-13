@@ -8,7 +8,7 @@ from app.models.model_content import (
     GrammarQuestions,
     VocabEntries,
 )
-from app.services import ratings, transcription
+from app.services import ratings, transcription, word_audio
 from app.services.localization import pick_locale
 
 
@@ -20,7 +20,8 @@ def vocab_translation(entry: VocabEntries, locale: str):
     return None
 
 
-def vocab_to_response(entry: VocabEntries, locale: str, transcriptions: dict | None = None):
+def vocab_to_response(entry: VocabEntries, locale: str, transcriptions: dict | None = None, audio: dict | None = None):
+    word_audio_entry = (audio or {}).get(entry.word.strip().lower(), {})
     return {
         'id': entry.id,
         'word': entry.word,
@@ -30,12 +31,36 @@ def vocab_to_response(entry: VocabEntries, locale: str, transcriptions: dict | N
         'cefr_level': entry.cefr_level,
         'unit': entry.unit,
         'transcription': (transcriptions or {}).get(entry.word.strip().lower()),
+        'audio_url': word_audio_entry.get('audio_url'),
+        'accent': word_audio_entry.get('accent'),
     }
 
 
 async def vocab_entries_to_responses(entries: list[VocabEntries], locale: str, db: AsyncSession):
     transcriptions = await transcription.get_many([e.word for e in entries], db)
-    return [vocab_to_response(entry, locale, transcriptions) for entry in entries]
+
+    # Аудио, в отличие от транскрипции, зависит от уровня (ростер акцентов свой на каждый
+    # уровень) — группируем по cefr_level, чтобы каждое слово озвучилось акцентом своего уровня.
+    entries_by_level = {}
+    for entry in entries:
+        entries_by_level.setdefault(entry.cefr_level, []).append(entry)
+
+    audio = {}
+    missing_by_level = {}
+    for level, level_entries in entries_by_level.items():
+        words = [e.word for e in level_entries]
+        cached = await word_audio.get_many_cached(words, level, db)
+        audio.update(cached)
+        missing = [w for w in words if w.strip().lower() not in cached]
+        if missing:
+            missing_by_level[level] = missing
+
+    if missing_by_level:
+        from app.tasks.ai import generate_word_audio_batch_task
+        for level, words in missing_by_level.items():
+            generate_word_audio_batch_task.delay(words, level)
+
+    return [vocab_to_response(entry, locale, transcriptions, audio) for entry in entries]
 
 
 async def get_vocab_entries(db: AsyncSession, level=None, unit=None, search=None, ids=None, limit=20, offset=0):

@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -55,6 +56,9 @@ class Settings:
 
     ELASTICSEARCH_URL: str = os.getenv('ELASTICSEARCH_URL', 'http://localhost:9200')
     ELASTIC_PASSWORD: str = os.getenv('ELASTIC_PASSWORD', '')
+
+    # Резервный TTS-движок (edge-tts недоступен/сломан) — сюда скачиваются голосовые модели Piper.
+    PIPER_VOICES_DIR: str = os.getenv('PIPER_VOICES_DIR', str(Path(__file__).resolve().parents[2] / 'piper_voices'))
 
 
 settings = Settings()

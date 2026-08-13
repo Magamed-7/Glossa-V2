@@ -128,9 +128,11 @@ services:
       mc mb -p local/avatars &&
       mc mb -p local/story-images &&
       mc mb -p local/pronunciations &&
+      mc mb -p local/story-audio &&
       mc anonymous set download local/avatars &&
       mc anonymous set download local/story-images &&
-      mc anonymous set download local/pronunciations
+      mc anonymous set download local/pronunciations &&
+      mc anonymous set download local/story-audio
       "
 
   celery_beat:

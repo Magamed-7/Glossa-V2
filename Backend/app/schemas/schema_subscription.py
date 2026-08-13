@@ -13,6 +13,7 @@ class PlanResponse(BaseModel):
     deck_words_per_day: int | None
     own_stories_per_week: int | None
     ai_seconds_per_day: int | None
+    audiobooks_per_day: int | None
     can_buy_stories: bool
     telegram_access: bool
 

@@ -12,9 +12,10 @@ from app.schemas.schema_content import (
     QuestionSubmit,
     VocabResponse,
     WeakTopicResponse,
+    WordAudioResponse,
     WordTranscriptionResponse,
 )
-from app.services import crud_content, transcription
+from app.services import crud_content, transcription, word_audio
 
 router_vocabulary = APIRouter(prefix='/vocabulary', tags=['Vocabulary'])
 router_grammar = APIRouter(prefix='/grammar', tags=['Grammar'])
@@ -47,6 +48,17 @@ async def get_word_transcription(
 ):
     value = await transcription.get_one(word, db)
     return {'word': word, 'transcription': value}
+
+
+@router_vocabulary.get('/audio', response_model=WordAudioResponse)
+async def get_word_audio(
+    word: str,
+    level: str = 'A1',
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    value = await word_audio.get_one(word, level, db)
+    return {'word': word, 'audio_url': (value or {}).get('audio_url'), 'accent': (value or {}).get('accent')}
 
 
 @router_vocabulary.get('/{entry_id}', response_model=VocabResponse)

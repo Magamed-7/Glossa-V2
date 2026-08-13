@@ -89,7 +89,7 @@ def process_ai_event(**kwargs):
 
 async def _generate_card_transcription(card_id: int):
     from app.models.model_card import Cards
-    from app.services import transcription
+    from app.services import transcription, word_audio
 
     async with AsyncSessionLocal() as db:
         result = await db.execute(select(Cards).where(Cards.id == card_id))
@@ -99,10 +99,18 @@ async def _generate_card_transcription(card_id: int):
             return False
 
         value = await transcription.get_one(card.word, db)
-        if value is None:
+        if value is not None:
+            card.transcription = value
+
+        level = await word_audio.level_for_user(card.user_id, db)
+        audio = await word_audio.get_one(card.word, level, db)
+        if audio is not None:
+            card.audio_url = audio['audio_url']
+            card.accent = audio['accent']
+
+        if value is None and audio is None:
             return False
 
-        card.transcription = value
         db.add(card)
         await db.commit()
         return True
@@ -251,3 +259,54 @@ async def _generate_story_dictionary(story_id: int, story_type: str = 'system'):
 @celery_app.task(name='app.tasks.ai.generate_story_dictionary')
 def generate_story_dictionary_task(story_id: int, story_type: str = 'system'):
     return run_async(_generate_story_dictionary(story_id, story_type))
+
+
+async def _generate_word_audio_batch(words: list[str], level: str):
+    from app.services import word_audio
+
+    async with AsyncSessionLocal() as db:
+        await word_audio.generate_missing(words, level, db)
+        return True
+
+
+@celery_app.task(name='app.tasks.ai.generate_word_audio_batch')
+def generate_word_audio_batch_task(words: list[str], level: str):
+    return run_async(_generate_word_audio_batch(words, level))
+
+
+async def _generate_story_audio(story_id: int):
+    from app.core.storage import ALLOWED_AUDIO_TYPES, upload_file
+    from app.core.tts_voices import pick_accent
+    from app.models.model_content import Stories
+    from app.services import tts
+
+    async with AsyncSessionLocal() as db:
+        result = await db.execute(select(Stories).where(Stories.id == story_id))
+        story = result.scalar_one_or_none()
+
+        if story is None:
+            return False
+
+        accent = pick_accent(story.cefr_level)
+
+        try:
+            audio_bytes, content_type = await tts.synthesize(story.body_en, accent)
+        except Exception:
+            logger.exception('Failed to synthesize audio for story %s', story_id)
+            return False
+
+        extension = 'mp3' if content_type == 'audio/mpeg' else 'wav'
+        audio_url = upload_file(
+            'story-audio', audio_bytes, f'story-{story_id}.{extension}', content_type, ALLOWED_AUDIO_TYPES
+        )
+
+        story.audio_url = audio_url
+        story.accent = accent
+        db.add(story)
+        await db.commit()
+        return True
+
+
+@celery_app.task(name='app.tasks.ai.generate_story_audio')
+def generate_story_audio_task(story_id: int):
+    return run_async(_generate_story_audio(story_id))

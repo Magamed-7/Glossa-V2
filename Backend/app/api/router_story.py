@@ -11,6 +11,7 @@ from app.schemas.schema_content import (
     ReadingProgressResponse,
     ReadingProgressUpdate,
     StoryDetailResponse,
+    StoryListenResponse,
     StoryQuestionsResult,
     StoryQuestionsSubmit,
     StoryResponse,
@@ -78,6 +79,29 @@ async def get_story(
         )
 
     return detail
+
+
+@router_stories.post('/{story_id}/listen', response_model=StoryListenResponse)
+async def listen_to_story(
+    story_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    from app.core.limits import check_audiobook_limit
+
+    story = await crud_story.get_story(story_id, db)
+
+    if story is None:
+        raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
+
+    if story.audio_url is None:
+        raise AppError(code='STORY_AUDIO_NOT_AVAILABLE', message='Audio not available for this story yet', status_code=404)
+
+    if not await check_audiobook_limit(current_user.id, story_id, db):
+        raise AppError(code='AUDIOBOOK_LIMIT_REACHED', message='Daily audiobook limit reached, upgrade your plan', status_code=403)
+
+    await crud_story.record_listen(current_user.id, story_id, db)
+    return {'audio_url': story.audio_url, 'accent': story.accent}
 
 
 @router_stories.post('/{story_id}/progress', response_model=ReadingProgressResponse)

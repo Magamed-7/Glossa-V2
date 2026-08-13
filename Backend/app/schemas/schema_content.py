@@ -12,11 +12,19 @@ class VocabResponse(BaseModel):
     cefr_level: str
     unit: str | None
     transcription: str | None = None
+    audio_url: str | None = None
+    accent: str | None = None
 
 
 class WordTranscriptionResponse(BaseModel):
     word: str
     transcription: str | None
+
+
+class WordAudioResponse(BaseModel):
+    word: str
+    audio_url: str | None
+    accent: str | None
 
 
 class GrammarExampleResponse(BaseModel):
@@ -98,6 +106,8 @@ class StoryWordResponse(BaseModel):
     part_of_speech: str | None
     context: str | None
     transcription: str | None = None
+    audio_url: str | None = None
+    accent: str | None = None
 
 
 class StoryQuestionResponse(BaseModel):
@@ -113,6 +123,8 @@ class StoryResponse(BaseModel):
     genre: str | None
     grammar_topic: str | None
     image_url: str | None
+    audio_url: str | None = None
+    accent: str | None = None
 
 
 class StoryDetailResponse(StoryResponse):
@@ -122,6 +134,11 @@ class StoryDetailResponse(StoryResponse):
     word_dictionary: dict | None = None
     words: list[StoryWordResponse]
     questions: list[StoryQuestionResponse]
+
+
+class StoryListenResponse(BaseModel):
+    audio_url: str | None
+    accent: str | None
 
 
 class ReadingProgressUpdate(BaseModel):
