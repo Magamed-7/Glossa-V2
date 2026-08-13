@@ -20,6 +20,7 @@ from app.models import (  # noqa: E402, F401
     model_content,
     model_course,
     model_lingo,
+    model_messenger,
     model_notification,
     model_payment,
     model_profile,

@@ -10,7 +10,8 @@ from app.core.errors import AppError
 from app.core.limits import add_ai_seconds, check_ai_access
 from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
-from app.services import ai_chat, ai_mcp, crud_user
+from app.schemas.schema_messenger import MessageResponse
+from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user
 
 from app.core.redis_client import redis_client
 
@@ -266,3 +267,129 @@ async def leaderboard_ws(websocket: WebSocket):
             await websocket.receive_text()
     except WebSocketDisconnect:
         leaderboard_manager.disconnect(websocket)
+
+
+class MessengerManager:
+    # Один пользователь может держать несколько вкладок/устройств одновременно — поэтому
+    # набор сокетов на user_id, а не один сокет.
+    def __init__(self):
+        self.connections: dict[int, set[WebSocket]] = {}
+
+    def connect(self, user_id: int, websocket: WebSocket):
+        self.connections.setdefault(user_id, set()).add(websocket)
+
+    def disconnect(self, user_id: int, websocket: WebSocket):
+        sockets = self.connections.get(user_id)
+        if not sockets:
+            return
+        sockets.discard(websocket)
+        if not sockets:
+            del self.connections[user_id]
+
+    def is_online(self, user_id: int):
+        return bool(self.connections.get(user_id))
+
+    async def send_to_user(self, user_id: int, data: dict):
+        for connection in list(self.connections.get(user_id, ())):
+            try:
+                await connection.send_json(data)
+            except Exception:
+                pass
+
+
+messenger_manager = MessengerManager()
+
+CALL_SIGNAL_TYPES = {'call_offer', 'call_answer', 'ice_candidate', 'call_end'}
+
+
+@app.websocket('/ws/messenger')
+async def messenger_ws(websocket: WebSocket):
+    await websocket.accept()
+
+    async with AsyncSessionLocal() as db:
+        user = await authenticate(websocket, db)
+
+    if user is None:
+        await websocket.close(code=4401, reason='Authentication required')
+        return
+
+    messenger_manager.connect(user.id, websocket)
+
+    try:
+        while True:
+            try:
+                data = await websocket.receive_json()
+            except json.JSONDecodeError:
+                await websocket.send_json({'type': 'error', 'code': 'BAD_MESSAGE'})
+                continue
+
+            msg_type = data.get('type')
+            conversation_id = data.get('conversation_id')
+
+            if conversation_id is None:
+                await websocket.send_json({'type': 'error', 'code': 'MISSING_CONVERSATION_ID'})
+                continue
+
+            async with AsyncSessionLocal() as db:
+                participant_ids = await crud_messenger.get_participant_ids(conversation_id, db)
+
+                if user.id not in participant_ids:
+                    await websocket.send_json({'type': 'error', 'code': 'NOT_A_PARTICIPANT'})
+                    continue
+
+                other_ids = [pid for pid in participant_ids if pid != user.id]
+
+                if msg_type == 'send_message':
+                    message = await crud_messenger.create_message(
+                        conversation_id,
+                        user.id,
+                        db,
+                        type=data.get('message_type', 'text'),
+                        text=data.get('text'),
+                        attachment_url=data.get('attachment_url'),
+                        attachment_name=data.get('attachment_name'),
+                        attachment_duration_seconds=data.get('attachment_duration_seconds'),
+                    )
+                    payload = {
+                        'type': 'new_message',
+                        'message': MessageResponse.model_validate(message).model_dump(mode='json'),
+                    }
+                    await websocket.send_json(payload)
+
+                    for other_id in other_ids:
+                        if messenger_manager.is_online(other_id):
+                            await messenger_manager.send_to_user(other_id, payload)
+                        else:
+                            preview = message.text if message.type == 'text' else f'[{message.type}]'
+                            await crud_notification.create_notification(
+                                other_id, 'new_message', f'{user.username}',
+                                db, body=(preview or '')[:200],
+                            )
+
+                elif msg_type == 'typing':
+                    for other_id in other_ids:
+                        await messenger_manager.send_to_user(
+                            other_id, {'type': 'typing', 'conversation_id': conversation_id, 'user_id': user.id}
+                        )
+
+                elif msg_type in CALL_SIGNAL_TYPES:
+                    relay = {**data, 'from_user_id': user.id}
+                    for other_id in other_ids:
+                        await messenger_manager.send_to_user(other_id, relay)
+
+                    if msg_type == 'call_end' and data.get('log') is not False:
+                        await crud_messenger.create_message(
+                            conversation_id,
+                            user.id,
+                            db,
+                            type='call',
+                            text=data.get('status', 'ended'),
+                            attachment_duration_seconds=data.get('duration_seconds'),
+                        )
+
+                else:
+                    await websocket.send_json({'type': 'error', 'code': 'UNKNOWN_TYPE'})
+    except WebSocketDisconnect:
+        pass
+    finally:
+        messenger_manager.disconnect(user.id, websocket)

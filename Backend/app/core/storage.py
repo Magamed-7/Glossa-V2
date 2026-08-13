@@ -14,6 +14,15 @@ s3_client = boto3.client(
 
 ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/webp'}
 ALLOWED_AUDIO_TYPES = {'audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/ogg', 'audio/webm', 'audio/x-m4a'}
+ALLOWED_CHAT_FILE_TYPES = ALLOWED_IMAGE_TYPES | ALLOWED_AUDIO_TYPES | {
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/zip',
+    'text/plain',
+    'video/mp4',
+    'video/webm',
+}
 
 UPLOAD_CHUNK_SIZE = 1024 * 1024
 MAX_UPLOAD_SIZE = 5 * 1024 * 1024

@@ -10,6 +10,7 @@ from app.api.router_course import router_course
 from app.api.router_deck import router_deck, router_learning, router_reviews
 from app.api.router_export import router_export
 from app.api.router_lingo import router_lingo
+from app.api.router_messenger import router_messenger
 from app.api.router_notification import router_notification
 from app.api.router_payment import router_payment, router_payments_history, router_stripe
 from app.api.router_practice import router_practice
@@ -30,6 +31,7 @@ from app.models import (
     model_card,
     model_content,
     model_lingo,
+    model_messenger,
     model_notification,
     model_payment,
     model_profile,
@@ -82,6 +84,7 @@ app.include_router(router_stripe)
 app.include_router(router_payments_history)
 app.include_router(router_user_story)
 app.include_router(router_notification)
+app.include_router(router_messenger)
 app.include_router(router_telegram)
 app.include_router(router_export)
 app.include_router(router_lingo)
