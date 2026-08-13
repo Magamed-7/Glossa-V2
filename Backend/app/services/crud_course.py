@@ -461,6 +461,15 @@ async def submit_unit_test(user_id: int, unit_id: int, attempt_id: int, answers:
     if outcome['passed']:
         await complete_atom(user_id, unit_id, 'unit_test', time_spent_seconds, db)
 
+    # Award custom unit test XP (35 XP base passing, +15 XP for high score, 10 XP consolation)
+    from app.services import ratings
+    unit_xp = 10
+    if outcome['passed']:
+        unit_xp = 35
+        if outcome['score_percent'] >= 90:
+            unit_xp += 15
+    await ratings.award_xp(user_id, 'review_passed', db, amount=unit_xp)
+
     return outcome
 
 
@@ -507,6 +516,13 @@ async def submit_level_test(user_id: int, cefr_level: str, test_type: str, attem
             ).scalar_one_or_none()
             if unit is not None:
                 await complete_atom(user_id, unit.id, 'level_test', time_spent_seconds, db)
+
+    # Award custom level test XP (100 XP for passing, 25 XP consolation)
+    from app.services import ratings
+    level_xp = 25
+    if outcome['passed']:
+        level_xp = 100
+    await ratings.award_xp(user_id, 'review_passed', db, amount=level_xp)
 
     return outcome
 

@@ -29,6 +29,7 @@ async def create_card(data: CardCreate, user_id: int, db: AsyncSession, source_s
     db.add(card)
     await db.commit()
     await db.refresh(card)
+    await ratings.award_xp(user_id, 'word_learned', db, amount=2)
     return card
 
 

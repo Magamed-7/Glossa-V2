@@ -180,6 +180,15 @@ async def submit_practice_test(user_id: int, attempt_id: int, answers: dict, db:
     attempt.completed_at = datetime.now(timezone.utc)
     await db.commit()
 
+    # Award XP for practice test completion (15 XP base, +5 passing, +10 high score)
+    from app.services import ratings
+    practice_xp = 15
+    if outcome['score_percent'] >= 90:
+        practice_xp += 10
+    elif outcome['score_percent'] >= 60:
+        practice_xp += 5
+    await ratings.award_xp(user_id, 'review_passed', db, amount=practice_xp)
+
     return outcome
 
 

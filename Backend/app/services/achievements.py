@@ -79,9 +79,10 @@ async def check_achievements(user_id: int, db: AsyncSession):
     if newly_awarded:
         await db.commit()
 
-        # Trigger notifications for each newly earned achievement
-        from app.services import notify_service, crud_settings
+        # Trigger notifications and award XP for each newly earned achievement
+        from app.services import notify_service, crud_settings, ratings
         for achievement in newly_awarded:
+            await ratings.award_xp(user_id, 'social', db, amount=25)
             settings = await crud_settings.get_settings(user_id, db)
             locale = getattr(settings, 'interface_language', 'en')
             if locale not in ('en', 'ru', 'tg'):
