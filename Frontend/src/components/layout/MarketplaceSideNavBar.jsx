@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
 import { useT } from "../../lib/i18n.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
@@ -24,7 +24,10 @@ export default function MarketplaceSideNavBar() {
       </div>
 
       {/* Profile Header Block */}
-      <div className="flex items-center gap-3 mb-8 p-2 border-2 border-black dark:border-stone-800 bg-white dark:bg-stone-900 shadow-[3px_3px_0px_#000000] dark:shadow-[3px_3px_0px_#3a3a3a]">
+      <Link
+        to="/profile"
+        className="flex items-center gap-3 mb-8 p-2 border-2 border-black dark:border-stone-800 bg-white dark:bg-stone-900 shadow-[3px_3px_0px_#000000] dark:shadow-[3px_3px_0px_#3a3a3a] hover:bg-stone-50 dark:hover:bg-stone-850 transition-colors cursor-pointer"
+      >
         <img
           src={avatarUrl}
           alt={username}
@@ -41,7 +44,7 @@ export default function MarketplaceSideNavBar() {
             {username}
           </span>
         </div>
-      </div>
+      </Link>
 
       {/* Marketplace Navigation Menu */}
       <nav className="flex flex-col gap-2" aria-label="Marketplace Navigation">
