@@ -255,13 +255,31 @@ export const ru = {
     viewAchievements: "Посмотреть достижения",
   },
   achievements: {
-    eyebrow: "Вехи",
+    eyebrow: "Мои достижения",
     titleLead: "Ваши",
     titleAccent: "Достижения",
     emptyTitle: "Достижения пока недоступны",
     emptyDescription: "Шаблоны достижений ещё не настроены для этого окружения.",
     earned: "Получено {date}",
     threshold: "Порог: {n}",
+    registryTitle: "Реестр достижений",
+    registrySubtitle: "Полный архив академических заслуг. Здесь регистрируется твой прогресс в преодолении языкового лабиринта.",
+    hallOfFame: "Зал славы",
+    hallOfFameSubtitle: "Ваш персональный зал славы",
+    totalEarned: "Всего получено",
+    prestigeTitle: "Уровень престижа",
+    prestigeGold: "Золотой",
+    prestigeSilver: "Серебряный",
+    prestigeBronze: "Бронзовый",
+    prestigePlatinum: "Платиновый",
+    all: "Все достижения",
+    earnedOnly: "Заработанные",
+    categories: {
+      grinder: "Академические",
+      learner: "Системные",
+      social: "Социальные",
+      teacher: "Авторские"
+    }
   },
   deck: {
     eyebrow: "Личный архив",

@@ -255,13 +255,31 @@ export const tg = {
     viewAchievements: "Дидани дастовардҳо",
   },
   achievements: {
-    eyebrow: "Марраҳо",
+    eyebrow: "Дастовардҳои ман",
     titleLead: "Дастовардҳои",
     titleAccent: "шумо",
     emptyTitle: "Дастовардҳо ҳоло дастрас нестанд",
     emptyDescription: "Намунаҳои дастовард барои ин муҳит ҳанӯз танзим нашудаанд.",
     earned: "Гирифта шуд {date}",
     threshold: "Ҳадди ниҳоӣ: {n}",
+    registryTitle: "Феҳристи дастовардҳо",
+    registrySubtitle: "Бойгонии ҳамаҷонибаи хизматҳои илмӣ. Пешрафти шумо тавассути лабиринти забонӣ дар ин ҷо сабт шудааст.",
+    hallOfFame: "Толори шараф",
+    hallOfFameSubtitle: "Толори шарафи шахсии шумо",
+    totalEarned: "Ҳамагӣ гирифта шуд",
+    prestigeTitle: "Сатҳи эътибор",
+    prestigeGold: "Тиллоӣ",
+    prestigeSilver: "Нуқрагин",
+    prestigeBronze: "Бронзӣ",
+    prestigePlatinum: "Платинагӣ",
+    all: "Ҳамаи дастовардҳо",
+    earnedOnly: "Ба даст овардашуда",
+    categories: {
+      grinder: "Академикӣ",
+      learner: "Системавӣ",
+      social: "Иҷтимоӣ",
+      teacher: "Муаллифӣ"
+    }
   },
   deck: {
     eyebrow: "Бойгонии шахсӣ",

@@ -255,13 +255,31 @@ export const en = {
     viewAchievements: "View Achievements",
   },
   achievements: {
-    eyebrow: "Milestones",
+    eyebrow: "My Achievements",
     titleLead: "Your",
     titleAccent: "Achievements",
     emptyTitle: "No achievements available yet",
     emptyDescription: "Achievement templates haven't been set up for this environment yet.",
     earned: "Earned {date}",
     threshold: "Threshold: {n}",
+    registryTitle: "Registry of Achievements",
+    registrySubtitle: "A comprehensive archive of scholarly merits. Your progress through the linguistic labyrinth is chronicled here.",
+    hallOfFame: "Hall of Fame",
+    hallOfFameSubtitle: "Your Personal Hall of Fame",
+    totalEarned: "Total Earned",
+    prestigeTitle: "Prestige Level",
+    prestigeGold: "Gold",
+    prestigeSilver: "Silver",
+    prestigeBronze: "Bronze",
+    prestigePlatinum: "Platinum",
+    all: "All Achievements",
+    earnedOnly: "Earned Only",
+    categories: {
+      grinder: "Academic",
+      learner: "Systematic",
+      social: "Social",
+      teacher: "Creative"
+    }
   },
   deck: {
     eyebrow: "Personal Archive",
