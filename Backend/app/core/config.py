@@ -60,5 +60,24 @@ class Settings:
     # Резервный TTS-движок (edge-tts недоступен/сломан) — сюда скачиваются голосовые модели Piper.
     PIPER_VOICES_DIR: str = os.getenv('PIPER_VOICES_DIR', str(Path(__file__).resolve().parents[2] / 'piper_voices'))
 
+    # TURN для звонков в мессенджере. TURN_PROVIDER переключает источник ICE-серверов
+    # (app/services/turn_credentials.py) без изменений в коде звонков — сейчас 'coturn'
+    # (свой сервер, бесплатно всегда), 'cloudflare' оставлен на будущее, если разберёмся
+    # с активацией продукта на их стороне.
+    TURN_PROVIDER: str = os.getenv('TURN_PROVIDER', 'coturn')
+
+    CLOUDFLARE_ACCOUNT_ID: str = os.getenv('CLOUDFLARE_ACCOUNT_ID', '')
+    CLOUDFLARE_CALLS_API_TOKEN: str = os.getenv('CLOUDFLARE_CALLS_API_TOKEN', '')
+    CLOUDFLARE_TURN_KEY_ID: str = os.getenv('CLOUDFLARE_TURN_KEY_ID', '')
+    CLOUDFLARE_TURN_KEY_SECRET: str = os.getenv('CLOUDFLARE_TURN_KEY_SECRET', '')
+
+    # coturn — TURN REST API (use-auth-secret): временные username/credential считаются из
+    # общего секрета по стандартной схеме (RFC-подобная, та же идея, что и у JWT). COTURN_URLS —
+    # через запятую, каждая строка идёт в ICE-конфиг как отдельный TURN url.
+    COTURN_SECRET: str = os.getenv('COTURN_SECRET', '')
+    COTURN_REALM: str = os.getenv('COTURN_REALM', 'localhost')
+    COTURN_URLS: list[str] = [u.strip() for u in os.getenv('COTURN_URLS', '').split(',') if u.strip()]
+    COTURN_CREDENTIAL_TTL_SECONDS: int = int(os.getenv('COTURN_CREDENTIAL_TTL_SECONDS', '21600'))
+
 
 settings = Settings()

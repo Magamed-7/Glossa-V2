@@ -1,9 +1,20 @@
 import { useRef, useState } from "react";
+import { getIceServers } from "./api/messenger.js";
 
-// Публичный STUN (бесплатный, Google) — достаточно для большинства прямых соединений.
-// TURN-сервер не поднят (платный/self-host вне бюджета) — если оба собеседника за
-// "сложным" NAT (двойной NAT, некоторые корпоративные сети), P2P-соединение не установится.
-const ICE_SERVERS = [{ urls: "stun:stun.l.google.com:19302" }];
+// Публичный STUN как крайний резерв — реальные ICE-серверы (STUN+TURN) берутся с бэкенда
+// (GET /messenger/ice-servers, app/services/turn_credentials.py) прямо перед звонком, каждый
+// раз заново: и потому что временные TURN-креды рано или поздно истекают, и потому что так
+// смена провайдера (coturn/Cloudflare) на бэкенде не требует правок на фронте.
+const FALLBACK_ICE_SERVERS = [{ urls: "stun:stun.l.google.com:19302" }];
+
+async function resolveIceServers() {
+  try {
+    const { ice_servers } = await getIceServers();
+    return ice_servers && ice_servers.length > 0 ? ice_servers : FALLBACK_ICE_SERVERS;
+  } catch (e) {
+    return FALLBACK_ICE_SERVERS;
+  }
+}
 
 export function useCall({ sendCallSignal }) {
   const [callState, setCallState] = useState("idle");
@@ -16,8 +27,9 @@ export function useCall({ sendCallSignal }) {
   const startTimeRef = useRef(null);
   const pendingCandidatesRef = useRef([]);
 
-  function createPeerConnection(conversationId) {
-    const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+  async function createPeerConnection(conversationId) {
+    const iceServers = await resolveIceServers();
+    const pc = new RTCPeerConnection({ iceServers });
 
     pc.onicecandidate = (event) => {
       if (event.candidate) {
@@ -49,7 +61,7 @@ export function useCall({ sendCallSignal }) {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video });
     setLocalStream(stream);
 
-    const pc = createPeerConnection(conversationId);
+    const pc = await createPeerConnection(conversationId);
     stream.getTracks().forEach((track) => pc.addTrack(track, stream));
 
     const offer = await pc.createOffer();
@@ -78,7 +90,7 @@ export function useCall({ sendCallSignal }) {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: !!video });
     setLocalStream(stream);
 
-    const pc = createPeerConnection(conversation_id);
+    const pc = await createPeerConnection(conversation_id);
     stream.getTracks().forEach((track) => pc.addTrack(track, stream));
 
     await pc.setRemoteDescription(new RTCSessionDescription(sdp));

@@ -28,6 +28,26 @@ services:
       timeout: 5s
       retries: 5
 
+  coturn:
+    image: coturn/coturn:4.6
+    profiles: ['full']
+    # Локально слушает на 127.0.0.1 без TLS — при деплое заменить --realm на настоящий домен,
+    # --external-ip на публичный IP сервера и добавить --cert/--pkey (Let's Encrypt) для turns:.
+    command: >
+      -n
+      --no-cli
+      --log-file=stdout
+      --listening-port=3478
+      --min-port=49160
+      --max-port=49200
+      --use-auth-secret
+      --static-auth-secret=${COTURN_SECRET}
+      --realm=${COTURN_REALM:-localhost}
+    ports:
+      - '3478:3478/udp'
+      - '3478:3478/tcp'
+      - '49160-49200:49160-49200/udp'
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
     profiles: ['full']

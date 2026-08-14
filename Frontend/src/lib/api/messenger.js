@@ -18,6 +18,10 @@ export function markConversationRead(conversationId) {
   return api.post(`/messenger/conversations/${conversationId}/read`);
 }
 
+export function getIceServers() {
+  return api.get("/messenger/ice-servers");
+}
+
 export function uploadAttachment(conversationId, file) {
   const body = new FormData();
   body.append("file", file);

@@ -11,9 +11,14 @@ from app.schemas.schema_messenger import (
     MessageResponse,
     StartConversationRequest,
 )
-from app.services import crud_messenger
+from app.services import crud_messenger, turn_credentials
 
 router_messenger = APIRouter(prefix='/messenger', tags=['Messenger'])
+
+
+@router_messenger.get('/ice-servers')
+async def get_ice_servers(current_user=Depends(get_current_user)):
+    return {'ice_servers': await turn_credentials.get_ice_servers(current_user.id)}
 
 
 async def _conversation_to_response(conversation, user_id: int, db: AsyncSession):
