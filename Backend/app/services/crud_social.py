@@ -83,7 +83,15 @@ async def search_users(current_user_id: int, db: AsyncSession, q: str | None = N
     query = query.limit(limit).offset(offset)
     result = await db.execute(query)
 
-    return [
-        {'id': user.id, 'username': user.username, 'photo_url': profile.photo_url if profile else None}
-        for user, profile in result.all()
-    ]
+    from app.services import crud_subscription
+    res = []
+    for user, profile in result.all():
+        sub = await crud_subscription.get_active_subscription(user.id, db)
+        tier = sub['plan'].code if sub else 'free'
+        res.append({
+            'id': user.id,
+            'username': user.username,
+            'photo_url': profile.photo_url if profile else None,
+            'subscription_tier': tier
+        })
+    return res

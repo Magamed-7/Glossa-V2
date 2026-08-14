@@ -26,7 +26,14 @@ async def get_followers(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_social.get_followers(current_user.id, db)
+    users = await crud_social.get_followers(current_user.id, db)
+    from app.services import crud_subscription
+    res = []
+    for u in users:
+        sub = await crud_subscription.get_active_subscription(u.id, db)
+        tier = sub['plan'].code if sub else 'free'
+        res.append({'id': u.id, 'username': u.username, 'subscription_tier': tier})
+    return res
 
 
 @router_social.get('/following', response_model=list[FollowUserResponse])
@@ -34,7 +41,14 @@ async def get_following(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_social.get_following(current_user.id, db)
+    users = await crud_social.get_following(current_user.id, db)
+    from app.services import crud_subscription
+    res = []
+    for u in users:
+        sub = await crud_subscription.get_active_subscription(u.id, db)
+        tier = sub['plan'].code if sub else 'free'
+        res.append({'id': u.id, 'username': u.username, 'subscription_tier': tier})
+    return res
 
 
 @router_social.get('/friends', response_model=list[FollowUserResponse])
@@ -42,7 +56,14 @@ async def get_friends(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_social.get_friends(current_user.id, db)
+    users = await crud_social.get_friends(current_user.id, db)
+    from app.services import crud_subscription
+    res = []
+    for u in users:
+        sub = await crud_subscription.get_active_subscription(u.id, db)
+        tier = sub['plan'].code if sub else 'free'
+        res.append({'id': u.id, 'username': u.username, 'subscription_tier': tier})
+    return res
 
 
 @router_social.post('/follow/{user_id}', response_model=FollowUserResponse)
@@ -52,7 +73,11 @@ async def follow_user(
     current_user=Depends(get_current_user),
 ):
     await crud_social.follow_user(current_user.id, user_id, db)
-    return await crud_user.get_by_id(user_id, db)
+    u = await crud_user.get_by_id(user_id, db)
+    from app.services import crud_subscription
+    sub = await crud_subscription.get_active_subscription(u.id, db)
+    tier = sub['plan'].code if sub else 'free'
+    return {'id': u.id, 'username': u.username, 'subscription_tier': tier}
 
 
 @router_social.delete('/follow/{user_id}')

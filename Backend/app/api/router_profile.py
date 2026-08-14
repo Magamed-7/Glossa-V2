@@ -24,7 +24,11 @@ async def get_my_profile(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_profile.get_profile(current_user.id, db)
+    profile = await crud_profile.get_profile(current_user.id, db)
+    from app.services import crud_subscription
+    sub = await crud_subscription.get_active_subscription(current_user.id, db)
+    profile.subscription_tier = sub['plan'].code if sub else 'free'
+    return profile
 
 
 @router_profile.patch('/me', response_model=ProfileResponse)
@@ -33,7 +37,11 @@ async def update_my_profile(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_profile.update_profile(current_user.id, data, db)
+    profile = await crud_profile.update_profile(current_user.id, data, db)
+    from app.services import crud_subscription
+    sub = await crud_subscription.get_active_subscription(current_user.id, db)
+    profile.subscription_tier = sub['plan'].code if sub else 'free'
+    return profile
 
 
 @router_profile.post('/me/photo', response_model=ProfileResponse)
@@ -44,7 +52,11 @@ async def upload_my_photo(
 ):
     file_bytes = await read_upload(file)
     photo_url = upload_file('avatars', file_bytes, file.filename, file.content_type, ALLOWED_IMAGE_TYPES)
-    return await crud_profile.update_photo(current_user.id, photo_url, db)
+    profile = await crud_profile.update_photo(current_user.id, photo_url, db)
+    from app.services import crud_subscription
+    sub = await crud_subscription.get_active_subscription(current_user.id, db)
+    profile.subscription_tier = sub['plan'].code if sub else 'free'
+    return profile
 
 
 @router_profile.get('/me/privacy', response_model=PrivacyResponse)

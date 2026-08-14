@@ -132,6 +132,10 @@ async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
     if viewer_id != user_id:
         profile = await increment_profile_views(user_id, db)
 
+    from app.services import crud_subscription
+    sub = await crud_subscription.get_active_subscription(user_id, db)
+    sub_tier = sub['plan'].code if sub else 'free'
+
     data = {
         'user_id': target_user.id,
         'username': target_user.username,
@@ -139,6 +143,8 @@ async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
         'interests': profile.interests,
         'photo_url': profile.photo_url,
         'profile_views': profile.profile_views,
+        'subscription_tier': sub_tier,
+        'created_at': target_user.created_at,
     }
 
     if privacy.show_languages:

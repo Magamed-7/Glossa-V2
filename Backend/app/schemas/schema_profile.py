@@ -36,6 +36,7 @@ class ProfileResponse(BaseModel):
     photo_url: str | None
     profile_views: int
     telegram_chat_id: str | None = None
+    subscription_tier: str | None = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -70,6 +71,7 @@ class PublicProfileResponse(BaseModel):
     interests: list[str] | None = None
     photo_url: str | None = None
     profile_views: int
+    subscription_tier: str | None = None
     languages: list[LanguageResponse] | None = None
     followers_count: int | None = None
     following_count: int | None = None
@@ -78,5 +80,6 @@ class PublicProfileResponse(BaseModel):
     best_streak: int | None = None
     stories_read_count: int | None = None
     achievements: list[MyAchievementResponse] | None = None
+    created_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)

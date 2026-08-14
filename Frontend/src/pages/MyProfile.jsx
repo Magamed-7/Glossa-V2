@@ -81,18 +81,55 @@ export default function MyProfile() {
   const { user, profile, languages, refreshUser } = useAuth();
   const { data: earnedAchievements, loading: loadingAch, error: errorAch } = useApi(() => getMyAchievements(), []);
 
+  const isPro = profile?.subscription_tier === "pro";
+  const isPremium = profile?.subscription_tier === "premium";
+
+  let avatarWrapperClass = "relative";
+  if (isPro) {
+    avatarWrapperClass = "relative rounded-full ring-4 ring-amber-400 p-1 bg-amber-400 border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]";
+  } else if (isPremium) {
+    avatarWrapperClass = "relative rounded-full ring-4 ring-secondary p-1 bg-secondary border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
+  }
+
+  // Helper local translations
+  const lookup = (key, fallback) => {
+    const res = t(key);
+    return res === key ? fallback : res;
+  };
+
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="flex items-center gap-6 mb-section-gap">
-        <PhotoUpload photoUrl={profile?.photo_url} name={user?.username} onUploaded={refreshUser} />
-        <div className="flex-1">
-          <h1 className="font-headline italic text-headline-lg text-secondary">{user?.username}</h1>
+      <div className="flex flex-col sm:flex-row items-center gap-6 mb-section-gap bg-[#FAF8F5] dark:bg-stone-900 border-2 border-primary p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+        <div className={avatarWrapperClass}>
+          <PhotoUpload photoUrl={profile?.photo_url} name={user?.username} onUploaded={refreshUser} />
+          {isPremium && (
+            <span className="absolute -bottom-1 -right-1 bg-white border-2 border-primary text-lg rounded-full w-7 h-7 flex items-center justify-center shadow">
+              👑
+            </span>
+          )}
+        </div>
+        <div className="flex-1 text-center sm:text-left space-y-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <h1 className="font-headline italic text-headline-lg text-secondary">{user?.username}</h1>
+            <div className="flex justify-center sm:justify-start gap-2">
+              {isPro && (
+                <span className="bg-amber-400 text-black border border-primary font-label text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                  ⚡ {lookup("profile.tierPro", "PRO member")}
+                </span>
+              )}
+              {isPremium && (
+                <span className="bg-secondary text-white border border-primary font-label text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                  👑 {lookup("profile.tierPremium", "PREMIUM elite")}
+                </span>
+              )}
+            </div>
+          </div>
           {profile?.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
         {user?.id && (
           <Link
             to={`/profile/${user.id}`}
-            className="flex items-center gap-2 border-2 border-tertiary px-4 py-2 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors shrink-0"
+            className="flex items-center gap-2 border-2 border-primary bg-surface dark:bg-stone-950 px-4 py-2 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors shrink-0 hard-shadow"
           >
             <Icon name="visibility" />
             {t("profile.previewPublic")}
