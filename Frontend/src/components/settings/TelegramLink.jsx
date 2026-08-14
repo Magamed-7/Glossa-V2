@@ -140,7 +140,7 @@ export default function TelegramLink() {
               </span>
             </div>
             <p className="font-body text-body-sm opacity-90 mt-0.5 font-semibold">
-              Your profile is actively linked to Glossa Telegram bot.
+              {t("profile.telegram.connectedDesc")}
             </p>
           </div>
         </div>
@@ -163,8 +163,8 @@ export default function TelegramLink() {
             </label>
             <p className="font-body text-body-sm text-on-surface-variant">
               {settings?.telegram_language 
-                ? "Custom Telegram locale overrides main language." 
-                : "Defaults to your main profile language."}
+                ? t("profile.telegram.languageDescCustom") 
+                : t("profile.telegram.languageDescDefault")}
             </p>
           </div>
           <select
@@ -187,7 +187,7 @@ export default function TelegramLink() {
               ⏰ {t("profile.telegram.sm2Label")}
             </span>
             <p className="font-body text-body-sm text-on-surface-variant">
-              Receive reminders tailored specifically to your spaced repetition queue.
+              {t("profile.telegram.sm2Desc")}
             </p>
           </div>
           <Toggle
