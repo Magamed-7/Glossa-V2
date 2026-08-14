@@ -1,12 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getDailyMissions } from "../lib/api/learning.js";
 import { useT } from "../lib/i18n.jsx";
-
 export default function Missions() {
   const t = useT();
-  const navigate = useNavigate();
 
   const { data: missionsData, loading: missionsLoading } = useApi(
     () => getDailyMissions(),
@@ -50,17 +47,8 @@ export default function Missions() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 bg-surface text-on-surface min-h-screen">
-      {/* Header */}
-      <header className="border-b-[2px] border-on-surface pb-4 mb-8 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <h1 className="font-serif text-4xl md:text-5xl">{t("deck.games.missionControlTitle")}</h1>
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="text-sm bg-secondary text-surface border-2 border-primary px-4 py-2 font-bold shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all uppercase cursor-pointer"
-          >
-            {t("deck.games.btnStopExit")}
-          </button>
-        </div>
+      <header className="border-b-[2px] border-on-surface pb-4 mb-8">
+        <h1 className="font-serif text-4xl md:text-5xl">{t("deck.games.missionControlTitle")}</h1>
       </header>
 
       {missionsLoading ? (
