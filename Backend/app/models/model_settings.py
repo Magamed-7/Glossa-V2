@@ -23,3 +23,6 @@ class UserSettings(Base):
 
     ratings_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     profile_visible: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+
+    telegram_language: Mapped[str | None] = mapped_column(String, nullable=True)
+    telegram_sm2_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)

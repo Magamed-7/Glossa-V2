@@ -3,6 +3,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.schema_achievement import MyAchievementResponse
+
 CEFR_LEVELS = Literal['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'native']
 
 
@@ -33,6 +35,7 @@ class ProfileResponse(BaseModel):
     interests: list[str] | None
     photo_url: str | None
     profile_views: int
+    telegram_chat_id: str | None = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -71,5 +74,9 @@ class PublicProfileResponse(BaseModel):
     followers_count: int | None = None
     following_count: int | None = None
     friends_count: int | None = None
+    current_streak: int | None = None
+    best_streak: int | None = None
+    stories_read_count: int | None = None
+    achievements: list[MyAchievementResponse] | None = None
 
     model_config = ConfigDict(from_attributes=True)

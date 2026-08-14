@@ -162,4 +162,30 @@ async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
         data['following_count'] = len(following)
         data['friends_count'] = len([u for u in followers if u.id in following_ids])
 
+    if privacy.show_current_streak or privacy.show_best_streak:
+        from app.services import streaks
+
+        streak = await streaks.get_streak(user_id, db)
+        if privacy.show_current_streak:
+            data['current_streak'] = streak.current_streak
+        if privacy.show_best_streak:
+            data['best_streak'] = streak.best_streak
+
+    if privacy.show_achievements:
+        from app.services import achievements
+
+        data['achievements'] = await achievements.get_my_achievements(user_id, db)
+
+    if privacy.show_stories_count:
+        from sqlalchemy import func
+
+        from app.models.model_content import ReadingProgress
+
+        stories_read = await db.scalar(
+            select(func.count()).select_from(ReadingProgress).where(
+                ReadingProgress.user_id == user_id, ReadingProgress.is_completed.is_(True)
+            )
+        )
+        data['stories_read_count'] = stories_read or 0
+
     return data

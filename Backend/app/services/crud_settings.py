@@ -40,6 +40,10 @@ async def update_settings(user_id: int, data: SettingsUpdate, db: AsyncSession):
         settings.push_enabled = data.push_enabled
     if data.telegram_enabled is not None:
         settings.telegram_enabled = data.telegram_enabled
+    if data.telegram_language is not None:
+        settings.telegram_language = data.telegram_language
+    if data.telegram_sm2_enabled is not None:
+        settings.telegram_sm2_enabled = data.telegram_sm2_enabled
     ratings_disabled_now = data.ratings_enabled is False and settings.ratings_enabled
 
     if data.ratings_enabled is not None:

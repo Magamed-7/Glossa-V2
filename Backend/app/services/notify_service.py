@@ -14,7 +14,9 @@ async def get_telegram_chat_id(user_id: int, db: AsyncSession):
 async def notify(user_id: int, type: str, title: str, body: str, db: AsyncSession):
     settings = await crud_settings.get_settings(user_id, db)
 
-    if settings.telegram_enabled:
+    # For review reminders, check telegram_sm2_enabled setting if channel is Telegram
+    is_sm2_type = (type == 'review_reminder')
+    if settings.telegram_enabled and (not is_sm2_type or settings.telegram_sm2_enabled):
         chat_id = await get_telegram_chat_id(user_id, db)
     else:
         chat_id = None

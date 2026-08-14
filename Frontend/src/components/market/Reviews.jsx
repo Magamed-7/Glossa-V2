@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
 import TextArea from "../ui/TextArea.jsx";
@@ -30,7 +31,9 @@ function ReviewRow({ review }) {
   return (
     <div className="border-t-2 border-surface-container-highest pt-4">
       <div className="flex items-center justify-between mb-2">
-        <span className="font-headline text-lg">{author?.username || "…"}</span>
+        <Link to={`/profile/${review.user_id}`} className="font-headline text-lg hover:underline">
+          {author?.username || "…"}
+        </Link>
         <Stars value={review.rating} />
       </div>
       {review.text && <p className="font-body text-body-md text-on-surface-variant">{review.text}</p>}

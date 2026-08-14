@@ -199,6 +199,7 @@ export default function GrammarLesson() {
         result={result}
         title={lesson.topic}
         lang={lang}
+        gameType="grammar"
         onRetry={() => { setPhase("quiz"); setResult(null); }}
         onBack={() => navigate("/grammar")}
       />

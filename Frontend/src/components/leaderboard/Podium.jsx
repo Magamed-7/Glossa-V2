@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Avatar from "../ui/Avatar.jsx";
 import { useT } from "../../lib/i18n.jsx";
 
@@ -16,8 +17,9 @@ export default function Podium({ entries }) {
         const isFirst = rank === 1;
 
         return (
-          <div
+          <Link
             key={rank}
+            to={`/profile/${entry.user_id}`}
             className="flex flex-col items-center group cursor-pointer"
             style={{ flex: rank === 1 ? 9 : rank === 2 ? 7 : 6, minHeight: 0 }}
           >
@@ -80,7 +82,7 @@ export default function Podium({ entries }) {
                 {rank === 1 ? "I" : rank === 2 ? "II" : "III"}
               </span>
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>

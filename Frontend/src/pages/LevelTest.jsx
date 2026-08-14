@@ -109,6 +109,7 @@ export default function LevelTest() {
         title={`${level} — ${typeLabel}`}
         passed={result.passed}
         lang={lang}
+        gameType="level_test"
         onRetry={startAttempt}
         onBack={() => navigate("/roadmap")}
         retryLabel={t.retry}

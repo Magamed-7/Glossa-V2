@@ -14,11 +14,13 @@ import { getCards } from "../lib/api/deck.js";
 import { getStats } from "../lib/api/learning.js";
 import { submitReview } from "../lib/api/reviews.js";
 import { useAppData } from "../lib/AppDataContext.jsx";
-import { useT } from "../lib/i18n.jsx";
+import { useT, useI18n } from "../lib/i18n.jsx";
 import { formatDate } from "../lib/format.js";
+import XpGainSummaryModal from "../components/ui/XpGainSummaryModal.jsx";
 
 export default function SpacedRepetition() {
   const t = useT();
+  const { lang } = useI18n();
   const navigate = useNavigate();
   const toast = useToast();
   const { refreshStreak } = useAppData();
@@ -82,67 +84,56 @@ export default function SpacedRepetition() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [activeReviewSession, sessionCard, flipped, submitting]);
 
-  async function onAnswer(quality) {
-    if (!sessionCard || submitting) return;
-    setSubmitting(true);
+  function onAnswer(quality) {
+    if (!sessionCard) return;
 
-    try {
-      await submitReview(sessionCard.id, quality);
-      
-      const isSingle = activeReviewSession.queue.length === 1;
-      const isAgain = quality < 3;
-      
-      if (isSingle) {
-        if (isAgain) {
-          // Keep modal open, flip back to front to try again
-          setFlipped(false);
-        } else {
-          // Passed: close modal immediately
-          setActiveReviewSession(null);
-          const successMsg = quality === 3
-            ? t("review.singleCardHardSuccess", { word: sessionCard.word })
-            : t("review.singleCardSuccess", { word: sessionCard.word });
-          toast.success(successMsg);
-          reloadCards();
-          reloadStats();
-          refreshStreak();
-        }
+    // Submit review in the background to avoid blocking card transitions
+    submitReview(sessionCard.id, quality)
+      .then(() => {
+        reloadCards();
+        reloadStats();
+        refreshStreak();
+      })
+      .catch((err) => console.error(err));
+
+    const isSingle = activeReviewSession.queue.length === 1;
+    const isAgain = quality < 3;
+    
+    if (isSingle) {
+      if (isAgain) {
+        // Keep modal open, flip back to front to try again
+        setFlipped(false);
       } else {
-        // Multi-card session updates
-        if (isAgain) {
-          // Push card to the end of the queue to repeat later
-          setActiveReviewSession(prev => {
-            const updatedQueue = [...prev.queue, sessionCard];
-            return {
-              ...prev,
-              queue: updatedQueue,
-              againCount: prev.againCount + 1,
-              index: prev.index + 1
-            };
-          });
-          setFlipped(false);
-        } else {
-          // Passed: advance to next card
-          const isLast = activeReviewSession.index + 1 >= activeReviewSession.queue.length;
-          
-          setActiveReviewSession(prev => ({
-            ...prev,
-            completed: prev.completed + 1,
-            index: prev.index + 1
-          }));
-          setFlipped(false);
-          
-          if (isLast) {
-            reloadCards();
-            reloadStats();
-            refreshStreak();
-          }
-        }
+        // Passed: close modal immediately
+        setActiveReviewSession(null);
+        const successMsg = quality === 3
+          ? t("review.singleCardHardSuccess", { word: sessionCard.word })
+          : t("review.singleCardSuccess", { word: sessionCard.word });
+        toast.success(successMsg);
       }
-    } catch (err) {
-      toast.error(errorText(err));
-    } finally {
-      setSubmitting(false);
+    } else {
+      // Multi-card session updates
+      if (isAgain) {
+        // Push card to the end of the queue to repeat later
+        setActiveReviewSession(prev => {
+          const updatedQueue = [...prev.queue, sessionCard];
+          return {
+            ...prev,
+            queue: updatedQueue,
+            againCount: prev.againCount + 1,
+            index: prev.index + 1
+          };
+        });
+        setFlipped(false);
+      } else {
+        // Passed: advance to next card
+        setActiveReviewSession(prev => ({
+          ...prev,
+          completed: prev.completed + 1,
+          index: prev.index + 1
+        }));
+        setFlipped(false);
+      }
     }
   }
 
@@ -497,29 +488,15 @@ export default function SpacedRepetition() {
       )}
 
       {/* --- SESSION COMPLETION VIEW OVERLAY --- */}
-      {activeReviewSession && !sessionCard && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm select-none overflow-y-auto">
-          <div className="w-full max-w-md bg-surface border-[3px] border-black p-6 sm:p-8 shadow-[8px_8px_0_0_#000] text-center relative neo-card my-8 max-h-[90vh] overflow-y-auto">
-            
-            <span className="material-symbols-outlined text-secondary text-5xl mb-4" style={{ fontVariationSettings: "'FILL' 1" }}>celebration</span>
-            
-            <h2 className="font-serif text-2xl sm:text-3xl font-black uppercase tracking-tight mb-2 leading-tight">
-              {t("review.sessionCompleteTitle")}
-            </h2>
-            <p className="text-xs sm:text-sm text-on-surface-variant font-mono uppercase tracking-wide mb-6 leading-relaxed">
-              {t("review.reviewedSummary", { n: activeReviewSession.completed })}
-              {activeReviewSession.againCount > 0 && ` (${activeReviewSession.againCount} ${t("review.quality.again").toLowerCase()})`}.
-            </p>
-
-            <button
-              onClick={handleCloseSession}
-              className="w-full bg-primary text-surface border-2 border-primary py-3.5 font-bold uppercase text-xs tracking-wider shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer text-center"
-            >
-              {t("deck.games.btnProceed")}
-            </button>
-          </div>
-        </div>
-      )}
+      <XpGainSummaryModal
+        isOpen={activeReviewSession && !sessionCard}
+        onClose={handleCloseSession}
+        xpGained={activeReviewSession ? activeReviewSession.completed * 10 : 0}
+        correctCount={activeReviewSession ? activeReviewSession.completed : 0}
+        totalCount={activeReviewSession ? activeReviewSession.completed : 0}
+        gameType="spaced-repetition"
+        lang={lang}
+      />
 
     </div>
   );

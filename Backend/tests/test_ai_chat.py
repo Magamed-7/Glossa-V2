@@ -10,10 +10,9 @@ from app.services import ai_chat
 
 def test_parse_llm_response_clean_json():
     raw = '{"reply": "Hi there", "encouragement": "Nice try!", "corrections": []}'
-    reply, encouragement, corrections = ai_chat._parse_llm_response(raw)
+    reply, corrections = ai_chat._parse_llm_response(raw)
 
     assert reply == 'Hi there'
-    assert encouragement == 'Nice try!'
     assert corrections == []
 
 
@@ -22,36 +21,34 @@ def test_parse_llm_response_code_fenced_json_falls_back_to_raw_text():
     # для словаря историй) — на такой ввод json.loads падает, и мы честно возвращаем сырой текст,
     # а не роняем всю обработку сообщения.
     raw = '```json\n{"reply": "Hi", "encouragement": "Good one!", "corrections": []}\n```'
-    reply, encouragement, corrections = ai_chat._parse_llm_response(raw)
+    reply, corrections = ai_chat._parse_llm_response(raw)
 
-    assert reply == raw
-    assert encouragement is None
+    assert reply == 'Hi'
     assert corrections == []
 
 
 def test_parse_llm_response_garbage_falls_back_to_raw_text():
     raw = 'not json at all, just plain text'
-    reply, encouragement, corrections = ai_chat._parse_llm_response(raw)
+    reply, corrections = ai_chat._parse_llm_response(raw)
 
     assert reply == raw
-    assert encouragement is None
     assert corrections == []
 
 
 def test_parse_llm_response_missing_corrections_field():
     raw = '{"reply": "Hi", "encouragement": "Well spotted!"}'
-    reply, encouragement, corrections = ai_chat._parse_llm_response(raw)
+    reply, corrections = ai_chat._parse_llm_response(raw)
 
     assert reply == 'Hi'
-    assert encouragement == 'Well spotted!'
     assert corrections == []
 
 
 def test_parse_llm_response_empty_encouragement_becomes_none():
     raw = '{"reply": "Hi", "encouragement": "", "corrections": []}'
-    _, encouragement, _ = ai_chat._parse_llm_response(raw)
+    reply, corrections = ai_chat._parse_llm_response(raw)
 
-    assert encouragement is None
+    assert reply == 'Hi'
+    assert corrections == []
 
 
 # --- _sanitize_language -------------------------------------------------------------------

@@ -109,6 +109,7 @@ export default function PracticeTestRun() {
         title={`${levels.join(", ")} — ${label}`}
         passed={result.passed}
         lang={lang}
+        gameType="practice_test"
         onRetry={startAttempt}
         onBack={() => navigate("/tests")}
         retryLabel={t.retry}

@@ -18,6 +18,8 @@ class SettingsUpdate(BaseModel):
     reminder_time: str | None = None
     ratings_enabled: bool | None = None
     profile_visible: bool | None = None
+    telegram_language: str | None = None
+    telegram_sm2_enabled: bool | None = None
 
 
 class SettingsResponse(BaseModel):
@@ -32,5 +34,7 @@ class SettingsResponse(BaseModel):
     reminder_time: str | None
     ratings_enabled: bool
     profile_visible: bool
+    telegram_language: str | None
+    telegram_sm2_enabled: bool
 
     model_config = ConfigDict(from_attributes=True)

@@ -111,6 +111,7 @@ export default function UnitTest() {
         title={t.title(unit?.theme_title || "")}
         passed={result.passed}
         lang={lang}
+        gameType="unit_test"
         onRetry={startAttempt}
         onBack={() => navigate(`/roadmap/units/${id}`)}
         retryLabel={t.retry}

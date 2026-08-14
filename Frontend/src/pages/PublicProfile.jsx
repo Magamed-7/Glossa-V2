@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import Avatar from "../components/ui/Avatar.jsx";
 import Badge from "../components/ui/Badge.jsx";
+import Icon from "../components/ui/Icon.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import FollowButton from "../components/profile/FollowButton.jsx";
+import MessageButton from "../components/profile/MessageButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPublicProfile } from "../lib/api/profile.js";
 import { readUserId } from "../lib/auth/tokens.js";
@@ -32,7 +34,12 @@ export default function PublicProfile() {
           <h1 className="font-display text-headline-lg">{profile.username}</h1>
           {profile.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
-        {!isMine && <FollowButton userId={userId} />}
+        {!isMine && (
+          <div className="flex flex-col gap-2 shrink-0">
+            <FollowButton userId={userId} />
+            <MessageButton userId={userId} />
+          </div>
+        )}
       </div>
 
       {/* Поля, скрытые владельцем приватности, отсутствуют в объекте целиком, а не равны null —
@@ -48,15 +55,55 @@ export default function PublicProfile() {
         </div>
       )}
 
-      {"followers_count" in profile && (
-        <div className="flex gap-8 mb-8">
-          <div>
-            <span className="font-display text-2xl">{profile.followers_count}</span>
-            <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.followers")}</span>
-          </div>
-          <div>
-            <span className="font-display text-2xl">{profile.following_count}</span>
-            <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.following")}</span>
+      {("followers_count" in profile || "current_streak" in profile || "best_streak" in profile || "stories_read_count" in profile) && (
+        <div className="flex flex-wrap gap-8 mb-8">
+          {"followers_count" in profile && (
+            <>
+              <div>
+                <span className="font-display text-2xl">{profile.followers_count}</span>
+                <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.followers")}</span>
+              </div>
+              <div>
+                <span className="font-display text-2xl">{profile.following_count}</span>
+                <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.following")}</span>
+              </div>
+            </>
+          )}
+          {"current_streak" in profile && (
+            <div>
+              <span className="font-display text-2xl">{profile.current_streak}</span>
+              <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.currentStreak")}</span>
+            </div>
+          )}
+          {"best_streak" in profile && (
+            <div>
+              <span className="font-display text-2xl">{profile.best_streak}</span>
+              <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.bestStreak")}</span>
+            </div>
+          )}
+          {"stories_read_count" in profile && (
+            <div>
+              <span className="font-display text-2xl">{profile.stories_read_count}</span>
+              <span className="font-label text-label-md uppercase text-on-surface-variant ml-2">{t("profile.storiesRead")}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {"achievements" in profile && profile.achievements.length > 0 && (
+        <div className="mb-8">
+          <h2 className="font-label text-label-md uppercase text-on-surface-variant mb-3">{t("profile.achievements")}</h2>
+          <div className="flex flex-wrap gap-3">
+            {profile.achievements.map((achievement) => (
+              <div
+                key={achievement.id}
+                title={achievement.title}
+                className="flex items-center gap-2 border-2 border-tertiary px-3 py-2"
+              >
+                <Icon name={achievement.icon || "military_tech"} className="text-secondary" />
+                <span className="font-body text-body-md">{achievement.title}</span>
+              </div>
+            ))}
           </div>
         </div>
       )}

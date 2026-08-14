@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Avatar from "../ui/Avatar.jsx";
 import { useT } from "../../lib/i18n.jsx";
 
@@ -57,7 +58,7 @@ export default function RankTable({ entries, myUserId, myEntry }) {
                   {entry.rank}
                 </td>
                 <td className="py-4 px-6">
-                  <div className="flex items-center gap-4">
+                  <Link to={`/profile/${entry.user_id}`} className="flex items-center gap-4 w-fit hover:underline">
                     <div className="grayscale group-hover:grayscale-0 transition-all">
                       <Avatar
                         photoUrl={entry.photo_url}
@@ -74,7 +75,7 @@ export default function RankTable({ entries, myUserId, myEntry }) {
                         </span>
                       )}
                     </span>
-                  </div>
+                  </Link>
                 </td>
                 <td className="py-4 px-6 text-right font-bold text-on-surface">
                   {entry.score}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import Badge from "../components/ui/Badge.jsx";
@@ -77,7 +77,11 @@ export default function MarketplaceStory() {
 
       <h1 className="font-display text-headline-lg mb-2">{story.title}</h1>
       <p className="font-body text-body-md text-on-surface-variant mb-8">
-        {t("market.byViews", { name: author?.username || "…", n: story.views_count })}
+        {t("market.byPrefix")}{" "}
+        <Link to={`/profile/${story.author_id}`} className="underline decoration-2 underline-offset-2 hover:text-secondary">
+          {author?.username || "…"}
+        </Link>{" "}
+        {t("market.viewsCount", { n: story.views_count })}
       </p>
 
       {story.description && <p className="font-body text-body-lg mb-8">{story.description}</p>}

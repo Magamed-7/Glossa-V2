@@ -87,6 +87,7 @@ export default function StoryTestRun() {
         title={attempt?.title || t.exercise}
         passed={result.passed}
         lang={lang}
+        gameType="story_test"
         onRetry={startAttempt}
         onBack={() => navigate("/tests")}
         retryLabel={t.retry}
