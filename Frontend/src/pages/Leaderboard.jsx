@@ -206,7 +206,7 @@ export default function Leaderboard() {
                 )}
 
                 <Link
-                  to="/dashboard"
+                  to="/missions"
                   id="lb-view-missions"
                   className="w-full mt-6 bg-secondary-container text-on-secondary-container border-2 border-tertiary hard-shadow font-label text-label-md uppercase tracking-widest py-4 px-4 flex justify-center items-center gap-2 hover:bg-secondary hover:text-on-secondary transition-colors"
                 >

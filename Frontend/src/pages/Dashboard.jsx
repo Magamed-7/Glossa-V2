@@ -41,13 +41,22 @@ export default function Dashboard() {
             {t("nav.home") || "Home"}
           </h1>
         </div>
-        <Link
-          to="/achievements"
-          className="border-2 border-primary bg-secondary text-on-secondary px-4 py-2 font-label text-xs uppercase tracking-widest font-bold shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2 self-start sm:self-auto"
-        >
-          <Icon name="emoji_events" className="text-base" />
-          {t("achievements.eyebrow")}
-        </Link>
+        <div className="flex gap-3 self-start sm:self-auto flex-wrap">
+          <Link
+            to="/missions"
+            className="border-2 border-primary bg-surface text-primary px-4 py-2 font-label text-xs uppercase tracking-widest font-bold shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2"
+          >
+            <Icon name="local_police" className="text-base text-secondary" />
+            {t("deck.games.missionControlTitle")}
+          </Link>
+          <Link
+            to="/achievements"
+            className="border-2 border-primary bg-secondary text-on-secondary px-4 py-2 font-label text-xs uppercase tracking-widest font-bold shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] transition-all flex items-center gap-2"
+          >
+            <Icon name="emoji_events" className="text-base" />
+            {t("achievements.eyebrow")}
+          </Link>
+        </div>
       </div>
 
       <div className="editorial-grid mb-section-gap">

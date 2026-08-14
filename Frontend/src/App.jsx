@@ -54,6 +54,7 @@ const TutorScenarios = lazy(() => import("./pages/TutorScenarios.jsx"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail.jsx"));
 const Wallet = lazy(() => import("./pages/Wallet.jsx"));
 const WordDeck = lazy(() => import("./pages/WordDeck.jsx"));
+const Missions = lazy(() => import("./pages/Missions.jsx"));
 const MarketplaceInbox = lazy(() => import("./pages/MarketplaceInbox.jsx"));
 const MarketplaceAnalytics = lazy(() => import("./pages/MarketplaceAnalytics.jsx"));
 const MarketplaceServices = lazy(() => import("./pages/MarketplaceServices.jsx"));
@@ -109,6 +110,7 @@ export default function App() {
           <Route path="/roadmap/units/:id/test" element={page(UnitTest)} />
           <Route path="/roadmap/level-test/:level/:type" element={page(LevelTest)} />
           <Route path="/deck" element={page(WordDeck)} />
+          <Route path="/missions" element={page(Missions)} />
           <Route path="/review" element={page(SpacedRepetition)} />
           <Route path="/stories" element={page(StoriesCatalog)} />
           <Route path="/stories/:id" element={page(StoryReader)} />
