@@ -49,3 +49,6 @@ class ProfilePrivacy(Base):
     show_languages: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     show_language_levels: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     show_followers: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_services: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_books: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    show_subscription: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)

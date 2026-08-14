@@ -50,6 +50,9 @@ class PrivacyUpdate(BaseModel):
     show_languages: bool | None = None
     show_language_levels: bool | None = None
     show_followers: bool | None = None
+    show_services: bool | None = None
+    show_books: bool | None = None
+    show_subscription: bool | None = None
 
 
 class PrivacyResponse(BaseModel):
@@ -60,6 +63,9 @@ class PrivacyResponse(BaseModel):
     show_languages: bool
     show_language_levels: bool
     show_followers: bool
+    show_services: bool
+    show_books: bool
+    show_subscription: bool
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -81,5 +87,7 @@ class PublicProfileResponse(BaseModel):
     stories_read_count: int | None = None
     achievements: list[MyAchievementResponse] | None = None
     created_at: datetime | None = None
+    show_services: bool | None = None
+    show_books: bool | None = None
 
     model_config = ConfigDict(from_attributes=True)

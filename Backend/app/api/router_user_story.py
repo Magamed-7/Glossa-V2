@@ -35,6 +35,12 @@ async def get_stories(
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
 ):
+    if author_id is not None:
+        from app.services import crud_profile
+        privacy = await crud_profile.get_privacy(author_id, db)
+        if not getattr(privacy, 'show_books', True):
+            return []
+
     stories = await crud_user_story.get_user_stories(
         db, level=level, genre=genre, is_free=is_free, author_id=author_id, limit=limit, offset=offset
     )

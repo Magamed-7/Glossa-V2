@@ -113,6 +113,12 @@ async def update_privacy(user_id: int, data: PrivacyUpdate, db: AsyncSession):
         privacy.show_language_levels = data.show_language_levels
     if data.show_followers is not None:
         privacy.show_followers = data.show_followers
+    if data.show_services is not None:
+        privacy.show_services = data.show_services
+    if data.show_books is not None:
+        privacy.show_books = data.show_books
+    if data.show_subscription is not None:
+        privacy.show_subscription = data.show_subscription
 
     await db.commit()
     await db.refresh(privacy)
@@ -135,6 +141,8 @@ async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
     from app.services import crud_subscription
     sub = await crud_subscription.get_active_subscription(user_id, db)
     sub_tier = sub['plan'].code if sub else 'free'
+    if not getattr(privacy, 'show_subscription', True):
+        sub_tier = 'free'
 
     data = {
         'user_id': target_user.id,
@@ -145,6 +153,8 @@ async def get_public_profile(user_id: int, viewer_id: int, db: AsyncSession):
         'profile_views': profile.profile_views,
         'subscription_tier': sub_tier,
         'created_at': target_user.created_at,
+        'show_services': privacy.show_services,
+        'show_books': privacy.show_books,
     }
 
     if privacy.show_languages:

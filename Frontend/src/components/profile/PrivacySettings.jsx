@@ -16,6 +16,9 @@ const FIELD_KEYS = [
   { key: "show_languages", i18nKey: "languages" },
   { key: "show_language_levels", i18nKey: "languageLevels" },
   { key: "show_followers", i18nKey: "followers" },
+  { key: "show_services", i18nKey: "services" },
+  { key: "show_books", i18nKey: "books" },
+  { key: "show_subscription", i18nKey: "subscription" },
 ];
 
 export default function PrivacySettings() {

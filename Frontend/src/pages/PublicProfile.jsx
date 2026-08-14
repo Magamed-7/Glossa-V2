@@ -295,66 +295,70 @@ export default function PublicProfile() {
       )}
 
       {/* 4. Services Offered section */}
-      <div className="border-2 border-primary bg-surface dark:bg-stone-950 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-        <h2 className="font-headline text-headline-md mb-6 uppercase tracking-tight flex items-center gap-2 text-primary">
-          <span>💼</span>
-          {lookup("profile.services", "Services Offered")}
-        </h2>
-        {services && services.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className="border-2 border-primary p-5 bg-[#FAF8F5] dark:bg-stone-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex justify-between items-start gap-4 mb-2">
-                    <h3 className="font-display text-body-lg font-bold text-primary leading-snug">{service.title}</h3>
-                    <span className="bg-surface border border-primary font-label text-[9px] uppercase tracking-wider px-2 py-0.5 font-bold shrink-0">
-                      {service.category}
-                    </span>
+      {profile.show_services !== false && (
+        <div className="border-2 border-primary bg-surface dark:bg-stone-950 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="font-headline text-headline-md mb-6 uppercase tracking-tight flex items-center gap-2 text-primary">
+            <span>💼</span>
+            {lookup("profile.services", "Services Offered")}
+          </h2>
+          {services && services.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {services.map((service) => (
+                <div
+                  key={service.id}
+                  className="border-2 border-primary p-5 bg-[#FAF8F5] dark:bg-stone-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex justify-between items-start gap-4 mb-2">
+                      <h3 className="font-display text-body-lg font-bold text-primary leading-snug">{service.title}</h3>
+                      <span className="bg-surface border border-primary font-label text-[9px] uppercase tracking-wider px-2 py-0.5 font-bold shrink-0">
+                        {service.category}
+                      </span>
+                    </div>
+                    <p className="font-body text-body-md text-on-surface-variant line-clamp-3 mb-4">{service.description}</p>
                   </div>
-                  <p className="font-body text-body-md text-on-surface-variant line-clamp-3 mb-4">{service.description}</p>
+                  <div className="flex justify-between items-center border-t border-primary/20 pt-4 mt-auto">
+                    <span className="font-display text-body-lg font-bold text-secondary">
+                      {formatMoney(service.price)}
+                    </span>
+                    <Link
+                      to={`/marketplace/services/${service.id}`}
+                      className="bg-secondary text-on-secondary hover:bg-secondary/90 transition-colors border-2 border-primary font-label text-label-xs uppercase tracking-wider px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    >
+                      {lookup("viewProfile", "Details")}
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center border-t border-primary/20 pt-4 mt-auto">
-                  <span className="font-display text-body-lg font-bold text-secondary">
-                    {formatMoney(service.price)}
-                  </span>
-                  <Link
-                    to={`/marketplace/services/${service.id}`}
-                    className="bg-secondary text-on-secondary hover:bg-secondary/90 transition-colors border-2 border-primary font-label text-label-xs uppercase tracking-wider px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                  >
-                    {lookup("viewProfile", "Details")}
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="font-body text-sm text-on-surface-variant italic">
-            {lookup("profile.noServices", "No services provided yet.")}
-          </p>
-        )}
-      </div>
+              ))}
+            </div>
+          ) : (
+            <p className="font-body text-sm text-on-surface-variant italic">
+              {lookup("profile.noServices", "No services provided yet.")}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* 5. Published Books / Authored stories */}
-      <div className="border-2 border-primary bg-surface dark:bg-stone-950 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-        <h2 className="font-headline text-headline-md mb-6 uppercase tracking-tight flex items-center gap-2 text-primary">
-          <span>📖</span>
-          {lookup("profile.authoredStories", "Published Books")}
-        </h2>
-        {authoredStories && authoredStories.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {authoredStories.map((story, i) => (
-              <AcquisitionCard key={story.id} story={story} variant={i} />
-            ))}
-          </div>
-        ) : (
-          <p className="font-body text-sm text-on-surface-variant italic">
-            {lookup("profile.noStories", "No books published yet.")}
-          </p>
-        )}
-      </div>
+      {profile.show_books !== false && (
+        <div className="border-2 border-primary bg-surface dark:bg-stone-950 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="font-headline text-headline-md mb-6 uppercase tracking-tight flex items-center gap-2 text-primary">
+            <span>📖</span>
+            {lookup("profile.authoredStories", "Published Books")}
+          </h2>
+          {authoredStories && authoredStories.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {authoredStories.map((story, i) => (
+                <AcquisitionCard key={story.id} story={story} variant={i} />
+              ))}
+            </div>
+          ) : (
+            <p className="font-body text-sm text-on-surface-variant italic">
+              {lookup("profile.noStories", "No books published yet.")}
+            </p>
+          )}
+        </div>
+      )}
 
     </div>
   );

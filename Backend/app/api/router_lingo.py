@@ -82,6 +82,12 @@ async def list_services(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
+    if provider_id is not None and provider_id != current_user.id:
+        from app.services import crud_profile
+        privacy = await crud_profile.get_privacy(provider_id, db)
+        if not getattr(privacy, 'show_services', True):
+            return []
+
     services = await crud_lingo.get_lingo_services(
         db, category, cefr_group, price_group, provider_id
     )
