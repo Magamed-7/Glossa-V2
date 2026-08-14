@@ -110,7 +110,9 @@ function FeaturedCard({ service, lang, t, onMessage }) {
             <div className="w-px h-10 bg-primary" />
             <div className="flex flex-col">
               <span className="font-label-md text-label-md text-on-surface-variant uppercase text-xs">{t("market.provider")}</span>
-              <span className="font-body-md text-body-md text-primary font-medium">{service.provider_name}</span>
+              <Link to={`/profile/${service.provider_id}`} className="font-body-md text-body-md text-primary font-medium hover:underline">
+                {service.provider_name}
+              </Link>
             </div>
           </div>
         </div>
@@ -156,7 +158,9 @@ function StandardCard({ service, lang, t, onMessage }) {
         <div className="flex items-end justify-between mt-auto pt-4 border-t border-dashed border-outline-variant">
           <div>
             <p className="font-label-md text-label-md text-on-surface-variant uppercase text-[10px] mb-1">{t("market.provider")}</p>
-            <p className="font-body-md text-body-md font-medium text-primary">{service.provider_name}</p>
+            <Link to={`/profile/${service.provider_id}`} className="font-body-md text-body-md font-medium text-primary hover:underline">
+              {service.provider_name}
+            </Link>
           </div>
           <div className="text-right">
             <p className={`font-headline-md text-headline-md leading-tight ${service.price ? "text-primary" : "text-secondary"}`}>
@@ -183,12 +187,12 @@ function FreeExchangeCard({ service, lang, t, onMessage }) {
         <Icon name="sync_alt" className="text-white text-sm" />
       </div>
       <div className="p-5 flex flex-col h-full">
-        <Link to={`/marketplace/services/${service.id}`} className="flex items-center gap-4 mb-4">
+        <Link to={`/profile/${service.provider_id}`} className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 border-2 border-primary rounded-full overflow-hidden shrink-0 card-neo">
             <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
           </div>
           <div>
-            <h4 className="font-body-lg text-body-lg font-bold text-primary">{service.provider_name}</h4>
+            <h4 className="font-body-lg text-body-lg font-bold text-primary hover:underline">{service.provider_name}</h4>
             <div className="mt-1 flex gap-1 flex-wrap">
               <span className="chip-mustard px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-primary shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
                 {service.category}

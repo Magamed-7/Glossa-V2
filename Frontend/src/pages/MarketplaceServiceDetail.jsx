@@ -105,13 +105,15 @@ export default function MarketplaceServiceDetail() {
         
         {/* Left Column: Provider Info Profile */}
         <div className="md:col-span-4 flex flex-col items-center text-center border-b-2 md:border-b-0 md:border-r-2 border-primary pb-8 md:pb-0 md:pr-8">
-          <div className="w-36 h-36 border-2 border-primary rounded-full overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6 shrink-0">
-            <img alt={service.provider_name} className="w-full h-full object-cover grayscale-[10%]" src={avatarUrl(service)} />
-          </div>
-          
-          <h2 className="font-headline-md text-headline-md text-primary font-bold tracking-tight">
-            {service.provider_name}
-          </h2>
+          <Link to={`/profile/${service.provider_id}`} className="group flex flex-col items-center">
+            <div className="w-36 h-36 border-2 border-primary rounded-full overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6 shrink-0 group-hover:scale-105 transition-transform">
+              <img alt={service.provider_name} className="w-full h-full object-cover grayscale-[10%]" src={avatarUrl(service)} />
+            </div>
+            
+            <h2 className="font-headline-md text-headline-md text-primary font-bold tracking-tight hover:underline">
+              {service.provider_name}
+            </h2>
+          </Link>
           
           <div className="flex items-center gap-1 text-secondary font-bold mt-2 bg-white px-3 py-1 border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <Icon name="star" filled className="text-base" />
