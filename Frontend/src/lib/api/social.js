@@ -1,5 +1,11 @@
 import { api } from "./client.js";
 
+export function searchUsers({ q, limit = 20, offset = 0 } = {}) {
+  const params = new URLSearchParams({ limit, offset });
+  if (q) params.set("q", q);
+  return api.get(`/social/search?${params}`);
+}
+
 export function getFollowers() {
   return api.get("/social/followers");
 }

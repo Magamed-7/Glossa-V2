@@ -4,10 +4,21 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.auth import get_current_user
 from app.core.errors import AppError
 from app.db.database import get_db
-from app.schemas.schema_social import FollowUserResponse
+from app.schemas.schema_social import FollowUserResponse, UserSearchResult
 from app.services import crud_social, crud_user
 
 router_social = APIRouter(prefix='/social', tags=['Social'])
+
+
+@router_social.get('/search', response_model=list[UserSearchResult])
+async def search_users(
+    q: str | None = None,
+    limit: int = 20,
+    offset: int = 0,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await crud_social.search_users(current_user.id, db, q=q, limit=limit, offset=offset)
 
 
 @router_social.get('/followers', response_model=list[FollowUserResponse])

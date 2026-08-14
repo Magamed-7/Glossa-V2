@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
+import Icon from "../components/ui/Icon.jsx";
 import ProfileEditor from "../components/profile/ProfileEditor.jsx";
 import PhotoUpload from "../components/profile/PhotoUpload.jsx";
 import LanguagesSection from "../components/profile/LanguagesSection.jsx";
 import ConnectionLists from "../components/profile/ConnectionLists.jsx";
 import { ChangeUsername, ChangeEmail } from "../components/settings/AccountSection.jsx";
-import Icon from "../components/ui/Icon.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getMyAchievements } from "../lib/api/achievements.js";
@@ -84,10 +85,19 @@ export default function MyProfile() {
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center gap-6 mb-section-gap">
         <PhotoUpload photoUrl={profile?.photo_url} name={user?.username} onUploaded={refreshUser} />
-        <div>
+        <div className="flex-1">
           <h1 className="font-headline italic text-headline-lg text-secondary">{user?.username}</h1>
           {profile?.bio && <p className="font-body text-body-lg italic text-on-surface-variant mt-2">{profile.bio}</p>}
         </div>
+        {user?.id && (
+          <Link
+            to={`/profile/${user.id}`}
+            className="flex items-center gap-2 border-2 border-tertiary px-4 py-2 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors shrink-0"
+          >
+            <Icon name="visibility" />
+            {t("profile.previewPublic")}
+          </Link>
+        )}
       </div>
       
       {profile && <ProfileEditor profile={profile} onUpdated={refreshUser} />}

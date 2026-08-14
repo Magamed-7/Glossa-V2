@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
+from app.models.model_profile import UserProfiles
 from app.models.model_social import Follows
 from app.models.model_user import Users
 
@@ -66,3 +67,23 @@ async def get_friends(user_id: int, db: AsyncSession):
 
     following_ids = {u.id for u in following}
     return [u for u in followers if u.id in following_ids]
+
+
+async def search_users(current_user_id: int, db: AsyncSession, q: str | None = None, limit: int = 20, offset: int = 0):
+    query = select(Users, UserProfiles).outerjoin(
+        UserProfiles, UserProfiles.user_id == Users.id
+    ).where(Users.id != current_user_id, Users.is_active.is_(True))
+
+    if q and q.strip():
+        query = query.where(Users.username.ilike(f'%{q.strip()}%'))
+        query = query.order_by(Users.username)
+    else:
+        query = query.order_by(Users.created_at.desc())
+
+    query = query.limit(limit).offset(offset)
+    result = await db.execute(query)
+
+    return [
+        {'id': user.id, 'username': user.username, 'photo_url': profile.photo_url if profile else None}
+        for user, profile in result.all()
+    ]

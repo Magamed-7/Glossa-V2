@@ -33,6 +33,7 @@ const MyProfile = lazy(() => import("./pages/MyProfile.jsx"));
 const Notifications = lazy(() => import("./pages/Notifications.jsx"));
 const Onboarding = lazy(() => import("./pages/Onboarding.jsx"));
 const PasswordReset = lazy(() => import("./pages/PasswordReset.jsx"));
+const People = lazy(() => import("./pages/People.jsx"));
 const Pricing = lazy(() => import("./pages/Pricing.jsx"));
 const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const PublicProfile = lazy(() => import("./pages/PublicProfile.jsx"));
@@ -124,6 +125,7 @@ export default function App() {
           <Route path="/leaderboard" element={page(Leaderboard)} />
           <Route path="/messenger" element={page(Messenger)} />
           <Route path="/messenger/:conversationId" element={page(Messenger)} />
+          <Route path="/people" element={page(People)} />
           <Route path="/marketplace/:id" element={page(MarketplaceStory)} />
           <Route path="/studio" element={page(AuthorStudio)} />
           <Route path="/studio/new" element={page(StoryEditor)} />

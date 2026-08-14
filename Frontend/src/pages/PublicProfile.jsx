@@ -6,8 +6,10 @@ import Skeleton from "../components/ui/Skeleton.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";
 import FollowButton from "../components/profile/FollowButton.jsx";
 import MessageButton from "../components/profile/MessageButton.jsx";
+import AcquisitionCard from "../components/market/AcquisitionCard.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getPublicProfile } from "../lib/api/profile.js";
+import { getUserStories } from "../lib/api/userStories.js";
 import { readUserId } from "../lib/auth/tokens.js";
 import { useT } from "../lib/i18n.jsx";
 
@@ -15,6 +17,10 @@ export default function PublicProfile() {
   const t = useT();
   const { userId } = useParams();
   const { data: profile, loading, error, reload } = useApi(() => getPublicProfile(userId), [userId]);
+  const { data: authoredStories } = useApi(
+    () => getUserStories({ authorId: Number(userId), limit: 12 }),
+    [userId]
+  );
   const isMine = Number(readUserId()) === Number(userId);
 
   if (loading) return <Skeleton className="h-64 max-w-2xl mx-auto" />;
@@ -103,6 +109,17 @@ export default function PublicProfile() {
                 <Icon name={achievement.icon || "military_tech"} className="text-secondary" />
                 <span className="font-body text-body-md">{achievement.title}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {authoredStories && authoredStories.length > 0 && (
+        <div className="mt-section-gap">
+          <h2 className="font-headline text-headline-md mb-6">{t("profile.authoredStories")}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            {authoredStories.map((story, i) => (
+              <AcquisitionCard key={story.id} story={story} variant={i} />
             ))}
           </div>
         </div>
