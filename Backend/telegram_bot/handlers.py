@@ -26,9 +26,26 @@ router = Router()
 # ─── TRANSLATIONS FOR THREE LANGUAGES (EN/RU/TG) ───
 BOT_TRANSLATIONS = {
     'en': {
-        'welcome_linked': 'Your Glossa account is now successfully linked! 🚀 Welcome to your mobile companion.',
+        'welcome_linked': (
+            "🎉 *Glossa Account Connected!* 🎉\n\n"
+            "Excellent progress! Your Telegram account is now successfully linked to Glossa. 🚀 Welcome to your mobile companion.\n\n"
+            "Here are your key actions:\n"
+            "• 💬 Enter `/ai` to speak with your *AI Tutor* anytime, anywhere.\n"
+            "• 📝 Enter `/stats` to view your vocabulary deck stats.\n"
+            "• ⚙️ Enter `/settings` to configure your *SM-2 Spaced Repetition Reminders*.\n\n"
+            "👉 For the complete list of tools and commands, type `/help` or click the button in the bottom menu."
+        ),
         'invalid_code': 'This link is invalid or expired. Please generate a new one from your Glossa settings.',
-        'welcome': 'Welcome to Glossa! Use the menu below or type /link to connect your account.',
+        'welcome': (
+            "🌟 *Welcome to Glossa Mobile!* 🌟\n\n"
+            "Your pocket companion on the journey to ultimate language mastery. 🚀\n\n"
+            "Here you can practice speaking with our *AI Tutor*, keep track of your *spaced repetition queue (SM-2)*, view your academic *achievements*, check your global leaderboard *rank*, and view real-time *vocabulary learning stats*!\n\n"
+            "🔗 *To unlock all capabilities, please connect your Glossa account:*\n"
+            "1️⃣ Go to the website.\n"
+            "2️⃣ Open *Settings* ⚙️ -> *Notifications* 🔔.\n"
+            "3️⃣ Click the *Link Telegram* button to link.\n\n"
+            "📖 For a detailed list of commands and options, type /help or click the button below. Let's make learning natural!"
+        ),
         'not_linked': 'Your account is not linked. Please visit Glossa settings on the website to link Telegram.',
         'no_target_lang': 'No target language set yet.',
         'level_msg': 'Your level in {lang}: {level}',
@@ -37,7 +54,26 @@ BOT_TRANSLATIONS = {
         'rank_msg': '🏆 *Global Rank*: #{rank} with {score} XP',
         'ai_intro': '💬 *AI Tutor Chat Mode* is now active!\nSend any message directly, and I will reply as your AI Tutor. Type /exit or click the button below to return to the main menu.',
         'ai_exit': 'Left AI Chat. You are now back in the main menu.',
-        'help': 'Available commands:\n• /stats - Vocabulary stats\n• /streak - Active learning days\n• /rank - Leaderboard rank\n• /level - Language level\n• /ai - Converse with AI\n• /achievements - View earned badges\n• /language - Change bot language\n• /settings - Toggle SM-2 reminders\n• /exit - Exit chat mode',
+        'help': (
+            "📖 *Glossa Command Directory & Help Guide* 📖\n\n"
+            "Explore the full spectrum of Glossa Mobile commands:\n\n"
+            "🤖 **Core Interface Commands**:\n"
+            "• `/start` - Welcome screen & connection setup\n"
+            "• `/help` - Displays this comprehensive command directory\n\n"
+            "📈 **Vocabulary & Study Progress**:\n"
+            "• `/stats` - Detailed statistics of your word deck (total, learned, due words)\n"
+            "• `/streak` - Check active study days & historic record\n"
+            "• `/rank` - View global standing & total academic XP\n"
+            "• `/level` - Active target languages & CEFR proficiency levels\n"
+            "• `/achievements` - Review all unlocked academic badges & milestones\n\n"
+            "💬 **AI Language Practice**:\n"
+            "• `/ai` - Launch immersive context chat with *AI Tutor*\n"
+            "• `/exit` - Exit AI chat session and restore main menu\n\n"
+            "⚙️ **Bot Control & Settings**:\n"
+            "• `/language` - Change bot language interface (EN, RU, TG)\n"
+            "• `/settings` - Toggle SM-2 spaced repetition daily notifications\n\n"
+            "💡 *Pro-Tip*: Use the bot menu button in the bottom left corner to run these commands instantly at any time!"
+        ),
         'achievements_title': '🏅 *Your Earned Achievements*:\n',
         'no_achievements': 'You haven\'t earned any achievements yet. Keep studying on the site to unlock badges!',
         'achievement_item': '• *{title}* - {desc}\n  _Earned on: {date}_',
@@ -58,9 +94,26 @@ BOT_TRANSLATIONS = {
         'settings_updated': 'Settings updated successfully.',
     },
     'ru': {
-        'welcome_linked': 'Ваш аккаунт Glossa успешно подключен! 🚀 Добро пожаловать.',
+        'welcome_linked': (
+            "🎉 *Аккаунт Glossa успешно подключен!* 🎉\n\n"
+            "Отличный шаг! Ваш Telegram теперь привязан к платформе Glossa. 🚀 Добро пожаловать в мобильный командный пункт.\n\n"
+            "Основные действия:\n"
+            "• 💬 Напишите `/ai` для начала практики с *ИИ-Репетитором*.\n"
+            "• 📝 Напишите `/stats` для просмотра статистики личного словаря.\n"
+            "• ⚙️ Напишите `/settings` для настройки *интервальных напоминаний SM-2*.\n\n"
+            "👉 Для просмотра подробной справки по всем командам напишите `/help` или нажмите кнопку меню слева снизу."
+        ),
         'invalid_code': 'Эта ссылка недействительна или устарела. Создайте новую в настройках Glossa на сайте.',
-        'welcome': 'Добро пожаловать в Glossa! Используйте меню ниже или команду /link для подключения аккаунта.',
+        'welcome': (
+            "🌟 *Добро пожаловать в Glossa Mobile!* 🌟\n\n"
+            "Ваш верный карманный компаньон на пути к свободному владению языками. 🚀\n\n"
+            "Здесь вы можете общаться с персональным *ИИ-Репетитором*, отслеживать интервальные повторения слов по системе *SM-2*, следить за своими академическими *наградами*, проверять *серию дней* и просматривать *статистику словаря*!\n\n"
+            "🔗 *Для подключения всех возможностей свяжите аккаунты:*\n"
+            "1️⃣ Зайдите на сайт Glossa.\n"
+            "2️⃣ Перейдите в *Настройки* ⚙️ -> *Уведомления* 🔔.\n"
+            "3️⃣ Нажмите *Привязать Telegram*.\n\n"
+            "📖 Для ознакомления со всеми возможностями напишите /help или используйте кнопку меню ниже. Давайте сделаем обучение увлекательным!"
+        ),
         'not_linked': 'Ваш аккаунт не подключен. Пожалуйста, зайдите в настройки на сайте Glossa и привяжите Telegram.',
         'no_target_lang': 'Целевой язык еще не выбран.',
         'level_msg': 'Ваш уровень в {lang}: {level}',
@@ -69,7 +122,26 @@ BOT_TRANSLATIONS = {
         'rank_msg': '🏆 *Мировой рейтинг*: #{rank} с {score} XP',
         'ai_intro': '💬 *Режим общения с ИИ-Репетитором* активен!\nОтправьте любое сообщение, и я отвечу вам как ИИ-Репетитор. Введите /exit или нажмите кнопку ниже, чтобы выйти.',
         'ai_exit': 'Вы вышли из чата с ИИ. Вы вернулись в главное меню.',
-        'help': 'Доступные команды:\n• /stats - Статистика словаря\n• /streak - Серия дней занятий\n• /rank - Место в рейтинге\n• /level - Уровень языка\n• /ai - Общение с ИИ\n• /achievements - Ваши награды\n• /language - Сменить язык бота\n• /settings - Настройка напоминаний SM-2\n• /exit - Выйти из чата',
+        'help': (
+            "📖 *Справочник команд и руководство Glossa* 📖\n\n"
+            "Исследуйте полный спектр команд мобильного помощника Glossa:\n\n"
+            "🤖 **Основные команды**:\n"
+            "• `/start` - Приветствие и статус подключения аккаунта\n"
+            "• `/help` - Показать это подробное руководство\n\n"
+            "📈 **Словарь и прогресс обучения**:\n"
+            "• `/stats` - Подробная статистика вашего словаря (всего слов, выучено, к повторению)\n"
+            "• `/streak` - Серия дней непрерывной практики и личные рекорды\n"
+            "• `/rank` - Текущая позиция в мировом рейтинге и общий XP\n"
+            "• `/level` - Активный изучаемый язык и уровень по шкале CEFR\n"
+            "• `/achievements` - Посмотреть список всех заработанных наград и значков\n\n"
+            "💬 **Разговорная практика**:\n"
+            "• `/ai` - Войти в интерактивный чат с *ИИ-Репетитором*\n"
+            "• `/exit` - Выйти из режима чата с ИИ и вернуться в меню\n\n"
+            "⚙️ **Настройки бота**:\n"
+            "• `/language` - Изменить язык интерфейса бота (EN, RU, TG)\n"
+            "• `/settings` - Управление напоминаниями интервального повторения SM-2\n\n"
+            "💡 *Совет*: Используйте кнопку меню в левом нижнем углу экрана для быстрого вызова любой команды в любое время!"
+        ),
         'achievements_title': '🏅 *Ваши достижения*:\n',
         'no_achievements': 'Вы еще не заработали ни одной награды. Занимайтесь на сайте, чтобы разблокировать значки!',
         'achievement_item': '• «*{title}*» - {desc}\n  _Получено: {date}_',
@@ -90,9 +162,26 @@ BOT_TRANSLATIONS = {
         'settings_updated': 'Настройки успешно обновлены.',
     },
     'tg': {
-        'welcome_linked': 'Ҳисоби Glossa-и шумо бомуваффақият пайваст шуд! 🚀 Хуш омадед.',
+        'welcome_linked': (
+            "🎉 *Ҳисоби Glossa пайваст шуд!* 🎉\n\n"
+            "Қадами олӣ! Акнун ҳисоби Telegram-и шумо ба Glossa бомуваффақият пайваст гардид. 🚀 Ба маркази идоракунии мобилии худ хуш омадед.\n\n"
+            "Амалҳои асосӣ:\n"
+            "• 💬 Нависед `/ai` барои оғози сӯҳбат бо *ИИ-Репетитор*.\n"
+            "• 📝 Нависед `/stats` барои дидани омори луғати шахсӣ.\n"
+            "• ⚙️ Нависед `/settings` барои танзими *ёддоварӣ аз SM-2*.\n\n"
+            "👉 Барои дидани омори муфассали тамоми фармонҳо, нависед `/help` ё тугмаи менюи поёнии чапро пахш намоед."
+        ),
         'invalid_code': 'Ин пайванд нодуруст аст ё мӯҳлаташ гузаштааст. Пайванди навро аз танзимоти Glossa гиред.',
-        'welcome': 'Ба Glossa хуш омадед! Аз менюи зер истифода баред ё фармони /link-ро барои пайвастшавӣ фиристед.',
+        'welcome': (
+            "🌟 *Ба Glossa Mobile хуш омадед!* 🌟\n\n"
+            "Ҳамсафари хурди шумо дар роҳи азхудкунии комили забонҳо. 🚀\n\n"
+            "Дар ин ҷо шумо метавонед бо *ИИ-Репетитор* (муаллими сунъӣ) гуфтугӯ кунед, омори луғавии худро бубинед, силсилаи рӯзҳои фаъолият ва дараҷаи ҷойи худро дар рейтинги ҷаҳонӣ назорат кунед!\n\n"
+            "🔗 *Барои фаъол кардани тамоми имкониятҳо, ҳисоби худро пайваст кунед:*\n"
+            "1️⃣ Ба сомонаи Glossa ворид шавед.\n"
+            "2️⃣ Ба бахши *Танзимот* ⚙️ -> *Огоҳиномаҳо* 🔔 гузаред.\n"
+            "3️⃣ Тугмаи *Пайваст кардани Telegram*-ро пахш намоед.\n\n"
+            "📖 Барои дидани рӯйхати муфассали фармонҳо фармони /help-ро фиристед ё тугмаи зерро пахш кунед."
+        ),
         'not_linked': 'Ҳисоби шумо пайваст нест. Лутфан ба танзимоти сомонаи Glossa даромада, Telegram-ро пайваст кунед.',
         'no_target_lang': 'Забони омӯхташаванда ҳанӯз интихоб нашудааст.',
         'level_msg': 'Сатҳи шумо дар {lang}: {level}',
@@ -101,7 +190,26 @@ BOT_TRANSLATIONS = {
         'rank_msg': '🏆 *Рейтинги ҷаҳонӣ*: #{rank} бо {score} XP',
         'ai_intro': '💬 *Реҷаи гуфтугӯ бо ИИ-Репетитор* фаъол шуд!\nҲар паёме фиристед, ман ҳамчун ИИ-Репетитор ҷавоб медиҳам. Барои баромадан /exit ё тугмаи зерро пахш кунед.',
         'ai_exit': 'Шумо аз чати ИИ баромадед. Бозгашт ба менюи асосӣ.',
-        'help': 'Фармонҳои дастрас:\n• /stats - Омори луғат\n• /streak - Силсилаи рӯзҳо\n• /rank - Ҷойи шумо дар рейтинг\n• /level - Сатҳи забон\n• /ai - Чат бо ИИ\n• /achievements - Дастовардҳо\n• /language - Иваз кардани забони бот\n• /settings - Танзимоти ёддоварӣ аз SM-2\n• /exit - Баромадан аз чат',
+        'help': (
+            "📖 *Дастури фармонҳо ва кӯмаки Glossa* 📖\n\n"
+            "Имкониятҳои ёвари мобилии Glossa-ро омӯзед:\n\n"
+            "🤖 **Фармонҳои асосӣ**:\n"
+            "• `/start` - Паёми истиқболӣ ва ҳолати пайвасти ҳисоб\n"
+            "• `/help` - Нишон додани ин дастури муфассал\n\n"
+            "📈 **Луғат ва пешрафти омӯзиш**:\n"
+            "• `/stats` - Омори муфассали луғати шумо (ҳамагӣ, омӯхташуда, барои такрор)\n"
+            "• `/streak` - Силсилаи рӯзҳо ва рекорди шахсӣ\n"
+            "• `/rank` - Ҷойи ҷорӣ дар рейтинги ҷаҳонӣ ва холҳои умумӣ (XP)\n"
+            "• `/level` - Забони омӯхташаванда ва сатҳи дониши он (CEFR)\n"
+            "• `/achievements` - Рӯйхати дастовардҳо ва нишонҳо\n\n"
+            "💬 **Машқи гуфтугӯ**:\n"
+            "• `/ai` - Оғози чати интерактивӣ бо *ИИ-Репетитор*\n"
+            "• `/exit` - Баромадан аз чати ИИ ва бозгашт ба меню\n\n"
+            "⚙️ **Танзимоти бот**:\n"
+            "• `/language` - Иваз кардани забони бот (EN, RU, TG)\n"
+            "• `/settings` - Идоракунии ёддоварӣ аз такрори SM-2\n\n"
+            "💡 *Маслиҳат*: Тугмаи менюи поёнии чапи экранро барои иҷрои зуди фармонҳо исполда баред!"
+        ),
         'achievements_title': '🏅 *Дастовардҳои шумо*:\n',
         'no_achievements': 'Шумо ҳанӯз ягон нишон ба даст наовардаед. Барои кушодани нишонҳо дар сомона дарс хонед!',
         'achievement_item': '• *{title}* - {desc}\n  _Санаи ба даст овардан: {date}_',
@@ -328,7 +436,7 @@ async def handle_start(message: Message, command: CommandObject | None = None):
                 await telegram_link_service.save_chat_id(user_id, str(message.chat.id), db)
                 locale = await _get_locale(user_id, db)
                 t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
-                await message.answer(t['welcome_linked'], reply_markup=get_main_keyboard(locale))
+                await message.answer(t['welcome_linked'], reply_markup=get_main_keyboard(locale), parse_mode="Markdown")
             return
 
         await message.answer(BOT_TRANSLATIONS['ru']['invalid_code'])
@@ -340,9 +448,9 @@ async def handle_start(message: Message, command: CommandObject | None = None):
         if user_id:
             locale = await _get_locale(user_id, db)
             t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
-            await message.answer(t['welcome'], reply_markup=get_main_keyboard(locale))
+            await message.answer(t['welcome'], reply_markup=get_main_keyboard(locale), parse_mode="Markdown")
         else:
-            await message.answer(BOT_TRANSLATIONS['ru']['welcome'])
+            await message.answer(BOT_TRANSLATIONS['ru']['welcome'], parse_mode="Markdown")
 
 
 # ─── STATS COMMAND / BUTTON ───
@@ -473,7 +581,7 @@ async def handle_help(message: Message):
             return
         locale = await _get_locale(user_id, db)
         t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
-        await message.answer(t['help'])
+        await message.answer(t['help'], parse_mode="Markdown")
 
 
 # ─── LANGUAGE COMMAND ───
@@ -665,4 +773,4 @@ async def handle_all_messages(message: Message):
                 await status_msg.edit_text(f"Error calling AI Tutor: {e}")
         else:
             # If not in chat mode, show the main welcome menu
-            await message.answer(t['welcome'], reply_markup=get_main_keyboard(locale))
+            await message.answer(t['welcome'], reply_markup=get_main_keyboard(locale), parse_mode="Markdown")
