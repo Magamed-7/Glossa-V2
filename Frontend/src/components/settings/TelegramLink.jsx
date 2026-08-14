@@ -36,11 +36,11 @@ export default function TelegramLink() {
   }
 
   async function onUnlink() {
-    if (!window.confirm(t("telegram.unlinkConfirm"))) return;
+    if (!window.confirm(t("profile.telegram.unlinkConfirm"))) return;
     setUnlinking(true);
     try {
       await unlinkTelegram();
-      toast.success(t("telegram.successUnlinked"));
+      toast.success(t("profile.telegram.successUnlinked"));
       await reloadProfile();
       await reloadSettings();
     } catch (err) {
@@ -77,10 +77,10 @@ export default function TelegramLink() {
     return (
       <div className="p-5 border-2 border-primary bg-stone-100 dark:bg-stone-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <p className="font-body text-body-md text-on-surface-variant mb-4 font-bold">
-          ⚠️ {t("settings.telegram.requiresPlan")}
+          ⚠️ {t("profile.telegram.requiresPlan")}
         </p>
         <Link to="/pricing">
-          <NeoButton variant="primary">{t("settings.telegram.viewPlans")}</NeoButton>
+          <NeoButton variant="primary">{t("profile.telegram.viewPlans")}</NeoButton>
         </Link>
       </div>
     );
@@ -111,7 +111,7 @@ export default function TelegramLink() {
             {submitting ? "..." : (
               <>
                 <span>✈️</span>
-                {t("settings.telegram.link")}
+                {t("profile.telegram.link")}
               </>
             )}
           </button>
@@ -136,7 +136,7 @@ export default function TelegramLink() {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
               <span className="font-display text-headline-sm font-bold uppercase tracking-tight">
-                {t("telegram.connected")}
+                {t("profile.telegram.connected")}
               </span>
             </div>
             <p className="font-body text-body-sm opacity-90 mt-0.5 font-semibold">
@@ -145,7 +145,7 @@ export default function TelegramLink() {
           </div>
         </div>
         <span className="px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-white/20 text-white border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] relative z-10">
-          {t("telegram.activeBadge")}
+          {t("profile.telegram.activeBadge")}
         </span>
         {/* Decorative subtle airplane background */}
         <div className="absolute right-4 bottom-[-30px] opacity-10 text-9xl select-none pointer-events-none rotate-12">
@@ -159,7 +159,7 @@ export default function TelegramLink() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-primary/20">
           <div className="space-y-0.5">
             <label htmlFor="telegram-lang-select" className="font-headline text-body-lg block font-bold">
-              🌐 {t("telegram.languageLabel")}
+              🌐 {t("profile.telegram.languageLabel")}
             </label>
             <p className="font-body text-body-sm text-on-surface-variant">
               {settings?.telegram_language 
@@ -184,7 +184,7 @@ export default function TelegramLink() {
         <div className="flex items-center justify-between gap-4 pb-4 border-b border-primary/20">
           <div className="pr-4 space-y-0.5">
             <span className="font-headline text-body-lg block font-bold">
-              ⏰ {t("telegram.sm2Label")}
+              ⏰ {t("profile.telegram.sm2Label")}
             </span>
             <p className="font-body text-body-sm text-on-surface-variant">
               Receive reminders tailored specifically to your spaced repetition queue.
@@ -195,7 +195,7 @@ export default function TelegramLink() {
             checked={Boolean(settings?.telegram_sm2_enabled)}
             onChange={(checked) => handleSettingChange("telegram_sm2_enabled", checked)}
             disabled={settingsSaving}
-            label={t("telegram.sm2Label")}
+            label={t("profile.telegram.sm2Label")}
           />
         </div>
 
@@ -206,7 +206,7 @@ export default function TelegramLink() {
             onClick={onUnlink}
             className="bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-label text-label-xs uppercase tracking-widest font-bold px-4 py-2 border-2 border-rose-600/40 dark:border-rose-400/40 rounded transition-colors shadow-[2px_2px_0px_0px_rgba(220,38,38,0.1)] hover:shadow-[3px_3px_0px_0px_rgba(220,38,38,0.2)] active:translate-y-[1px]"
           >
-            ❌ {t("telegram.unlinkButton")}
+            ❌ {t("profile.telegram.unlinkButton")}
           </button>
         </div>
       </div>
