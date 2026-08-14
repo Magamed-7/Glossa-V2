@@ -1,7 +1,7 @@
 import { useState } from "react";
 import NeoCard from "../ui/NeoCard.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
-import { exportMyData } from "../../lib/api/account.js";
+import { exportMyDataPdf } from "../../lib/api/account.js";
 import { errorText } from "../../lib/api/errorText.js";
 import { useToast } from "../../lib/toast.jsx";
 import { useT } from "../../lib/i18n.jsx";
@@ -15,14 +15,14 @@ export default function DataExport() {
   async function onDownload() {
     setDownloading(true);
     try {
-      const data = await exportMyData();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const blob = await exportMyDataPdf();
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `glossa-export-${new Date().toISOString().slice(0, 10)}.json`;
+      link.download = `glossa-report-${new Date().toISOString().slice(0, 10)}.pdf`;
       link.click();
       URL.revokeObjectURL(url);
+      toast.success(t("settings.dataExport.success"));
     } catch (err) {
       toast.error(errorText(err));
     } finally {

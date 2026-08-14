@@ -870,7 +870,8 @@ export const en = {
         "Social connections",
         "Account details",
       ],
-      download: "Download My Data",
+      download: "Download My Data (PDF)",
+      success: "PDF report downloaded successfully",
     },
   },
   wallet: {
