@@ -12,3 +12,5 @@ start-glossa.bat
 tail.txt
 docx_dump.txt
 parsed_docx_words.json
+tutor_lumen.html
+Frontend/src/components/tutor/LumenTutor.jsx
