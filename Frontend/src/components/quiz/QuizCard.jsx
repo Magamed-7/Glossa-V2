@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
 import Icon from "../ui/Icon.jsx";
+import ContextHelpChat from "../ai/ContextHelpChat.jsx";
+
+function grammarQuestionRefId(item) {
+  if (item?.kind !== "grammar" || typeof item.id !== "string") return null;
+  const match = item.id.match(/^gq-(\d+)$/);
+  return match ? Number(match[1]) : null;
+}
 
 function Paperclip() {
   return (
@@ -220,6 +227,14 @@ export default function QuizCard({ questions, lang, exerciseLabel, onFinish }) {
           {lang === "ru" ? "Выйти" : lang === "tg" ? "Баромадан" : "Exit"}
         </button>
       </div>
+
+      {grammarQuestionRefId(q) !== null && (
+        <ContextHelpChat
+          key={q.id}
+          contextType="exercise"
+          contextRefId={grammarQuestionRefId(q)}
+        />
+      )}
     </div>
   );
 }

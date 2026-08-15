@@ -58,6 +58,7 @@ class GrammarLessonResponse(BaseModel):
 
 class GrammarLessonDetailResponse(GrammarLessonResponse):
     rule: str | None
+    explanation_long: str | None = None
     examples: list[GrammarExampleResponse]
     questions: list[GrammarQuestionResponse]
 

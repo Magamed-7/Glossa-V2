@@ -93,12 +93,28 @@ export default function QuizResults({
               />
               <div className="min-w-0">
                 <p className="font-body text-sm text-on-surface leading-relaxed mb-1">{q.text}</p>
+
+                {!q.is_correct && q.given != null && q.given !== "" && (
+                  <p className="font-label text-[10px] uppercase font-bold tracking-widest text-secondary">
+                    {lang === "ru" ? "Твой ответ: " : lang === "tg" ? "Ҷавоби ту: " : "Your answer: "}
+                    <span className="normal-case">{q.given}</span>
+                  </p>
+                )}
+
                 <p className="font-label text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">
-                  {lang === "ru" ? "Правильно: " : lang === "tg" ? "Дуруст: " : "Correct: "}
+                  {lang === "ru" ? "Правильный ответ: " : lang === "tg" ? "Ҷавоби дуруст: " : "Correct answer: "}
                   <span className="text-on-surface normal-case">{q.answer}</span>
                 </p>
+
                 {q.explanation && (
-                  <p className="font-body text-xs text-on-surface-variant mt-1 italic">{q.explanation}</p>
+                  <p className={`font-body text-xs mt-1.5 leading-relaxed border-l-2 pl-2.5 ${q.is_correct ? "border-[#4caf50] text-on-surface-variant" : "border-secondary text-on-surface-variant"}`}>
+                    <span className="not-italic font-bold text-on-surface">
+                      {q.is_correct
+                        ? (lang === "ru" ? "Почему это верно: " : lang === "tg" ? "Чаро дуруст: " : "Why this is correct: ")
+                        : (lang === "ru" ? "Почему: " : lang === "tg" ? "Чаро: " : "Why: ")}
+                    </span>
+                    {q.explanation}
+                  </p>
                 )}
               </div>
             </div>

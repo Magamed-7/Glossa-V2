@@ -108,6 +108,8 @@ async def build_user_export(user_id: int, db: AsyncSession):
             'photo_url': profile.photo_url,
             'profile_views': profile.profile_views,
             'created_at': profile.created_at,
+            'estimated_vocabulary_size': profile.estimated_vocabulary_size,
+            'vocabulary_estimated_at': profile.vocabulary_estimated_at,
         },
         'privacy_settings': {
             'show_stories_count': privacy.show_stories_count,

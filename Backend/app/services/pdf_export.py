@@ -4,6 +4,7 @@ Generates a styled Neo-Retro Editorial PDF report.
 """
 import io
 from datetime import date, datetime
+from pathlib import Path
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -20,6 +21,8 @@ from reportlab.platypus import (
     HRFlowable,
 )
 
+from app.core.cefr_benchmarks import CEFR_VOCAB_BENCHMARK
+
 # ── Brand colours ────────────────────────────────────────────────────────────
 CRIMSON = colors.HexColor("#B90538")
 CREAM = colors.HexColor("#FCF9F6")
@@ -28,6 +31,19 @@ LIGHT_GRAY = colors.HexColor("#E8E3DC")
 WHITE = colors.white
 
 PAGE_W, PAGE_H = A4
+
+# Base-14 PDF fonts (Helvetica etc.) have no Cyrillic glyphs — every ru/tg string in
+# this report was silently dropping to tofu/blank. Register a Unicode font (Noto
+# Sans, OFL-licensed, bundled in app/data/fonts) covering Cyrillic + the extended
+# Tajik letters (Ғ ғ Қ қ Ӯ ӯ Ҳ ҳ Ҷ ҷ), and use it everywhere instead.
+_FONTS_DIR = Path(__file__).resolve().parents[1] / 'data' / 'fonts'
+FONT_REGULAR = 'NotoSans'
+FONT_BOLD = 'NotoSans-Bold'
+
+if FONT_REGULAR not in pdfmetrics.getRegisteredFontNames():
+    pdfmetrics.registerFont(TTFont(FONT_REGULAR, str(_FONTS_DIR / 'NotoSans-Regular.ttf')))
+    pdfmetrics.registerFont(TTFont(FONT_BOLD, str(_FONTS_DIR / 'NotoSans-Bold.ttf')))
+    pdfmetrics.registerFontFamily(FONT_REGULAR, normal=FONT_REGULAR, bold=FONT_BOLD)
 
 
 def _draw_sunburst(canvas, doc):
@@ -91,6 +107,23 @@ def _val(v, fallback="—"):
     return str(v)
 
 
+def _approx_vocab_size(profile: dict, languages: list) -> int:
+    """Always returns a rough word-count estimate for the PDF, even if the user
+    never took/confirmed the vocabulary-size test — falls back to the CEFR
+    benchmark for their current target-language level."""
+    confirmed = profile.get("estimated_vocabulary_size")
+    if confirmed:
+        return int(confirmed)
+
+    target_level = None
+    for lang in languages or []:
+        if lang.get("is_target"):
+            target_level = (lang.get("level") or "").upper()
+            break
+
+    return CEFR_VOCAB_BENCHMARK.get(target_level, CEFR_VOCAB_BENCHMARK["A1"])
+
+
 def _lang_level_label(lang: dict) -> str:
     lvl = lang.get("level") or ""
     is_native = lvl.lower() in ("native", "родной", "а0")
@@ -124,20 +157,20 @@ def build_pdf(export_data: dict, user: object) -> bytes:
         s = ParagraphStyle(name, parent=styles["Normal"], **kw)
         return s
 
-    logo_style = _style("Logo", fontSize=26, textColor=CRIMSON, fontName="Helvetica-Bold",
+    logo_style = _style("Logo", fontSize=26, textColor=CRIMSON, fontName=FONT_BOLD,
                          spaceAfter=0, leading=30)
-    eyebrow_style = _style("Eyebrow", fontSize=8, textColor=BLACK, fontName="Helvetica",
+    eyebrow_style = _style("Eyebrow", fontSize=8, textColor=BLACK, fontName=FONT_REGULAR,
                             spaceAfter=0, leading=10)
-    title_style = _style("Title", fontSize=22, textColor=BLACK, fontName="Helvetica-Bold",
+    title_style = _style("Title", fontSize=22, textColor=BLACK, fontName=FONT_BOLD,
                           spaceAfter=2, leading=26, spaceBefore=6)
-    subtitle_style = _style("Subtitle", fontSize=9, textColor=BLACK, fontName="Helvetica",
+    subtitle_style = _style("Subtitle", fontSize=9, textColor=BLACK, fontName=FONT_REGULAR,
                              spaceAfter=8, leading=12)
     block_label_style = _style("BlockLabel", fontSize=7, textColor=CRIMSON,
-                                fontName="Helvetica-Bold", spaceAfter=2, leading=9,
+                                fontName=FONT_BOLD, spaceAfter=2, leading=9,
                                 textTransform="uppercase")
     block_value_style = _style("BlockValue", fontSize=9, textColor=BLACK,
-                                fontName="Helvetica", spaceAfter=1, leading=12)
-    footer_style = _style("Footer", fontSize=7, textColor=BLACK, fontName="Helvetica",
+                                fontName=FONT_REGULAR, spaceAfter=1, leading=12)
+    footer_style = _style("Footer", fontSize=7, textColor=BLACK, fontName=FONT_REGULAR,
                            leading=9)
 
     # ── Gather data ───────────────────────────────────────────────────────
@@ -223,6 +256,7 @@ def build_pdf(export_data: dict, user: object) -> bytes:
                 f"Всего карточек: {_val(deck_stats.get('cards_total'))}",
                 f"Слов выучено: {_val(deck_stats.get('learned_count'))}",
                 f"Удержание: {_val(deck_stats.get('retention_rate'))}%",
+                f"Примерный словарный запас: ~{_approx_vocab_size(profile, languages):,} слов".replace(",", " "),
             ]),
         ],
         [

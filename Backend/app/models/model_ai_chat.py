@@ -20,6 +20,8 @@ class ChatSessions(Base):
     native_language: Mapped[str | None] = mapped_column(String, nullable=True)
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     seconds_spent: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    context_type: Mapped[str | None] = mapped_column(String, nullable=True)
+    context_ref_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 
 class ChatMessages(Base):

@@ -91,6 +91,8 @@ const TXT = {
     clearSelection: "Clear selection",
     randomFromLearned: "🎲 Build from what I've already studied",
     randomFromLearnedEmpty: "You haven't studied anything at these levels yet — try a topic or two first.",
+    vocabSizeTitle: "Vocabulary Size Test",
+    vocabSizeSubtitle: "Estimate roughly how many English words you actually know, including ones never taught in Glossa.",
   },
   ru: {
     registryNo: "Реестр № ЭКЗ-74",
@@ -162,6 +164,8 @@ const TXT = {
     clearSelection: "Очистить выбор",
     randomFromLearned: "🎲 Собрать из уже изученного",
     randomFromLearnedEmpty: "На этих уровнях ты пока ничего не изучил(а) — сначала пройди хотя бы пару тем.",
+    vocabSizeTitle: "Тест словарного запаса",
+    vocabSizeSubtitle: "Оцени, сколько английских слов ты реально знаешь — включая те, что не проходил(а) в Glossa.",
   },
   tg: {
     registryNo: "Феҳрист № ИМТ-74",
@@ -233,6 +237,8 @@ const TXT = {
     clearSelection: "Тоза кардани интихоб",
     randomFromLearned: "🎲 Аз чизи аллакай омӯхташуда созед",
     randomFromLearnedEmpty: "Дар ин сатҳҳо шумо ҳанӯз чизе наомӯхтаед — аввал якчанд мавзӯъро гузаред.",
+    vocabSizeTitle: "Тести ҳаҷми луғавӣ",
+    vocabSizeSubtitle: "Баҳо диҳед, ки шумо воқеан чанд калимаи англисиро медонед — аз ҷумла онҳое, ки дар Glossa наомӯхтаед.",
   },
 };
 
@@ -1031,6 +1037,19 @@ export default function TestsHub() {
         <div className="mb-8">
           <AcademicStandingLedger analytics={analytics} history={history} t={t} />
         </div>
+
+        <button
+          type="button"
+          onClick={() => navigate("/tests/vocab-size")}
+          className="w-full text-left border-2 border-on-surface bg-surface p-6 mb-8 shadow-[3px_3px_0_0_#000] hover:shadow-[5px_5px_0_0_#000] hover:-translate-y-0.5 transition-all flex items-center gap-5 cursor-pointer neo-card"
+        >
+          <Icon name="quiz" className="text-4xl text-secondary shrink-0" />
+          <div className="flex-1">
+            <h3 className="font-serif text-xl font-normal">{t.vocabSizeTitle}</h3>
+            <p className="font-body text-xs text-on-surface-variant mt-1">{t.vocabSizeSubtitle}</p>
+          </div>
+          <Icon name="arrow_forward" className="text-xl opacity-60 shrink-0" />
+        </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
           <div className="lg:col-span-7">

@@ -19,6 +19,8 @@ class UserProfiles(Base):
     photo_url: Mapped[str | None] = mapped_column(String, nullable=True)
     profile_views: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     telegram_chat_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    estimated_vocabulary_size: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    vocabulary_estimated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

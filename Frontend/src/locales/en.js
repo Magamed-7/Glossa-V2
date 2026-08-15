@@ -340,6 +340,7 @@ export const en = {
       cardFlipTitle: "Speed Recall Survival",
       typewriterTitle: "Typewriter Speed Check",
       spacedRepetitionTitle: "SM-2 Spaced Repetition",
+      generateStoryTitle: "Generate Story From My Words",
       missionControlTitle: "Daily Mission Control",
       btnStopExit: "Stop Game / Dictionary",
       btnBackArchive: "Back to Dictionary",

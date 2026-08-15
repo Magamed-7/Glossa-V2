@@ -37,6 +37,9 @@ class GrammarLessons(Base):
     rule_tg: Mapped[str | None] = mapped_column(String, nullable=True)
     structure: Mapped[str | None] = mapped_column(String, nullable=True)
     tip: Mapped[str | None] = mapped_column(String, nullable=True)
+    explanation_long_en: Mapped[str | None] = mapped_column(String, nullable=True)
+    explanation_long_ru: Mapped[str | None] = mapped_column(String, nullable=True)
+    explanation_long_tg: Mapped[str | None] = mapped_column(String, nullable=True)
     source_key: Mapped[str | None] = mapped_column(String, nullable=True, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

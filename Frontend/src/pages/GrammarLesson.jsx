@@ -5,6 +5,7 @@ import ErrorState from "../components/ui/ErrorState.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import QuizCard from "../components/quiz/QuizCard.jsx";
 import QuizResults from "../components/quiz/QuizResults.jsx";
+import ContextHelpChat from "../components/ai/ContextHelpChat.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useAppData } from "../lib/AppDataContext.jsx";
 import { errorText } from "../lib/api/errorText.js";
@@ -80,6 +81,20 @@ function TheoryCard({ lesson, examples, lang, onStartPractice, hasQuestions }) {
               {lang === "ru" ? "Правило" : lang === "tg" ? "Қонун" : "Rule"}
             </p>
             <p className="font-body text-base text-on-surface leading-relaxed">{lesson.rule}</p>
+          </div>
+        )}
+
+        {/* Full explanation article */}
+        {lesson.explanation_long && (
+          <div className="mb-8">
+            <p className="font-label text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-3">
+              {lang === "ru" ? "Подробное объяснение" : lang === "tg" ? "Шарҳи муфассал" : "In depth"}
+            </p>
+            <div className="font-body text-base text-on-surface leading-relaxed space-y-4">
+              {lesson.explanation_long.split(/\n\s*\n/).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
           </div>
         )}
 
@@ -270,6 +285,8 @@ export default function GrammarLesson() {
           </p>
         )}
       </main>
+
+      {phase === "theory" && <ContextHelpChat contextType="grammar" contextRefId={lesson.id} />}
     </div>
   );
 }

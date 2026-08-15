@@ -14,6 +14,7 @@ class PlanResponse(BaseModel):
     own_stories_per_week: int | None
     ai_seconds_per_day: int | None
     audiobooks_per_day: int | None
+    generated_stories_per_day: int | None
     can_buy_stories: bool
     telegram_access: bool
 

@@ -159,6 +159,7 @@ async def get_lesson_detail(lesson_id: int, locale: str, db: AsyncSession):
     return {
         **lesson_to_response(lesson),
         'rule': pick_locale(lesson, 'rule', locale),
+        'explanation_long': pick_locale(lesson, 'explanation_long', locale),
         'examples': [{'id': e.id, 'text': e.text, 'order': e.order} for e in examples],
         'questions': [question_to_response(q, locale) for q in questions],
     }

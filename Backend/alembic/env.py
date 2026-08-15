@@ -30,6 +30,7 @@ from app.models import (  # noqa: E402, F401
     model_subscription,
     model_user,
     model_user_story,
+    model_vocab_size_test,
 )
 
 config = context.config

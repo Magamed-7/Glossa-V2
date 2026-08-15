@@ -43,6 +43,8 @@ const CourseUnitDetail = lazy(() => import("./pages/CourseUnitDetail.jsx"));
 const UnitTest = lazy(() => import("./pages/UnitTest.jsx"));
 const LevelTest = lazy(() => import("./pages/LevelTest.jsx"));
 const TestsHub = lazy(() => import("./pages/TestsHub.jsx"));
+const VocabSizeTest = lazy(() => import("./pages/VocabSizeTest.jsx"));
+const GenerateStoryPage = lazy(() => import("./pages/GenerateStoryPage.jsx"));
 const PracticeTestRun = lazy(() => import("./pages/PracticeTestRun.jsx"));
 const StoryTestRun = lazy(() => import("./pages/StoryTestRun.jsx"));
 const SearchResults = lazy(() => import("./pages/SearchResults.jsx"));
@@ -118,6 +120,8 @@ export default function App() {
           <Route path="/grammar" element={page(GrammarHub)} />
           <Route path="/grammar/:id" element={page(GrammarLesson)} />
           <Route path="/tests" element={page(TestsHub)} />
+          <Route path="/tests/vocab-size" element={page(VocabSizeTest)} />
+          <Route path="/vocabulary/generate-story" element={page(GenerateStoryPage)} />
           <Route path="/tests/practice/run" element={page(PracticeTestRun)} />
           <Route path="/tests/story/:storyId/run" element={page(StoryTestRun)} />
           <Route path="/tutor" element={page(TutorScenarios)} />

@@ -340,6 +340,7 @@ export const tg = {
       cardFlipTitle: "Суръат ва Наҷот",
       typewriterTitle: "Санҷиши мошинкаи навишт",
       spacedRepetitionTitle: "Кортҳои SM-2 (Фосилаҳо)",
+      generateStoryTitle: "Аз калимаҳои ман ҳикоя эҷод кунед",
       missionControlTitle: "Маркази назорати вазифаҳо",
       btnStopExit: "Ист / Луғат",
       btnBackArchive: "Бозгашт ба луғат",

@@ -14,6 +14,9 @@ from app.api.router_messenger import router_messenger
 from app.api.router_notification import router_notification
 from app.api.router_payment import router_payment, router_payments_history, router_stripe
 from app.api.router_practice import router_practice
+from app.api.router_vocab_size_test import router_vocab_size_test
+from app.api.router_context_help import router_context_help
+from app.api.router_vocab_story import router_vocab_story
 from app.api.router_profile import router_profile
 from app.api.router_rating import router_rating
 from app.api.router_search import router_search
@@ -41,6 +44,7 @@ from app.models import (
     model_subscription,
     model_user,
     model_user_story,
+    model_vocab_size_test,
 )
 from app.services import ai_mcp
 
@@ -68,6 +72,9 @@ app.include_router(router_reviews)
 app.include_router(router_learning)
 app.include_router(router_course)
 app.include_router(router_practice)
+app.include_router(router_vocab_size_test)
+app.include_router(router_context_help)
+app.include_router(router_vocab_story)
 app.include_router(router_profile)
 app.include_router(router_settings)
 app.include_router(router_vocabulary)

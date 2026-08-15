@@ -14,6 +14,7 @@ import { useI18n, useT } from "../lib/i18n.jsx";
 import { getBookCoverUrl } from "./StoriesCatalog.jsx";
 import { useAuth } from "../lib/auth/AuthContext.jsx";
 import XpGainSummaryModal from "../components/ui/XpGainSummaryModal.jsx";
+import ContextHelpChat from "../components/ai/ContextHelpChat.jsx";
 
 const FALLBACK_COVERS = [
   "/img/covers/midnight-cafe.webp",
@@ -282,6 +283,12 @@ export default function StoryReader() {
         totalCount={1}
         gameType="story"
         lang={lang}
+      />
+
+      <ContextHelpChat
+        contextType="story"
+        contextRefId={story.id}
+        positionClassName={hasTranslation ? "bottom-24 right-8" : "bottom-6 right-6"}
       />
     </div>
   );

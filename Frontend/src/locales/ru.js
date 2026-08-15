@@ -340,6 +340,7 @@ export const ru = {
       cardFlipTitle: "Выживание: Скорость",
       typewriterTitle: "Печатная машинка",
       spacedRepetitionTitle: "Карточки SM-2 (Интервалы)",
+      generateStoryTitle: "Сгенерировать историю из моих слов",
       missionControlTitle: "Панель управления миссиями",
       btnStopExit: "Остановить игру / Словарь",
       btnBackArchive: "Назад / Словарь",

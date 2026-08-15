@@ -8,7 +8,7 @@ from app.core.errors import AppError
 from app.core.redis_client import redis_client
 from app.db.database import get_db
 
-DAILY_LIMIT_FIELDS = {'stories_per_day', 'deck_words_per_day'}
+DAILY_LIMIT_FIELDS = {'stories_per_day', 'deck_words_per_day', 'generated_stories_per_day'}
 WEEKLY_LIMIT_FIELDS = {'own_stories_per_week'}
 
 
@@ -86,6 +86,17 @@ async def enforce_story_limit(
         raise AppError(code='LIMIT_REACHED', message='Daily limit reached, upgrade your plan', status_code=403)
 
     await incr_daily(current_user.id, 'stories_per_day')
+    return current_user
+
+
+async def enforce_generated_story_limit(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    if not await check_limit(current_user.id, 'generated_stories_per_day', db):
+        raise AppError(code='LIMIT_REACHED', message='Daily limit reached, upgrade your plan', status_code=403)
+
+    await incr_daily(current_user.id, 'generated_stories_per_day')
     return current_user
 
 

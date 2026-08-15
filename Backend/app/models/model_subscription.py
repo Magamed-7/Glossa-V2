@@ -20,6 +20,7 @@ class Plans(Base):
     own_stories_per_week: Mapped[int | None] = mapped_column(Integer, nullable=True)
     ai_seconds_per_day: Mapped[int | None] = mapped_column(Integer, nullable=True)
     audiobooks_per_day: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    generated_stories_per_day: Mapped[int | None] = mapped_column(Integer, nullable=True)
     can_buy_stories: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     telegram_access: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 

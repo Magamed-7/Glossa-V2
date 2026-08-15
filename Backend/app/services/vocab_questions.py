@@ -12,6 +12,24 @@ async def get_level_vocab_pool(cefr_level: str, db: AsyncSession):
     return result.scalars().all()
 
 
+_EXPLANATION_TEMPLATES = {
+    'en': lambda word, translation, example: (
+        f'"{word}" means "{translation}".' + (f' Example: {example}' if example else '')
+    ),
+    'ru': lambda word, translation, example: (
+        f'«{word}» переводится как «{translation}».' + (f' Пример: {example}' if example else '')
+    ),
+    'tg': lambda word, translation, example: (
+        f'«{word}» маънояш «{translation}» аст.' + (f' Мисол: {example}' if example else '')
+    ),
+}
+
+
+def _vocab_explanation(entry: VocabEntries, translation: str, locale: str):
+    template = _EXPLANATION_TEMPLATES.get(locale, _EXPLANATION_TEMPLATES['en'])
+    return template(entry.word, translation, entry.example_en)
+
+
 def build_vocab_question(entry: VocabEntries, distractor_pool: list[VocabEntries], locale: str, rng: random.Random):
     translation = vocab_translation(entry, locale) or vocab_translation(entry, 'ru')
     if not translation:
@@ -27,6 +45,7 @@ def build_vocab_question(entry: VocabEntries, distractor_pool: list[VocabEntries
         return None
 
     forward = rng.random() < 0.5
+    explanation = _vocab_explanation(entry, translation, locale)
 
     if forward:
         options = [translation, *distractor_translations]
@@ -37,6 +56,7 @@ def build_vocab_question(entry: VocabEntries, distractor_pool: list[VocabEntries
             'text': f'What does "{entry.word}" mean?',
             'options': options,
             'answer': translation,
+            'explanation': explanation,
         }
 
     options = [entry.word, *[d.word for d in distractors]]
@@ -47,6 +67,7 @@ def build_vocab_question(entry: VocabEntries, distractor_pool: list[VocabEntries
         'text': f'Which word means "{translation}"?',
         'options': options,
         'answer': entry.word,
+        'explanation': explanation,
     }
 
 
