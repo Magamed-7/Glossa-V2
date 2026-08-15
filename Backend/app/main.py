@@ -17,6 +17,7 @@ from app.api.router_practice import router_practice
 from app.api.router_vocab_size_test import router_vocab_size_test
 from app.api.router_context_help import router_context_help
 from app.api.router_vocab_story import router_vocab_story
+from app.api.router_dc_payment import router_dc_payment
 from app.api.router_profile import router_profile
 from app.api.router_rating import router_rating
 from app.api.router_search import router_search
@@ -33,6 +34,7 @@ from app.models import (
     model_ai_chat,
     model_card,
     model_content,
+    model_dc_payment,
     model_lingo,
     model_messenger,
     model_notification,
@@ -75,6 +77,7 @@ app.include_router(router_practice)
 app.include_router(router_vocab_size_test)
 app.include_router(router_context_help)
 app.include_router(router_vocab_story)
+app.include_router(router_dc_payment)
 app.include_router(router_profile)
 app.include_router(router_settings)
 app.include_router(router_vocabulary)

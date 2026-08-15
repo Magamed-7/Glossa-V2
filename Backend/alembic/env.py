@@ -19,6 +19,7 @@ from app.models import (  # noqa: E402, F401
     model_card,
     model_content,
     model_course,
+    model_dc_payment,
     model_lingo,
     model_messenger,
     model_notification,

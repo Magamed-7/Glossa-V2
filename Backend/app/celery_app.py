@@ -49,6 +49,10 @@ celery_app.conf.beat_schedule = {
         'task': 'app.tasks.notifications.streak_protection_reminders',
         'schedule': crontab(hour=20, minute=0),
     },
+    'expire-dc-orders': {
+        'task': 'app.tasks.payments.expire_dc_orders',
+        'schedule': crontab(minute='*'),
+    },
 }
 
 

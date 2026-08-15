@@ -79,5 +79,11 @@ class Settings:
     COTURN_URLS: list[str] = [u.strip() for u in os.getenv('COTURN_URLS', '').split(',') if u.strip()]
     COTURN_CREDENTIAL_TTL_SECONDS: int = int(os.getenv('COTURN_CREDENTIAL_TTL_SECONDS', '21600'))
 
+    # Dushanbe City card penny-matching payment gateway — incoming SMS/push text
+    # is posted to /payments/webhook/dc and reconciled against pending Orders.
+    DC_CARD_NUMBER: str = os.getenv('DC_CARD_NUMBER', '')
+    WEBHOOK_SECRET_TOKEN: str = os.getenv('WEBHOOK_SECRET_TOKEN', '')
+    ADMIN_TELEGRAM_ID: str = os.getenv('ADMIN_TELEGRAM_ID', '')
+
 
 settings = Settings()

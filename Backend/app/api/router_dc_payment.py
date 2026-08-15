@@ -1,0 +1,171 @@
+import logging
+from datetime import datetime, timezone
+
+from fastapi import APIRouter, Depends, Header
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.auth import get_current_user
+from app.core.config import settings
+from app.core.errors import AppError
+from app.db.database import get_db
+from app.models.model_dc_payment import Order, PaymentLog
+from app.schemas.schema_dc_payment import CreateOrderRequest, DcWebhookPayload, OrderResponse
+from app.services import crud_payment, dc_payment
+
+router_dc_payment = APIRouter(prefix='/payments', tags=['DC Card Payments'])
+logger = logging.getLogger('dc_payment')
+
+
+def _order_amount_label(order: Order) -> str:
+    return f'{order.expected_amount} TJS'
+
+
+async def _notify_user(order: Order):
+    from app.tasks.notifications import send_telegram_task
+    from app.services import notify_service
+    from app.db.database import AsyncSessionLocal
+
+    async with AsyncSessionLocal() as db:
+        chat_id = await notify_service.get_telegram_chat_id(order.user_id, db)
+
+    if chat_id:
+        send_telegram_task.delay(
+            chat_id=chat_id,
+            title='✅ Оплата получена!',
+            body=f'Оплата {_order_amount_label(order)} получена! Заказ #{order.id} успешно выполнен.',
+        )
+
+
+async def _alert_admin(raw_text: str, parsed_amount, source: str):
+    from app.tasks.notifications import send_telegram_task
+
+    if not settings.ADMIN_TELEGRAM_ID:
+        logger.warning('ADMIN_TELEGRAM_ID not configured, cannot alert admin about unmatched payment')
+        return
+
+    send_telegram_task.delay(
+        chat_id=settings.ADMIN_TELEGRAM_ID,
+        title='⚠️ Непривязанный платёж',
+        body=f'Источник: {source}\nСумма: {parsed_amount}\nТекст: {raw_text}',
+    )
+
+
+@router_dc_payment.post('/webhook/dc')
+async def dc_webhook(
+    payload: DcWebhookPayload,
+    x_secret_token: str = Header(None, alias='X-Secret-Token'),
+    db: AsyncSession = Depends(get_db),
+):
+    if not settings.WEBHOOK_SECRET_TOKEN or x_secret_token != settings.WEBHOOK_SECRET_TOKEN:
+        raise AppError(code='UNAUTHORIZED', message='Invalid secret token', status_code=401)
+
+    existing = (
+        await db.execute(select(PaymentLog).where(PaymentLog.raw_text == payload.text))
+    ).scalar_one_or_none()
+    if existing is not None:
+        db.add(PaymentLog(
+            raw_text=payload.text, source=payload.source, parsed_amount=existing.parsed_amount,
+            is_incoming=existing.is_incoming, status='DUPLICATE', received_at=payload.received_at,
+        ))
+        await db.commit()
+        return {'status': 'duplicate'}
+
+    direction, amount = dc_payment.classify_incoming_text(payload.text)
+
+    if direction == 'expense':
+        db.add(PaymentLog(
+            raw_text=payload.text, source=payload.source, parsed_amount=amount,
+            is_incoming=False, status='IGNORED_EXPENSE', received_at=payload.received_at,
+        ))
+        await db.commit()
+        return {'status': 'ignored_expense'}
+
+    if direction != 'incoming' or amount is None:
+        db.add(PaymentLog(
+            raw_text=payload.text, source=payload.source, parsed_amount=amount,
+            is_incoming=False, status='UNMATCHED', received_at=payload.received_at,
+        ))
+        await db.commit()
+        return {'status': 'unmatched'}
+
+    now = datetime.now(timezone.utc)
+    order = (
+        await db.execute(
+            select(Order)
+            .where(Order.expected_amount == amount, Order.status == 'pending', Order.expires_at > now)
+            .with_for_update(skip_locked=True)
+        )
+    ).scalar_one_or_none()
+
+    if order is None:
+        db.add(PaymentLog(
+            raw_text=payload.text, source=payload.source, parsed_amount=amount,
+            is_incoming=True, status='UNMATCHED', received_at=payload.received_at,
+        ))
+        await db.commit()
+        await _alert_admin(payload.text, amount, payload.source)
+        return {'status': 'unmatched'}
+
+    order.status = 'paid'
+    order.paid_at = now
+
+    if order.intent == 'top_up':
+        await crud_payment.topup_balance(order.user_id, order.expected_amount, db)
+    elif order.intent == 'subscription':
+        await dc_payment.activate_subscription_external(order.user_id, order.plan_code, order.period, db)
+
+    db.add(PaymentLog(
+        raw_text=payload.text, source=payload.source, parsed_amount=amount,
+        is_incoming=True, status='MATCHED', order_id=order.id, received_at=payload.received_at,
+    ))
+    await db.commit()
+
+    await _notify_user(order)
+    return {'status': 'matched', 'order_id': order.id}
+
+
+@router_dc_payment.post('/orders', response_model=OrderResponse)
+async def create_order(
+    data: CreateOrderRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    if data.intent == 'top_up':
+        if data.base_amount is None or data.base_amount <= 0:
+            raise AppError(code='INVALID_AMOUNT', message='base_amount is required for top_up', status_code=400)
+        return await dc_payment.create_order(current_user.id, 'top_up', data.base_amount, db)
+
+    if data.intent == 'subscription':
+        if not data.plan_code or data.period not in ('monthly', 'yearly'):
+            raise AppError(code='INVALID_SUBSCRIPTION_ORDER', message='plan_code and period are required', status_code=400)
+
+        from app.services import crud_subscription
+        plan = await crud_subscription.get_plan_by_code(data.plan_code, db)
+        if plan is None:
+            raise AppError(code='PLAN_NOT_FOUND', message='Plan not found', status_code=404)
+
+        base_amount = plan.price_monthly if data.period == 'monthly' else plan.price_yearly
+        return await dc_payment.create_order(
+            current_user.id, 'subscription', base_amount, db, plan_code=data.plan_code, period=data.period
+        )
+
+    raise AppError(code='INVALID_INTENT', message='intent must be top_up or subscription', status_code=400)
+
+
+@router_dc_payment.get('/orders/{order_id}', response_model=OrderResponse)
+async def get_order(
+    order_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await dc_payment.get_order(order_id, current_user.id, db)
+
+
+@router_dc_payment.post('/orders/{order_id}/cancel', response_model=OrderResponse)
+async def cancel_order(
+    order_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await dc_payment.cancel_order(order_id, current_user.id, db)
