@@ -24,10 +24,10 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.92 0.05 300), oklch(0.72 0.19 320) 45%, oklch(0.55 0.2 280) 100%)",
     absorbColors: ["oklch(0.76 0.22 330)", "oklch(0.72 0.2 300)", "oklch(0.74 0.18 260)", "oklch(0.8 0.16 210)"],
     burstColors: ["#ff007f", "#8a2be2", "#ff1493", "#da70d6", "#ff4500", "#9370db"],
-    accentText: "Русский акцент (Soft & Friendly A1-A2)",
+    accentText: "Поддерживающий и заботливый наставник. Создает атмосферу полного доверия и безопасности, помогая учиться на ошибках без страха.",
     welcomeTemplates: {
       interview: "Hello! Welcome to your job interview simulation. I am Anya, your interviewer. Let's start with a simple question: Can you tell me a little bit about yourself and your work experience?",
-      casual: "Hello my friend! I am Anya. I speak with a friendly Russian tempo. Let's just talk about your weekend. What did you do?",
+      casual: "Hello my friend! I am Anya. Let's just talk about your weekend. What did you do?",
       restaurant: "Welcome to our virtual restaurant! I am your waitress Anya. Ready to order your dinner?",
       hospital: "Hello, I am Doctor Anya. What health problems do you have today?",
       hotel: "Hello! Welcome to the Glossa Grand Hotel. I am Anya at the reception. How can I help you check-in?"
@@ -49,7 +49,7 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.94 0.04 150), oklch(0.78 0.14 160) 45%, oklch(0.6 0.16 180) 100%)",
     absorbColors: ["oklch(0.78 0.16 160)", "oklch(0.74 0.18 140)", "oklch(0.8 0.14 180)", "oklch(0.82 0.12 200)"],
     burstColors: ["#00fa9a", "#00ffff", "#adff2f", "#20b2aa", "#32cd32", "#4aa88b"],
-    accentText: "Американский акцент (Calm & Clear US Accent A2-B1)",
+    accentText: "Вдумчивый и системный аналитик. Помогает структурировать мысли и логически раскладывать правила по полочкам.",
     welcomeTemplates: {
       interview: "Hello! I am Kenzo, your interviewer. I like structured answers. Could you tell me why you want to join our company?",
       casual: "Hello! Kenzo here. Let's have a peaceful conversation about hobbies. What is your favorite hobby?",
@@ -74,7 +74,7 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.93 0.04 280), oklch(0.74 0.16 290) 45%, oklch(0.58 0.18 310) 100%)",
     absorbColors: ["oklch(0.75 0.18 290)", "oklch(0.7 0.2 270)", "oklch(0.76 0.16 310)", "oklch(0.78 0.14 330)"],
     burstColors: ["#4b0082", "#8f00ff", "#ff00ff", "#00ffff", "#9370db", "#1e90ff", "#ff1493", "#da70d6"],
-    accentText: "Индийский акцент (Energetic IT-pace B1-B2)",
+    accentText: "Энергичный и мотивирующий спикер. Заряжает энтузиазмом и подталкивает к обсуждению самых свежих трендов и технологий.",
     welcomeTemplates: {
       interview: "Namaste! Priya here, excited to talk with you. Let's check your coding stack. Tell me, how do you optimize relational databases?",
       casual: "Namaste! Priya here. Let's discuss latest tech trends. Are you interested in AI tools?",
@@ -99,7 +99,7 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.95 0.03 55), oklch(0.8 0.13 65) 45%, oklch(0.65 0.15 45) 100%)",
     absorbColors: ["oklch(0.8 0.15 65)", "oklch(0.78 0.18 45)", "oklch(0.82 0.13 85)", "oklch(0.84 0.1 100)"],
     burstColors: ["#ff4500", "#ff8c00", "#ff1493", "#ffd700", "#ff6347", "#db7093", "#e0115f", "#ff007f"],
-    accentText: "Американский акцент (Expressive US Accent B1-B2)",
+    accentText: "Харизматичный рассказчик с отличным юмором. Превращает любой разговор в увлекательную живую беседу.",
     welcomeTemplates: {
       interview: "Hi! I am Carlos, your interviewer. Let's do a friendly interview. What is your style of managing creative conflicts in teams?",
       casual: "Hi! Carlos here. Let's chat about travel. What was the most beautiful country you visited?",
@@ -124,7 +124,7 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.94 0.04 210), oklch(0.76 0.13 220) 45%, oklch(0.6 0.15 240) 100%)",
     absorbColors: ["oklch(0.76 0.15 220)", "oklch(0.73 0.18 200)", "oklch(0.78 0.13 240)", "oklch(0.8 0.11 260)"],
     burstColors: ["#00bfff", "#0000ff", "#00ffff", "#7b68ee", "#1e90ff", "#00fa9a"],
-    accentText: "Британский акцент (Challenging GB Accent B2-C1)",
+    accentText: "Интеллектуальный критик. Задает глубокие вопросы, обожает дебаты и стимулирует отстаивать свою точку зрения.",
     welcomeTemplates: {
       interview: "Hello! Alastair here. Let's test your wits. Tell me about your biggest failure at your past job, and how you fixed it?",
       casual: "Hello! Let's talk about the weather or soccer. What team do you support?",
@@ -528,7 +528,7 @@ export default function TutorChat() {
               <div>
                 <h3 className="font-headline text-xl font-extrabold">С каким репетитором вы хотите общаться?</h3>
                 <p className="font-body text-xs text-neutral-500 dark:text-stone-400 mt-1">
-                  Выберите наставника. От выбора зависит акцент и стиль ведения разговора.
+                  Выберите наставника. От выбора зависит характер и стиль общения.
                 </p>
               </div>
               <button onClick={() => navigate("/tutor")} className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white text-xl font-bold p-1">
@@ -547,9 +547,6 @@ export default function TutorChat() {
                   <div className="flex-grow">
                     <div className="flex justify-between items-center">
                       <span className="font-headline font-bold text-sm">{p.name}</span>
-                      <span className="text-[9px] font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-200 uppercase">
-                        {p.id === "rose" ? "A1-A2" : p.id === "mint" ? "A2-B1" : p.id === "sky" ? "B2-C1" : "B1-B2"}
-                      </span>
                     </div>
                     <p className="font-body text-[11px] text-neutral-500 dark:text-stone-400 mt-0.5">{p.accentText}</p>
                   </div>
