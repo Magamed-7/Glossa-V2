@@ -70,3 +70,19 @@ async def get_my_session_analysis(
         raise AppError(code='SESSION_NOT_FOUND', message='Chat session not found', status_code=404)
 
     return await ai_chat.get_session_analysis(session, db)
+
+
+@router_ai.get('/tts')
+async def get_tts(
+    text: str,
+    tutor: str = 'rose',
+    current_user=Depends(require_ai_access),
+):
+    from app.services import tts
+    from app.core.storage import upload_file, ALLOWED_AUDIO_TYPES
+    import uuid
+
+    audio_bytes, content_type = await tts.synthesize(text, tutor)
+    extension = 'mp3' if content_type == 'audio/mpeg' else 'wav'
+    audio_url = upload_file('pronunciations', audio_bytes, f"tutor_{uuid.uuid4().hex}.{extension}", content_type, ALLOWED_AUDIO_TYPES)
+    return {"audio_url": audio_url}
