@@ -206,6 +206,7 @@ async def ai_chat_ws(websocket: WebSocket):
         scenario = websocket.query_params.get('scenario', 'casual')
         language = websocket.query_params.get('language', 'English')
         native_language = websocket.query_params.get('native_language')
+        tutor = websocket.query_params.get('tutor', 'rose')
         # Свежую (в пределах SESSION_FRESHNESS) сессию переиспользуем вместо новой на каждый
         # коннект — иначе история чата живёт только в React-state и пропадает на F5.
         session = await ai_chat.get_or_create_open_session(
@@ -241,7 +242,7 @@ async def ai_chat_ws(websocket: WebSocket):
 
             try:
                 async with AsyncSessionLocal() as db:
-                    result = await ai_chat.send_message(session.id, text, db)
+                    result = await ai_chat.send_message(session.id, text, db, tutor=tutor)
             except Exception as exc:
                 logger.exception('AI chat send_message failed for session %s', session.id)
                 await websocket.send_json(_assistant_error_frame(exc))
@@ -252,6 +253,7 @@ async def ai_chat_ws(websocket: WebSocket):
                 'reply': result['assistant_message'].text,
                 'corrections': result['user_message'].corrections,
                 'xp_earned': result['xp_earned'],
+                'audio_url': result.get('audio_url'),
             })
     except WebSocketDisconnect:
         pass

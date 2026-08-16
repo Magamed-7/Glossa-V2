@@ -8,6 +8,12 @@ EDGE_VOICE_BY_ACCENT = {
     'en-AU': 'en-AU-NatashaNeural',
     'en-IN': 'en-IN-NeerjaNeural',
     'en-CA': 'en-CA-ClaraNeural',
+    # Tutor specific voice mappings (US/GB, Indian, Russian accents)
+    'rose': 'en-US-JennyNeural',       # Anya: soft US female
+    'mint': 'en-US-GuyNeural',         # Kenzo: US Male
+    'lavender': 'en-IN-NeerjaNeural',   # Priya: Indian Female
+    'peach': 'en-US-BrianNeural',      # Carlos: US Male 2
+    'sky': 'en-GB-RyanNeural',         # Alastair: British Male
 }
 
 # У Piper нет отдельных моделей под en-AU/en-IN/en-CA (только en_US/en_GB в открытом наборе
@@ -19,6 +25,12 @@ PIPER_VOICE_BY_ACCENT = {
     'en-AU': 'en_US-ryan-medium',
     'en-IN': 'en_US-lessac-medium',
     'en-CA': 'en_US-danny-low',
+    # Tutor specific fallbacks
+    'rose': 'en_US-amy-medium',
+    'mint': 'en_US-ryan-medium',
+    'lavender': 'en_US-lessac-medium',
+    'peach': 'en_US-danny-low',
+    'sky': 'en_GB-alba-medium',
 }
 
 # Ростер из 3 акцентов на CEFR-уровень. Правило (задано один раз, не пересчитывается на
