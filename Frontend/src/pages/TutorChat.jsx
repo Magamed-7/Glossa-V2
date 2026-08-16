@@ -441,6 +441,22 @@ export default function TutorChat() {
           0%, 100% { transform: scale(1); opacity: 0.7; }
           50% { transform: scale(0.82); opacity: 0.3; }
         }
+        @keyframes absorb-particle {
+          0% {
+            transform: translate(calc(-50% + var(--start-x)), calc(-50% + var(--start-y))) scale(1);
+            opacity: 0;
+          }
+          15% {
+            opacity: 1;
+          }
+          85% {
+            opacity: 0.9;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(0.15);
+            opacity: 0;
+          }
+        }
       `}</style>
 
       {/* Background Canvas Particles */}
@@ -457,7 +473,7 @@ export default function TutorChat() {
                   Выберите наставника. От выбора зависит акцент и стиль ведения разговора.
                 </p>
               </div>
-              <button onClick={() => navigate("/tutor/scenarios")} className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white text-xl font-bold p-1">
+              <button onClick={() => navigate("/tutor")} className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white text-xl font-bold p-1">
                 &times;
               </button>
             </div>
@@ -506,7 +522,7 @@ export default function TutorChat() {
           >
             <div className="flex items-center gap-3">
               <button
-                onClick={() => navigate("/tutor/scenarios")}
+                onClick={() => navigate("/tutor")}
                 className="px-4 py-2 border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-900 hover:bg-neutral-50 dark:hover:bg-stone-850 rounded-2xl text-xs font-bold transition"
               >
                 ← Назад
@@ -668,8 +684,8 @@ export default function TutorChat() {
                   const angle = (idx / 9) * Math.PI * 2;
                   const delay = (idx / 9) * 1.7;
                   const color = activePreset.absorbColors[idx % activePreset.absorbColors.length];
-                  const startX = 118 * Math.cos(angle);
-                  const startY = 118 * Math.sin(angle);
+                  const startX = `${Math.round(118 * Math.cos(angle))}px`;
+                  const startY = `${Math.round(118 * Math.sin(angle))}px`;
                   
                   return (
                     <span
@@ -680,11 +696,15 @@ export default function TutorChat() {
                         boxShadow: `0 0 10px 3px ${color}`,
                         top: "50%",
                         left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        animationName: "word-fade-in", // reused stagger logic
+                        "--start-x": startX,
+                        "--start-y": startY,
+                        animationName: "absorb-particle",
                         animationDuration: "1.7s",
                         animationIterationCount: "infinite",
-                        animationDelay: `${delay}s`
+                        animationTimingFunction: "ease-in",
+                        animationDelay: `${delay}s`,
+                        transform: "translate(-50%, -50%)",
+                        opacity: 0
                       }}
                     />
                   );
