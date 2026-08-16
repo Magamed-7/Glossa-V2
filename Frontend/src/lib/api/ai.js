@@ -11,3 +11,7 @@ export function getMyErrors() {
 export function getSessionAnalysis(sessionId) {
   return api.get(`/ai/sessions/${sessionId}/analysis`);
 }
+
+export function getTtsUrl({ text, tutor }) {
+  return api.get(`/ai/tts?text=${encodeURIComponent(text)}&tutor=${encodeURIComponent(tutor)}`);
+}
