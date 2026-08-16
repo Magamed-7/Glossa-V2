@@ -254,6 +254,31 @@ with "}}".
   return "minor".
 """
 
+TUTOR_PERSONALITIES = {
+    'rose': (
+        "YOUR PERSONALITY: Anya (Аня). You are warm, deeply empathetic, encouraging, and highly supportive. "
+        "You validate the user's progress, celebrate small wins, and create complete psychological safety. "
+        "You focus on making the learner feel safe to make mistakes."
+    ),
+    'mint': (
+        "YOUR PERSONALITY: Kenzo (Кензо). You are calm, highly structured, logical, and systematic. "
+        "You explain concepts step-by-step, help organize thoughts, and focus on clarity and structure."
+    ),
+    'lavender': (
+        "YOUR PERSONALITY: Priya (Прийя). You are highly energetic, enthusiastic, and motivating. "
+        "You speak with passion, bring up technology and modern trends, and keep student engagement extremely high."
+    ),
+    'peach': (
+        "YOUR PERSONALITY: Carlos (Карлос). You are highly expressive, charismatic, and a natural storyteller. "
+        "You use friendly humor, share interesting anecdotes, and make communication feel like a fun conversation between friends."
+    ),
+    'sky': (
+        "YOUR PERSONALITY: Alastair (Аластер). You are witty, intellectual, challenging, and thought-provoking. "
+        "You ask deep, reflective questions, enjoy gentle intellectual debate, and encourage the learner to think critically "
+        "and structure their opinions."
+    )
+}
+
 GENERATE_EXERCISE_PROMPT = (
     'Generate one fill-in-the-blank grammar exercise for CEFR level {level} '
     'about the topic "{topic}". Respond with a single JSON object, no other text, '
@@ -310,17 +335,18 @@ def _sanitize_level(level: str | None):
     return level if level in LEVEL_GUIDANCE else DEFAULT_LEVEL
 
 
-def _system_prompt(scenario: str, language: str, level: str | None, native_language: str | None):
+def _system_prompt(scenario: str, language: str, level: str | None, native_language: str | None, tutor: str = 'rose'):
     safe_language = _sanitize_language(language)
     safe_native = _sanitize_language(native_language or DEFAULT_NATIVE_LANGUAGE)
     safe_level = _sanitize_level(level)
 
     core = MENTOR_CORE.format(language=safe_language, level=safe_level)
+    personality = TUTOR_PERSONALITIES.get(tutor, TUTOR_PERSONALITIES['rose'])
     guidance = LEVEL_GUIDANCE[safe_level].format(language=safe_language, native_language=safe_native)
     scenario_text = SCENARIO_PROMPTS.get(scenario, SCENARIO_PROMPTS['casual']).format(language=safe_language)
     output_format = RESPONSE_INSTRUCTIONS.format(language=safe_language)
 
-    return f'{core}\nLEARNER LEVEL\n{guidance}\n\n{scenario_text}\n\n{output_format}'
+    return f'{core}\n\n{personality}\n\nLEARNER LEVEL\n{guidance}\n\n{scenario_text}\n\n{output_format}'
 
 
 def _extract_json_object(raw_text: str):
@@ -558,7 +584,7 @@ async def send_message(session_id: int, text: str, db: AsyncSession, tutor: str 
     llm_messages = [
         {
             'role': 'system',
-            'content': _system_prompt(session.scenario, session.language, session.level, session.native_language),
+            'content': _system_prompt(session.scenario, session.language, session.level, session.native_language, tutor=tutor),
         }
     ]
     for message in history:
