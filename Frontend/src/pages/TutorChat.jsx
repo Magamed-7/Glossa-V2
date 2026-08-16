@@ -5,6 +5,7 @@ import ChatInput from "../components/tutor/ChatInput.jsx";
 import { useAiChatSocket } from "../lib/useAiChatSocket.js";
 import { useT } from "../lib/i18n.jsx";
 import { useTheme } from "../lib/theme.jsx";
+import { getTtsUrl } from "../lib/api/ai.js";
 
 const PRESETS = {
   rose: {
@@ -199,6 +200,8 @@ export default function TutorChat() {
   const particlesRef = useRef([]);
   const activeTutorRef = useRef(null);
   activeTutorRef.current = tutor;
+  const lastPlayedRef = useRef(null);
+  const activeAudioRef = useRef(null);
 
   const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -345,7 +348,7 @@ export default function TutorChat() {
     }
   }, [messages, tutor, callActive]);
 
-  // Voice Call Timer and Simulator transitions
+  // Voice Call Timer
   useEffect(() => {
     if (!callActive) return;
 
@@ -356,42 +359,47 @@ export default function TutorChat() {
     return () => clearInterval(timer);
   }, [callActive]);
 
+  // Autoplay incoming assistant replies and sync speaking states
   useEffect(() => {
-    if (!callActive) return;
+    if (!messages || messages.length === 0) return;
+    const latest = messages[messages.length - 1];
 
-    let subInterval;
-    let burstTimer;
+    if (latest.role === "assistant" && latest.audioUrl && latest.audioUrl !== lastPlayedRef.current) {
+      lastPlayedRef.current = latest.audioUrl;
 
-    const runListeningState = () => {
-      setCallState("listening");
-      subInterval = setTimeout(() => {
-        runSpeakingState();
-      }, 5500);
-    };
+      if (activeAudioRef.current) {
+        activeAudioRef.current.pause();
+      }
 
-    const runSpeakingState = () => {
-      setCallState("speaking");
-      
-      const coreX = window.innerWidth / 2;
-      const coreY = window.innerHeight / 2;
-      triggerCallBurst(coreX, coreY);
-      burstTimer = setInterval(() => {
+      const audio = new Audio(latest.audioUrl);
+      activeAudioRef.current = audio;
+
+      if (callActive) {
+        setCallState("speaking");
+
+        const coreX = window.innerWidth / 2;
+        const coreY = window.innerHeight / 2;
         triggerCallBurst(coreX, coreY);
-      }, 550);
+        const burstTimer = setInterval(() => {
+          triggerCallBurst(coreX, coreY);
+        }, 550);
 
-      subInterval = setTimeout(() => {
-        clearInterval(burstTimer);
-        runListeningState();
-      }, 6500);
-    };
+        audio.onended = () => {
+          clearInterval(burstTimer);
+          setCallState("listening");
+        };
 
-    runListeningState();
+        audio.onerror = () => {
+          clearInterval(burstTimer);
+          setCallState("listening");
+        };
+      }
 
-    return () => {
-      clearTimeout(subInterval);
-      clearInterval(burstTimer);
-    };
-  }, [callActive, tutor]);
+      audio.play().catch(err => {
+        console.warn("Autoplay blocked or failed:", err);
+      });
+    }
+  }, [messages, callActive]);
 
   const handleSend = (text) => {
     sendMessage(text);
@@ -400,13 +408,63 @@ export default function TutorChat() {
     }
   };
 
-  const startVoiceCall = () => {
+  const startVoiceCall = async () => {
     setCallActive(true);
     setCallTimeSeconds(0);
+    setCallState("speaking");
+
+    try {
+      const greetingText = activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual;
+      const res = await getTtsUrl({ text: greetingText, tutor });
+      if (res && res.audio_url) {
+        if (activeAudioRef.current) {
+          activeAudioRef.current.pause();
+        }
+
+        const audio = new Audio(res.audio_url);
+        activeAudioRef.current = audio;
+
+        const coreX = window.innerWidth / 2;
+        const coreY = window.innerHeight / 2;
+        triggerCallBurst(coreX, coreY);
+        const burstTimer = setInterval(() => {
+          triggerCallBurst(coreX, coreY);
+        }, 550);
+
+        audio.onended = () => {
+          clearInterval(burstTimer);
+          setCallState("listening");
+        };
+
+        audio.onerror = () => {
+          clearInterval(burstTimer);
+          setCallState("listening");
+        };
+
+        await audio.play();
+      } else {
+        setCallState("listening");
+      }
+    } catch (err) {
+      console.error("Failed to play welcome greeting audio:", err);
+      setCallState("listening");
+    }
   };
 
   const closeVoiceCall = () => {
     setCallActive(false);
+    if (activeAudioRef.current) {
+      activeAudioRef.current.pause();
+      activeAudioRef.current = null;
+    }
+  };
+
+  const getLatestMessage = (role) => {
+    if (!messages) return null;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === role) return messages[i].text;
+    }
+    return null;
   };
 
   // Preset configuration
@@ -740,12 +798,18 @@ export default function TutorChat() {
             >
               <div className="text-xs font-semibold leading-relaxed w-full">
                 {callState === "listening" ? (
-                  <StaggeredWords text={CALL_SAMPLES[tutor]} highlightColor={activePreset.accent} isUser={true} />
+                  <StaggeredWords
+                    key={`user-${getLatestMessage("user") || CALL_SAMPLES[tutor]}`}
+                    text={getLatestMessage("user") || CALL_SAMPLES[tutor]}
+                    highlightColor={activePreset.accent}
+                    isUser={true}
+                  />
                 ) : (
-                  <StaggeredWords 
-                    text={activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual} 
-                    highlightColor={activePreset.accent} 
-                    isUser={false} 
+                  <StaggeredWords
+                    key={`assistant-${getLatestMessage("assistant") || activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual}`}
+                    text={getLatestMessage("assistant") || activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual}
+                    highlightColor={activePreset.accent}
+                    isUser={false}
                   />
                 )}
               </div>

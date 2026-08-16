@@ -33,6 +33,13 @@ export default function MessageBubble({ message, tutorPreset, isDarkMode }) {
     }
   }
 
+  const playAudio = () => {
+    if (message.audioUrl) {
+      const audio = new Audio(message.audioUrl);
+      audio.play().catch(err => console.error("Error replaying speech:", err));
+    }
+  };
+
   return (
     <div className={`flex items-start gap-3 ${isUser ? "flex-row-reverse" : ""}`}>
       {!isUser && <Avatar name="AI" size="sm" />}
@@ -52,9 +59,22 @@ export default function MessageBubble({ message, tutorPreset, isDarkMode }) {
         }`}
         style={tutorPreset ? bubbleStyle : {}}
       >
-        <p className={`font-body text-body-md whitespace-pre-line ${message.isError ? "italic text-on-surface-variant" : ""}`}>
-          {message.text}
-        </p>
+        <div className="flex justify-between items-start gap-4">
+          <p className={`font-body text-body-md whitespace-pre-line ${message.isError ? "italic text-on-surface-variant" : ""}`}>
+            {message.text}
+          </p>
+          {!isUser && message.audioUrl && (
+            <button
+              onClick={playAudio}
+              className="mt-0.5 p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-neutral-500 dark:text-neutral-300"
+              title="Прослушать"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+              </svg>
+            </button>
+          )}
+        </div>
         {!isUser && !!message.xpEarned && (
           <p className={`mt-2 pt-2 border-t font-label text-label-md uppercase tracking-wide ${
             tutorPreset 
