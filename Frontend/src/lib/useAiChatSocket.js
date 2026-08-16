@@ -21,7 +21,7 @@ const ASSISTANT_ERROR_KEYS = {
 // {type: "assistant_error", code} и держит сокет открытым. Здесь это превращается в реплику
 // наставника тёплым тоном (ASSISTANT_ERROR_KEYS), а не в техническое сообщение. Обрыв самого
 // сокета (сеть, деплой) — переподключаемся с экспоненциальной паузой, а не сразу сдаёмся.
-export function useAiChatSocket({ scenario, language }) {
+export function useAiChatSocket({ scenario, language, tutor }) {
   const t = useT();
   const { lang } = useI18n();
   // Родной/интерфейсный язык ученика — на сервере его больше неоткуда взять (lang живёт
@@ -38,6 +38,11 @@ export function useAiChatSocket({ scenario, language }) {
   const isFirstEverMessageRef = useRef(false);
 
   useEffect(() => {
+    if (!tutor) {
+      setStatus("connecting");
+      return undefined;
+    }
+
     let cancelled = false;
     retriedAuthRef.current = false;
     reconnectAttemptsRef.current = 0;
@@ -62,7 +67,13 @@ export function useAiChatSocket({ scenario, language }) {
       if (reconnectAttemptsRef.current === 0) setStatus("connecting");
 
       const token = getAccessToken();
-      const params = new URLSearchParams({ token: token || "", scenario, language, native_language: nativeLanguage });
+      const params = new URLSearchParams({
+        token: token || "",
+        scenario,
+        language,
+        native_language: nativeLanguage,
+        tutor: tutor || "rose"
+      });
       const socket = new WebSocket(`${WS_URL}/ws/ai/chat?${params}`);
       socketRef.current = socket;
 
@@ -85,6 +96,7 @@ export function useAiChatSocket({ scenario, language }) {
                     role: m.role,
                     text: m.text,
                     corrections: m.corrections,
+                    audioUrl: m.audio_url
                   }))
             );
           }
@@ -99,7 +111,7 @@ export function useAiChatSocket({ scenario, language }) {
                 break;
               }
             }
-            updated.push({ role: "assistant", text: data.reply, corrections: null, xpEarned: data.xp_earned });
+            updated.push({ role: "assistant", text: data.reply, corrections: null, xpEarned: data.xp_earned, audioUrl: data.audio_url });
             // Одна системная заметка про цикл практики/уровня/XP — только после самого первого
             // ответа наставника в свежей (без истории) сессии, не от лица персонажа.
             if (isFirstEverMessageRef.current) {
@@ -150,7 +162,7 @@ export function useAiChatSocket({ scenario, language }) {
       socketRef.current?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scenario, language, nativeLanguage]);
+  }, [scenario, language, nativeLanguage, tutor]);
 
   function sendMessage(text) {
     if (socketRef.current?.readyState !== WebSocket.OPEN) return;

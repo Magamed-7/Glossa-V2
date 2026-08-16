@@ -48,13 +48,13 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.94 0.04 150), oklch(0.78 0.14 160) 45%, oklch(0.6 0.16 180) 100%)",
     absorbColors: ["oklch(0.78 0.16 160)", "oklch(0.74 0.18 140)", "oklch(0.8 0.14 180)", "oklch(0.82 0.12 200)"],
     burstColors: ["#00fa9a", "#00ffff", "#adff2f", "#20b2aa", "#32cd32", "#4aa88b"],
-    accentText: "Японский акцент (Polite & Calm A2-B1)",
+    accentText: "Американский акцент (Calm & Clear US Accent A2-B1)",
     welcomeTemplates: {
-      interview: "Konnichiwa! I am Kenzo, your interviewer. I like structured answers. Could you tell me why you want to join our company?",
-      casual: "Konnichiwa! Kenzo here. Let's have a peaceful conversation about hobbies. What is your favorite hobby?",
-      restaurant: "Konnichiwa. Welcome to restaurant. I am waiter Kenzo. May I suggest today's special green tea soup?",
-      hospital: "Konnichiwa. Doctor Kenzo here. I will check your medical history. Please tell me your symptoms.",
-      hotel: "Konnichiwa. Receptionist Kenzo here. Do you have a reservation code for check-in?"
+      interview: "Hello! I am Kenzo, your interviewer. I like structured answers. Could you tell me why you want to join our company?",
+      casual: "Hello! Kenzo here. Let's have a peaceful conversation about hobbies. What is your favorite hobby?",
+      restaurant: "Hello. Welcome to the restaurant. I am waiter Kenzo. May I suggest today's special green tea soup?",
+      hospital: "Hello. Doctor Kenzo here. I will check your medical history. Please tell me your symptoms.",
+      hotel: "Hello. Receptionist Kenzo here. Do you have a reservation code for check-in?"
     }
   },
   lavender: {
@@ -98,13 +98,13 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.95 0.03 55), oklch(0.8 0.13 65) 45%, oklch(0.65 0.15 45) 100%)",
     absorbColors: ["oklch(0.8 0.15 65)", "oklch(0.78 0.18 45)", "oklch(0.82 0.13 85)", "oklch(0.84 0.1 100)"],
     burstColors: ["#ff4500", "#ff8c00", "#ff1493", "#ffd700", "#ff6347", "#db7093", "#e0115f", "#ff007f"],
-    accentText: "Испанский акцент (Expressive B1-B2)",
+    accentText: "Американский акцент (Expressive US Accent B1-B2)",
     welcomeTemplates: {
-      interview: "Hola! I am Carlos, your interviewer. Let's do a friendly interview. What is your style of managing creative conflicts in teams?",
-      casual: "Hola amigo! Carlos here. Let's chat about travel. What was the most beautiful country you visited?",
-      restaurant: "Hola! Welcome to El Carlos Bistro. I have excellent recommendations for wine and tapas today!",
-      hospital: "Hola. Carlos here. Doctor Carlos. Where does it hurt, amigo? Let's check it.",
-      hotel: "Hola! Welcome. I am Carlos, hotel assistant. We have a suite with ocean view ready for you."
+      interview: "Hi! I am Carlos, your interviewer. Let's do a friendly interview. What is your style of managing creative conflicts in teams?",
+      casual: "Hi! Carlos here. Let's chat about travel. What was the most beautiful country you visited?",
+      restaurant: "Hi! Welcome to Carlos Bistro. I have excellent recommendations for food today!",
+      hospital: "Hi. Carlos here. Doctor Carlos. Where does it hurt? Let's check it.",
+      hotel: "Hi! Welcome. I am Carlos, hotel assistant. We have a suite with ocean view ready for you."
     }
   },
   sky: {
@@ -123,13 +123,13 @@ const PRESETS = {
     coreBg: "radial-gradient(circle at 35% 30%, oklch(0.94 0.04 210), oklch(0.76 0.13 220) 45%, oklch(0.6 0.15 240) 100%)",
     absorbColors: ["oklch(0.76 0.15 220)", "oklch(0.73 0.18 200)", "oklch(0.78 0.13 240)", "oklch(0.8 0.11 260)"],
     burstColors: ["#00bfff", "#0000ff", "#00ffff", "#7b68ee", "#1e90ff", "#00fa9a"],
-    accentText: "Шотландский акцент (Challenging B2-C1)",
+    accentText: "Британский акцент (Challenging GB Accent B2-C1)",
     welcomeTemplates: {
-      interview: "Aye, hello! Alastair here. Let's test your wits. Tell me about your biggest failure at your past job, and how you fixed it?",
-      casual: "Aye, hello! Let's talk about the weather or soccer. What team do you support?",
-      restaurant: "Aye, welcome. I am Alastair, the chef. Do you want to try our famous haggis or steak?",
-      hospital: "Aye, hello. Doctor Alastair. Tell me what's wrong. Have you been coughing a lot?",
-      hotel: "Aye, welcome to the Highlands Lodge. I'm Alastair. Let me grab your keys and bags."
+      interview: "Hello! Alastair here. Let's test your wits. Tell me about your biggest failure at your past job, and how you fixed it?",
+      casual: "Hello! Let's talk about the weather or soccer. What team do you support?",
+      restaurant: "Welcome. I am Alastair, the chef. Do you want to try our famous traditional steak?",
+      hospital: "Hello. Doctor Alastair. Tell me what's wrong. Have you been coughing a lot?",
+      hotel: "Welcome to the Highlands Lodge. I'm Alastair. Let me grab your keys and bags."
     }
   }
 };
@@ -138,8 +138,8 @@ const CALL_SAMPLES = {
   rose: "I want to apply for the middle frontend vacancy at your studio.",
   mint: "Can you help me understand how to tell about my hobbies?",
   lavender: "I am ready to try mock interviews with you right now.",
-  peach: "I am ready Carlos. Tell me something about your country's culture.",
-  sky: "Aye, I am prepared for a challenge today."
+  peach: "I am ready. Tell me something about your country's culture.",
+  sky: "Hello, I am prepared for a challenge today."
 };
 
 // Simple staggered words renderer to replicate HTML subtitles
@@ -179,13 +179,13 @@ export default function TutorChat() {
   const scenario = searchParams.get("scenario") || "casual";
   const language = searchParams.get("language") || "English";
 
-  // Existing standard WebSocket chat connection
-  const { status, messages, sessionId, denyReason, sendMessage } = useAiChatSocket({ scenario, language });
-  const waitingForReply = messages.length > 0 && messages[messages.length - 1].role === "user";
-  const showHistory = status === "open" || status === "reconnecting" || status === "closed";
-
   // Tutor Preset Selection State
   const [tutor, setTutor] = useState(null);
+
+  // Existing standard WebSocket chat connection
+  const { status, messages, sessionId, denyReason, sendMessage } = useAiChatSocket({ scenario, language, tutor });
+  const waitingForReply = messages.length > 0 && messages[messages.length - 1].role === "user";
+  const showHistory = status === "open" || status === "reconnecting" || status === "closed";
 
   // Voice Call Overlay Simulation States
   const [callActive, setCallActive] = useState(false);
