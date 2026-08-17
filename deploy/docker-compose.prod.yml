@@ -167,7 +167,9 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
       CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
       CELERY_RESULT_BACKEND: redis://:${REDIS_PASSWORD}@redis:6379/1
-    command: celery -A app.celery_app beat --loglevel=info
+    # The image runs as a non-root user and /app is root-owned, so beat's default
+    # ./celerybeat-schedule is unwritable and it crash-loops on start.
+    command: celery -A app.celery_app beat --loglevel=info --schedule /tmp/celerybeat-schedule
     depends_on:
       redis:
         condition: service_healthy
