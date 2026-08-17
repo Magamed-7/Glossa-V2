@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date, timedelta
 from sqlalchemy import text
 from app.services import ratings
 
@@ -83,7 +83,51 @@ async def test_daily_missions_with_progress(client, token, db, user):
     # Review logged today: cleanup progress should be 1
     assert missions['cleanup']['progress'] == 1
 
-    # XP awarded (review_passed = 10 XP): speed_march progress should be 10
-    assert missions['speed_march']['progress'] == 10
-    assert data['xp_today'] == 10
-    assert data['xp_total'] == 10
+    # XP awarded (review_passed = 10 XP + card creation = 2 XP): speed_march progress should be 12
+    assert missions['speed_march']['progress'] == 12
+    assert data['xp_today'] == 12
+    assert data['xp_total'] == 12
+
+
+@pytest.mark.asyncio
+async def test_restore_streak(client, token, db, user):
+    user_id = user.id
+    assert user_id is not None
+
+    # 1. Update user streak to be broken (last activity 3 days ago)
+    await db.execute(text(
+        "update user_streaks set current_streak = 5, best_streak = 5, last_activity_date = :ld where user_id = :uid"
+    ), {"ld": date.today() - timedelta(days=3), "uid": user_id})
+    await db.commit()
+
+    # Get daily missions to verify it is broken
+    response = await client.get(
+        '/learning/daily-missions',
+        headers={'Authorization': f'Bearer {token}'}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data['streak_maintained'] is False
+    assert data['restores_used_this_month'] == 0
+    assert data['max_restores'] == 1
+
+    # 2. Call restore endpoint
+    res_restore = await client.post(
+        '/learning/streak/restore',
+        headers={'Authorization': f'Bearer {token}'}
+    )
+    assert res_restore.status_code == 200
+    r_data = res_restore.json()
+    assert r_data['streak_maintained'] is True
+    assert r_data['restores_used_this_month'] == 1
+
+    # 3. Call restore again (should fail with 400 because it's already active)
+    res_restore_again = await client.post(
+        '/learning/streak/restore',
+        headers={'Authorization': f'Bearer {token}'}
+    )
+    assert res_restore_again.status_code == 400
+    assert res_restore_again.json()['error']['message'] == 'Streak is already active and does not need restoration'
+
+
+

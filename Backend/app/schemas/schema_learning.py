@@ -87,4 +87,7 @@ class DailyMissionsResponse(BaseModel):
     rank: str
     operations_log: list[OperationsLogDay]
     daily_missions: list[DailyMissionItem]
+    restores_used_this_month: int
+    max_restores: int
+
 

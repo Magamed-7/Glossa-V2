@@ -40,3 +40,6 @@ class UserStreaks(Base):
     current_streak: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     best_streak: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     last_activity_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    restores_used_this_month: Mapped[int] = mapped_column(Integer, nullable=False, default=0, server_default='0')
+    last_restore_month: Mapped[str | None] = mapped_column(String, nullable=True)
+

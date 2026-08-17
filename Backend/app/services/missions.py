@@ -5,24 +5,43 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.model_card import Cards, ReviewLogs
 from app.models.model_rating import XpTransactions
-from app.services import crud_settings, streaks
+from app.services import crud_settings, streaks, crud_subscription
 
 logger = logging.getLogger(__name__)
 
 
 async def get_daily_missions(user_id: int, db: AsyncSession):
-    # 1. Fetch settings and streaks
+    # 1. Fetch settings, streaks and subscriptions
     settings = await crud_settings.get_settings(user_id, db)
     daily_goal = settings.daily_goal
 
     streak_obj = await streaks.get_streak(user_id, db)
+    
+    # Check if month has changed to reset monthly restore counter
+    current_month_str = date.today().strftime("%Y-%m")
+    if streak_obj.last_restore_month != current_month_str:
+        streak_obj.restores_used_this_month = 0
+        streak_obj.last_restore_month = current_month_str
+        await db.commit()
+
     streak_count = streak_obj.current_streak
+    restores_used = streak_obj.restores_used_this_month
+
+    sub = await crud_subscription.get_active_subscription(user_id, db)
+    plan_code = sub["plan"].code if sub and "plan" in sub else "free"
+    
+    max_restores = 1
+    if plan_code == "premium":
+        max_restores = 5
+    elif plan_code == "pro":
+        max_restores = 10
 
     today = date.today()
     streak_maintained = False
     if streak_obj.last_activity_date:
         if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
             streak_maintained = True
+
 
     # 2. Get start of today (min time)
     # Get timezone-aware start of today based on local timezone
@@ -147,5 +166,7 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
         "xp_level_max": xp_level_max,
         "rank": rank,
         "operations_log": operations_log,
-        "daily_missions": daily_missions
+        "daily_missions": daily_missions,
+        "restores_used_this_month": restores_used,
+        "max_restores": max_restores
     }

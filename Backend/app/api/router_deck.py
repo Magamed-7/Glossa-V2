@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -14,11 +15,12 @@ from app.schemas.schema_learning import (
     ReviewSubmit,
     DailyMissionsResponse,
 )
-from app.services import crud_card, review, missions
+from app.services import crud_card, review, missions, streaks, crud_subscription
 
 router_deck = APIRouter(prefix='/deck', tags=['Deck'])
 router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])
 router_learning = APIRouter(prefix='/learning', tags=['Learning'])
+
 
 
 @router_deck.post('/', response_model=CardResponse)
@@ -159,3 +161,47 @@ async def get_daily_missions(
     current_user=Depends(get_current_user),
 ):
     return await missions.get_daily_missions(current_user.id, db)
+
+
+@router_learning.post('/streak/restore', response_model=DailyMissionsResponse)
+async def restore_streak(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    streak_obj = await streaks.get_streak(current_user.id, db)
+    
+    current_month_str = date.today().strftime("%Y-%m")
+    if streak_obj.last_restore_month != current_month_str:
+        streak_obj.restores_used_this_month = 0
+        streak_obj.last_restore_month = current_month_str
+        
+    sub = await crud_subscription.get_active_subscription(current_user.id, db)
+    plan_code = sub["plan"].code if sub and "plan" in sub else "free"
+    
+    max_restores = 1
+    if plan_code == "premium":
+        max_restores = 5
+    elif plan_code == "pro":
+        max_restores = 10
+        
+    today = date.today()
+    streak_maintained = False
+    if streak_obj.last_activity_date:
+        if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
+            streak_maintained = True
+            
+    if streak_maintained:
+        raise AppError(code='STREAK_ALREADY_ACTIVE', message='Streak is already active and does not need restoration', status_code=400)
+        
+    if streak_obj.restores_used_this_month >= max_restores:
+        raise AppError(code='NO_RESTORES_REMAINING', message='No restores remaining this month', status_code=400)
+        
+    streak_obj.last_activity_date = today - timedelta(days=1)
+
+    streak_obj.restores_used_this_month += 1
+    
+    await db.commit()
+    await db.refresh(streak_obj)
+    
+    return await missions.get_daily_missions(current_user.id, db)
+
