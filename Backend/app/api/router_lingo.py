@@ -26,7 +26,7 @@ from app.services.crud_subscription import get_active_subscription
 from app.core.limits import get_daily, incr_daily
 from app.services.llm_client import call_llm
 
-router_lingo = APIRouter(prefix='/lingo', tags=['Lingo Marketplace'])
+router_lingo = APIRouter(prefix='/lingo', tags=['Glossa Market'])
 
 
 async def _get_provider_info(provider_id: int, db: AsyncSession):
