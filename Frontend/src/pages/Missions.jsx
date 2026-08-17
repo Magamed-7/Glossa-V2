@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import NeoCard from "../components/ui/NeoCard.jsx";
@@ -43,6 +43,84 @@ export default function Missions() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Animated streak state
+  const [streakState, setStreakState] = useState({
+    streak: 0,
+    streakMaintained: false,
+    restoresUsed: 0,
+    maxRestores: 1
+  });
+  const [animatedStreak, setAnimatedStreak] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Sync with initial API load
+  useEffect(() => {
+    if (missionsData) {
+      setStreakState({
+        streak: missionsData.streak,
+        streakMaintained: missionsData.streak_maintained,
+        restoresUsed: missionsData.restores_used_this_month ?? 0,
+        maxRestores: missionsData.max_restores ?? 1
+      });
+      setAnimatedStreak(missionsData.streak);
+    }
+  }, [missionsData]);
+
+  // Sync with global event (e.g. WebSocket or other component updates)
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setStreakState({
+          streak: e.detail.streak,
+          streakMaintained: e.detail.streak_maintained,
+          restoresUsed: e.detail.restores_used_this_month ?? e.detail.restores_used ?? 0,
+          maxRestores: e.detail.max_restores ?? 1
+        });
+      } else {
+        reloadMissions();
+      }
+    };
+    window.addEventListener("streak-updated", handleUpdate);
+    return () => window.removeEventListener("streak-updated", handleUpdate);
+  }, [reloadMissions]);
+
+  // Count-up/count-down animation
+  useEffect(() => {
+    const target = streakState.streak;
+    if (animatedStreak === target) return;
+
+    setIsAnimating(true);
+    const duration = 800; // 800ms total
+    const difference = target - animatedStreak;
+    const steps = Math.abs(difference);
+    const stepTime = Math.max(40, Math.floor(duration / steps));
+
+    const timer = setInterval(() => {
+      setAnimatedStreak((prev) => {
+        if (prev < target) {
+          const next = prev + 1;
+          if (next === target) {
+            clearInterval(timer);
+            setIsAnimating(false);
+          }
+          return next;
+        } else {
+          const next = prev - 1;
+          if (next === target) {
+            clearInterval(timer);
+            setIsAnimating(false);
+          }
+          return next;
+        }
+      });
+    }, stepTime);
+
+    return () => {
+      clearInterval(timer);
+      setIsAnimating(false);
+    };
+  }, [streakState.streak, animatedStreak]);
+
   if (missionsLoading) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8 min-h-screen">
@@ -65,20 +143,21 @@ export default function Missions() {
 
   const opLog = missionsData.operations_log ?? [];
   const missions = missionsData.daily_missions ?? [];
-  const streakCount = missionsData.streak ?? 0;
-  const isMaintained = missionsData.streak_maintained ?? false;
   const xpTotal = missionsData.xp_total ?? 0;
   const xpLevelMin = missionsData.xp_level_min ?? 0;
   const xpLevelMax = missionsData.xp_level_max ?? 500;
   const rank = missionsData.rank ?? "";
-  const restoresUsed = missionsData.restores_used_this_month ?? 0;
-  const maxRestores = missionsData.max_restores ?? 1;
+
+  const streakCount = animatedStreak;
+  const isMaintained = streakState.streakMaintained;
+  const restoresUsed = streakState.restoresUsed;
+  const maxRestores = streakState.maxRestores;
 
   const xpPct = xpLevelMax > xpLevelMin
     ? Math.min(100, Math.round(((xpTotal - xpLevelMin) / (xpLevelMax - xpLevelMin)) * 100))
     : 0;
 
-  const streakColor = getStreakColor(streakCount);
+  const streakColor = getStreakColor(streakState.streak);
 
   // Хелперы названий миссий
   const getMissionTitle = (id, fallback) => {
@@ -136,7 +215,7 @@ export default function Missions() {
       <header className="border-b-4 border-black dark:border-stone-700 pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <span className="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-            Glossa HQ / Agent Interface
+            {t("deck.games.agentInterface")}
           </span>
           <h1 className="font-headline text-headline-lg mt-1 text-tertiary">
             {t("deck.games.missionControlTitle")}
@@ -147,7 +226,7 @@ export default function Missions() {
         <div className="flex gap-4">
           <div className="border-2 border-black dark:border-stone-700 bg-surface px-4 py-2 shadow-[2px_2px_0px_#000] font-ledger text-xs font-bold flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
-            OPERATIONAL LOG: SECURE
+            {t("deck.games.operationalLogSecure")}
           </div>
         </div>
       </header>
@@ -194,7 +273,7 @@ export default function Missions() {
                     ) : (
                       isToday && (
                         <div className="stamp absolute inset-0 m-auto w-max h-max font-headline text-[9px] md:text-[11px] uppercase px-1.5 py-0.5 border border-secondary text-secondary font-black transform -rotate-12 bg-surface/90 shadow-[1px_1px_0px_rgba(0,0,0,0.1)]">
-                          DUE
+                          {t("deck.games.due")}
                         </div>
                       )
                     )}
@@ -307,11 +386,15 @@ export default function Missions() {
               <Icon 
                 name="local_fire_department" 
                 style={{ color: streakColor }} 
-                className={`text-5xl ${isMaintained ? "animate-pulse" : "opacity-40"}`} 
+                className={`text-5xl ${isMaintained ? "animate-pulse" : "opacity-40"} ${isAnimating ? "animate-bounce" : ""}`} 
               />
             </div>
 
-            <h3 className="font-headline text-headline-sm uppercase mt-4 text-tertiary">
+            <h3 
+              className={`font-headline text-headline-sm uppercase mt-4 text-tertiary transition-transform duration-300 ${
+                isAnimating ? "scale-125 text-secondary rotate-3 font-extrabold" : ""
+              }`}
+            >
               {t("deck.games.streakDays", { n: streakCount })}
             </h3>
             
@@ -320,14 +403,13 @@ export default function Missions() {
                 ? "bg-emerald-100 text-emerald-700" 
                 : "bg-red-100 text-secondary"
             }`}>
-              {isMaintained ? t("deck.games.maintained") : t("deck.games.streakRisk")}
-            </p>
+              {isMaintained ? t("deck.games.maintained") : t("deck.games.streakRisk")}</p>
 
             {/* РАЗДЕЛ ВОССТАНОВЛЕНИЯ СТРАЙКА */}
             <div className="w-full mt-6 pt-6 border-t-2 border-dashed border-black/20 dark:border-white/10 space-y-4">
               <div className="flex justify-between items-center text-xs">
                 <span className="font-label text-on-surface-variant font-bold uppercase">
-                  Streak Restoration
+                  {t("deck.games.streakRestorationTitle")}
                 </span>
                 <span className="font-ledger font-black text-tertiary">
                   {restoresUsed} / {maxRestores}
@@ -376,7 +458,7 @@ export default function Missions() {
                       to="/pricing" 
                       className="inline-block text-xs font-black underline uppercase hover:text-black transition-colors"
                     >
-                      Upgrade Subscription →
+                      {t("deck.games.upgradeSubscription")}
                     </Link>
                   </div>
                 )
