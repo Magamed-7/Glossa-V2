@@ -135,6 +135,17 @@ const PRESETS = {
   }
 };
 
+const getLangCode = (langName) => {
+  const normalized = String(langName).toLowerCase();
+  if (normalized.includes("english")) return "en-US";
+  if (normalized.includes("russian") || normalized.includes("русский")) return "ru-RU";
+  if (normalized.includes("tajik") || normalized.includes("тоҷикӣ")) return "tg-TG";
+  if (normalized.includes("german") || normalized.includes("немецкий")) return "de-DE";
+  if (normalized.includes("french") || normalized.includes("французский")) return "fr-FR";
+  if (normalized.includes("spanish") || normalized.includes("испанский")) return "es-ES";
+  return "en-US";
+};
+
 const CALL_SAMPLES = {
   rose: "I want to apply for the middle frontend vacancy at your studio.",
   mint: "Can you help me understand how to tell about my hobbies?",
@@ -202,6 +213,7 @@ export default function TutorChat() {
   activeTutorRef.current = tutor;
   const lastPlayedRef = useRef(null);
   const activeAudioRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -348,6 +360,84 @@ export default function TutorChat() {
     }
   }, [messages, tutor, callActive]);
 
+  // Speech Recognition logic for voice call mode
+  useEffect(() => {
+    if (!callActive || micMuted || callState !== "listening") {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // ignore
+        }
+      }
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.warn("SpeechRecognition is not supported in this browser.");
+      return;
+    }
+
+    let recognition = recognitionRef.current;
+    if (!recognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = getLangCode(language);
+      recognitionRef.current = recognition;
+    }
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript && transcript.trim()) {
+        console.log("Transcribed speech:", transcript);
+        handleSend(transcript);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      if (event.error === "no-speech") {
+        // Restart if no speech was detected to keep listening active
+        try {
+          if (callActive && !micMuted && callState === "listening") {
+            recognition.start();
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
+
+    recognition.onend = () => {
+      // If we are still callActive, not muted, and in listening state, keep listening
+      if (callActive && !micMuted && callState === "listening") {
+        try {
+          recognition.start();
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
+
+    try {
+      recognition.start();
+    } catch (e) {
+      console.warn("SpeechRecognition start failed:", e);
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
+  }, [callActive, micMuted, callState, language]);
+
   // Voice Call Timer
   useEffect(() => {
     if (!callActive) return;
@@ -405,6 +495,9 @@ export default function TutorChat() {
     sendMessage(text);
     if (tutor) {
       triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
+    }
+    if (callActive) {
+      setCallState("speaking");
     }
   };
 
