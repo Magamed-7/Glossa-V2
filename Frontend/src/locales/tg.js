@@ -942,6 +942,8 @@ export const tg = {
     incomeAnalytics: "Таҳлили даромад",
     inflowDetails: "Тафсилоти воридот",
     deposits: "Пуркуниҳо",
+    spent: "Хароҷот",
+    deposited: "Пур карда шуд",
   },
   search: {
     stories: "Ҳикояҳо",

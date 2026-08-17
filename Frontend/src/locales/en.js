@@ -941,6 +941,8 @@ export const en = {
     incomeAnalytics: "Income Analytics",
     inflowDetails: "Inflow Details",
     deposits: "Deposits",
+    spent: "Spent",
+    deposited: "Deposited",
   },
   search: {
     stories: "Stories",

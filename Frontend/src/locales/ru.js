@@ -941,6 +941,8 @@ export const ru = {
     incomeAnalytics: "Аналитика доходов",
     inflowDetails: "Детализация поступлений",
     deposits: "Пополнения",
+    spent: "Потрачено",
+    deposited: "Пополнено",
   },
   search: {
     stories: "Истории",
