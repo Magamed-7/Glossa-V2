@@ -675,6 +675,7 @@ export const en = {
           "Add up to 35 new words a day to your deck",
           "Try 5 ready-made words from our leveled vocabulary",
           "Publish up to 3 of your own stories a week",
+          "1 daily streak restore per month",
         ],
         locked: [
           "AI Tutor conversations",
@@ -698,6 +699,7 @@ export const en = {
           "Auto pronunciation transcription — up to 50 of your own words a day",
           "Buy stories in the Marketplace",
           "Telegram bot — practice from your pocket",
+          "5 daily streak restores per month",
         ],
         locked: [],
       },
@@ -715,6 +717,7 @@ export const en = {
           "Unlimited auto pronunciation transcription for your words",
           "Buy stories in the Marketplace",
           "Telegram bot access",
+          "10 daily streak restores per month",
         ],
         locked: [],
       },
