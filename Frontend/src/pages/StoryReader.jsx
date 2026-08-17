@@ -265,16 +265,6 @@ export default function StoryReader() {
         </div>
       </div>
 
-      {hasTranslation && (
-        <button
-          onClick={() => setShowTranslation((v) => !v)}
-          className="fixed bottom-8 right-8 bg-on-surface text-surface flex items-center gap-3 px-5 py-3 font-label text-[11px] font-bold uppercase tracking-widest border-[2px] border-on-surface shadow-[4px_4px_0_0_#C62340] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#C62340] transition-all z-50"
-        >
-          <Icon name="translate" className="text-lg" />
-          {t("stories.translateView")}
-        </button>
-      )}
-
       <XpGainSummaryModal
         isOpen={showXpModal}
         onClose={() => setShowXpModal(false)}
@@ -288,7 +278,7 @@ export default function StoryReader() {
       <ContextHelpChat
         contextType="story"
         contextRefId={story.id}
-        positionClassName={hasTranslation ? "bottom-24 right-8" : "bottom-6 right-6"}
+        positionClassName="bottom-8 right-8"
       />
     </div>
   );
