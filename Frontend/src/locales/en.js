@@ -919,6 +919,8 @@ export const en = {
     pageOf: "Page {page} of {total}",
     viewIncome: "Switch to Income",
     viewExpenses: "Switch to Expenses",
+    allTime: "All time",
+    selectMonth: "Select period",
   },
   search: {
     stories: "Stories",

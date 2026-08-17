@@ -920,6 +920,8 @@ export const tg = {
     pageOf: "Саҳифаи {page} аз {total}",
     viewIncome: "Гузариш ба даромадҳо",
     viewExpenses: "Гузариш ба хароҷотҳо",
+    allTime: "Ҳамаи вақт",
+    selectMonth: "Интихоби давра",
   },
   search: {
     stories: "Ҳикояҳо",

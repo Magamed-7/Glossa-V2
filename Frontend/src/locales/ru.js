@@ -919,6 +919,8 @@ export const ru = {
     pageOf: "Страница {page} из {total}",
     viewIncome: "Перейти к доходам",
     viewExpenses: "Перейти к расходам",
+    allTime: "Все время",
+    selectMonth: "Выберите период",
   },
   search: {
     stories: "Истории",
