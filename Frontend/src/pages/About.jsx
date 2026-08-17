@@ -8,10 +8,10 @@ const PILLARS = [
 ];
 
 const CURATORS = [
+  { key: "muhammad", nameKey: "about.curators.people.muhammad.name", image: "/img/marketing/curator-muhammad.webp" },
   { key: "osaf", name: "Dr. Osaf Abdulloev", image: "/img/marketing/curator-osaf.webp" },
   { key: "julian", name: "Ruslan Sodatov", image: "/img/marketing/curator-ruslan.webp" },
   { key: "mika", name: "Yunus Muhammadzoda", image: "/img/marketing/curator-yunus.png" },
-  { key: "arthur", name: "Arthur P. Vance", image: "/img/marketing/curator-arthur.webp" },
 ];
 
 export default function About() {
@@ -101,7 +101,7 @@ export default function About() {
                   height={640}
                 />
               </div>
-              <h4 className="font-headline text-headline-md">{c.name}</h4>
+              <h4 className="font-headline text-headline-md">{c.nameKey ? t(c.nameKey) : c.name}</h4>
               <p className="font-label text-label-md text-secondary uppercase mb-2">{t(`about.curators.people.${c.key}.role`)}</p>
               <p className="font-body text-body-md text-on-surface-variant text-sm italic">{t(`about.curators.people.${c.key}.bio`)}</p>
             </div>

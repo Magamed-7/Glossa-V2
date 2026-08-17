@@ -590,6 +590,7 @@ export const en = {
     reconnecting: "One moment — I lost the connection and I'm coming right back. Your conversation is saved.",
     reconnectFailed: "I can't reach the mentor right now. Reload the page in a minute — I'll still be here.",
     aiTemporarilyUnavailable: "Give me a couple of seconds to gather my thoughts. Send that again — I'm here.",
+    callListening: "Listening…",
     aiTimeout: "That took me longer than usual. Let's try once more — the same sentence is fine.",
     aiRateLimited: "I have a lot of students at once right now. Wait a few seconds and write again.",
     limitReachedSoft: "That's our time for today — you did good work. We'll pick up right here tomorrow.",
@@ -1076,6 +1077,11 @@ export const en = {
       description: "Meet the people behind the Glossa content and product — philologists, editors, and technologists.",
       est: "EST. MMXXVI",
       people: {
+        muhammad: {
+          name: "Mr. Muhammad N.",
+          role: "Honorary Founder",
+          bio: "Founder and Chief Visionary of the Glossa platform.",
+        },
         osaf: {
           role: "Chief Philologist",
           bio: "Specializing in Slavic etymology and the semiotics of resistance.",
@@ -1087,10 +1093,6 @@ export const en = {
         mika: {
           role: "Computational Linguist",
           bio: "Bridging the gap between natural language and neural networks.",
-        },
-        arthur: {
-          role: "Founder Emeritus",
-          bio: "Still consulting on the deeper mysteries of grammar and syntax.",
         },
       },
     },
