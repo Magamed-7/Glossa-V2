@@ -1,6 +1,8 @@
+import { useState } from "react";
 import NeoCard from "../ui/NeoCard.jsx";
 import Skeleton from "../ui/Skeleton.jsx";
 import Icon from "../ui/Icon.jsx";
+import NeoButton from "../ui/NeoButton.jsx";
 import { useApi } from "../../lib/useApi.js";
 import { getAnalytics } from "../../lib/api/payments.js";
 import { formatMoney } from "../../lib/format.js";
@@ -9,6 +11,7 @@ import { useT } from "../../lib/i18n.jsx";
 export default function WalletAnalytics() {
   const t = useT();
   const { data: analytics, loading } = useApi(() => getAnalytics(), []);
+  const [viewMode, setViewMode] = useState("spent"); // "spent" или "income"
 
   if (loading) return <Skeleton className="h-60" />;
   if (!analytics) return null;
@@ -21,7 +24,7 @@ export default function WalletAnalytics() {
   const topupPercent = (totalToppedUp / maxVal) * 100;
   const spentPercent = (totalSpent / maxVal) * 100;
 
-  // Параметры SVG кругов
+  // Параметры SVG круга
   const radius = 37;
   const circumference = 2 * Math.PI * radius;
   
@@ -61,8 +64,8 @@ export default function WalletAnalytics() {
     return "8.5px";
   };
 
-  const formattedSpent = formatMoney(totalSpent);
-  const formattedIncome = formatMoney(totalToppedUp);
+  const isSpentMode = viewMode === "spent";
+  const formattedValue = isSpentMode ? formatMoney(totalSpent) : formatMoney(totalToppedUp);
 
   return (
     <NeoCard className="relative overflow-hidden">
@@ -113,20 +116,39 @@ export default function WalletAnalytics() {
           </div>
         </div>
 
-        {/* Средняя колонка: ДВА круга рядом (Доходы и Расходы) */}
-        <div className="lg:col-span-6 flex flex-col sm:flex-row items-center justify-center gap-8 py-4">
-          {/* Круг ДОХОДОВ (Зеленый) */}
-          <div className="flex flex-col items-center">
-            <span className="font-label text-[11px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider mb-2">
-              Income Analytics
-            </span>
-            <div className="relative w-40 h-40">
-              <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90 filter drop-shadow-[4px_4px_0px_var(--color-tertiary)]">
-                {/* Внешний контур */}
-                <circle cx="50" cy="50" r={radius} fill="transparent" stroke="var(--color-tertiary)" strokeWidth="10" />
-                <circle cx="50" cy="50" r={radius} fill="var(--color-surface)" />
-                
-                {/* 100% закрашенный зеленый сегмент */}
+        {/* Средняя колонка: Один переключаемый SVG круг */}
+        <div className="lg:col-span-6 flex flex-col items-center justify-center py-4">
+          <span className="font-label text-[11px] font-black uppercase text-on-surface-variant tracking-wider mb-3">
+            {isSpentMode ? "Expense Analytics" : "Income Analytics"}
+          </span>
+          
+          <div className="relative w-40 h-40">
+            {/* SVG НЕ вращается, вращаются только сегменты через transform */}
+            <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[4px_4px_0px_var(--color-tertiary)]">
+              {/* Внешний контур */}
+              <circle cx="50" cy="50" r={radius} fill="transparent" stroke="var(--color-tertiary)" strokeWidth="10" />
+              <circle cx="50" cy="50" r={radius} fill="var(--color-surface)" />
+              
+              {/* Отрисовка в зависимости от режима */}
+              {isSpentMode ? (
+                // Сегменты расходов
+                spentSegments.map((seg, i) => (
+                  <circle
+                    key={i}
+                    cx="50"
+                    cy="50"
+                    r={radius}
+                    fill="transparent"
+                    stroke={seg.color}
+                    strokeWidth="7"
+                    strokeDasharray={`${seg.length} ${circumference}`}
+                    strokeDashoffset={seg.offset}
+                    transform="rotate(-90 50 50)"
+                    className="transition-all duration-700 ease-out origin-center"
+                  />
+                ))
+              ) : (
+                // 100% закрашенный зеленый круг доходов
                 <circle
                   cx="50"
                   cy="50"
@@ -136,140 +158,114 @@ export default function WalletAnalytics() {
                   strokeWidth="7"
                   strokeDasharray={`${circumference} ${circumference}`}
                   strokeDashoffset="0"
+                  transform="rotate(-90 50 50)"
                   className="transition-all duration-700 ease-out origin-center"
                 />
-                
-                {/* Внутренний контур */}
-                <circle cx="50" cy="50" r={33} fill="var(--color-surface)" stroke="var(--color-tertiary)" strokeWidth="2" />
-
-                {/* Точный рендеринг текста внутри SVG */}
-                <text 
-                  x="50" 
-                  y="45" 
-                  textAnchor="middle" 
-                  className="font-label uppercase fill-on-surface-variant tracking-wider font-bold"
-                  style={{ fontSize: "7px" }}
-                >
-                  Deposited
-                </text>
-                <text 
-                  x="50" 
-                  y="58" 
-                  textAnchor="middle" 
-                  className="font-ledger fill-on-surface font-bold"
-                  style={{ 
-                    fontSize: getSvgFontSize(formattedIncome),
-                    fontFamily: "var(--font-ledger)" 
-                  }}
-                >
-                  {formattedIncome}
-                </text>
-              </svg>
-            </div>
-          </div>
-
-          {/* Круг РАСХОДОВ (Малиновый / Мультиколор) */}
-          <div className="flex flex-col items-center">
-            <span className="font-label text-[11px] font-black uppercase text-secondary tracking-wider mb-2">
-              Expense Analytics
-            </span>
-            <div className="relative w-40 h-40">
-              {totalSpent > 0 ? (
-                <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90 filter drop-shadow-[4px_4px_0px_var(--color-tertiary)]">
-                  {/* Внешний контур */}
-                  <circle cx="50" cy="50" r={radius} fill="transparent" stroke="var(--color-tertiary)" strokeWidth="10" />
-                  <circle cx="50" cy="50" r={radius} fill="var(--color-surface)" />
-                  
-                  {/* Сегменты */}
-                  {spentSegments.map((seg, i) => (
-                    <circle
-                      key={i}
-                      cx="50"
-                      cy="50"
-                      r={radius}
-                      fill="transparent"
-                      stroke={seg.color}
-                      strokeWidth="7"
-                      strokeDasharray={`${seg.length} ${circumference}`}
-                      strokeDashoffset={seg.offset}
-                      className="transition-all duration-700 ease-out origin-center"
-                    />
-                  ))}
-                  
-                  {/* Внутренний контур */}
-                  <circle cx="50" cy="50" r={33} fill="var(--color-surface)" stroke="var(--color-tertiary)" strokeWidth="2" />
-
-                  {/* Точный рендеринг текста внутри SVG */}
-                  <text 
-                    x="50" 
-                    y="45" 
-                    textAnchor="middle" 
-                    className="font-label uppercase fill-on-surface-variant tracking-wider font-bold"
-                    style={{ fontSize: "7px" }}
-                  >
-                    Spent
-                  </text>
-                  <text 
-                    x="50" 
-                    y="58" 
-                    textAnchor="middle" 
-                    className="font-ledger fill-on-surface font-bold"
-                    style={{ 
-                      fontSize: getSvgFontSize(formattedSpent),
-                      fontFamily: "var(--font-ledger)" 
-                    }}
-                  >
-                    {formattedSpent}
-                  </text>
-                </svg>
-              ) : (
-                <div className="w-40 h-40 border-4 border-dashed border-surface-container-highest rounded-full flex items-center justify-center text-center p-4">
-                  <p className="font-body text-[10px] text-on-surface-variant uppercase tracking-wider font-bold">No spending records</p>
-                </div>
               )}
-            </div>
+              
+              {/* Внутренний контур */}
+              <circle cx="50" cy="50" r={33} fill="var(--color-surface)" stroke="var(--color-tertiary)" strokeWidth="2" />
+
+              {/* Точный горизонтальный рендеринг текста */}
+              <text 
+                x="50" 
+                y="45" 
+                textAnchor="middle" 
+                className="font-label uppercase fill-on-surface-variant tracking-wider font-bold"
+                style={{ fontSize: "7px" }}
+              >
+                {isSpentMode ? "Spent" : "Deposited"}
+              </text>
+              <text 
+                x="50" 
+                y="58" 
+                textAnchor="middle" 
+                className="font-ledger fill-on-surface font-bold"
+                style={{ 
+                  fontSize: getSvgFontSize(formattedValue),
+                  fontFamily: "var(--font-ledger)" 
+                }}
+              >
+                {formattedValue}
+              </text>
+            </svg>
           </div>
+
+          {/* Кнопка переключения под кругом */}
+          <NeoButton
+            variant="inverse"
+            size="md"
+            onClick={() => setViewMode(isSpentMode ? "income" : "spent")}
+            className="mt-6 px-4 py-2 font-ledger text-xs normal-case shadow-[2px_2px_0px_#000]"
+          >
+            <Icon name="swap_horiz" className="mr-1.5 text-sm" />
+            {isSpentMode ? t("wallet.viewIncome") : t("wallet.viewExpenses")}
+          </NeoButton>
         </div>
 
-        {/* Правая колонка: список трат по категориям */}
+        {/* Правая колонка: Детализация по категориям/пополнениям */}
         <div className="lg:col-span-3 space-y-4">
           <p className="font-label text-label-md uppercase text-on-surface-variant border-b border-black/25 dark:border-white/10 pb-2">
-            {t("wallet.byCategory")}
+            {isSpentMode ? t("wallet.byCategory") : "Inflow Details"}
           </p>
-          {spentSegments.length > 0 ? (
-            <ul className="space-y-3">
-              {spentSegments.map((row) => (
-                <li key={row.item_type} className="space-y-1">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="font-body font-bold text-on-surface flex items-center gap-2">
-                      <span 
-                        className="w-3 h-3 border border-black inline-block shadow-[1px_1px_0px_#000]" 
-                        style={{ backgroundColor: row.color }} 
+          
+          {isSpentMode ? (
+            // Детализация расходов
+            spentSegments.length > 0 ? (
+              <ul className="space-y-3">
+                {spentSegments.map((row) => (
+                  <li key={row.item_type} className="space-y-1">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-body font-bold text-on-surface flex items-center gap-2">
+                        <span 
+                          className="w-3 h-3 border border-black inline-block shadow-[1px_1px_0px_#000]" 
+                          style={{ backgroundColor: row.color }} 
+                        />
+                        {t("wallet.type_" + row.item_type) || row.item_type.replace("_", " ")}
+                      </span>
+                      <span className="font-ledger font-bold text-on-surface">
+                        {formatMoney(row.amount)}
+                      </span>
+                    </div>
+                    <div className="border border-black dark:border-stone-700 h-2 bg-surface-container overflow-hidden">
+                      <div 
+                        className="h-full transition-all duration-500 ease-out" 
+                        style={{ 
+                          width: `${row.percent * 100}%`,
+                          backgroundColor: row.color
+                        }} 
                       />
-                      {t("wallet.type_" + row.item_type) || row.item_type.replace("_", " ")}
-                    </span>
-                    <span className="font-ledger font-bold text-on-surface">
-                      {formatMoney(row.amount)}
-                    </span>
-                  </div>
-                  {/* Прогресс доли трат */}
-                  <div className="border border-black dark:border-stone-700 h-2 bg-surface-container overflow-hidden">
-                    <div 
-                      className="h-full transition-all duration-500 ease-out" 
-                      style={{ 
-                        width: `${row.percent * 100}%`,
-                        backgroundColor: row.color
-                      }} 
-                    />
-                  </div>
-                  <div className="text-[10px] text-right font-ledger text-on-surface-variant">
-                    {Math.round(row.percent * 100)}% ({row.count} tx)
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    </div>
+                    <div className="text-[10px] text-right font-ledger text-on-surface-variant">
+                      {Math.round(row.percent * 100)}% ({row.count} tx)
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="font-body text-body-md text-on-surface-variant italic">No data available</p>
+            )
           ) : (
-            <p className="font-body text-body-md text-on-surface-variant italic">No data available</p>
+            // Детализация доходов
+            <ul className="space-y-3">
+              <li className="space-y-1">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-body font-bold text-on-surface flex items-center gap-2">
+                    <span className="w-3 h-3 border border-black inline-block shadow-[1px_1px_0px_#000] bg-emerald-500" />
+                    {t("wallet.type_topup")}
+                  </span>
+                  <span className="font-ledger font-bold text-on-surface">
+                    {formatMoney(totalToppedUp)}
+                  </span>
+                </div>
+                <div className="border border-black dark:border-stone-700 h-2 bg-surface-container overflow-hidden">
+                  <div className="h-full bg-emerald-500 w-full" />
+                </div>
+                <div className="text-[10px] text-right font-ledger text-on-surface-variant">
+                  100% (Deposits)
+                </div>
+              </li>
+            </ul>
           )}
         </div>
       </div>
