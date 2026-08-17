@@ -185,19 +185,19 @@ async def restore_streak(
         max_restores = 10
         
     today = date.today()
-    streak_maintained = False
-    if streak_obj.last_activity_date:
-        if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
-            streak_maintained = True
-            
-    if streak_maintained:
+    
+    # We can restore if we have a saved prev_streak_before_reset that is greater than current_streak
+    if streak_obj.prev_streak_before_reset <= streak_obj.current_streak:
         raise AppError(code='STREAK_ALREADY_ACTIVE', message='Streak is already active and does not need restoration', status_code=400)
         
     if streak_obj.restores_used_this_month >= max_restores:
         raise AppError(code='NO_RESTORES_REMAINING', message='No restores remaining this month', status_code=400)
         
-    streak_obj.last_activity_date = today - timedelta(days=1)
-
+    # Restore the streak!
+    streak_obj.current_streak = streak_obj.prev_streak_before_reset
+    streak_obj.best_streak = max(streak_obj.best_streak, streak_obj.current_streak)
+    streak_obj.prev_streak_before_reset = 0
+    streak_obj.last_activity_date = today
     streak_obj.restores_used_this_month += 1
     
     await db.commit()

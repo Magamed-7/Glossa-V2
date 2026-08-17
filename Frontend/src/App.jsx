@@ -51,7 +51,6 @@ const SearchResults = lazy(() => import("./pages/SearchResults.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const SpacedRepetition = lazy(() => import("./pages/SpacedRepetition.jsx"));
 const StoriesCatalog = lazy(() => import("./pages/StoriesCatalog.jsx"));
-const StripeReturn = lazy(() => import("./pages/StripeReturn.jsx"));
 const Terms = lazy(() => import("./pages/Terms.jsx"));
 const TutorScenarios = lazy(() => import("./pages/TutorScenarios.jsx"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail.jsx"));
@@ -139,7 +138,6 @@ export default function App() {
           <Route path="/achievements" element={page(Achievements)} />
           <Route path="/pricing" element={page(Pricing)} />
           <Route path="/wallet" element={page(Wallet)} />
-          <Route path="/wallet/return" element={page(StripeReturn)} />
           <Route path="/notifications" element={page(Notifications)} />
           <Route path="/settings" element={page(Settings)} />
           <Route path="/search" element={page(SearchResults)} />

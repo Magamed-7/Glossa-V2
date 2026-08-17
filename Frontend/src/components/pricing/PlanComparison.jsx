@@ -13,8 +13,10 @@ const ROW_ICONS = {
   deck_words_per_day: "translate",
   readyVocab: "collections_bookmark",
   own_stories_per_week: "edit_note",
+  generated_stories_per_day: "auto_fix_high",
   ai_seconds_per_day: "smart_toy",
   audioWords: "volume_up",
+  transcription: "record_voice_over",
   audiobooks_per_day: "headphones",
   buyStories: "storefront",
   telegram: "send",
@@ -138,6 +140,24 @@ export default function PlanComparison({ plans }) {
           </tr>
 
           <tr className="border-b border-surface-container-highest">
+            <RowLabel icon={ROW_ICONS.generated_stories_per_day}>{t("pricing.rows.generatedStoriesPerDay")}</RowLabel>
+            {plans.map((plan, i) => (
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                {plan.generated_stories_per_day === 0 ? (
+                  <LockedValue t={t} />
+                ) : plan.generated_stories_per_day === null ? (
+                  <UnlimitedValue t={t} />
+                ) : (
+                  <NumberValue value={plan.generated_stories_per_day} />
+                )}
+              </td>
+            ))}
+          </tr>
+
+          <tr className="border-b border-surface-container-highest">
             <RowLabel icon={ROW_ICONS.readyVocab}>{t("pricing.rows.readyVocab")}</RowLabel>
             {plans.map((plan, i) => (
               <td
@@ -164,6 +184,22 @@ export default function PlanComparison({ plans }) {
                   <span className="font-body text-sm text-on-surface-variant">{t(`pricing.audioWordsByPlan.${plan.code}`)}</span>
                 ) : (
                   <span className="font-display text-2xl font-bold text-secondary">{t(`pricing.audioWordsByPlan.${plan.code}`)}</span>
+                )}
+              </td>
+            ))}
+          </tr>
+
+          <tr className="border-b border-surface-container-highest">
+            <RowLabel icon={ROW_ICONS.transcription}>{t("pricing.rows.transcription")}</RowLabel>
+            {plans.map((plan, i) => (
+              <td
+                key={plan.id}
+                className={`p-6 text-center ${divider(i, plans.length)} ${PLAN_COLUMN_CLASS[plan.code] || ""}`}
+              >
+                {plan.code === "free" ? (
+                  <span className="font-body text-sm text-on-surface-variant">{t(`pricing.transcriptionByPlan.${plan.code}`)}</span>
+                ) : (
+                  <span className="font-display text-2xl font-bold text-secondary">{t(`pricing.transcriptionByPlan.${plan.code}`)}</span>
                 )}
               </td>
             ))}

@@ -89,5 +89,6 @@ class DailyMissionsResponse(BaseModel):
     daily_missions: list[DailyMissionItem]
     restores_used_this_month: int
     max_restores: int
+    prev_streak_before_reset: int = 0
 
 

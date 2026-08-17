@@ -1,13 +1,20 @@
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 class DcWebhookPayload(BaseModel):
     text: str
     source: str
-    received_at: datetime
+    received_at: datetime | None = None
+
+    @field_validator('received_at', mode='before')
+    @classmethod
+    def blank_to_none(cls, value):
+        # MacroDroid always sends the key, but its date magic text can render empty
+        # (e.g. unset field) — treat a blank string as "not provided" rather than a 422.
+        return value or None
 
 
 class CreateOrderRequest(BaseModel):

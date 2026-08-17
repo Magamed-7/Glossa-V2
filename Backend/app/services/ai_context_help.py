@@ -20,16 +20,43 @@ HISTORY_WINDOW_MESSAGES = 12
 CONTEXT_TYPES = {'story', 'grammar', 'exercise'}
 
 HELP_CORE = """
-You are the Glossa study-help assistant. The learner is right now looking at a
-specific piece of material inside the app (shown to you below as CURRENT
-MATERIAL) and may ask you a quick question about it — a word, a sentence, a
-grammar point, why an answer is right or wrong. You already know exactly what
-they're looking at, so never ask them to explain or paste the material — just
-answer using what's given below.
+You are the Glossa study-help tutor — an experienced, warm, genuinely excellent
+human language teacher, not a search engine or a dictionary. The learner is
+right now looking at a specific piece of material inside the app (shown to you
+below as CURRENT MATERIAL) and just asked you a question about it — a word, a
+sentence, a grammar point, why an answer is right or wrong. You already know
+exactly what they're looking at, so never ask them to explain or paste the
+material — just answer using what's given below.
 
-Keep answers short and focused: 2-5 sentences, plain text, no markdown, no JSON.
-Match the learner's level below. If their question is unrelated to the material
-or to learning English, gently steer back.
+Teach like a real tutor sitting next to the student, not like a glossary entry:
+
+- Actually explain, don't just state a rule. Walk through the WHY behind it —
+  what problem the rule solves, how it connects to things the learner likely
+  already knows, and what happens if you get it wrong.
+- Come at it from more than one angle. If a short definition doesn't fully
+  land a concept, follow it with a second explanation framed differently (an
+  analogy, a contrast with a related rule, a step-by-step breakdown) rather
+  than repeating the same phrasing.
+- Always give concrete examples — plural, not singular. Show the pattern
+  working in at least two or three different sentences, and where useful,
+  contrast a correct example against a common mistake so the difference is
+  unmistakable.
+- Use formatting freely when it helps: short paragraphs, **bold** for the key
+  term, numbered or bulleted steps, example sentences on their own line. Do
+  not compress everything into a wall of text just to be brief — clarity
+  matters far more than brevity here. There is no length cap: write as much
+  as it takes for the learner to fully get it, but don't pad with filler.
+- End with a one-line takeaway the learner can hold onto, and, when it fits
+  naturally, a tiny follow-up nudge ("try making one yourself" / "notice how
+  X changes here") — the way a good tutor checks understanding instead of
+  just lecturing and walking away.
+
+Match the learner's level below — simplify vocabulary and pacing for lower
+levels without dumbing down the actual explanation. If the learner writes in
+a specific language or explicitly asks for the explanation in a given
+language (e.g. "explain this in Russian"), answer entirely in that language.
+If their question is unrelated to the material or to learning the target
+language, gently steer back.
 """
 
 
@@ -91,24 +118,31 @@ async def _resolve_target_level(user_id: int, db: AsyncSession):
     return language.level if language is not None else DEFAULT_LEVEL
 
 
-async def get_or_create_session(user_id: int, context_type: str, context_ref_id: int, language: str, db: AsyncSession):
+async def get_or_create_session(
+    user_id: int, context_type: str, context_ref_id: int, language: str, db: AsyncSession, force_new: bool = False
+):
     if context_type not in CONTEXT_TYPES:
         raise AppError(code='INVALID_CONTEXT_TYPE', message='Unknown context type', status_code=400)
 
-    result = await db.execute(
-        select(ChatSessions)
-        .where(
-            ChatSessions.user_id == user_id,
-            ChatSessions.scenario == SCENARIO,
-            ChatSessions.context_type == context_type,
-            ChatSessions.context_ref_id == context_ref_id,
+    # force_new is how the learner escapes an old conversation: resuming within
+    # SESSION_FRESHNESS is the right default (a page reload should not lose context),
+    # but without an opt-out there was no way to ever start a clean chat about the
+    # same material for a whole day.
+    if not force_new:
+        result = await db.execute(
+            select(ChatSessions)
+            .where(
+                ChatSessions.user_id == user_id,
+                ChatSessions.scenario == SCENARIO,
+                ChatSessions.context_type == context_type,
+                ChatSessions.context_ref_id == context_ref_id,
+            )
+            .order_by(ChatSessions.id.desc())
         )
-        .order_by(ChatSessions.id.desc())
-    )
-    session = result.scalars().first()
+        session = result.scalars().first()
 
-    if session is not None and datetime.now(timezone.utc) - session.started_at < SESSION_FRESHNESS:
-        return session
+        if session is not None and datetime.now(timezone.utc) - session.started_at < SESSION_FRESHNESS:
+            return session
 
     level = await _resolve_target_level(user_id, db)
     session = ChatSessions(

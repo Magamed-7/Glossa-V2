@@ -664,7 +664,7 @@ async def seed_grammar(db):
             rule_ru=item['rule_ru'],
             rule_tg=item['rule_tg'],
             structure=item['structure'],
-            tip=item['tip'],
+            tip_en=item['tip'],
             source_key=source_key,
         )
         db.add(lesson)

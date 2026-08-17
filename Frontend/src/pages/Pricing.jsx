@@ -45,24 +45,18 @@ export default function Pricing() {
 
       <div className="flex justify-center mb-8">
         <div className="inline-flex border-2 border-tertiary">
-          <button
-            type="button"
-            className={`px-4 py-2 font-label text-label-md uppercase ${
-              period === "monthly" ? "bg-secondary text-on-secondary" : ""
-            }`}
-            onClick={() => setPeriod("monthly")}
-          >
-            {t("pricing.monthly")}
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 font-label text-label-md uppercase ${
-              period === "yearly" ? "bg-secondary text-on-secondary" : ""
-            }`}
-            onClick={() => setPeriod("yearly")}
-          >
-            {t("pricing.yearly")}
-          </button>
+          {["monthly", "half_yearly", "yearly"].map((value) => (
+            <button
+              key={value}
+              type="button"
+              className={`px-4 py-2 font-label text-label-md uppercase ${
+                period === value ? "bg-secondary text-on-secondary" : ""
+              }`}
+              onClick={() => setPeriod(value)}
+            >
+              {t(`pricing.${value === "half_yearly" ? "halfYearly" : value}`)}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -72,11 +66,12 @@ export default function Pricing() {
       {!loading && !error && plans && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {plans.map((plan) => {
-            const price = period === "yearly" ? plan.price_yearly : plan.price_monthly;
-            const monthlyEquivalent = period === "yearly" ? plan.price_yearly / 12 : plan.price_monthly;
+            const periodMonths = { monthly: 1, half_yearly: 6, yearly: 12 }[period];
+            const price = { monthly: plan.price_monthly, half_yearly: plan.price_half_yearly, yearly: plan.price_yearly }[period];
+            const monthlyEquivalent = price / periodMonths;
             const savingsPercent =
               plan.price_monthly > 0
-                ? Math.round((1 - plan.price_yearly / 12 / plan.price_monthly) * 100)
+                ? Math.round((1 - monthlyEquivalent / plan.price_monthly) * 100)
                 : 0;
             const isCurrent = mySubscription?.plan.code === plan.code && mySubscription?.is_active;
             const features = t(`pricing.plans.${plan.code}.features`);
@@ -108,6 +103,10 @@ export default function Pricing() {
                   <p className="font-label text-label-md text-secondary mb-4">
                     {t("pricing.billedYearly", { price: formatMoney(price), percent: savingsPercent })}
                   </p>
+                ) : period === "half_yearly" && plan.price_monthly > 0 ? (
+                  <p className="font-label text-label-md text-secondary mb-4">
+                    {t("pricing.billedHalfYearly", { price: formatMoney(price) })}
+                  </p>
                 ) : (
                   <div className="mb-4" />
                 )}
@@ -138,6 +137,7 @@ export default function Pricing() {
                   <SubscribeButton
                     plan={plan}
                     period={period}
+                    price={price}
                     isCurrent={isCurrent}
                     onSubscribed={reloadMySubscription}
                   />

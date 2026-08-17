@@ -42,13 +42,29 @@ function Paperclip() {
 }
 
 // ── Card 1: Lesson theory ─────────────────────────────────────────────────────
-function TheoryCard({ lesson, examples, lang, onStartPractice, hasQuestions }) {
+function TheoryCard({ lesson, examples, lang, onStartPractice, hasQuestions, contentLocale, onContentLocaleChange }) {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="bg-surface border-2 border-on-surface shadow-[8px_8px_0px_0px_#b90538] p-8 md:p-12 relative overflow-visible -rotate-[0.3deg] hover:rotate-0 transition-transform duration-500">
         {/* Paperclip */}
         <div className="absolute -top-3 -right-2 rotate-45 z-20">
           <Paperclip />
+        </div>
+
+        {/* Content language switcher */}
+        <div className="flex justify-end gap-1 mb-4">
+          {["en", "ru", "tg"].map((code) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => onContentLocaleChange(code)}
+              className={`font-label text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 border-2 border-on-surface transition-colors cursor-pointer ${
+                contentLocale === code ? "bg-on-surface text-surface" : "bg-surface text-on-surface hover:bg-surface-container"
+              }`}
+            >
+              {code}
+            </button>
+          ))}
         </div>
 
         {/* Header */}
@@ -157,8 +173,9 @@ export default function GrammarLesson() {
   const navigate = useNavigate();
   const { lang } = useI18n();
   const { refreshStreak } = useAppData();
+  const [contentLocale, setContentLocale] = useState(lang);
 
-  const { data: lesson, loading, error, reload } = useApi(() => getLesson(id), [id]);
+  const { data: lesson, loading, error, reload } = useApi(() => getLesson(id, contentLocale), [id, contentLocale]);
 
   // "theory" → "quiz" → "results"
   const [phase, setPhase] = useState("theory");
@@ -267,6 +284,8 @@ export default function GrammarLesson() {
             lang={lang}
             hasQuestions={questions.length > 0}
             onStartPractice={() => setPhase("quiz")}
+            contentLocale={contentLocale}
+            onContentLocaleChange={setContentLocale}
           />
         )}
 

@@ -8,6 +8,7 @@ class PlanResponse(BaseModel):
     id: int
     code: str
     price_monthly: float
+    price_half_yearly: float
     price_yearly: float
     stories_per_day: int | None
     deck_words_per_day: int | None
@@ -30,4 +31,4 @@ class MySubscriptionResponse(BaseModel):
 
 class SubscribeRequest(BaseModel):
     plan_code: str
-    period: Literal['monthly', 'yearly']
+    period: Literal['monthly', 'half_yearly', 'yearly']

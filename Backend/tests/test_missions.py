@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timezone, date, timedelta
 from sqlalchemy import text
-from app.services import ratings
+from app.services import ratings, streaks
 
 @pytest.mark.asyncio
 async def test_get_daily_missions_empty(client, token):
@@ -93,6 +93,10 @@ async def test_daily_missions_with_progress(client, token, db, user):
 async def test_restore_streak(client, token, db, user):
     user_id = user.id
     assert user_id is not None
+
+    # Ensure streak row exists first
+    await streaks.get_streak(user_id, db)
+    await db.commit()
 
     # 1. Update user streak to be broken (last activity 3 days ago)
     await db.execute(text(

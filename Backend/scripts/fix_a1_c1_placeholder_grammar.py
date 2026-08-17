@@ -182,7 +182,7 @@ async def main():
             lesson.rule_ru = data['rule_ru']
             lesson.rule_tg = data['rule_tg']
             lesson.structure = data['structure']
-            lesson.tip = data['tip']
+            lesson.tip_en = data['tip']
 
             await db.execute(GrammarExamples.__table__.delete().where(GrammarExamples.lesson_id == lesson.id))
             await db.execute(GrammarQuestions.__table__.delete().where(GrammarQuestions.lesson_id == lesson.id))

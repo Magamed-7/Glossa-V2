@@ -11,14 +11,30 @@ from app.models.model_dc_payment import Order
 ORDER_TTL = timedelta(minutes=30)
 MAX_OFFSET_CENTS = 100
 
+# Wallet top-ups carry a small processing fee. It is folded into the requested amount
+# before the unique-cents allocation below, so the payer only ever sees one final number
+# to transfer — never a separate "fee" line item.
+TOPUP_FEE_RATE = Decimal('0.005')
+
+MIN_TOPUP_AMOUNT = Decimal('10')
+
 # Case-insensitive, transliterated Russian keywords — the source SMS/push text comes
 # through as Latin transliteration (Tasker/MacroDroid capture), not Cyrillic.
 INCOMING_RE = re.compile(r'popolnenie|zachislenie|vkhodyashchiy\s*perevod', re.IGNORECASE)
 EXPENSE_RE = re.compile(r'oplata|spisanie|perevod\s*na', re.IGNORECASE)
 AMOUNT_RE = re.compile(
-    r'(?:\+|Popolnenie:?\s*\+?|Zachislenie:?\s*\+?)\s*(\d+[.,]\d{2})\s*(?:TJS|c|somoni|с)?',
+    r'(?:\+|Popolnenie:?\s*\+?|Zachislenie:?\s*\+?|Summa:?\s*\+?)\s*(\d+[.,]\d{2})\s*(?:TJS|c|somoni|с)?',
     re.IGNORECASE,
 )
+
+
+def invoice_message_key(order_id: int) -> str:
+    """Redis key holding "<chat_id>:<message_id>" of the invoice sent for an order.
+
+    Written by the bot when it posts the invoice, read by the payment webhook so the
+    invoice can be removed from the chat once the transfer is matched.
+    """
+    return f'dc:invoice_msg:{order_id}'
 
 
 async def allocate_unique_amount(base_amount: Decimal, db: AsyncSession) -> Decimal:
@@ -67,13 +83,13 @@ def classify_incoming_text(text: str):
 
 async def activate_subscription_external(user_id: int, plan_code: str, period: str, db: AsyncSession):
     from app.models.model_subscription import Plans, UserSubscriptions
+    from app.services.crud_subscription import _period_duration
 
     plan = (await db.execute(select(Plans).where(Plans.code == plan_code))).scalar_one_or_none()
     if plan is None:
         raise AppError(code='PLAN_NOT_FOUND', message='Plan not found', status_code=404)
 
-    duration = timedelta(days=30) if period == 'monthly' else timedelta(days=365)
-    expires_at = datetime.now(timezone.utc) + duration
+    expires_at = datetime.now(timezone.utc) + _period_duration(period)
 
     await db.execute(
         update(UserSubscriptions)
@@ -84,7 +100,13 @@ async def activate_subscription_external(user_id: int, plan_code: str, period: s
 
 
 async def create_order(user_id: int, intent: str, base_amount: Decimal, db: AsyncSession, plan_code: str | None = None, period: str | None = None):
-    expected_amount = await allocate_unique_amount(base_amount, db)
+    amount_with_fee = base_amount
+    if intent == 'top_up':
+        if base_amount < MIN_TOPUP_AMOUNT:
+            raise AppError(code='AMOUNT_TOO_LOW', message=f'Minimum top-up amount is {MIN_TOPUP_AMOUNT} TJS', status_code=400)
+        amount_with_fee = (base_amount * (1 + TOPUP_FEE_RATE)).quantize(Decimal('0.01'))
+
+    expected_amount = await allocate_unique_amount(amount_with_fee, db)
     order = Order(
         user_id=user_id,
         intent=intent,

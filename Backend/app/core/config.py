@@ -31,11 +31,6 @@ class Settings:
     CELERY_BROKER_URL: str = os.getenv('CELERY_BROKER_URL', f"redis://:{os.getenv('REDIS_PASSWORD', '')}@localhost:6379/1" if os.getenv('REDIS_PASSWORD') else 'redis://localhost:6379/1')
     CELERY_RESULT_BACKEND: str = os.getenv('CELERY_RESULT_BACKEND', f"redis://:{os.getenv('REDIS_PASSWORD', '')}@localhost:6379/1" if os.getenv('REDIS_PASSWORD') else 'redis://localhost:6379/1')
 
-    STRIPE_SECRET_KEY: str = os.getenv('STRIPE_SECRET_KEY', '')
-    STRIPE_WEBHOOK_SECRET: str = os.getenv('STRIPE_WEBHOOK_SECRET', '')
-    STRIPE_SUCCESS_URL: str = os.getenv('STRIPE_SUCCESS_URL', 'http://localhost:5173/payment/success')
-    STRIPE_CANCEL_URL: str = os.getenv('STRIPE_CANCEL_URL', 'http://localhost:5173/payment/cancel')
-
     EMAIL_HOST: str = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_PORT: int = int(os.getenv('EMAIL_PORT', '587'))
     EMAIL_USE_TLS: bool = os.getenv('EMAIL_USE_TLS', 'True') == 'True'

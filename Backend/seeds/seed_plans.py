@@ -13,6 +13,7 @@ PLANS = [
     {
         'code': 'free',
         'price_monthly': 0,
+        'price_half_yearly': 0,
         'price_yearly': 0,
         'stories_per_day': 5,
         'deck_words_per_day': 35,
@@ -21,11 +22,12 @@ PLANS = [
         'audiobooks_per_day': 1,
         'generated_stories_per_day': 0,
         'can_buy_stories': False,
-        'telegram_access': False,
+        'telegram_access': True,
     },
     {
         'code': 'premium',
         'price_monthly': 250,
+        'price_half_yearly': 1440,
         'price_yearly': 2760,
         'stories_per_day': None,
         'deck_words_per_day': None,
@@ -39,6 +41,7 @@ PLANS = [
     {
         'code': 'pro',
         'price_monthly': 500,
+        'price_half_yearly': 2850,
         'price_yearly': 5460,
         'stories_per_day': None,
         'deck_words_per_day': None,

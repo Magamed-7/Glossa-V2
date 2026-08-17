@@ -101,6 +101,26 @@ def send_telegram_task(chat_id: str, title: str, body: str):
     return run_async(run())
 
 
+@celery_app.task(name='app.tasks.notifications.delete_telegram_message')
+def delete_telegram_message_task(chat_id: str, message_id: int):
+    async def run():
+        bot = Bot(token=settings.TG_BOT)
+
+        try:
+            await bot.delete_message(chat_id=chat_id, message_id=message_id)
+        except Exception:
+            # The invoice may already be gone (user deleted it, or Telegram's 48h
+            # deletion window passed) — that is not worth failing the task over.
+            logger.warning('could not delete message %s in chat %s', message_id, chat_id)
+            return 'skipped'
+        finally:
+            await bot.session.close()
+
+        return 'deleted'
+
+    return run_async(run())
+
+
 @celery_app.task(name='app.tasks.notifications.sm2_repetition_reminders')
 def sm2_repetition_reminders(**kwargs):
     from app.services import notify_service, crud_settings

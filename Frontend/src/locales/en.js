@@ -36,7 +36,7 @@ export const en = {
     notifications: "Notifications",
     myProfile: "My profile",
     wallet: "Wallet",
-    tagline: "Mastery through Design",
+    tagline: "The limits of language are the limits of the world",
     search: "Search",
     submitSearch: "Submit search",
     searchPlaceholder: "Search stories and words…",
@@ -991,9 +991,9 @@ export const en = {
   landing: {
     hero: {
       eyebrow: "The Editorial Standard",
-      titleLine1: "Mastery",
-      titleLine2: "Through",
-      titleLine3: "Design.",
+      titleLine1: "The limits of language",
+      titleLine2: "are the limits of",
+      titleLine3: "the world.",
       description:
         "Glossa is a refined workspace for the modern language learner, combining archival rigor with digital precision. Stories, grammar, spaced repetition, and an AI tutor — all in one carefully designed place.",
       cta: "Get Started",

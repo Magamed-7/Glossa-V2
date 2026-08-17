@@ -20,6 +20,15 @@ async def create_telegram_link(
     return {'link': link}
 
 
+@router_telegram.post('/payment-link', response_model=TelegramLinkResponse)
+async def create_payment_link(
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    link = await telegram_link_service.create_payment_link_code(current_user.id, db)
+    return {'link': link}
+
+
 @router_telegram.post('/unlink')
 async def unlink_telegram(
     db: AsyncSession = Depends(get_db),

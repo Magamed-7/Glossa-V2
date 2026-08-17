@@ -15,31 +15,23 @@ async def test_new_user_balance_is_zero(client, user, token):
     assert response.json()['balance'] == '0.00'
 
 
-async def test_topup_increases_balance(client, user, token):
-    response = await client.post(
-        '/balance/topup', json={'amount': '100.00'}, headers={'Authorization': f'Bearer {token}'}
-    )
+async def test_topup_balance_increases_balance(db, user):
+    balance = await crud_payment.topup_balance(user.id, Decimal('100.00'), db)
+    assert balance.balance == Decimal('100.00')
 
-    assert response.status_code == 200
-    assert response.json()['balance'] == '100.00'
-
-    second = await client.post(
-        '/balance/topup', json={'amount': '50.00'}, headers={'Authorization': f'Bearer {token}'}
-    )
-    assert second.json()['balance'] == '150.00'
+    balance = await crud_payment.topup_balance(user.id, Decimal('50.00'), db)
+    assert balance.balance == Decimal('150.00')
 
 
-async def test_topup_non_positive_amount_rejected(client, user, token):
-    response = await client.post(
-        '/balance/topup', json={'amount': '0'}, headers={'Authorization': f'Bearer {token}'}
-    )
+async def test_topup_balance_non_positive_amount_rejected(db, user):
+    from app.core.errors import AppError
 
-    assert response.status_code == 400
-    assert response.json()['error']['code'] == 'INVALID_AMOUNT'
+    with pytest.raises(AppError):
+        await crud_payment.topup_balance(user.id, Decimal('0'), db)
 
 
-async def test_topup_appears_in_payment_history(client, user, token):
-    await client.post('/balance/topup', json={'amount': '30.00'}, headers={'Authorization': f'Bearer {token}'})
+async def test_topup_appears_in_payment_history(client, db, user, token):
+    await crud_payment.topup_balance(user.id, Decimal('30.00'), db)
 
     response = await client.get('/payments/history', headers={'Authorization': f'Bearer {token}'})
 
@@ -80,8 +72,8 @@ async def test_subscribe_without_enough_balance_fails(client, user, token):
     assert response.json()['error']['code'] == 'INSUFFICIENT_FUNDS'
 
 
-async def test_subscribe_with_sufficient_balance_activates_plan_and_deducts_balance(client, user, token):
-    await client.post('/balance/topup', json={'amount': '250.00'}, headers={'Authorization': f'Bearer {token}'})
+async def test_subscribe_with_sufficient_balance_activates_plan_and_deducts_balance(client, db, user, token):
+    await crud_payment.topup_balance(user.id, Decimal('250.00'), db)
 
     response = await client.post(
         '/subscriptions/subscribe',
@@ -104,7 +96,7 @@ async def test_subscribe_with_sufficient_balance_activates_plan_and_deducts_bala
 
 
 async def test_resubscribing_deactivates_previous_subscription(client, db, user, token):
-    await client.post('/balance/topup', json={'amount': '750.00'}, headers={'Authorization': f'Bearer {token}'})
+    await crud_payment.topup_balance(user.id, Decimal('750.00'), db)
 
     await client.post(
         '/subscriptions/subscribe',
@@ -128,8 +120,8 @@ async def test_resubscribing_deactivates_previous_subscription(client, db, user,
     assert my_subscription.json()['plan']['code'] == 'pro'
 
 
-async def test_purchase_atomicity_rolls_back_balance_on_create_entity_failure(client, db, user, token):
-    await client.post('/balance/topup', json={'amount': '100.00'}, headers={'Authorization': f'Bearer {token}'})
+async def test_purchase_atomicity_rolls_back_balance_on_create_entity_failure(db, user):
+    await crud_payment.topup_balance(user.id, Decimal('100.00'), db)
 
     async def failing_create_entity(db):
         raise RuntimeError('boom')
@@ -162,9 +154,7 @@ async def test_buying_story_splits_income_seventy_thirty_with_author(
     await db.commit()
     await db.refresh(story)
 
-    await client.post(
-        '/balance/topup', json={'amount': '100.00'}, headers={'Authorization': f'Bearer {premium_token}'}
-    )
+    await crud_payment.topup_balance(premium_user.id, Decimal('100.00'), db)
 
     response = await client.post(
         f'/user-stories/{story.id}/buy', headers={'Authorization': f'Bearer {premium_token}'}
@@ -182,18 +172,3 @@ async def test_buying_story_splits_income_seventy_thirty_with_author(
     purchase_entry = next(entry for entry in history if entry.item_type == 'user_story')
     assert purchase_entry.amount == Decimal('100.00')
     assert purchase_entry.seller_income == Decimal('70.00')
-
-
-async def test_stripe_webhook_replay_does_not_double_credit(client, db, user, token):
-    await crud_payment.topup_balance(user.id, Decimal('50.00'), db, stripe_event_id='evt_test_123')
-
-    already_processed = await crud_payment.stripe_event_already_processed('evt_test_123', db)
-    assert already_processed is True
-
-    balance = await crud_payment.get_or_create_balance(user.id, db)
-    assert balance.balance == Decimal('50.00')
-
-    from sqlalchemy.exc import IntegrityError
-
-    with pytest.raises(IntegrityError):
-        await crud_payment.topup_balance(user.id, Decimal('50.00'), db, stripe_event_id='evt_test_123')

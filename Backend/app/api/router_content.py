@@ -81,12 +81,13 @@ async def get_grammar_lessons(
     level: str | None = None,
     unit: str | None = None,
     search: str | None = None,
+    locale: str = 'en',
     limit: int = 20,
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
 ):
     lessons = await crud_content.get_grammar_lessons(db, level=level, unit=unit, search=search, limit=limit, offset=offset)
-    return [crud_content.lesson_to_response(lesson) for lesson in lessons]
+    return [crud_content.lesson_to_response(lesson, locale) for lesson in lessons]
 
 
 @router_grammar.get('/progress', response_model=GrammarProgressResponse)

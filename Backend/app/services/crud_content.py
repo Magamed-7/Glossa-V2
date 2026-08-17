@@ -85,7 +85,7 @@ async def get_vocab_entry(entry_id: int, db: AsyncSession):
     return result.scalar_one_or_none()
 
 
-def lesson_to_response(lesson: GrammarLessons):
+def lesson_to_response(lesson: GrammarLessons, locale: str = 'en'):
     return {
         'id': lesson.id,
         'cefr_level': lesson.cefr_level,
@@ -93,7 +93,7 @@ def lesson_to_response(lesson: GrammarLessons):
         'lesson': lesson.lesson,
         'topic': lesson.topic,
         'structure': lesson.structure,
-        'tip': lesson.tip,
+        'tip': pick_locale(lesson, 'tip', locale),
     }
 
 
@@ -157,7 +157,7 @@ async def get_lesson_detail(lesson_id: int, locale: str, db: AsyncSession):
     questions = await get_lesson_questions(lesson_id, db)
 
     return {
-        **lesson_to_response(lesson),
+        **lesson_to_response(lesson, locale),
         'rule': pick_locale(lesson, 'rule', locale),
         'explanation_long': pick_locale(lesson, 'explanation_long', locale),
         'examples': [{'id': e.id, 'text': e.text, 'order': e.order} for e in examples],

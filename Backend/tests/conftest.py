@@ -92,6 +92,7 @@ async def premium_user(db):
         plan = Plans(
             code='premium',
             price_monthly=250,
+            price_half_yearly=1440,
             price_yearly=2760,
             stories_per_day=None,
             deck_words_per_day=None,

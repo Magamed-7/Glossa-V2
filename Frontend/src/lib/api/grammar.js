@@ -16,8 +16,8 @@ export function getGrammarProgress() {
   return api.get("/grammar/progress");
 }
 
-export function getLesson(lessonId) {
-  return api.get(`/grammar/${lessonId}`);
+export function getLesson(lessonId, locale = "en") {
+  return api.get(`/grammar/${lessonId}?locale=${locale}`);
 }
 
 export function submitLesson(lessonId, answers) {

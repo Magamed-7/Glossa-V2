@@ -39,6 +39,29 @@ async def resolve_link_code(code: str):
     return int(user_id)
 
 
+def _payment_code_key(code: str):
+    return f'telegram:paylink:{code}'
+
+
+async def create_payment_link_code(user_id: int, db: AsyncSession):
+    # Unlike create_link_code, this is NOT gated by an active premium plan — anyone
+    # who wants to top up their wallet or buy a subscription needs to reach the bot
+    # first, so linking here can't require a subscription they don't have yet.
+    code = secrets.token_urlsafe(8)
+    await redis_client.set(_payment_code_key(code), str(user_id), ex=CODE_TTL_SECONDS)
+
+    return f'https://t.me/{settings.TELEGRAM_BOT_USERNAME}?start=pay_{code}'
+
+
+async def resolve_payment_link_code(code: str):
+    user_id = await redis_client.getdel(_payment_code_key(code))
+
+    if user_id is None:
+        return None
+
+    return int(user_id)
+
+
 async def get_user_id_by_chat_id(chat_id: str, db: AsyncSession):
     result = await db.execute(select(UserProfiles.user_id).where(UserProfiles.telegram_chat_id == chat_id))
     return result.scalar_one_or_none()

@@ -567,7 +567,27 @@ async def _run_tool_loop(llm_messages: list[dict], user_id: int):
     return await llm_client.call_llm(llm_messages)
 
 
-async def send_message(session_id: int, text: str, db: AsyncSession, tutor: str = 'rose'):
+async def synthesize_reply_audio(reply_text: str, tutor: str = 'rose'):
+    """Voice a tutor reply. Returns the stored audio URL, or None if TTS failed.
+
+    Kept separate from send_message so callers that stream (the chat websocket) can
+    push the text to the learner the moment the LLM is done and voice it afterwards,
+    instead of making them wait for synthesis + upload before seeing anything.
+    """
+    try:
+        from app.services import tts
+        from app.core.storage import upload_file, ALLOWED_AUDIO_TYPES
+        import uuid
+
+        audio_bytes, content_type = await tts.synthesize(reply_text, tutor)
+        extension = 'mp3' if content_type == 'audio/mpeg' else 'wav'
+        return upload_file('pronunciations', audio_bytes, f"tutor_{uuid.uuid4().hex}.{extension}", content_type, ALLOWED_AUDIO_TYPES)
+    except Exception:
+        logger.exception('Failed to synthesize voice for tutor %s with text: %s', tutor, reply_text)
+        return None
+
+
+async def send_message(session_id: int, text: str, db: AsyncSession, tutor: str = 'rose', with_audio: bool = True):
     text = text[:MAX_MESSAGE_LENGTH]
 
     session = await get_session(session_id, db)
@@ -631,17 +651,7 @@ async def send_message(session_id: int, text: str, db: AsyncSession, tutor: str 
     if xp_amount > 0:
         xp_transaction = await ratings.award_xp(session.user_id, 'ai_chat_practice', db, amount=xp_amount)
 
-    audio_url = None
-    try:
-        from app.services import tts
-        from app.core.storage import upload_file, ALLOWED_AUDIO_TYPES
-        import uuid
-
-        audio_bytes, content_type = await tts.synthesize(reply_text, tutor)
-        extension = 'mp3' if content_type == 'audio/mpeg' else 'wav'
-        audio_url = upload_file('pronunciations', audio_bytes, f"tutor_{uuid.uuid4().hex}.{extension}", content_type, ALLOWED_AUDIO_TYPES)
-    except Exception:
-        logger.exception("Failed to synthesize voice for tutor %s with text: %s", tutor, reply_text)
+    audio_url = await synthesize_reply_audio(reply_text, tutor) if with_audio else None
 
     return {
         'user_message': user_message,

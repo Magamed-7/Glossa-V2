@@ -119,12 +119,17 @@ async def authenticate(websocket: WebSocket, db):
 
 
 def _log_ticker_exception(task: asyncio.Task):
+    """Done-callback for detached AI-chat tasks (session ticker, reply voicing).
+
+    Without it an exception in a fire-and-forget task is swallowed by asyncio and the
+    feature just silently stops working.
+    """
     if task.cancelled():
         return
 
     exc = task.exception()
     if exc is not None:
-        logger.error('AI chat ticker task ended with an unhandled exception', exc_info=exc)
+        logger.error('Detached AI chat task %r ended with an unhandled exception', task.get_name(), exc_info=exc)
 
 
 async def tick_session_time(websocket: WebSocket, user_id: int, session_id: int):
@@ -186,6 +191,23 @@ async def tick_session_time(websocket: WebSocket, user_id: int, session_id: int)
         await flush(accumulated_seconds)
 
 
+async def _voice_reply(websocket: WebSocket, message_id: int, reply_text: str, tutor: str):
+    """Synthesize a reply and push it as a follow-up frame keyed by message_id.
+
+    Runs detached from the receive loop so a slow TTS provider can never hold up the
+    next learner turn. Send failures are swallowed: by then the socket is usually just
+    closed, and a missing voice must not kill the conversation.
+    """
+    audio_url = await ai_chat.synthesize_reply_audio(reply_text, tutor)
+    if not audio_url:
+        return
+
+    try:
+        await websocket.send_json({'type': 'audio', 'message_id': message_id, 'audio_url': audio_url})
+    except Exception:
+        logger.warning('Could not deliver audio frame for message %s', message_id)
+
+
 @app.websocket('/ws/ai/chat')
 async def ai_chat_ws(websocket: WebSocket):
     await websocket.accept()
@@ -242,19 +264,29 @@ async def ai_chat_ws(websocket: WebSocket):
 
             try:
                 async with AsyncSessionLocal() as db:
-                    result = await ai_chat.send_message(session.id, text, db, tutor=tutor)
+                    # with_audio=False: synthesis + upload used to run before this frame was
+                    # sent, so the learner stared at a silent screen for the whole LLM+TTS
+                    # round trip. Text goes out the moment it exists; voice follows below.
+                    result = await ai_chat.send_message(session.id, text, db, tutor=tutor, with_audio=False)
             except Exception as exc:
                 logger.exception('AI chat send_message failed for session %s', session.id)
                 await websocket.send_json(_assistant_error_frame(exc))
                 continue
 
+            assistant_message = result['assistant_message']
             await websocket.send_json({
                 'type': 'message',
-                'reply': result['assistant_message'].text,
+                'message_id': assistant_message.id,
+                'reply': assistant_message.text,
                 'corrections': result['user_message'].corrections,
                 'xp_earned': result['xp_earned'],
-                'audio_url': result.get('audio_url'),
+                'audio_url': None,
             })
+
+            audio_task = asyncio.create_task(
+                _voice_reply(websocket, assistant_message.id, assistant_message.text, tutor)
+            )
+            audio_task.add_done_callback(_log_ticker_exception)
     except WebSocketDisconnect:
         pass
     finally:
@@ -286,12 +318,24 @@ async def streak_ws(websocket: WebSocket):
             if streak_obj.prev_streak_before_reset > streak_obj.current_streak:
                 streak_maintained = False
 
+            # Get user active subscription for max_restores
+            from app.services import crud_subscription
+            sub = await crud_subscription.get_active_subscription(user.id, db)
+            plan_code = sub["plan"].code if sub and "plan" in sub else "free"
+            max_restores = 1
+            if plan_code == "premium":
+                max_restores = 5
+            elif plan_code == "pro":
+                max_restores = 10
+
             # Send initial streak data immediately
             await websocket.send_json({
                 'type': 'streak_update',
                 'streak': streak_obj.current_streak,
                 'streak_maintained': streak_maintained,
-                'prev_streak': streak_obj.prev_streak_before_reset
+                'prev_streak': streak_obj.prev_streak_before_reset,
+                'restores_used_this_month': streak_obj.restores_used_this_month,
+                'max_restores': max_restores
             })
 
             # Keep connection open

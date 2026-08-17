@@ -111,7 +111,14 @@ export function useAiChatSocket({ scenario, language, tutor }) {
                 break;
               }
             }
-            updated.push({ role: "assistant", text: data.reply, corrections: null, xpEarned: data.xp_earned, audioUrl: data.audio_url });
+            updated.push({
+              role: "assistant",
+              messageId: data.message_id,
+              text: data.reply,
+              corrections: null,
+              xpEarned: data.xp_earned,
+              audioUrl: data.audio_url
+            });
             // Одна системная заметка про цикл практики/уровня/XP — только после самого первого
             // ответа наставника в свежей (без истории) сессии, не от лица персонажа.
             if (isFirstEverMessageRef.current) {
@@ -120,6 +127,17 @@ export function useAiChatSocket({ scenario, language, tutor }) {
             }
             return updated;
           });
+        } else if (data.type === "audio") {
+          // Озвучка приходит отдельным кадром уже после текста (websocket_app/main.py:
+          // _voice_reply), поэтому привязываем её к реплике по message_id, а не к последней
+          // в списке — пока синтез шёл, ученик мог успеть отправить следующее сообщение.
+          setMessages((current) =>
+            current.map((m) =>
+              m.role === "assistant" && m.messageId === data.message_id
+                ? { ...m, audioUrl: data.audio_url }
+                : m
+            )
+          );
         } else if (data.type === "assistant_error") {
           const key = ASSISTANT_ERROR_KEYS[data.code] || "tutor.aiTemporarilyUnavailable";
           // Реплика наставника, а не системный тост — и разблокирует поле ввода (waitingForReply

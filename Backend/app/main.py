@@ -12,7 +12,7 @@ from app.api.router_export import router_export
 from app.api.router_lingo import router_lingo
 from app.api.router_messenger import router_messenger
 from app.api.router_notification import router_notification
-from app.api.router_payment import router_payment, router_payments_history, router_stripe
+from app.api.router_payment import router_payment, router_payments_history
 from app.api.router_practice import router_practice
 from app.api.router_vocab_size_test import router_vocab_size_test
 from app.api.router_context_help import router_context_help
@@ -90,7 +90,6 @@ app.include_router(router_ai)
 app.include_router(router_rating)
 app.include_router(router_subscription)
 app.include_router(router_payment)
-app.include_router(router_stripe)
 app.include_router(router_payments_history)
 app.include_router(router_user_story)
 app.include_router(router_notification)

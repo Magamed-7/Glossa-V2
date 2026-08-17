@@ -10,19 +10,6 @@ class BalanceResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class TopupRequest(BaseModel):
-    amount: Decimal
-
-
-class CheckoutSessionRequest(BaseModel):
-    amount: Decimal
-    currency: str = 'usd'
-
-
-class CheckoutSessionResponse(BaseModel):
-    url: str
-
-
 class PaymentHistoryEntry(BaseModel):
     id: int
     item_type: str
@@ -32,3 +19,15 @@ class PaymentHistoryEntry(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class SpendingByCategory(BaseModel):
+    item_type: str
+    count: int
+    total_amount: Decimal
+
+
+class PaymentAnalyticsResponse(BaseModel):
+    total_topped_up: Decimal
+    total_spent: Decimal
+    by_category: list[SpendingByCategory]

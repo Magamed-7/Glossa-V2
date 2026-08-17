@@ -7,6 +7,7 @@ class ContextHelpStartRequest(BaseModel):
     context_type: str
     context_ref_id: int
     language: str = 'English'
+    force_new: bool = False
 
 
 class ContextHelpMessage(BaseModel):

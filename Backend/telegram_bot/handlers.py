@@ -73,6 +73,9 @@ BOT_TRANSLATIONS = {
             "💬 **AI Language Practice**:\n"
             "• `/ai` - Launch immersive context chat with *AI Tutor*\n"
             "• `/exit` - Exit AI chat session and restore main menu\n\n"
+            "💳 **Payments**:\n"
+            "• `/balance` - Check your wallet balance & top it up via bank card\n"
+            "• `/subscribe` - Browse and pay for subscription plans\n\n"
             "⚙️ **Bot Control & Settings**:\n"
             "• `/language` - Change bot language interface (EN, RU, TG)\n"
             "• `/settings` - Toggle SM-2 spaced repetition daily notifications\n\n"
@@ -101,7 +104,7 @@ BOT_TRANSLATIONS = {
         'balance_custom_hint': 'Or send any custom amount as a number (e.g. 75.50).',
         'subscribe_catalog': '📦 *Available plans*:\n\nChoose one to pay for:',
         'invoice': (
-            "💳 *Invoice #{order_id}*\n"
+            "💳 *Invoice*\n"
             "Purpose: {purpose}\n"
             "Amount to transfer: `{amount}` TJS (IMPORTANT: transfer the exact amount, including kopeks)\n\n"
             "Card number (Dushanbe City / Корти Милли):\n"
@@ -116,9 +119,20 @@ BOT_TRANSLATIONS = {
         'order_status_paid': '✅ Paid! Order completed.',
         'order_status_expired': '⌛ This invoice expired. Start a new one with /balance or /subscribe.',
         'order_status_cancelled': '❌ Order cancelled.',
-        'order_cancelled': '❌ Order #{order_id} cancelled.',
+        'order_cancelled': '❌ Order cancelled.',
         'order_not_found': 'Order not found.',
         'invalid_amount': 'Please send a valid positive amount, e.g. 100 or 75.50.',
+        'payment_menu_prompt': 'What would you like to do?',
+        'btn_topup_menu': '💰 Top up wallet',
+        'btn_subscribe_menu': '📦 Buy a subscription',
+        'invoice_topup_note': '\n_The amount already includes a small unique-transfer adjustment — this is normal, transfer exactly what is shown above._',
+        'sub_confirm_prompt': 'Confirm purchase: *{plan}*, {period}, {price} TJS. Proceed?',
+        'btn_confirm_yes': '✅ Yes, proceed',
+        'btn_confirm_no': '❌ Cancel',
+        'sub_cancelled': 'Cancelled.',
+        'period_monthly': '1 month',
+        'period_half_yearly': '6 months',
+        'period_yearly': '1 year',
     },
     'ru': {
         'welcome_linked': (
@@ -164,6 +178,9 @@ BOT_TRANSLATIONS = {
             "💬 **Разговорная практика**:\n"
             "• `/ai` - Войти в интерактивный чат с *ИИ-Репетитором*\n"
             "• `/exit` - Выйти из режима чата с ИИ и вернуться в меню\n\n"
+            "💳 **Оплата**:\n"
+            "• `/balance` - Баланс кошелька и пополнение через банковскую карту\n"
+            "• `/subscribe` - Просмотр и оплата тарифов подписки\n\n"
             "⚙️ **Настройки бота**:\n"
             "• `/language` - Изменить язык интерфейса бота (EN, RU, TG)\n"
             "• `/settings` - Управление напоминаниями интервального повторения SM-2\n\n"
@@ -192,7 +209,7 @@ BOT_TRANSLATIONS = {
         'balance_custom_hint': 'Или отправь любую другую сумму числом (например, 75.50).',
         'subscribe_catalog': '📦 *Доступные тарифы*:\n\nВыбери, за что хочешь заплатить:',
         'invoice': (
-            "💳 Счет на оплату #{order_id}\n"
+            "💳 Счет на оплату\n"
             "Назначение: {purpose}\n"
             "Сумма к переводу: `{amount}` TJS (ВАЖНО: переведите точную сумму с копейками)\n\n"
             "Номер карты (Dushanbe City / Корти Милли):\n"
@@ -207,9 +224,20 @@ BOT_TRANSLATIONS = {
         'order_status_paid': '✅ Оплачено! Заказ выполнен.',
         'order_status_expired': '⌛ Срок счёта истёк. Начни заново через /balance или /subscribe.',
         'order_status_cancelled': '❌ Заказ отменён.',
-        'order_cancelled': '❌ Заказ #{order_id} отменён.',
+        'order_cancelled': '❌ Заказ отменён.',
         'order_not_found': 'Заказ не найден.',
         'invalid_amount': 'Отправь корректную положительную сумму, например 100 или 75.50.',
+        'payment_menu_prompt': 'Что хочешь сделать?',
+        'btn_topup_menu': '💰 Пополнить кошелёк',
+        'btn_subscribe_menu': '📦 Купить подписку',
+        'invoice_topup_note': '\n_Сумма уже включает небольшую поправку для уникальности перевода — это нормально, переведи ровно столько, сколько указано выше._',
+        'sub_confirm_prompt': 'Подтверди покупку: *{plan}*, {period}, {price} TJS. Продолжить?',
+        'btn_confirm_yes': '✅ Да, продолжить',
+        'btn_confirm_no': '❌ Отмена',
+        'sub_cancelled': 'Отменено.',
+        'period_monthly': '1 месяц',
+        'period_half_yearly': '6 месяцев',
+        'period_yearly': '1 год',
     },
     'tg': {
         'welcome_linked': (
@@ -255,6 +283,9 @@ BOT_TRANSLATIONS = {
             "💬 **Машқи гуфтугӯ**:\n"
             "• `/ai` - Оғози чати интерактивӣ бо *ИИ-Репетитор*\n"
             "• `/exit` - Баромадан аз чати ИИ ва бозгашт ба меню\n\n"
+            "💳 **Пардохт**:\n"
+            "• `/balance` - Тавозуни ҳамён ва пуркунӣ тавассути корти бонкӣ\n"
+            "• `/subscribe` - Дидан ва пардохти тарифҳои обуна\n\n"
             "⚙️ **Танзимоти бот**:\n"
             "• `/language` - Иваз кардани забони бот (EN, RU, TG)\n"
             "• `/settings` - Идоракунии ёддоварӣ аз такрори SM-2\n\n"
@@ -283,7 +314,7 @@ BOT_TRANSLATIONS = {
         'balance_custom_hint': 'Ё маблағи дигарро ҳамчун рақам фиристед (масалан, 75.50).',
         'subscribe_catalog': '📦 *Тарифҳои дастрас*:\n\nБарои чӣ пардохт кардан мехоҳед интихоб кунед:',
         'invoice': (
-            "💳 Ҳисоб барои пардохт #{order_id}\n"
+            "💳 Ҳисоб барои пардохт\n"
             "Мақсад: {purpose}\n"
             "Маблағи интиқол: `{amount}` TJS (МУҲИМ: маблағи дақиқро бо тин интиқол диҳед)\n\n"
             "Рақами корт (Dushanbe City / Корти Миллӣ):\n"
@@ -298,9 +329,20 @@ BOT_TRANSLATIONS = {
         'order_status_paid': '✅ Пардохт шуд! Фармоиш иҷро гардид.',
         'order_status_expired': '⌛ Мӯҳлати ҳисоб гузашт. Аз нав тавассути /balance ё /subscribe оғоз кунед.',
         'order_status_cancelled': '❌ Фармоиш бекор карда шуд.',
-        'order_cancelled': '❌ Фармоиши #{order_id} бекор карда шуд.',
+        'order_cancelled': '❌ Фармоиш бекор карда шуд.',
         'order_not_found': 'Фармоиш ёфт нашуд.',
         'invalid_amount': 'Маблағи дурусти мусбатро фиристед, масалан 100 ё 75.50.',
+        'payment_menu_prompt': 'Чӣ кор кардан мехоҳед?',
+        'btn_topup_menu': '💰 Пуркунии ҳамён',
+        'btn_subscribe_menu': '📦 Харидани тариф',
+        'invoice_topup_note': '\n_Маблағ аллакай ислоҳи хурди беназириро дар бар мегирад — ин муқаррарист, маҳз ҳамин маблағро интиқол диҳед._',
+        'sub_confirm_prompt': 'Харидро тасдиқ кунед: *{plan}*, {period}, {price} TJS. Идома медиҳед?',
+        'btn_confirm_yes': '✅ Ҳа, идома',
+        'btn_confirm_no': '❌ Бекор',
+        'sub_cancelled': 'Бекор карда шуд.',
+        'period_monthly': '1 моҳ',
+        'period_half_yearly': '6 моҳ',
+        'period_yearly': '1 сол',
     }
 }
 
@@ -500,6 +542,20 @@ def translate_achievement(code: str, title: str, description: str | None, locale
 @router.message(CommandStart())
 async def handle_start(message: Message, command: CommandObject | None = None):
     code = command.args if command is not None else None
+
+    if code and code.startswith('pay_'):
+        user_id = await telegram_link_service.resolve_payment_link_code(code[len('pay_'):])
+
+        if user_id is not None:
+            async with AsyncSessionLocal() as db:
+                await telegram_link_service.save_chat_id(user_id, str(message.chat.id), db)
+                locale = await _get_locale(user_id, db)
+
+            await _send_payment_menu(message, locale)
+            return
+
+        await message.answer(BOT_TRANSLATIONS['ru']['invalid_code'])
+        return
 
     if code:
         user_id = await telegram_link_service.resolve_link_code(code)
@@ -796,9 +852,68 @@ async def _send_invoice(message: Message, order, locale: str):
     t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
     purpose = t['purpose_topup'] if order.intent == 'top_up' else t['purpose_subscription']
     text = t['invoice'].format(
-        order_id=order.id, purpose=purpose, amount=order.expected_amount, card_number=settings.DC_CARD_NUMBER,
+        purpose=purpose, amount=order.expected_amount, card_number=settings.DC_CARD_NUMBER,
     )
-    await message.answer(text, reply_markup=get_invoice_keyboard(order.id, locale), parse_mode="Markdown")
+    if order.intent == 'top_up':
+        text += t['invoice_topup_note']
+    sent = await message.answer(text, reply_markup=get_invoice_keyboard(order.id, locale), parse_mode="Markdown")
+    await redis_client.set(
+        dc_payment.invoice_message_key(order.id), f'{sent.chat.id}:{sent.message_id}', ex=3600
+    )
+
+
+def get_payment_menu_keyboard(locale: str) -> InlineKeyboardMarkup:
+    t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
+    kb = [
+        [InlineKeyboardButton(text=t['btn_topup_menu'], callback_data="payment_menu:topup")],
+        [InlineKeyboardButton(text=t['btn_subscribe_menu'], callback_data="payment_menu:subscribe")],
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=kb)
+
+
+async def _send_payment_menu(message: Message, locale: str):
+    t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
+    await message.answer(
+        t['payment_menu_prompt'], reply_markup=get_payment_menu_keyboard(locale), parse_mode="Markdown"
+    )
+
+
+@router.callback_query(F.data == 'payment_menu:topup')
+async def handle_payment_menu_topup(callback: CallbackQuery):
+    async with AsyncSessionLocal() as db:
+        user_id = await telegram_link_service.get_user_id_by_chat_id(str(callback.message.chat.id), db)
+        if user_id is None:
+            await callback.answer("Account not linked.")
+            return
+
+        locale = await _get_locale(user_id, db)
+        t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
+        balance = await crud_payment.get_or_create_balance(user_id, db)
+
+    await callback.message.answer(
+        t['balance_current'].format(balance=balance.balance), reply_markup=get_topup_keyboard(), parse_mode="Markdown"
+    )
+    await callback.message.answer(t['balance_custom_hint'])
+    await redis_client.set(f"user:tg:awaiting_topup:{callback.message.chat.id}", "1", ex=300)
+    await callback.answer()
+
+
+@router.callback_query(F.data == 'payment_menu:subscribe')
+async def handle_payment_menu_subscribe(callback: CallbackQuery):
+    async with AsyncSessionLocal() as db:
+        user_id = await telegram_link_service.get_user_id_by_chat_id(str(callback.message.chat.id), db)
+        if user_id is None:
+            await callback.answer("Account not linked.")
+            return
+
+        locale = await _get_locale(user_id, db)
+        t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
+        plans = await crud_subscription.get_plans(db)
+
+    await callback.message.answer(
+        t['subscribe_catalog'], reply_markup=get_subscribe_keyboard(plans, locale), parse_mode="Markdown"
+    )
+    await callback.answer()
 
 
 @router.message(Command('balance'))
@@ -848,9 +963,21 @@ def get_subscribe_keyboard(plans, locale: str) -> InlineKeyboardMarkup:
                 text=f"{plan.code.title()} — 1mo — {plan.price_monthly} TJS", callback_data=f"sub:{plan.code}:monthly"
             ),
             InlineKeyboardButton(
+                text=f"{plan.code.title()} — 6mo — {plan.price_half_yearly} TJS", callback_data=f"sub:{plan.code}:half_yearly"
+            ),
+            InlineKeyboardButton(
                 text=f"{plan.code.title()} — 1yr — {plan.price_yearly} TJS", callback_data=f"sub:{plan.code}:yearly"
             ),
         ])
+    return InlineKeyboardMarkup(inline_keyboard=kb)
+
+
+def get_subscribe_confirm_keyboard(plan_code: str, period: str, locale: str) -> InlineKeyboardMarkup:
+    t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
+    kb = [[
+        InlineKeyboardButton(text=t['btn_confirm_yes'], callback_data=f"sub_confirm:{plan_code}:{period}"),
+        InlineKeyboardButton(text=t['btn_confirm_no'], callback_data="sub_cancel"),
+    ]]
     return InlineKeyboardMarkup(inline_keyboard=kb)
 
 
@@ -879,16 +1006,52 @@ async def handle_subscribe_pick(callback: CallbackQuery):
             return
 
         locale = await _get_locale(user_id, db)
+        t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
         plan = await crud_subscription.get_plan_by_code(plan_code, db)
         if plan is None:
             await callback.answer("Plan not found.")
             return
 
-        base_amount = plan.price_monthly if period == 'monthly' else plan.price_yearly
+        price = crud_subscription._plan_price(plan, period)
+
+    text = t['sub_confirm_prompt'].format(plan=plan_code.title(), period=t[f'period_{period}'], price=price)
+    await callback.message.answer(text, reply_markup=get_subscribe_confirm_keyboard(plan_code, period, locale), parse_mode="Markdown")
+    await callback.answer()
+
+
+@router.callback_query(F.data.startswith('sub_confirm:'))
+async def handle_subscribe_confirm(callback: CallbackQuery):
+    _, plan_code, period = callback.data.split(':')
+
+    async with AsyncSessionLocal() as db:
+        user_id = await telegram_link_service.get_user_id_by_chat_id(str(callback.message.chat.id), db)
+        if user_id is None:
+            await callback.answer("Account not linked.")
+            return
+
+        locale = await _get_locale(user_id, db)
+        plan = await crud_subscription.get_plan_by_code(plan_code, db)
+        if plan is None:
+            await callback.answer("Plan not found.")
+            return
+
+        base_amount = crud_subscription._plan_price(plan, period)
         order = await dc_payment.create_order(user_id, 'subscription', base_amount, db, plan_code=plan_code, period=period)
 
+    await callback.message.edit_reply_markup(reply_markup=None)
     await _send_invoice(callback.message, order, locale)
     await callback.answer()
+
+
+@router.callback_query(F.data == 'sub_cancel')
+async def handle_subscribe_cancel(callback: CallbackQuery):
+    async with AsyncSessionLocal() as db:
+        user_id = await telegram_link_service.get_user_id_by_chat_id(str(callback.message.chat.id), db)
+        locale = await _get_locale(user_id, db) if user_id else 'ru'
+
+    t = BOT_TRANSLATIONS.get(locale, BOT_TRANSLATIONS['en'])
+    await callback.message.edit_reply_markup(reply_markup=None)
+    await callback.answer(t['sub_cancelled'])
 
 
 # ─── PAYMENTS: CHECK / CANCEL ORDER ───
@@ -935,7 +1098,7 @@ async def handle_cancel_order(callback: CallbackQuery):
             return
 
     await callback.message.edit_reply_markup(reply_markup=None)
-    await callback.message.answer(t['order_cancelled'].format(order_id=order_id))
+    await callback.message.answer(t['order_cancelled'])
     await callback.answer()
 
 
@@ -964,7 +1127,11 @@ async def handle_all_messages(message: Message):
                 await message.answer(t['invalid_amount'])
                 return
 
-            order = await dc_payment.create_order(user_id, 'top_up', amount, db)
+            try:
+                order = await dc_payment.create_order(user_id, 'top_up', amount, db)
+            except AppError as exc:
+                await message.answer(exc.message)
+                return
             await _send_invoice(message, order, locale)
             return
 
@@ -995,7 +1162,7 @@ async def handle_all_messages(message: Message):
             status_msg = await message.answer("⏳ ...")
 
             try:
-                reply = await ai_chat.send_message(session.id, text, db)
+                reply = await ai_chat.send_message(session.id, text, db, with_audio=False)
                 elapsed = max(1, round(time.monotonic() - started))
 
                 await add_ai_seconds(user_id, elapsed)

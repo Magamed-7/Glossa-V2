@@ -146,13 +146,10 @@ const getLangCode = (langName) => {
   return "en-US";
 };
 
-const CALL_SAMPLES = {
-  rose: "I want to apply for the middle frontend vacancy at your studio.",
-  mint: "Can you help me understand how to tell about my hobbies?",
-  lavender: "I am ready to try mock interviews with you right now.",
-  peach: "I am ready. Tell me something about your country's culture.",
-  sky: "Hello, I am prepared for a challenge today."
-};
+// How long a voiced reply may stay silent before the call resumes listening anyway.
+// Covers TTS failures and dropped audio frames; without it the microphone stayed off
+// for the rest of the call.
+const VOICE_WATCHDOG_MS = 9000;
 
 // Simple staggered words renderer to replicate HTML subtitles
 function StaggeredWords({ text, highlightColor, isUser }) {
@@ -205,6 +202,13 @@ export default function TutorChat() {
   const [callTimeSeconds, setCallTimeSeconds] = useState(0);
   const [showSubtitles, setShowSubtitles] = useState(true);
   const [micMuted, setMicMuted] = useState(false);
+  // Subtitles track what is actually being said right now. Deriving them from callState
+  // instead showed the *previous* assistant reply during the wait for the new one.
+  const [subtitle, setSubtitle] = useState(null); // { text, isUser }
+  // Mirrored as state as well as a ref: the ref is for async callbacks (stale-closure
+  // safe), the state is what re-runs the speech-recognition effect — reading only the
+  // ref there meant the mic never restarted when processing finished.
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Background Canvas Particles Ref & Logic
   const canvasRef = useRef(null);
@@ -368,6 +372,23 @@ export default function TutorChat() {
   const callStateRef = useRef(callState);
   callStateRef.current = callState;
   const isProcessingRef = useRef(false);
+  const audioPlayingRef = useRef(false);
+
+  const setProcessing = (value) => {
+    isProcessingRef.current = value;
+    setIsProcessing(value);
+  };
+
+  // Hard release valve for the call state machine. Any path that leaves the call
+  // "speaking" without audio actually playing (TTS failed, an assistant_error frame,
+  // a dropped audio frame) used to strand isProcessing=true forever, which silently
+  // killed the microphone for the rest of the call.
+  const resumeListening = () => {
+    if (!callActiveRef.current) return;
+    audioPlayingRef.current = false;
+    setProcessing(false);
+    setCallState("listening");
+  };
 
   const stopSpeechRecognition = () => {
     if (recognitionRef.current) {
@@ -385,7 +406,7 @@ export default function TutorChat() {
 
   // Speech Recognition logic for voice call mode
   useEffect(() => {
-    if (!callActive || micMuted || callState !== "listening" || isProcessingRef.current) {
+    if (!callActive || micMuted || callState !== "listening" || isProcessing) {
       stopSpeechRecognition();
       return;
     }
@@ -411,9 +432,10 @@ export default function TutorChat() {
 
       const transcript = event.results?.[0]?.[0]?.transcript;
       if (transcript && transcript.trim()) {
-        isProcessingRef.current = true;
+        setProcessing(true);
         stopSpeechRecognition();
         setCallState("speaking");
+        setSubtitle({ text: transcript.trim(), isUser: true });
         sendMessage(transcript.trim());
         if (tutor) {
           triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
@@ -449,7 +471,7 @@ export default function TutorChat() {
     return () => {
       stopSpeechRecognition();
     };
-  }, [callActive, micMuted, callState, language]);
+  }, [callActive, micMuted, callState, language, isProcessing]);
 
   // Voice Call Timer
   useEffect(() => {
@@ -478,9 +500,11 @@ export default function TutorChat() {
       activeAudioRef.current = audio;
 
       if (callActiveRef.current) {
-        isProcessingRef.current = true;
+        setProcessing(true);
+        audioPlayingRef.current = true;
         stopSpeechRecognition();
         setCallState("speaking");
+        setSubtitle({ text: latest.text, isUser: false });
 
         const coreX = window.innerWidth / 2;
         const coreY = window.innerHeight / 2;
@@ -491,13 +515,9 @@ export default function TutorChat() {
 
         const handleAudioFinish = () => {
           clearInterval(burstTimer);
+          audioPlayingRef.current = false;
           if (callActiveRef.current) {
-            setTimeout(() => {
-              if (callActiveRef.current) {
-                isProcessingRef.current = false;
-                setCallState("listening");
-              }
-            }, 400);
+            setTimeout(resumeListening, 400);
           }
         };
 
@@ -507,9 +527,33 @@ export default function TutorChat() {
 
       audio.play().catch(err => {
         console.warn("Autoplay blocked or failed:", err);
+        // Blocked autoplay must not strand the call in "speaking" with a dead mic.
+        audioPlayingRef.current = false;
+        if (callActiveRef.current) setTimeout(resumeListening, 400);
       });
     }
   }, [messages]);
+
+  // The reply text now arrives before its voice (the server streams them as two frames),
+  // so "assistant message without audio" is a normal transient state — show it as
+  // subtitles immediately. It only becomes a fault if the voice never turns up, which
+  // this watchdog recovers from instead of freezing the call forever.
+  useEffect(() => {
+    if (!callActive || !messages || messages.length === 0) return undefined;
+
+    const latest = messages[messages.length - 1];
+    if (latest.role !== "assistant" || latest.audioUrl) return undefined;
+
+    setSubtitle({ text: latest.text, isUser: false });
+
+    // An error reply is never voiced at all — no point waiting out the full timeout.
+    const grace = latest.isError ? 1200 : VOICE_WATCHDOG_MS;
+    const timer = setTimeout(() => {
+      if (!audioPlayingRef.current) resumeListening();
+    }, grace);
+
+    return () => clearTimeout(timer);
+  }, [messages, callActive]);
 
   const handleSend = (text) => {
     sendMessage(text);
@@ -517,22 +561,25 @@ export default function TutorChat() {
       triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
     }
     if (callActive) {
-      isProcessingRef.current = true;
+      setProcessing(true);
       stopSpeechRecognition();
       setCallState("speaking");
+      setSubtitle({ text, isUser: true });
     }
   };
 
   const startVoiceCall = async () => {
     callActiveRef.current = true;
-    isProcessingRef.current = true;
+    setProcessing(true);
     stopSpeechRecognition();
     setCallActive(true);
     setCallTimeSeconds(0);
     setCallState("speaking");
 
+    const greetingText = activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual;
+    setSubtitle({ text: greetingText, isUser: false });
+
     try {
-      const greetingText = activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual;
       const res = await getTtsUrl({ text: greetingText, tutor });
       if (res && res.audio_url) {
         if (activeAudioRef.current) {
@@ -551,35 +598,33 @@ export default function TutorChat() {
 
         const handleAudioFinish = () => {
           clearInterval(burstTimer);
+          audioPlayingRef.current = false;
           if (callActiveRef.current) {
-            setTimeout(() => {
-              if (callActiveRef.current) {
-                isProcessingRef.current = false;
-                setCallState("listening");
-              }
-            }, 400);
+            setTimeout(resumeListening, 400);
           }
         };
 
         audio.onended = handleAudioFinish;
         audio.onerror = handleAudioFinish;
 
+        audioPlayingRef.current = true;
         await audio.play();
       } else {
-        isProcessingRef.current = false;
-        setCallState("listening");
+        resumeListening();
       }
     } catch (err) {
       console.error("Failed to play welcome greeting audio:", err);
-      isProcessingRef.current = false;
-      setCallState("listening");
+      audioPlayingRef.current = false;
+      resumeListening();
     }
   };
 
   const closeVoiceCall = () => {
     callActiveRef.current = false;
-    isProcessingRef.current = false;
+    audioPlayingRef.current = false;
+    setProcessing(false);
     setCallActive(false);
+    setSubtitle(null);
     stopSpeechRecognition();
 
     if (activeAudioRef.current) {
@@ -588,14 +633,6 @@ export default function TutorChat() {
       activeAudioRef.current.onerror = null;
       activeAudioRef.current = null;
     }
-  };
-
-  const getLatestMessage = (role) => {
-    if (!messages) return null;
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === role) return messages[i].text;
-    }
-    return null;
   };
 
   // Preset configuration
@@ -925,20 +962,15 @@ export default function TutorChat() {
               style={{ background: isDarkMode ? activePreset.gradientStyleDark : activePreset.gradientStyleLight }}
             >
               <div className="text-xs font-semibold leading-relaxed w-full">
-                {callState === "listening" ? (
+                {subtitle ? (
                   <StaggeredWords
-                    key={`user-${getLatestMessage("user") || CALL_SAMPLES[tutor]}`}
-                    text={getLatestMessage("user") || CALL_SAMPLES[tutor]}
+                    key={`${subtitle.isUser ? "user" : "assistant"}-${subtitle.text}`}
+                    text={subtitle.text}
                     highlightColor={activePreset.accent}
-                    isUser={true}
+                    isUser={subtitle.isUser}
                   />
                 ) : (
-                  <StaggeredWords
-                    key={`assistant-${getLatestMessage("assistant") || activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual}`}
-                    text={getLatestMessage("assistant") || activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual}
-                    highlightColor={activePreset.accent}
-                    isUser={false}
-                  />
+                  <span className="opacity-60">{t("tutor.callListening")}</span>
                 )}
               </div>
             </div>

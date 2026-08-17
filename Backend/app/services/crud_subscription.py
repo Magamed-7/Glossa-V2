@@ -18,6 +18,14 @@ async def get_plan_by_code(code: str, db: AsyncSession):
     return result.scalar_one_or_none()
 
 
+def _plan_price(plan: Plans, period: str):
+    return {'monthly': plan.price_monthly, 'half_yearly': plan.price_half_yearly, 'yearly': plan.price_yearly}[period]
+
+
+def _period_duration(period: str):
+    return {'monthly': timedelta(days=30), 'half_yearly': timedelta(days=182), 'yearly': timedelta(days=365)}[period]
+
+
 async def get_active_subscription(user_id: int, db: AsyncSession):
     now = datetime.now(timezone.utc)
 
@@ -54,8 +62,8 @@ async def subscribe_to_plan(user_id: int, plan_code: str, period: str, db: Async
     if plan is None:
         raise AppError(code='PLAN_NOT_FOUND', message='Plan not found', status_code=404)
 
-    price = plan.price_monthly if period == 'monthly' else plan.price_yearly
-    duration = timedelta(days=30) if period == 'monthly' else timedelta(days=365)
+    price = _plan_price(plan, period)
+    duration = _period_duration(period)
     expires_at = datetime.now(timezone.utc) + duration
 
     async def create_entity(db: AsyncSession):

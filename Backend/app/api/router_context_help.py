@@ -21,7 +21,7 @@ async def start(
     current_user=Depends(require_ai_access),
 ):
     session = await ai_context_help.get_or_create_session(
-        current_user.id, data.context_type, data.context_ref_id, data.language, db
+        current_user.id, data.context_type, data.context_ref_id, data.language, db, force_new=data.force_new
     )
     messages = await ai_context_help.get_session_messages(session.id, db)
     return {'session_id': session.id, 'messages': messages}

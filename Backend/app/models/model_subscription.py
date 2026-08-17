@@ -13,6 +13,7 @@ class Plans(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     code: Mapped[str] = mapped_column(String, nullable=False, unique=True, index=True)
     price_monthly: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    price_half_yearly: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, server_default='0')
     price_yearly: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
 
     stories_per_day: Mapped[int | None] = mapped_column(Integer, nullable=True)

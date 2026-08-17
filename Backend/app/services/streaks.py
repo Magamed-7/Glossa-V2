@@ -29,6 +29,13 @@ async def touch_streak(user_id: int, db: AsyncSession):
     if streak.last_activity_date == today - timedelta(days=1):
         streak.current_streak += 1
     else:
+        # Save previous streak before reset
+        if streak.current_streak > 1:
+            streak.prev_streak_before_reset = streak.current_streak
+        else:
+            # If current_streak is 1 but we already have a saved prev_streak, keep it,
+            # otherwise don't overwrite with 1.
+            pass
         streak.current_streak = 1
 
     streak.best_streak = max(streak.best_streak, streak.current_streak)

@@ -68,7 +68,7 @@ async def _expand_one(lesson_id: int, stats: dict):
             topic=lesson.topic,
             rule_en=lesson.rule_en or lesson.topic,
             structure=lesson.structure or '(none given)',
-            tip=lesson.tip or '(none given)',
+            tip=lesson.tip_en or '(none given)',
         )
 
         for attempt in range(ATTEMPTS):

@@ -162,7 +162,9 @@ async def _load_grammar_a1(level, dry_run, db):
             rule_ru=g_ru[idx].get('rule_en'),
             rule_tg=g_tg[idx].get('rule_en'),
             structure=lesson_en.get('structure'),
-            tip=lesson_en.get('tip'),
+            tip_en=lesson_en.get('tip'),
+            tip_ru=g_ru[idx].get('tip'),
+            tip_tg=g_tg[idx].get('tip'),
             source_key=source_key,
         )
         db.add(lesson)
@@ -235,7 +237,9 @@ async def _load_grammar_embedded(level, dry_run, db):
             rule_ru=lesson_ru.get('rule_en'),
             rule_tg=lesson_tg.get('rule_en'),
             structure=lesson_en.get('structure'),
-            tip=lesson_en.get('tip'),
+            tip_en=lesson_en.get('tip'),
+            tip_ru=lesson_ru.get('tip'),
+            tip_tg=lesson_tg.get('tip'),
             source_key=source_key,
         )
         db.add(lesson)
