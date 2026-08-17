@@ -90,9 +90,9 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
           {CURATORS.map((c) => (
             <div key={c.key} className="group">
-              <div className="mb-6 overflow-hidden border-2 border-tertiary grayscale hover:grayscale-0 transition-all duration-500">
+              <div className="mb-6 overflow-hidden border-2 border-tertiary bg-surface-container-low grayscale hover:grayscale-0 transition-all duration-500">
                 <img
-                  className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700 block"
                   src={c.image}
                   alt=""
                   aria-hidden="true"
