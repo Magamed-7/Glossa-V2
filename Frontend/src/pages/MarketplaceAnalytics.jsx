@@ -97,7 +97,7 @@ export default function MarketplaceAnalytics() {
         <div className="relative bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 p-6 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] overflow-hidden">
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-black text-gray-400 dark:text-stone-500 font-label uppercase tracking-widest">
-              {t("market.lingoRating")}
+              {t("market.glossaRating")}
             </span>
             <div className="w-8 h-8 rounded-full bg-yellow-300 flex items-center justify-center border border-black">
               <Icon name="star" className="text-black text-sm" />
