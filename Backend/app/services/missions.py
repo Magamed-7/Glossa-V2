@@ -15,7 +15,7 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
     settings = await crud_settings.get_settings(user_id, db)
     daily_goal = settings.daily_goal
 
-    streak_obj = await streaks.get_streak(user_id, db)
+    streak_obj = await streaks.touch_streak(user_id, db)
     
     # Check if month has changed to reset monthly restore counter
     current_month_str = date.today().strftime("%Y-%m")
@@ -41,6 +41,10 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
     if streak_obj.last_activity_date:
         if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
             streak_maintained = True
+
+    # If the user has a saved prev_streak_before_reset that was reset, they are in a broken (restorable) state
+    if streak_obj.prev_streak_before_reset > streak_obj.current_streak:
+        streak_maintained = False
 
 
     # 2. Get start of today (min time)
@@ -117,12 +121,22 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
     weekly_reviews = (await db.execute(weekly_reviews_query)).all()
     reviews_by_date = {r[0]: r[1] for r in weekly_reviews}
 
+    # Calculate start of current streak
+    start_of_streak = None
+    if streak_obj.last_activity_date and streak_obj.current_streak > 0:
+        start_of_streak = streak_obj.last_activity_date - timedelta(days=streak_obj.current_streak - 1)
+
     operations_log = []
     day_names = ["M", "T", "W", "T", "F", "S", "S"]
     for i in range(7):
         day_date = start_of_week + timedelta(days=i)
         day_review_count = reviews_by_date.get(day_date, 0)
         is_completed = day_review_count >= daily_goal
+        
+        if not is_completed and start_of_streak:
+            if start_of_streak <= day_date <= streak_obj.last_activity_date:
+                is_completed = True
+
         operations_log.append({
             "day": day_names[i],
             "date": day_date,
@@ -168,5 +182,6 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
         "operations_log": operations_log,
         "daily_missions": daily_missions,
         "restores_used_this_month": restores_used,
-        "max_restores": max_restores
+        "max_restores": max_restores,
+        "prev_streak_before_reset": streak_obj.prev_streak_before_reset
     }

@@ -249,34 +249,43 @@ export default function Missions() {
                 return (
                   <div
                     key={index}
-                    className={`aspect-square border-2 border-black dark:border-stone-700 bg-surface-container flex flex-col items-center justify-between p-1.5 md:p-3 relative overflow-hidden transition-all shadow-[2px_2px_0px_#000] ${
-                      isToday 
-                        ? "ring-4 ring-secondary/30 border-secondary scale-105 z-10" 
-                        : "hover:scale-[1.02]"
+                    className={`aspect-square border-2 flex flex-col items-center justify-between p-2.5 relative overflow-hidden transition-all duration-300 shadow-[2px_2px_0px_#000] ${
+                      dayEntry.completed
+                        ? "bg-emerald-500 dark:bg-emerald-600 border-black text-white shadow-[0_0_15px_rgba(16,185,129,0.35),2px_2px_0px_#000]"
+                        : isToday
+                        ? "bg-surface-container border-secondary border-dashed scale-105 z-10 animate-pulse shadow-[3px_3px_0px_var(--color-secondary)]"
+                        : "bg-surface-container border-black dark:border-stone-700 hover:scale-[1.02]"
                     }`}
                   >
                     {/* День недели */}
-                    <span className={`font-label text-[10px] md:text-xs font-black uppercase ${isToday ? "text-secondary" : "text-on-surface-variant"}`}>
+                    <span className={`font-label text-[10px] md:text-xs font-black uppercase ${
+                      dayEntry.completed
+                        ? "text-white"
+                        : isToday
+                        ? "text-secondary font-extrabold"
+                        : "text-on-surface-variant"
+                    }`}>
                       {dayEntry.day}
                     </span>
                     
-                    {/* Число */}
-                    <span className="font-ledger text-[10px] md:text-xs text-on-surface-variant opacity-60">
-                      {new Date(dayEntry.date).getDate()}
-                    </span>
-
-                    {/* Отметка выполнения штампом */}
+                    {/* Glowing LED fire icon for completed days */}
                     {dayEntry.completed ? (
-                      <div className="stamp absolute inset-0 m-auto w-max h-max font-headline text-[9px] md:text-[11px] uppercase px-1.5 py-0.5 border border-emerald-600 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400 font-black transform -rotate-12 bg-surface/90 shadow-[1px_1px_0px_rgba(0,0,0,0.1)]">
-                        {t("deck.games.duty")}
+                      <div className="flex items-center justify-center">
+                        <Icon 
+                          name="local_fire_department" 
+                          className="text-lg text-amber-300 drop-shadow-[0_0_6px_rgba(252,211,77,0.95)] animate-pulse" 
+                        />
                       </div>
                     ) : (
-                      isToday && (
-                        <div className="stamp absolute inset-0 m-auto w-max h-max font-headline text-[9px] md:text-[11px] uppercase px-1.5 py-0.5 border border-secondary text-secondary font-black transform -rotate-12 bg-surface/90 shadow-[1px_1px_0px_rgba(0,0,0,0.1)]">
-                          {t("deck.games.due")}
-                        </div>
-                      )
+                      <div className="h-5" />
                     )}
+
+                    {/* Число */}
+                    <span className={`font-ledger text-[9px] md:text-xs font-bold ${
+                      dayEntry.completed ? "text-white/90" : "text-on-surface-variant opacity-60"
+                    }`}>
+                      {new Date(dayEntry.date).getDate()}
+                    </span>
                   </div>
                 );
               })}
