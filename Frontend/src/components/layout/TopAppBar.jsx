@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
 import Avatar from "../ui/Avatar.jsx";
@@ -41,11 +42,17 @@ export default function TopAppBar({ hasUnread, user }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { data: balance } = useApi(() => getBalance(), []);
-  const { data: missionsData } = useApi(() => getDailyMissions(), []);
+  const { data: missionsData, reload: reloadStreak } = useApi(() => getDailyMissions(), []);
 
   const streakCount = missionsData?.streak ?? 0;
   const isMaintained = missionsData?.streak_maintained ?? false;
   const streakColor = getStreakStyle(streakCount);
+
+  useEffect(() => {
+    const handleUpdate = () => reloadStreak();
+    window.addEventListener("streak-updated", handleUpdate);
+    return () => window.removeEventListener("streak-updated", handleUpdate);
+  }, [reloadStreak]);
 
   function onLogout() {
     logout();
