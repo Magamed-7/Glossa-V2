@@ -214,7 +214,7 @@ export default function WalletAnalytics() {
           <span className={`font-label text-[11px] font-black uppercase tracking-wider mb-3 ${
             isSpentMode ? "text-secondary" : "text-emerald-600 dark:text-emerald-400"
           }`}>
-            {isSpentMode ? "Expense Analytics" : "Income Analytics"}
+            {isSpentMode ? t("wallet.expenseAnalytics") : t("wallet.incomeAnalytics")}
           </span>
           
           <div className="relative w-40 h-40">
@@ -268,7 +268,7 @@ export default function WalletAnalytics() {
                 className={`font-label uppercase tracking-wider font-bold ${circleTextClass}`}
                 style={{ fontSize: "7px" }}
               >
-                {isSpentMode ? "Spent" : "Deposited"}
+                {isSpentMode ? t("wallet.spent") : t("wallet.deposited")}
               </text>
               <text 
                 x="50" 
@@ -300,7 +300,7 @@ export default function WalletAnalytics() {
         {/* Правая колонка: Детализация по категориям/пополнениям */}
         <div className="lg:col-span-3 space-y-4">
           <p className="font-label text-label-md uppercase text-on-surface-variant border-b border-black/25 dark:border-white/10 pb-2">
-            {isSpentMode ? t("wallet.byCategory") : "Inflow Details"}
+            {isSpentMode ? t("wallet.byCategory") : t("wallet.inflowDetails")}
           </p>
           
           {isSpentMode ? (
@@ -356,7 +356,7 @@ export default function WalletAnalytics() {
                   <div className="h-full bg-emerald-500 w-full" />
                 </div>
                 <div className="text-[10px] text-right font-ledger text-on-surface-variant">
-                  100% (Deposits)
+                  100% ({t("wallet.deposits")})
                 </div>
               </li>
             </ul>
