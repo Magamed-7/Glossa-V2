@@ -8,10 +8,10 @@ const PILLARS = [
 ];
 
 const CURATORS = [
-  { key: "muhammad", nameKey: "about.curators.people.muhammad.name", image: "/img/marketing/curator-muhammad.webp" },
   { key: "osaf", name: "Dr. Osaf Abdulloev", image: "/img/marketing/curator-osaf.webp" },
   { key: "julian", name: "Ruslan Sodatov", image: "/img/marketing/curator-ruslan.webp" },
   { key: "mika", name: "Yunus Muhammadzoda", image: "/img/marketing/curator-yunus.png" },
+  { key: "muhammad", nameKey: "about.curators.people.muhammad.name", image: "/img/marketing/curator-muhammad.webp" },
 ];
 
 export default function About() {
