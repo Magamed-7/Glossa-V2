@@ -916,6 +916,7 @@ export const ru = {
     type_subscription: "Покупка тарифа",
     type_user_story: "Покупка книги",
     type_lingo_service: "Покупка услуги",
+    pageOf: "Страница {page} из {total}",
   },
   search: {
     stories: "Истории",

@@ -917,6 +917,7 @@ export const tg = {
     type_subscription: "Хариди тариф",
     type_user_story: "Хариди китоб",
     type_lingo_service: "Хариди хидмат",
+    pageOf: "Саҳифаи {page} аз {total}",
   },
   search: {
     stories: "Ҳикояҳо",
