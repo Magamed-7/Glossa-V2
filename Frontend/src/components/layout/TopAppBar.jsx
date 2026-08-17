@@ -9,14 +9,43 @@ import { getBalance } from "../../lib/api/payments.js";
 import { formatMoney } from "../../lib/format.js";
 import { useT } from "../../lib/i18n.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
+import { getDailyMissions } from "../../lib/api/learning.js";
 
 const ICON_BOX = "flex items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0";
+
+const getStreakStyle = (days) => {
+  const colors = [
+    "#f97316", // 0-9 дн.
+    "#f59e0b", // 10-19 дн.
+    "#eab308", // 20-29 дн.
+    "#84cc16", // 30-39 дн.
+    "#22c55e", // 40-49 дн.
+    "#10b981", // 50-59 дн.
+    "#14b8a6", // 60-69 дн.
+    "#06b6d4", // 70-79 дн.
+    "#0ea5e9", // 80-89 дн.
+    "#3b82f6", // 90-99 дн.
+    "#6366f1", // 100-109 дн.
+    "#8b5cf6", // 110-119 дн.
+    "#a855f7", // 120-129 дн.
+    "#d946ef", // 130-139 дн.
+    "#ec4899", // 140-149 дн.
+    "#f43f5e"  // 150+ дн.
+  ];
+  const index = Math.floor(days / 10) % colors.length;
+  return colors[index];
+};
 
 export default function TopAppBar({ hasUnread, user }) {
   const t = useT();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { data: balance } = useApi(() => getBalance(), []);
+  const { data: missionsData } = useApi(() => getDailyMissions(), []);
+
+  const streakCount = missionsData?.streak ?? 0;
+  const isMaintained = missionsData?.streak_maintained ?? false;
+  const streakColor = getStreakStyle(streakCount);
 
   function onLogout() {
     logout();
@@ -31,6 +60,25 @@ export default function TopAppBar({ hasUnread, user }) {
 
       <div className="flex items-center gap-3">
         <SearchBar />
+
+        {/* Daily Streak Indicator */}
+        <Link
+          to="/missions"
+          className="flex items-center gap-2 h-10 px-3 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
+          title={isMaintained ? "Active streak!" : "Streak broken! Go to missions page to restore."}
+        >
+          <Icon 
+            name="local_fire_department" 
+            style={{ color: streakColor }} 
+            className={`text-lg font-bold ${isMaintained ? "animate-pulse" : "opacity-50"}`} 
+          />
+          <span className="font-ledger text-sm font-black whitespace-nowrap">
+            {streakCount}
+          </span>
+          {!isMaintained && (
+            <span className="w-2 h-2 bg-secondary rounded-full border border-black animate-ping" />
+          )}
+        </Link>
 
         <Link
           to="/wallet"
