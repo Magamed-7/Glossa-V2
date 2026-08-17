@@ -4,21 +4,86 @@ import Skeleton from "../ui/Skeleton.jsx";
 import Icon from "../ui/Icon.jsx";
 import NeoButton from "../ui/NeoButton.jsx";
 import { useApi } from "../../lib/useApi.js";
-import { getAnalytics } from "../../lib/api/payments.js";
+import { getAnalytics, getHistory } from "../../lib/api/payments.js";
 import { formatMoney } from "../../lib/format.js";
 import { useT } from "../../lib/i18n.jsx";
 
 export default function WalletAnalytics() {
   const t = useT();
-  const { data: analytics, loading } = useApi(() => getAnalytics(), []);
+  const { data: analytics, loading: analyticsLoading } = useApi(() => getAnalytics(), []);
+  const { data: historyList, loading: historyLoading } = useApi(() => getHistory(), []);
   const [viewMode, setViewMode] = useState("spent"); // "spent" или "income"
+  const [selectedPeriod, setSelectedPeriod] = useState("all"); // "all" или "YYYY-MM"
+
+  const loading = analyticsLoading || historyLoading;
 
   if (loading) return <Skeleton className="h-60" />;
-  if (!analytics) return null;
+  if (!analytics || !historyList) return null;
 
-  const totalToppedUp = Number(analytics.total_topped_up) || 0;
-  const totalSpent = Number(analytics.total_spent) || 0;
-  
+  // 1. Получаем список уникальных месяцев из истории транзакций
+  const uniqueMonths = [];
+  historyList.forEach((entry) => {
+    if (!entry.created_at) return;
+    const date = new Date(entry.created_at);
+    const year = date.getFullYear();
+    const month = date.getMonth(); // 0-11
+    const key = `${year}-${String(month + 1).padStart(2, "0")}`;
+    const label = date.toLocaleDateString(undefined, { year: "numeric", month: "long" });
+    if (!uniqueMonths.some((m) => m.key === key)) {
+      uniqueMonths.push({ key, label });
+    }
+  });
+  // Сортируем месяцы по убыванию (сначала новые)
+  uniqueMonths.sort((a, b) => b.key.localeCompare(a.key));
+
+  // 2. Агрегируем данные на стороне клиента в зависимости от выбранного периода
+  const aggregateData = (txList) => {
+    let totalToppedUp = 0;
+    let totalSpent = 0;
+    const categoryMap = {};
+
+    txList.forEach((entry) => {
+      const amount = Number(entry.amount) || 0;
+      if (entry.item_type === "topup") {
+        totalToppedUp += amount;
+      } else {
+        totalSpent += amount;
+        if (!categoryMap[entry.item_type]) {
+          categoryMap[entry.item_type] = {
+            item_type: entry.item_type,
+            count: 0,
+            total_amount: 0,
+          };
+        }
+        categoryMap[entry.item_type].count += 1;
+        categoryMap[entry.item_type].total_amount += amount;
+      }
+    });
+
+    const byCategory = Object.values(categoryMap).sort((a, b) => b.total_amount - a.total_amount);
+
+    return {
+      total_topped_up: totalToppedUp,
+      total_spent: totalSpent,
+      by_category: byCategory,
+    };
+  };
+
+  // Фильтруем историю
+  const filteredHistory = selectedPeriod === "all"
+    ? historyList
+    : historyList.filter((entry) => {
+        if (!entry.created_at) return false;
+        const date = new Date(entry.created_at);
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        return `${y}-${m}` === selectedPeriod;
+      });
+
+  const activeData = aggregateData(filteredHistory);
+  const totalToppedUp = activeData.total_topped_up;
+  const totalSpent = activeData.total_spent;
+
   // Вычисляем максимум для построения относительных гистограмм
   const maxVal = Math.max(totalToppedUp, totalSpent, 1);
   const topupPercent = (totalToppedUp / maxVal) * 100;
@@ -28,19 +93,20 @@ export default function WalletAnalytics() {
   const radius = 37;
   const circumference = 2 * Math.PI * radius;
   
-  // Подготовка сегментов для круга расходов (Spent)
+  // Подготовка сегментов для круга расходов (Spent). Цвета только красные/розовые.
   let accumulatedPercent = 0;
-  const spentSegments = analytics.by_category.map((cat) => {
+  const spentSegments = activeData.by_category.map((cat, idx) => {
     const amount = Number(cat.total_amount) || 0;
     const percent = totalSpent > 0 ? amount / totalSpent : 0;
     
-    let color = "var(--color-outline-variant)";
-    if (cat.item_type === "subscription") {
-      color = "var(--color-secondary)";
-    } else if (cat.item_type === "user_story") {
-      color = "#eab308"; // Золотисто-желтый
-    } else if (cat.item_type === "lingo_service") {
-      color = "var(--color-inverse-surface)";
+    // Оттенки красного и малинового для трат
+    let color = "var(--color-secondary)"; // Малиновый
+    if (idx === 1) {
+      color = "#dc2c4f"; // Светло-малиновый
+    } else if (idx === 2) {
+      color = "#fca5a5"; // Розово-коралловый
+    } else if (idx > 2) {
+      color = "#fee2e2"; // Нежно-розовый
     }
 
     const segmentLength = percent * circumference;
@@ -67,6 +133,11 @@ export default function WalletAnalytics() {
   const isSpentMode = viewMode === "spent";
   const formattedValue = isSpentMode ? formatMoney(totalSpent) : formatMoney(totalToppedUp);
 
+  // Настройка цветов для бордеров круга: зеленый при доходе, красный при расходе
+  const circleOuterStroke = isSpentMode ? "var(--color-secondary)" : "#059669";
+  const circleInnerStroke = isSpentMode ? "#dc2c4f" : "#10b981";
+  const circleTextClass = isSpentMode ? "fill-secondary" : "fill-emerald-600 dark:fill-emerald-400";
+
   return (
     <NeoCard className="relative overflow-hidden">
       {/* Декоративный диагональный штамп */}
@@ -74,7 +145,29 @@ export default function WalletAnalytics() {
         Glossa Ledger
       </div>
 
-      <h3 className="font-headline text-headline-md mb-6">{t("wallet.analyticsTitle")}</h3>
+      {/* Верхний бар с заголовком и выбором периода */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-black/15 dark:border-white/10 pb-4">
+        <h3 className="font-headline text-headline-md">{t("wallet.analyticsTitle")}</h3>
+        
+        {/* Переключатель месяца */}
+        <div className="flex items-center gap-2">
+          <span className="font-label text-xs uppercase text-on-surface-variant font-bold">
+            {t("wallet.selectMonth")}:
+          </span>
+          <select
+            value={selectedPeriod}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+            className="font-ledger text-xs border-2 border-black dark:border-stone-700 bg-surface text-on-surface px-3 py-1.5 shadow-[2px_2px_0px_#000000] dark:shadow-[2px_2px_0px_#3a3a3a] focus:outline-none"
+          >
+            <option value="all">{t("wallet.allTime")}</option>
+            {uniqueMonths.map((m) => (
+              <option key={m.key} value={m.key}>
+                {m.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Левая колонка: сравнение Поступлений и Трат */}
@@ -116,22 +209,23 @@ export default function WalletAnalytics() {
           </div>
         </div>
 
-        {/* Средняя колонка: Один переключаемый SVG круг */}
+        {/* Средняя колонка: Один переключаемый круговой график */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center py-4">
-          <span className="font-label text-[11px] font-black uppercase text-on-surface-variant tracking-wider mb-3">
+          <span className={`font-label text-[11px] font-black uppercase tracking-wider mb-3 ${
+            isSpentMode ? "text-secondary" : "text-emerald-600 dark:text-emerald-400"
+          }`}>
             {isSpentMode ? "Expense Analytics" : "Income Analytics"}
           </span>
           
           <div className="relative w-40 h-40">
-            {/* SVG НЕ вращается, вращаются только сегменты через transform */}
             <svg viewBox="0 0 100 100" className="w-full h-full filter drop-shadow-[4px_4px_0px_var(--color-tertiary)]">
-              {/* Внешний контур */}
-              <circle cx="50" cy="50" r={radius} fill="transparent" stroke="var(--color-tertiary)" strokeWidth="10" />
+              {/* Внешний контур (динамический цвет) */}
+              <circle cx="50" cy="50" r={radius} fill="transparent" stroke={circleOuterStroke} strokeWidth="10" />
               <circle cx="50" cy="50" r={radius} fill="var(--color-surface)" />
               
               {/* Отрисовка в зависимости от режима */}
               {isSpentMode ? (
-                // Сегменты расходов
+                // Сегменты расходов (только оттенки красного/малинового)
                 spentSegments.map((seg, i) => (
                   <circle
                     key={i}
@@ -163,15 +257,15 @@ export default function WalletAnalytics() {
                 />
               )}
               
-              {/* Внутренний контур */}
-              <circle cx="50" cy="50" r={33} fill="var(--color-surface)" stroke="var(--color-tertiary)" strokeWidth="2" />
+              {/* Внутренний контур (динамический цвет) */}
+              <circle cx="50" cy="50" r={33} fill="var(--color-surface)" stroke={circleInnerStroke} strokeWidth="2" />
 
-              {/* Точный горизонтальный рендеринг текста */}
+              {/* Точный горизонтальный рендеринг текста (в цвете темы) */}
               <text 
                 x="50" 
                 y="45" 
                 textAnchor="middle" 
-                className="font-label uppercase fill-on-surface-variant tracking-wider font-bold"
+                className={`font-label uppercase tracking-wider font-bold ${circleTextClass}`}
                 style={{ fontSize: "7px" }}
               >
                 {isSpentMode ? "Spent" : "Deposited"}
@@ -180,7 +274,7 @@ export default function WalletAnalytics() {
                 x="50" 
                 y="58" 
                 textAnchor="middle" 
-                className="font-ledger fill-on-surface font-bold"
+                className={`font-ledger font-bold ${circleTextClass}`}
                 style={{ 
                   fontSize: getSvgFontSize(formattedValue),
                   fontFamily: "var(--font-ledger)" 
@@ -210,7 +304,7 @@ export default function WalletAnalytics() {
           </p>
           
           {isSpentMode ? (
-            // Детализация расходов
+            // Детализация расходов (красные шкалы прогресса)
             spentSegments.length > 0 ? (
               <ul className="space-y-3">
                 {spentSegments.map((row) => (
@@ -232,7 +326,7 @@ export default function WalletAnalytics() {
                         className="h-full transition-all duration-500 ease-out" 
                         style={{ 
                           width: `${row.percent * 100}%`,
-                          backgroundColor: row.color
+                          backgroundColor: row.color,
                         }} 
                       />
                     </div>
@@ -246,7 +340,7 @@ export default function WalletAnalytics() {
               <p className="font-body text-body-md text-on-surface-variant italic">No data available</p>
             )
           ) : (
-            // Детализация доходов
+            // Детализация доходов (зеленые шкалы прогресса)
             <ul className="space-y-3">
               <li className="space-y-1">
                 <div className="flex justify-between items-center text-sm">
