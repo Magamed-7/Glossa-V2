@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
 import Avatar from "../ui/Avatar.jsx";
@@ -11,6 +11,8 @@ import { formatMoney } from "../../lib/format.js";
 import { useT } from "../../lib/i18n.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { getDailyMissions } from "../../lib/api/learning.js";
+import { WS_URL } from "../../lib/config.js";
+import { getAccessToken } from "../../lib/auth/tokens.js";
 
 const ICON_BOX = "flex items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0";
 
@@ -44,15 +46,120 @@ export default function TopAppBar({ hasUnread, user }) {
   const { data: balance } = useApi(() => getBalance(), []);
   const { data: missionsData, reload: reloadStreak } = useApi(() => getDailyMissions(), []);
 
-  const streakCount = missionsData?.streak ?? 0;
-  const isMaintained = missionsData?.streak_maintained ?? false;
-  const streakColor = getStreakStyle(streakCount);
+  // Local state for WebSocket updates
+  const [streakState, setStreakState] = useState({ streak: 0, streakMaintained: false });
+  const [animatedStreak, setAnimatedStreak] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
+  // Sync with initial API load
   useEffect(() => {
-    const handleUpdate = () => reloadStreak();
+    if (missionsData) {
+      setStreakState({
+        streak: missionsData.streak,
+        streakMaintained: missionsData.streak_maintained
+      });
+      setAnimatedStreak(missionsData.streak);
+    }
+  }, [missionsData]);
+
+  // Connect to WebSocket /ws/streak for real-time updates on enter
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return;
+
+    let ws;
+    let reconnectTimer;
+
+    const connectWs = () => {
+      const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
+      // Check if WS_URL uses http/https, then map to ws/wss
+      const baseWsUrl = WS_URL.replace(/^http/, "ws");
+      ws = new WebSocket(`${baseWsUrl}/ws/streak?token=${encodeURIComponent(token)}`);
+
+      ws.onmessage = (event) => {
+        try {
+          const payload = JSON.parse(event.data);
+          if (payload.type === "streak_update") {
+            // Broadcast event to sync with Missions.jsx page!
+            window.dispatchEvent(new CustomEvent("streak-updated", { detail: payload }));
+            
+            setStreakState({
+              streak: payload.streak,
+              streakMaintained: payload.streak_maintained
+            });
+          }
+        } catch (e) {
+          console.error("Error parsing streak ws payload", e);
+        }
+      };
+
+      ws.onclose = () => {
+        reconnectTimer = setTimeout(connectWs, 5000);
+      };
+    };
+
+    connectWs();
+
+    return () => {
+      if (ws) ws.close();
+      clearTimeout(reconnectTimer);
+    };
+  }, []);
+
+  // Sync event updates from page (e.g. after manual restore click)
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setStreakState({
+          streak: e.detail.streak,
+          streakMaintained: e.detail.streak_maintained
+        });
+      } else {
+        reloadStreak();
+      }
+    };
     window.addEventListener("streak-updated", handleUpdate);
     return () => window.removeEventListener("streak-updated", handleUpdate);
   }, [reloadStreak]);
+
+  // Rolling count-up / count-down animation
+  useEffect(() => {
+    const target = streakState.streak;
+    if (animatedStreak === target) return;
+
+    setIsAnimating(true);
+    const duration = 800; // 800ms total
+    const difference = target - animatedStreak;
+    const steps = Math.abs(difference);
+    const stepTime = Math.max(40, Math.floor(duration / steps));
+
+    const timer = setInterval(() => {
+      setAnimatedStreak((prev) => {
+        if (prev < target) {
+          const next = prev + 1;
+          if (next === target) {
+            clearInterval(timer);
+            setIsAnimating(false);
+          }
+          return next;
+        } else {
+          const next = prev - 1;
+          if (next === target) {
+            clearInterval(timer);
+            setIsAnimating(false);
+          }
+          return next;
+        }
+      });
+    }, stepTime);
+
+    return () => {
+      clearInterval(timer);
+      setIsAnimating(false);
+    };
+  }, [streakState.streak, animatedStreak]);
+
+  const streakColor = getStreakStyle(streakState.streak);
 
   function onLogout() {
     logout();
@@ -72,17 +179,27 @@ export default function TopAppBar({ hasUnread, user }) {
         <Link
           to="/missions"
           className="flex items-center gap-2 h-10 px-3 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
-          title={isMaintained ? "Active streak!" : "Streak broken! Go to missions page to restore."}
+          title={streakState.streakMaintained ? "Active streak!" : "Streak broken! Go to missions page to restore."}
         >
           <Icon 
             name="local_fire_department" 
             style={{ color: streakColor }} 
-            className={`text-lg font-bold ${isMaintained ? "animate-pulse" : "opacity-50"}`} 
+            className={`text-lg font-bold ${
+              streakState.streakMaintained 
+                ? "animate-pulse" 
+                : "opacity-50"
+            } ${isAnimating ? "animate-bounce" : ""}`} 
           />
-          <span className="font-ledger text-sm font-black whitespace-nowrap">
-            {streakCount}
+          <span 
+            className={`font-ledger text-sm font-black whitespace-nowrap inline-block transition-all duration-300 ${
+              isAnimating 
+                ? "scale-135 text-secondary rotate-6 font-extrabold" 
+                : "text-on-surface"
+            }`}
+          >
+            {animatedStreak}
           </span>
-          {!isMaintained && (
+          {!streakState.streakMaintained && (
             <span className="w-2 h-2 bg-secondary rounded-full border border-black animate-ping" />
           )}
         </Link>

@@ -11,7 +11,7 @@ from app.core.limits import add_ai_seconds, check_ai_access
 from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
 from app.schemas.schema_messenger import MessageResponse
-from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user
+from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user, streaks
 
 from app.core.redis_client import redis_client
 
@@ -259,6 +259,48 @@ async def ai_chat_ws(websocket: WebSocket):
         pass
     finally:
         ticker.cancel()
+
+
+@app.websocket('/ws/streak')
+async def streak_ws(websocket: WebSocket):
+    from datetime import date, timedelta
+    await websocket.accept()
+    async with AsyncSessionLocal() as db:
+        user = await authenticate(websocket, db)
+        if user is None:
+            await websocket.close(code=4401, reason='Authentication required')
+            return
+
+        try:
+            # Touch the streak on connection/visit!
+            streak_obj = await streaks.touch_streak(user.id, db)
+            
+            # Determine if it's maintained
+            today = date.today()
+            streak_maintained = False
+            if streak_obj.last_activity_date:
+                if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
+                    streak_maintained = True
+
+            # If user has a saved prev_streak_before_reset that was reset, they are in a broken (restorable) state
+            if streak_obj.prev_streak_before_reset > streak_obj.current_streak:
+                streak_maintained = False
+
+            # Send initial streak data immediately
+            await websocket.send_json({
+                'type': 'streak_update',
+                'streak': streak_obj.current_streak,
+                'streak_maintained': streak_maintained,
+                'prev_streak': streak_obj.prev_streak_before_reset
+            })
+
+            # Keep connection open
+            while True:
+                await websocket.receive_text()
+        except WebSocketDisconnect:
+            pass
+        except Exception:
+            logger.exception("Error in streak websocket")
 
 
 @app.websocket('/ws/leaderboard')
