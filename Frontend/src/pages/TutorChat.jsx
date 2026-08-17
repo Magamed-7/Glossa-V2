@@ -360,16 +360,33 @@ export default function TutorChat() {
     }
   }, [messages, tutor, callActive]);
 
+  // Live sync refs to avoid stale closures in Web Speech API handlers
+  const callActiveRef = useRef(callActive);
+  callActiveRef.current = callActive;
+  const micMutedRef = useRef(micMuted);
+  micMutedRef.current = micMuted;
+  const callStateRef = useRef(callState);
+  callStateRef.current = callState;
+  const isProcessingRef = useRef(false);
+
+  const stopSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.onresult = null;
+        recognitionRef.current.onerror = null;
+        recognitionRef.current.onend = null;
+        recognitionRef.current.abort();
+      } catch (e) {
+        // ignore
+      }
+      recognitionRef.current = null;
+    }
+  };
+
   // Speech Recognition logic for voice call mode
   useEffect(() => {
-    if (!callActive || micMuted || callState !== "listening") {
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {
-          // ignore
-        }
-      }
+    if (!callActive || micMuted || callState !== "listening" || isProcessingRef.current) {
+      stopSpeechRecognition();
       return;
     }
 
@@ -379,40 +396,42 @@ export default function TutorChat() {
       return;
     }
 
-    let recognition = recognitionRef.current;
-    if (!recognition) {
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = getLangCode(language);
-      recognitionRef.current = recognition;
-    }
+    stopSpeechRecognition();
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = getLangCode(language);
+    recognitionRef.current = recognition;
 
     recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      if (transcript && transcript.trim()) {
-        console.log("Transcribed speech:", transcript);
-        handleSend(transcript);
+      if (!callActiveRef.current || micMutedRef.current || isProcessingRef.current) {
+        return;
       }
-    };
 
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      if (event.error === "no-speech") {
-        // Restart if no speech was detected to keep listening active
-        try {
-          if (callActive && !micMuted && callState === "listening") {
-            recognition.start();
-          }
-        } catch (e) {
-          // ignore
+      const transcript = event.results?.[0]?.[0]?.transcript;
+      if (transcript && transcript.trim()) {
+        isProcessingRef.current = true;
+        stopSpeechRecognition();
+        setCallState("speaking");
+        sendMessage(transcript.trim());
+        if (tutor) {
+          triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
         }
       }
     };
 
+    recognition.onerror = (event) => {
+      console.warn("Speech recognition error:", event.error);
+    };
+
     recognition.onend = () => {
-      // If we are still callActive, not muted, and in listening state, keep listening
-      if (callActive && !micMuted && callState === "listening") {
+      if (
+        callActiveRef.current &&
+        !micMutedRef.current &&
+        callStateRef.current === "listening" &&
+        !isProcessingRef.current
+      ) {
         try {
           recognition.start();
         } catch (e) {
@@ -428,13 +447,7 @@ export default function TutorChat() {
     }
 
     return () => {
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {
-          // ignore
-        }
-      }
+      stopSpeechRecognition();
     };
   }, [callActive, micMuted, callState, language]);
 
@@ -464,7 +477,9 @@ export default function TutorChat() {
       const audio = new Audio(latest.audioUrl);
       activeAudioRef.current = audio;
 
-      if (callActive) {
+      if (callActiveRef.current) {
+        isProcessingRef.current = true;
+        stopSpeechRecognition();
         setCallState("speaking");
 
         const coreX = window.innerWidth / 2;
@@ -474,22 +489,27 @@ export default function TutorChat() {
           triggerCallBurst(coreX, coreY);
         }, 550);
 
-        audio.onended = () => {
+        const handleAudioFinish = () => {
           clearInterval(burstTimer);
-          setCallState("listening");
+          if (callActiveRef.current) {
+            setTimeout(() => {
+              if (callActiveRef.current) {
+                isProcessingRef.current = false;
+                setCallState("listening");
+              }
+            }, 400);
+          }
         };
 
-        audio.onerror = () => {
-          clearInterval(burstTimer);
-          setCallState("listening");
-        };
+        audio.onended = handleAudioFinish;
+        audio.onerror = handleAudioFinish;
       }
 
       audio.play().catch(err => {
         console.warn("Autoplay blocked or failed:", err);
       });
     }
-  }, [messages, callActive]);
+  }, [messages]);
 
   const handleSend = (text) => {
     sendMessage(text);
@@ -497,11 +517,16 @@ export default function TutorChat() {
       triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
     }
     if (callActive) {
+      isProcessingRef.current = true;
+      stopSpeechRecognition();
       setCallState("speaking");
     }
   };
 
   const startVoiceCall = async () => {
+    callActiveRef.current = true;
+    isProcessingRef.current = true;
+    stopSpeechRecognition();
     setCallActive(true);
     setCallTimeSeconds(0);
     setCallState("speaking");
@@ -524,30 +549,43 @@ export default function TutorChat() {
           triggerCallBurst(coreX, coreY);
         }, 550);
 
-        audio.onended = () => {
+        const handleAudioFinish = () => {
           clearInterval(burstTimer);
-          setCallState("listening");
+          if (callActiveRef.current) {
+            setTimeout(() => {
+              if (callActiveRef.current) {
+                isProcessingRef.current = false;
+                setCallState("listening");
+              }
+            }, 400);
+          }
         };
 
-        audio.onerror = () => {
-          clearInterval(burstTimer);
-          setCallState("listening");
-        };
+        audio.onended = handleAudioFinish;
+        audio.onerror = handleAudioFinish;
 
         await audio.play();
       } else {
+        isProcessingRef.current = false;
         setCallState("listening");
       }
     } catch (err) {
       console.error("Failed to play welcome greeting audio:", err);
+      isProcessingRef.current = false;
       setCallState("listening");
     }
   };
 
   const closeVoiceCall = () => {
+    callActiveRef.current = false;
+    isProcessingRef.current = false;
     setCallActive(false);
+    stopSpeechRecognition();
+
     if (activeAudioRef.current) {
       activeAudioRef.current.pause();
+      activeAudioRef.current.onended = null;
+      activeAudioRef.current.onerror = null;
       activeAudioRef.current = null;
     }
   };
