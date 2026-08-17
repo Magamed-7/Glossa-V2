@@ -8,6 +8,10 @@ export function getDailyMissions() {
   return api.get("/learning/daily-missions");
 }
 
+export function restoreStreak() {
+  return api.post("/learning/streak/restore");
+}
+
 export function getOnboardingStatus() {
   return api.get("/learning/onboarding/status");
 }
