@@ -917,6 +917,8 @@ export const en = {
     type_user_story: "Book purchase",
     type_lingo_service: "Service purchase",
     pageOf: "Page {page} of {total}",
+    viewIncome: "Switch to Income",
+    viewExpenses: "Switch to Expenses",
   },
   search: {
     stories: "Stories",

@@ -918,6 +918,8 @@ export const tg = {
     type_user_story: "Хариди китоб",
     type_lingo_service: "Хариди хидмат",
     pageOf: "Саҳифаи {page} аз {total}",
+    viewIncome: "Гузариш ба даромадҳо",
+    viewExpenses: "Гузариш ба хароҷотҳо",
   },
   search: {
     stories: "Ҳикояҳо",
