@@ -117,7 +117,13 @@ export default function StoryReader() {
     );
   }
 
-  if (story && story.cefr_level !== targetLevel) {
+  // Anything at or below the learner's level stays readable; only material above
+  // it is locked. Equality here shut them out of levels they had already passed.
+  const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
+  const isAboveLevel =
+    story && CEFR_ORDER.indexOf(story.cefr_level) > CEFR_ORDER.indexOf(targetLevel);
+
+  if (isAboveLevel) {
     return (
       <div className="max-w-md mx-auto my-24 border-[3px] border-on-surface bg-surface p-8 shadow-[8px_8px_0_0_#000] text-center neo-card flex flex-col items-center gap-6">
         <Icon name="lock" className="text-secondary text-5xl" />

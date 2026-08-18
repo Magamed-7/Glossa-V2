@@ -343,7 +343,9 @@ export default function StoriesCatalog() {
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
             {LEVEL_TABS.map((lvl) => {
               const isActive = level === lvl;
-              const isLocked = lvl !== targetLevel;
+              // Levels already reached stay open — only what is *above* the learner
+              // is locked. Comparing for equality hid every level they had passed.
+              const isLocked = LEVEL_TABS.indexOf(lvl) > LEVEL_TABS.indexOf(targetLevel);
               return (
                 <button
                   key={lvl}
