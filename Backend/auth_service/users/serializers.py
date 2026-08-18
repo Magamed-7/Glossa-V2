@@ -96,6 +96,9 @@ class RequestEmailChangeSerializer(serializers.Serializer):
 
 class VerifyEmailSerializer(serializers.Serializer):
     code = serializers.CharField(min_length=6, max_length=6)
+    # Needed when the confirmation arrives without a live session — the account is
+    # identified by the address the code was sent to instead of by request.user.
+    email = serializers.EmailField(required=False)
 
 
 class ChangePasswordSerializer(serializers.Serializer):

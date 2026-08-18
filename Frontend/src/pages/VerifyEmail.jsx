@@ -10,9 +10,13 @@ import { useT } from "../lib/i18n.jsx";
 
 export default function VerifyEmail() {
   const t = useT();
-  const { refreshUser } = useAuth();
+  const { refreshUser, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Carried from the sign-up form so the code can still be confirmed after the
+  // session has expired or the page was reopened.
+  const email = location.state?.email || user?.email || "";
 
   const [code, setCode] = useState(location.state?.devCode || "");
   const [devCode, setDevCode] = useState(location.state?.devCode || null);
@@ -34,9 +38,9 @@ export default function VerifyEmail() {
     setSubmitting(true);
 
     try {
-      await authApi.verifyEmail({ code });
+      await authApi.verifyEmail({ code, email });
       setSuccess(true);
-      await refreshUser();
+      await refreshUser().catch(() => {});
     } catch (err) {
       setError(errorText(err));
     } finally {

@@ -38,8 +38,8 @@ export function changePassword({ old_password, new_password }) {
   return auth.post(`${BASE}/change-password`, { old_password, new_password });
 }
 
-export function verifyEmail({ code }) {
-  return auth.post(`${BASE}/verify-email`, { code });
+export function verifyEmail({ code, email }) {
+  return auth.post(`${BASE}/verify-email`, email ? { code, email } : { code });
 }
 
 export function resendVerification() {

@@ -42,8 +42,11 @@ export default function Register() {
         toast.error(t("auth.register.verificationEmailFailed"));
       }
 
-      await login({ username, password });
-      navigate("/verify-email", { state: { devCode: result.dev_verification_code } });
+      // Signing in straight away is a convenience, not a requirement: the code is
+      // confirmed by email address. A throttled or failed login must not strand a
+      // freshly registered account on the sign-up form.
+      await login({ username, password }).catch(() => {});
+      navigate("/verify-email", { state: { devCode: result.dev_verification_code, email } });
     } catch (err) {
       if (err.field) {
         setFieldErrors({ [err.field]: err.message });

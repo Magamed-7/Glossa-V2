@@ -112,18 +112,33 @@ class ConfirmEmailChangeView(APIView):
 
 
 class VerifyEmailView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # The six digits mailed to the address are themselves the proof of ownership, so
+    # requiring a live session on top only broke honest sign-ups: the access token
+    # expires in 30 minutes, and anyone who waited for a slow mail, reopened the site
+    # or finished on another device was told their credentials were missing.
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [TwoFactorRateThrottle]
 
     def post(self, request):
         serializer = VerifyEmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        confirmed = verification.confirm_verification_code(request.user, serializer.validated_data['code'])
+        user = request.user if request.user.is_authenticated else None
 
-        if not confirmed:
+        if user is None:
+            email = serializer.validated_data.get('email')
+            if not email:
+                return Response(
+                    {'detail': 'Email is required to confirm the code'}, status=status.HTTP_400_BAD_REQUEST
+                )
+            user = User.objects.filter(email__iexact=email).first()
+
+        # An unknown address is answered exactly like a wrong code, so this endpoint
+        # cannot be used to find out which emails are registered.
+        if user is None or not verification.confirm_verification_code(user, serializer.validated_data['code']):
             return Response({'detail': 'Code is invalid or expired'}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(UserSerializer(request.user).data)
+        return Response(UserSerializer(user).data)
 
 
 class ResendVerificationView(APIView):
