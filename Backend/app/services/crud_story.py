@@ -34,9 +34,13 @@ def story_translation(story: Stories, locale: str, field_prefix: str):
     return None
 
 
-async def get_stories(db: AsyncSession, level=None, genre=None, topic=None, limit=20, offset=0):
+async def get_stories(db: AsyncSession, level=None, genre=None, topic=None, limit=20, offset=0, levels=None):
     query = select(Stories)
 
+    # `levels` is the set the learner has unlocked; `level` narrows that down to one
+    # when they pick a filter in the UI.
+    if levels:
+        query = query.where(Stories.cefr_level.in_(levels))
     if level:
         query = query.where(Stories.cefr_level == level)
     if genre:

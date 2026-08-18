@@ -22,6 +22,22 @@ from app.services import crud_story
 router_stories = APIRouter(prefix='/stories', tags=['Stories'])
 
 
+def _unlocked_levels(user_lang):
+    """Every CEFR level up to and including the learner's own.
+
+    Progress is cumulative: material stays available once it has been reached, so
+    this is a range rather than the single current level.
+    """
+    from app.services.crud_course import LEVEL_ORDER
+
+    level = user_lang.level if user_lang is not None else 'A1'
+    if level == 'native':
+        level = 'C2'
+    if level not in LEVEL_ORDER:
+        return list(LEVEL_ORDER)
+    return list(LEVEL_ORDER[: LEVEL_ORDER.index(level) + 1])
+
+
 @router_stories.get('/', response_model=list[StoryResponse])
 async def get_stories(
     level: str | None = None,
@@ -35,11 +51,14 @@ async def get_stories(
         select(UserLanguages).where(UserLanguages.user_id == current_user.id, UserLanguages.is_target.is_(True))
     )
     user_lang = result.scalar_one_or_none()
-    user_level = user_lang.level if user_lang is not None else 'A1'
-    if user_level == 'native':
-        user_level = 'C2'
+    unlocked = _unlocked_levels(user_lang)
 
-    stories = await crud_story.get_stories(db, level=user_level, genre=genre, limit=limit, offset=offset)
+    # Reaching A2 must not hide A1 — everything already earned stays readable, and
+    # `level` is the learner's own filter inside that range rather than a gate.
+    if level and level not in unlocked:
+        raise AppError(code='STORY_LEVEL_LOCKED', message='This level is locked for you', status_code=403)
+
+    stories = await crud_story.get_stories(db, level=level, genre=genre, limit=limit, offset=offset, levels=unlocked)
     return [crud_story.story_to_response(story) for story in stories]
 
 
@@ -62,16 +81,14 @@ async def get_story(
         select(UserLanguages).where(UserLanguages.user_id == current_user.id, UserLanguages.is_target.is_(True))
     )
     user_lang = result.scalar_one_or_none()
-    user_level = user_lang.level if user_lang is not None else 'A1'
-    if user_level == 'native':
-        user_level = 'C2'
+    unlocked = _unlocked_levels(user_lang)
 
     detail = await crud_story.get_story_detail(story_id, locale, db)
 
     if detail is None:
         raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
 
-    if detail['cefr_level'] != user_level:
+    if detail['cefr_level'] not in unlocked:
         raise AppError(
             code='STORY_LEVEL_LOCKED',
             message='This story is locked for your current level',
