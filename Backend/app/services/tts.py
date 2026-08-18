@@ -5,8 +5,10 @@ from app.core.tts_voices import edge_voice_for_accent, piper_voice_for_accent
 
 logger = logging.getLogger(__name__)
 
-EDGE_TTS_ATTEMPTS = 3
-EDGE_TTS_RETRY_DELAY_SECONDS = 1.5
+EDGE_TTS_ATTEMPTS = 2
+# A voiced reply is only useful while the learner is still waiting for it, so a
+# flaky call is retried once and quickly rather than three times over 4.5s.
+EDGE_TTS_RETRY_DELAY_SECONDS = 0.4
 
 
 async def _synthesize_edge_once(text: str, voice: str) -> bytes:

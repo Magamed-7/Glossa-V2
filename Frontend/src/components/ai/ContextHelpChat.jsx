@@ -93,7 +93,9 @@ export default function ContextHelpChat({ contextType, contextRefId, language = 
     setOpen(true);
     setError(null);
     try {
-      await ensureSession();
+      // First open on this page starts a clean conversation instead of resurrecting
+      // yesterday's; closing and reopening the bubble keeps the current one.
+      await ensureSession({ forceNew: sessionPromiseRef.current === null });
     } catch {
       setError(t.failed);
     }

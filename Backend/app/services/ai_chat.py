@@ -451,7 +451,14 @@ async def get_or_create_open_session(
     db: AsyncSession,
     level: str | None = None,
     native_language: str | None = None,
+    force_new: bool = False,
 ):
+    # force_new is what "open the tutor and get a clean conversation" means: the
+    # client asks for it once per page load, while transient socket reconnects keep
+    # resuming so a dropped connection never splits a conversation in two.
+    if force_new:
+        return await create_session(user_id, scenario, language, db, level=level, native_language=native_language)
+
     result = await db.execute(
         select(ChatSessions)
         .where(ChatSessions.user_id == user_id, ChatSessions.scenario == scenario)

@@ -229,10 +229,12 @@ async def ai_chat_ws(websocket: WebSocket):
         language = websocket.query_params.get('language', 'English')
         native_language = websocket.query_params.get('native_language')
         tutor = websocket.query_params.get('tutor', 'rose')
-        # Свежую (в пределах SESSION_FRESHNESS) сессию переиспользуем вместо новой на каждый
-        # коннект — иначе история чата живёт только в React-state и пропадает на F5.
+        # Открывая наставника, ученик ждёт чистый разговор, а не вчерашний — поэтому клиент
+        # просит новую сессию один раз на загрузку страницы (fresh=1). При обрыве связи
+        # переподключение идёт уже без этого флага, чтобы не рвать диалог пополам.
+        fresh = websocket.query_params.get('fresh') == '1'
         session = await ai_chat.get_or_create_open_session(
-            user.id, scenario, language, db, native_language=native_language
+            user.id, scenario, language, db, native_language=native_language, force_new=fresh
         )
         history = await ai_chat.get_session_messages(session.id, db)
 

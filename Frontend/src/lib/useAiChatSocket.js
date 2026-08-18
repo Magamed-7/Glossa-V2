@@ -36,6 +36,9 @@ export function useAiChatSocket({ scenario, language, tutor }) {
   const reconnectAttemptsRef = useRef(0);
   const reconnectTimerRef = useRef(null);
   const isFirstEverMessageRef = useRef(false);
+  // Открытие страницы наставника = новый разговор. Переподключение после обрыва —
+  // нет, иначе потерянная на секунду сеть разрезала бы диалог надвое.
+  const wantsFreshSessionRef = useRef(true);
 
   useEffect(() => {
     if (!tutor) {
@@ -46,6 +49,7 @@ export function useAiChatSocket({ scenario, language, tutor }) {
     let cancelled = false;
     retriedAuthRef.current = false;
     reconnectAttemptsRef.current = 0;
+    wantsFreshSessionRef.current = true;
 
     function scheduleReconnect() {
       if (cancelled) return;
@@ -72,8 +76,10 @@ export function useAiChatSocket({ scenario, language, tutor }) {
         scenario,
         language,
         native_language: nativeLanguage,
-        tutor: tutor || "rose"
+        tutor: tutor || "rose",
+        fresh: wantsFreshSessionRef.current ? "1" : "0"
       });
+      wantsFreshSessionRef.current = false;
       const socket = new WebSocket(`${WS_URL}/ws/ai/chat?${params}`);
       socketRef.current = socket;
 

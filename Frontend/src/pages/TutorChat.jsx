@@ -148,8 +148,9 @@ const getLangCode = (langName) => {
 
 // How long a voiced reply may stay silent before the call resumes listening anyway.
 // Covers TTS failures and dropped audio frames; without it the microphone stayed off
-// for the rest of the call.
-const VOICE_WATCHDOG_MS = 9000;
+// for the rest of the call. Synthesis takes well under a second, so a long grace
+// period here just reads as a frozen microphone.
+const VOICE_WATCHDOG_MS = 3500;
 
 // Simple staggered words renderer to replicate HTML subtitles
 function StaggeredWords({ text, highlightColor, isUser }) {
