@@ -548,4 +548,19 @@ async def _advance_to_next_level(user_id: int, cefr_level: str, db: AsyncSession
     progress = await get_or_create_progress(user_id, db)
     progress.current_unit_id = next_unit.id
     progress.last_activity_at = datetime.now(timezone.utc)
+
+    # The roadmap pointer is not the only place the level lives: the profile, the
+    # content gates and the vocabulary limits all read UserLanguages.level. Moving
+    # only the pointer passed the test but left the learner locked out of the level
+    # they had just earned.
+    from app.models.model_profile import UserLanguages
+
+    language = (
+        await db.execute(
+            select(UserLanguages).where(UserLanguages.user_id == user_id, UserLanguages.is_target.is_(True))
+        )
+    ).scalars().first()
+    if language is not None:
+        language.level = next_level
+
     await db.commit()
