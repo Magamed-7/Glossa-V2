@@ -1072,32 +1072,8 @@ export const en = {
         education: { title: "Education", description: "Spaced repetition and an AI tutor for lasting, practical fluency." },
       },
     },
-    curators: {
-      title: "Our Curators",
-      description: "Meet the people behind the Glossa content and product — philologists, editors, and technologists.",
-      est: "EST. MMXXVI",
-      people: {
-        muhammad: {
-          name: "Mr. Muhammad N.",
-          role: "Honorary Founder",
-          bio: "Founder and Chief Visionary of the Glossa platform.",
-        },
-        osaf: {
-          role: "Chief Philologist",
-          bio: "Specializing in Slavic etymology and the semiotics of resistance.",
-        },
-        julian: {
-          role: "Archive Director",
-          bio: "Expert in 19th-century epistolary traditions and archival science.",
-        },
-        mika: {
-          role: "Computational Linguist",
-          bio: "Bridging the gap between natural language and neural networks.",
-        },
-      },
-    },
     tools: {
-      title: "The Curator's Tools",
+      title: "The Writing Desk",
       description:
         "We maintain a small collection of writing instruments spanning three centuries, a reminder that the medium may change, but the impulse to write clearly remains constant.",
     },

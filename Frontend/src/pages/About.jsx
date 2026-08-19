@@ -7,12 +7,6 @@ const PILLARS = [
   { key: "education", icon: "menu_book" },
 ];
 
-const CURATORS = [
-  { key: "osaf", name: "Dr. Osaf Abdulloev", image: "/img/marketing/curator-osaf.webp" },
-  { key: "julian", name: "Ruslan Sodatov", image: "/img/marketing/curator-ruslan.webp" },
-  { key: "mika", name: "Yunus Muhammadzoda", image: "/img/marketing/curator-yunus.png" },
-  { key: "muhammad", nameKey: "about.curators.people.muhammad.name", image: "/img/marketing/curator-muhammad.webp" },
-];
 
 export default function About() {
   const t = useT();
@@ -75,37 +69,6 @@ export default function About() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="mb-section-gap">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-          <div className="max-w-xl">
-            <h2 className="font-display text-headline-lg mb-4">{t("about.curators.title")}</h2>
-            <p className="font-body text-body-md text-on-surface-variant">{t("about.curators.description")}</p>
-          </div>
-          <div className="h-[2px] flex-grow bg-tertiary mx-8 hidden md:block" aria-hidden="true" />
-          <span className="font-label text-label-md uppercase tracking-tighter">{t("about.curators.est")}</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
-          {CURATORS.map((c) => (
-            <div key={c.key} className="group">
-              <div className="mb-6 overflow-hidden border-2 border-tertiary bg-surface-container-low grayscale hover:grayscale-0 transition-all duration-500">
-                <img
-                  className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700 block"
-                  src={c.image}
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
-                  width={480}
-                  height={640}
-                />
-              </div>
-              <h4 className="font-headline text-headline-md">{c.nameKey ? t(c.nameKey) : c.name}</h4>
-              <p className="font-label text-label-md text-secondary uppercase mb-2">{t(`about.curators.people.${c.key}.role`)}</p>
-              <p className="font-body text-body-md text-on-surface-variant text-sm italic">{t(`about.curators.people.${c.key}.bio`)}</p>
-            </div>
-          ))}
         </div>
       </section>
 

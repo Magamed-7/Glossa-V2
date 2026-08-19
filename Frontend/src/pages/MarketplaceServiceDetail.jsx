@@ -6,39 +6,8 @@ import Icon from "../components/ui/Icon.jsx";
 import { useApi } from "../lib/useApi.js";
 import { getLingoService, createLingoProposal } from "../lib/api/lingo.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
+import { providerAvatarUrl } from "../lib/providerAvatar.js";
 
-const PHOTO_MAP = {
-  "ji-yoon k.": "/img/ji_yoon.png",
-  "ji-yoon":    "/img/ji_yoon.png",
-  "carlos s.":  "/img/carlos_m.png",
-  "carlos m.":  "/img/carlos_m.png",
-  "carlos":     "/img/carlos_m.png",
-  "marc dubois":"/img/jean_luc.png",
-  "jean-luc":   "/img/jean_luc.png",
-  "jean luc":   "/img/jean_luc.png",
-  "elena rossi":"/img/ji_yoon.png",
-  "yunus":      "/img/Yunus.png",
-  "ruslan":     "/img/Ruslan.jpg",
-  "ruslanjon":  "/img/Ruslan.jpg",
-  "osaf":       "/img/Osaf.jpg",
-  "dilshod":    "/img/yuki_tanaka.png",
-  "amir":       "/img/jean_luc.png",
-  "bahriddin a.":"/img/carlos_m.png",
-  "global tech inc.": "/img/ji_yoon.png",
-};
-
-function avatarUrl(service) {
-  if (!service) return "/img/avatars/user-default.webp";
-  if (service.provider_photo_url) return service.provider_photo_url;
-  const name = (service.provider_name || "").toLowerCase().trim();
-  if (PHOTO_MAP[name]) return PHOTO_MAP[name];
-  for (const [key, url] of Object.entries(PHOTO_MAP)) {
-    if (name.includes(key) || key.includes(name)) return url;
-  }
-  const index = service.provider_id % 100;
-  const gender = service.provider_id % 2 === 0 ? "men" : "women";
-  return `https://randomuser.me/api/portraits/${gender}/${index}.jpg`;
-}
 
 export default function MarketplaceServiceDetail() {
   const t = useT();
@@ -107,7 +76,7 @@ export default function MarketplaceServiceDetail() {
         <div className="md:col-span-4 flex flex-col items-center text-center border-b-2 md:border-b-0 md:border-r-2 border-primary pb-8 md:pb-0 md:pr-8">
           <Link to={`/profile/${service.provider_id}`} className="group flex flex-col items-center">
             <div className="w-36 h-36 border-2 border-primary rounded-full overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6 shrink-0 group-hover:scale-105 transition-transform">
-              <img alt={service.provider_name} className="w-full h-full object-cover grayscale-[10%]" src={avatarUrl(service)} />
+              <img alt={service.provider_name} className="w-full h-full object-cover grayscale-[10%]" src={providerAvatarUrl(service)} />
             </div>
             
             <h2 className="font-headline-md text-headline-md text-primary font-bold tracking-tight hover:underline">

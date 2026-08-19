@@ -2,46 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "../components/ui/Icon.jsx";
 import { useT, useI18n } from "../lib/i18n.jsx";
+import { providerAvatarUrl } from "../lib/providerAvatar.js";
 import { getLingoServices, createLingoProposal } from "../lib/api/lingo.js";
 
 const CATEGORIES = ["ENGLISH", "RUSSIAN", "TAJIK", "TRANSLATION", "EDITING"];
 const ITEMS_PER_PAGE = 5;
 
-// Маппинг по реальным именам из БД → высококачественные фото
-const PHOTO_MAP = {
-  // Реальные тестовые провайдеры
-  "ji-yoon k.": "/img/ji_yoon.png",
-  "ji-yoon":    "/img/ji_yoon.png",
-  "carlos s.":  "/img/carlos_m.png",
-  "carlos m.":  "/img/carlos_m.png",
-  "carlos":     "/img/carlos_m.png",
-  "marc dubois":"/img/jean_luc.png",
-  "jean-luc":   "/img/jean_luc.png",
-  "jean luc":   "/img/jean_luc.png",
-  "elena rossi":"/img/yuki_tanaka.png",
-  "yunus":      "/img/Yunus.png",
-  "ruslan":     "/img/Ruslan.jpg",
-  "ruslanjon":  "/img/Ruslan.jpg",
-  "osaf":       "/img/Osaf.jpg",
-  "dilshod":    "/img/marketing/curator-yunus.png",
-  "amir":       "/img/marketing/curator-osaf.webp",
-  "bahriddin a.":"/img/marketing/curator-arthur.webp",
-  "global tech inc.": "/img/marketing/curator-ruslan.webp",
-};
-
-function avatarUrl(service) {
-  if (!service) return "/img/avatars/user-default.webp";
-  if (service.provider_photo_url) return service.provider_photo_url;
-  const name = (service.provider_name || "").toLowerCase().trim();
-  if (PHOTO_MAP[name]) return PHOTO_MAP[name];
-  // partial match fallback
-  for (const [key, url] of Object.entries(PHOTO_MAP)) {
-    if (name.includes(key) || key.includes(name)) return url;
-  }
-  const index = service.provider_id % 100;
-  const gender = service.provider_id % 2 === 0 ? "men" : "women";
-  return `https://randomuser.me/api/portraits/${gender}/${index}.jpg`;
-}
 
 function ServiceChips({ service }) {
   return (
@@ -68,7 +34,7 @@ function FeaturedCard({ service, lang, t, onMessage }) {
         {t("market.topRated")}
       </div>
       <Link to={`/marketplace/services/${service.id}`} className="w-full md:w-2/5 border-b-2 md:border-b-0 md:border-r-2 border-primary relative h-64 md:h-auto block">
-        <img alt="" className="w-full h-full object-cover grayscale-[20%]" src={avatarUrl(service)} />
+        <img alt="" className="w-full h-full object-cover grayscale-[20%]" src={providerAvatarUrl(service)} />
         <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/60 to-transparent flex items-end">
           <div className="text-white">
             <p className="font-headline-md text-headline-md leading-tight drop-shadow-md">{service.provider_name}</p>
@@ -136,7 +102,7 @@ function StandardCard({ service, lang, t, onMessage }) {
   return (
     <article className="card-neo bg-surface-bright flex flex-col relative">
       <Link to={`/marketplace/services/${service.id}`} className="h-48 border-b-2 border-primary relative overflow-hidden block">
-        <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+        <img alt="" className="w-full h-full object-cover" src={providerAvatarUrl(service)} />
         <div className="absolute top-4 left-4">
           <span className="chip-mustard px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             {service.category}
@@ -189,7 +155,7 @@ function FreeExchangeCard({ service, lang, t, onMessage }) {
       <div className="p-5 flex flex-col h-full">
         <Link to={`/profile/${service.provider_id}`} className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 border-2 border-primary rounded-full overflow-hidden shrink-0 card-neo">
-            <img alt="" className="w-full h-full object-cover" src={avatarUrl(service)} />
+            <img alt="" className="w-full h-full object-cover" src={providerAvatarUrl(service)} />
           </div>
           <div>
             <h4 className="font-body-lg text-body-lg font-bold text-primary hover:underline">{service.provider_name}</h4>
