@@ -138,7 +138,15 @@ export default function WordTooltip({ wordData, storyId, level, onAdded, onClose
         {transcription && (
           <span className="font-mono text-xs text-on-surface-variant italic">/{transcription}/</span>
         )}
-        <WordAudioButton audioUrl={audioUrl} accent={accent} />
+        <WordAudioButton
+          audioUrl={audioUrl}
+          accent={accent}
+          onGenerate={async () => {
+            const fresh = await getWordAudio(lemma, level);
+            setDynamicAudio(fresh);
+            return fresh.audio_url;
+          }}
+        />
       </div>
 
       <div className="font-body text-xs italic text-on-surface-variant leading-relaxed">

@@ -17,19 +17,35 @@ const WordAudioButton = forwardRef(function WordAudioButton({ audioUrl, accent, 
 
   if (!audioUrl && !onGenerate) return null;
 
+  // Resolves once we know whether the sound actually reached the speakers: a stored URL
+  // can outlive the file behind it, and that only shows up at playback time.
+  function attempt(url) {
+    return new Promise((resolve) => {
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => setState("idle");
+      audio.onerror = () => resolve(false);
+      audio.play().then(() => resolve(true)).catch(() => resolve(false));
+    });
+  }
+
+  async function regenerate() {
+    if (!onGenerate) return null;
+    setState("generating");
+    try {
+      return await onGenerate();
+    } catch {
+      return null;
+    }
+  }
+
   async function play() {
     if (state === "generating" || state === "playing") return;
 
     let url = audioUrl;
 
     if (!url) {
-      setState("generating");
-      try {
-        url = await onGenerate();
-      } catch (e) {
-        setState("error");
-        return;
-      }
+      url = await regenerate();
       if (!url) {
         setState("error");
         return;
@@ -37,11 +53,19 @@ const WordAudioButton = forwardRef(function WordAudioButton({ audioUrl, accent, 
     }
 
     setState("playing");
-    const audio = new Audio(url);
-    audioRef.current = audio;
-    audio.onended = () => setState("idle");
-    audio.onerror = () => setState("error");
-    audio.play();
+
+    if (await attempt(url)) return;
+
+    // The recording is gone or unreachable. Ask for a fresh one rather than leaving the
+    // learner staring at a broken button, which is what a dead link used to produce.
+    const fresh = await regenerate();
+
+    if (fresh && fresh !== url) {
+      setState("playing");
+      if (await attempt(fresh)) return;
+    }
+
+    setState("error");
   }
 
   const icon = state === "generating" ? "hourglass_top" : state === "error" ? "error" : "volume_up";

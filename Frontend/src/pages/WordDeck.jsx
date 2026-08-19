@@ -11,6 +11,7 @@ import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { deleteCard, getCards, setCardStatus, createCard, generateAudio } from "../lib/api/deck.js";
 import { getStats } from "../lib/api/learning.js";
+import { getWordAudio } from "../lib/api/vocabulary.js";
 import { getMySubscription } from "../lib/api/subscriptions.js";
 import { useT, useI18n } from "../lib/i18n.jsx";
 import { submitReview } from "../lib/api/reviews.js";
@@ -1636,7 +1637,11 @@ export default function WordDeck() {
                       <span className="font-serif text-lg font-bold uppercase text-primary">{w.word}</span>
                       <span className="font-mono text-xs text-outline italic">/{w.transcription?.replace(/^\/+|\/+$/g, "")}/</span>
                       <span onClick={(e) => e.stopPropagation()}>
-                        <WordAudioButton audioUrl={w.audio_url} accent={w.accent} />
+                        <WordAudioButton
+                          audioUrl={w.audio_url}
+                          accent={w.accent}
+                          onGenerate={async () => (await getWordAudio(w.word, importLevel)).audio_url}
+                        />
                       </span>
                     </div>
                     <div className="text-right">

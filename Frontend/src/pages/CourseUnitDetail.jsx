@@ -9,7 +9,7 @@ import { useI18n } from "../lib/i18n.jsx";
 import { useToast } from "../lib/toast.jsx";
 import { errorText } from "../lib/api/errorText.js";
 import { getCourseUnitDetail, completeAtom } from "../lib/api/learning.js";
-import { getVocabularyByIds } from "../lib/api/vocabulary.js";
+import { getVocabularyByIds, getWordAudio } from "../lib/api/vocabulary.js";
 import { getLesson } from "../lib/api/grammar.js";
 import { getStory } from "../lib/api/stories.js";
 import { createCard } from "../lib/api/deck.js";
@@ -258,7 +258,12 @@ export default function CourseUnitDetail() {
                       {w.word}
                       {w.transcription ? ` /${w.transcription}/` : ""}
                       {w.translation ? ` — ${w.translation}` : ""}
-                      <WordAudioButton audioUrl={w.audio_url} accent={w.accent} className="text-sm" />
+                      <WordAudioButton
+                        audioUrl={w.audio_url}
+                        accent={w.accent}
+                        className="text-sm"
+                        onGenerate={async () => (await getWordAudio(w.word, unit.cefr_level)).audio_url}
+                      />
                     </span>
                   ))}
                 </div>

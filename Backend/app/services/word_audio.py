@@ -17,17 +17,26 @@ def _normalize(word: str):
 
 
 async def _cached_for_level(words: set[str], level: str, db: AsyncSession):
+    """Audio for these words, preferring the level's accents but never refusing a hit.
+
+    Restricting the lookup to the level's three accents used to turn a perfectly good
+    recording into a miss: a word cached as en-US was invisible to a B1 learner, whose
+    roster is AU/IN/CA. The reader then showed a transcription with no speaker button,
+    or a button that failed once synthesis was unavailable. Accent variety is a nicety;
+    hearing the word at all is the point, so anything cached is better than nothing.
+    """
     if not words:
         return {}
 
     allowed = accents_for_level(level)
-    result = await db.execute(
-        select(WordAudio).where(WordAudio.word.in_(words), WordAudio.accent.in_(allowed))
-    )
+    result = await db.execute(select(WordAudio).where(WordAudio.word.in_(words)))
 
-    by_word = {}
+    preferred, spare = {}, {}
     for row in result.scalars().all():
-        by_word.setdefault(row.word, row)
+        bucket = preferred if row.accent in allowed else spare
+        bucket.setdefault(row.word, row)
+
+    by_word = {**spare, **preferred}
 
     return {word: {'audio_url': row.audio_url, 'accent': row.accent} for word, row in by_word.items()}
 

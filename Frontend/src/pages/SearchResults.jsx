@@ -9,7 +9,7 @@ import StoryCard from "../components/stories/StoryCard.jsx";
 import WordAudioButton from "../components/ui/WordAudioButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { searchStories } from "../lib/api/_pending/search.js";
-import { getVocabulary } from "../lib/api/vocabulary.js";
+import { getVocabulary, getWordAudio } from "../lib/api/vocabulary.js";
 import { createCard } from "../lib/api/deck.js";
 import { errorText } from "../lib/api/errorText.js";
 import { useToast } from "../lib/toast.jsx";
@@ -48,7 +48,11 @@ function VocabularyRow({ entry }) {
           {entry.transcription && (
             <span className="font-mono text-sm text-on-surface-variant italic">/{entry.transcription}/</span>
           )}
-          <WordAudioButton audioUrl={entry.audio_url} accent={entry.accent} />
+          <WordAudioButton
+            audioUrl={entry.audio_url}
+            accent={entry.accent}
+            onGenerate={async () => (await getWordAudio(entry.word, entry.cefr_level)).audio_url}
+          />
           <span className="font-label text-label-md uppercase text-secondary">{entry.cefr_level}</span>
         </div>
         <p className="font-body text-body-md text-on-surface-variant">{entry.translation}</p>
