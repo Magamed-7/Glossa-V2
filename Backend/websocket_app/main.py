@@ -454,6 +454,7 @@ async def messenger_ws(websocket: WebSocket):
                             await crud_notification.create_notification(
                                 other_id, 'new_message', f'{user.username}',
                                 db, body=(preview or '')[:200],
+                                link=f'/messenger/{conversation_id}',
                             )
 
                 elif msg_type == 'typing':

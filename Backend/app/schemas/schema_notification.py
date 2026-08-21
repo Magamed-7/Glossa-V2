@@ -8,6 +8,7 @@ class NotificationResponse(BaseModel):
     type: str
     title: str
     body: str | None
+    link: str | None = None
     is_read: bool
     created_at: datetime
 

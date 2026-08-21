@@ -99,7 +99,7 @@ async def check_achievements(user_id: int, db: AsyncSession):
                 body = f"Congratulations on earning the \"{achievement.title}\" badge!"
 
             try:
-                await notify_service.notify(user_id, "achievement", title, body, db)
+                await notify_service.notify(user_id, "achievement", title, body, db, link="/profile")
             except Exception:
                 pass
 

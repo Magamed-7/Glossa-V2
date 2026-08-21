@@ -11,6 +11,15 @@ import { getNotifications, markAllRead } from "../lib/api/notifications.js";
 import { useT } from "../lib/i18n.jsx";
 
 const PAGE_SIZE = 5;
+
+// Older notifications were stored before they carried their own destination.
+const DEFAULT_LINKS = {
+  review_reminder: "/deck",
+  streak_warning: "/deck",
+  leaderboard_reset: "/leaderboard",
+  achievement: "/profile",
+  new_message: "/messenger",
+};
 const MAX_PAGES = 3;
 
 export default function Notifications() {
@@ -81,7 +90,24 @@ export default function Notifications() {
               } else if (n.type === "review_reminder") {
                 category = "SM-2";
                 categoryBg = "bg-surface-variant text-on-surface-variant border border-tertiary";
+              } else if (n.type === "new_message") {
+                category = "MESSAGE";
+                categoryBg = "bg-secondary text-on-secondary";
               }
+
+              // Notifications carry the place they came from, so a message leads back to
+              // its own conversation rather than dumping the reader on the home page.
+              const destination = n.link || DEFAULT_LINKS[n.type] || "/dashboard";
+              const destinationLabel =
+                n.type === "new_message"
+                  ? t("nav.messenger") || "OPEN CHAT"
+                  : destination === "/deck"
+                    ? t("nav.deck") || "LEXICON"
+                    : destination === "/leaderboard"
+                      ? t("nav.leaderboard") || "LEADERBOARD"
+                      : destination === "/profile"
+                        ? t("nav.profile") || "PROFILE"
+                        : t("nav.dashboard") || "HOME";
 
               // Card styling matching mockup
               return (
@@ -127,42 +153,13 @@ export default function Notifications() {
 
                     {/* Action links based on notification type */}
                     <div className="mt-4 flex justify-start">
-                      {n.type === "review_reminder" && (
-                        <Link
-                          to="/deck"
-                          className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
-                        >
-                          {t("nav.deck") || "LEXICON"}
-                          <Icon name="arrow_right_alt" className="text-sm" />
-                        </Link>
-                      )}
-                      {n.type === "leaderboard_reset" && (
-                        <Link
-                          to="/leaderboard"
-                          className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
-                        >
-                          {t("nav.leaderboard") || "LEADERBOARD"}
-                          <Icon name="arrow_right_alt" className="text-sm" />
-                        </Link>
-                      )}
-                      {n.type === "achievement" && (
-                        <Link
-                          to="/profile"
-                          className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
-                        >
-                          {t("nav.profile") || "PROFILE"}
-                          <Icon name="arrow_right_alt" className="text-sm" />
-                        </Link>
-                      )}
-                      {n.type !== "review_reminder" && n.type !== "leaderboard_reset" && n.type !== "achievement" && (
-                        <Link
-                          to="/dashboard"
-                          className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
-                        >
-                          {t("nav.dashboard") || "HOME"}
-                          <Icon name="arrow_right_alt" className="text-sm" />
-                        </Link>
-                      )}
+                      <Link
+                        to={destination}
+                        className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1"
+                      >
+                        {destinationLabel}
+                        <Icon name="arrow_right_alt" className="text-sm" />
+                      </Link>
                     </div>
                   </div>
                 </li>

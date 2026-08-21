@@ -4,7 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.model_notification import Notifications
 
 
-async def create_notification(user_id: int, type: str, title: str, db: AsyncSession, body: str | None = None):
+async def create_notification(
+    user_id: int, type: str, title: str, db: AsyncSession, body: str | None = None, link: str | None = None
+):
     # Enforce limit of 15 notifications max (3 pages of 5 items)
     # Delete oldest if count exceeds 14 before adding a new one
     from sqlalchemy import func, delete
@@ -23,7 +25,7 @@ async def create_notification(user_id: int, type: str, title: str, db: AsyncSess
         if old_ids:
             await db.execute(delete(Notifications).where(Notifications.id.in_(old_ids)))
 
-    notification = Notifications(user_id=user_id, type=type, title=title, body=body)
+    notification = Notifications(user_id=user_id, type=type, title=title, body=body, link=link)
     db.add(notification)
     await db.commit()
     await db.refresh(notification)

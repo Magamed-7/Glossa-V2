@@ -54,7 +54,7 @@ def daily_review_reminders(**kwargs):
                     f'Current streak: {streak.current_streak} days'
                 )
 
-                await notify_service.notify(user_id, 'review_reminder', 'Time to study!', body, db)
+                await notify_service.notify(user_id, 'review_reminder', 'Time to study!', body, db, link='/deck')
                 sent += 1
 
             return sent
@@ -162,7 +162,7 @@ def sm2_repetition_reminders(**kwargs):
                         title = "Review reminder"
                         body = f"You have {count} words scheduled for review tomorrow. Keep up your streak!"
 
-                    await notify_service.notify(user_id, 'review_reminder', title, body, db)
+                    await notify_service.notify(user_id, 'review_reminder', title, body, db, link='/deck')
 
                     # Mark as notified
                     for card in cards:
@@ -199,7 +199,7 @@ def sm2_repetition_reminders(**kwargs):
                         title = "Review in 1 hour"
                         body = f"Friendly heads-up: {count} words will be due for review in one hour."
 
-                    await notify_service.notify(user_id, 'review_reminder', title, body, db)
+                    await notify_service.notify(user_id, 'review_reminder', title, body, db, link='/deck')
 
                     for card in cards:
                         card.hour_notified = True
@@ -234,7 +234,7 @@ def sm2_repetition_reminders(**kwargs):
                         title = "Words due for review"
                         body = f"You have {count} words due for review right now. Let's practice!"
 
-                    await notify_service.notify(user_id, 'review_reminder', title, body, db)
+                    await notify_service.notify(user_id, 'review_reminder', title, body, db, link='/deck')
 
                     for card in cards:
                         card.due_notified = True
@@ -284,7 +284,7 @@ def streak_protection_reminders(**kwargs):
                         title = "Keep your streak! 🔥"
                         body = f"Don't lose your {streak_days}-day streak! You haven't practiced today yet. Study now to keep it active."
 
-                    await notify_service.notify(streak.user_id, 'streak_warning', title, body, db)
+                    await notify_service.notify(streak.user_id, 'streak_warning', title, body, db, link='/deck')
                     await redis_client.set(redis_key, '1', ex=86400)
                 except Exception:
                     logger.exception("Failed sending streak warning to user %s", streak.user_id)

@@ -11,7 +11,7 @@ async def get_telegram_chat_id(user_id: int, db: AsyncSession):
     return result.scalar_one_or_none()
 
 
-async def notify(user_id: int, type: str, title: str, body: str, db: AsyncSession):
+async def notify(user_id: int, type: str, title: str, body: str, db: AsyncSession, link: str | None = None):
     settings = await crud_settings.get_settings(user_id, db)
 
     # For review reminders, check telegram_sm2_enabled setting if channel is Telegram
@@ -22,7 +22,7 @@ async def notify(user_id: int, type: str, title: str, body: str, db: AsyncSessio
         chat_id = None
 
     # Always create an in-app notification first
-    await crud_notification.create_notification(user_id, type, title, db, body=body)
+    await crud_notification.create_notification(user_id, type, title, db, body=body, link=link)
 
     # Check if user is currently active (on-site) via Redis
     from app.core.redis_client import redis_client
@@ -85,7 +85,7 @@ async def notify_all_users_leaderboard_reset(period: str, db: AsyncSession):
                     title = "Global Season Reset! 🏆"
                     body = "The Registry of Excellence has been reset for a new season! Your journey to language mastery starts today — rank up and become the champion!"
 
-            await notify(user.id, "leaderboard_reset", title, body, db)
+            await notify(user.id, "leaderboard_reset", title, body, db, link="/leaderboard")
         except Exception:
             pass
 

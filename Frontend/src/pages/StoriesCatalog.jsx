@@ -124,11 +124,6 @@ export default function StoriesCatalog() {
   const activeGenre = searchParams.get("genre") || "";
   const [filterTab, setFilterTab] = useState("all"); // 'all' | 'progress' | 'completed'
 
-  // Interactive mock states
-  const [topicRequest, setTopicRequest] = useState("");
-  const [topicFeedback, setTopicFeedback] = useState(null);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterFeedback, setNewsletterFeedback] = useState(null);
   const [loadMoreCount, setLoadMoreCount] = useState(6);
 
   const { data: stories, loading } = useApi(
@@ -203,22 +198,6 @@ export default function StoriesCatalog() {
 
     return items;
   }, [stories, activeGenre, filterTab, progressMap, completedStoryIds]);
-
-  function handleRequestSubmit(e) {
-    e.preventDefault();
-    if (!topicRequest.trim()) return;
-    setTopicFeedback("Topic suggestion sent! Thank you for curating Glossa.");
-    setTopicRequest("");
-    setTimeout(() => setTopicFeedback(null), 4000);
-  }
-
-  function handleNewsletterSubmit(e) {
-    e.preventDefault();
-    if (!newsletterEmail.trim()) return;
-    setNewsletterFeedback("Subscribed! Check your Manor mailbox on Sunday.");
-    setNewsletterEmail("");
-    setTimeout(() => setNewsletterFeedback(null), 4000);
-  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 bg-surface text-on-surface min-h-screen">
@@ -495,73 +474,10 @@ export default function StoriesCatalog() {
                   );
                 })}
 
-                {/* Request a Topic placed inside the grid as the last element */}
-                <div className="border-[2px] border-dashed border-on-surface aspect-[3/4] p-5 flex flex-col gap-3 bg-surface/30 text-center items-center justify-center relative">
-                  <div className="w-10 h-10 rounded-full border-2 border-on-surface flex items-center justify-center">
-                    <span className="text-xl font-bold leading-none">+</span>
-                  </div>
-                  <div>
-                    <h4 className="font-headline text-sm font-bold">{t("stories.requestTopic")}</h4>
-                    <p className="font-body text-[10px] text-on-surface-variant mt-1 leading-relaxed">
-                      {t("stories.requestTopicSub").replace("{level}", level)}
-                    </p>
-                  </div>
-                  <form onSubmit={handleRequestSubmit} className="w-full flex flex-col gap-2 mt-1 z-10">
-                    <input
-                      type="text"
-                      value={topicRequest}
-                      onChange={(e) => setTopicRequest(e.target.value)}
-                      placeholder={t("stories.topicPlaceholder")}
-                      className="w-full px-2 py-1.5 border-[2px] border-on-surface bg-surface text-[10px] shadow-[1.5px_1.5px_0_0_#000] focus:outline-none"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-on-surface text-surface text-[8px] font-bold uppercase tracking-widest py-1.5 hover:opacity-90 transition-opacity cursor-pointer border border-on-surface"
-                    >
-                      {t("stories.submitSuggestion")}
-                    </button>
-                  </form>
-                  {topicFeedback && (
-                    <p className="font-label text-[9px] text-secondary font-bold leading-tight mt-1">
-                      {topicFeedback}
-                    </p>
-                  )}
-                </div>
               </div>
             )}
           </div>
 
-          {/* Weekly Dispatch Newsletter bottom block */}
-          <div className="border-[2px] border-on-surface shadow-[4px_4px_0_0_#000] p-6 bg-surface-container flex flex-col gap-4 text-center items-center">
-            <Icon name="mail" className="text-3xl text-secondary" />
-            <div>
-              <h4 className="font-headline text-lg font-bold">{t("stories.weeklyDispatch")}</h4>
-              <p className="font-body text-xs text-on-surface-variant mt-1 leading-relaxed max-w-lg">
-                {t("stories.weeklyDispatchSub").replace("{level}", level)}
-              </p>
-            </div>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 mt-2 w-full max-w-md">
-              <input
-                type="email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder={t("stories.emailAddress")}
-                required
-                className="flex-1 px-3 py-2 border-[2px] border-on-surface bg-surface text-xs shadow-[2px_2px_0_0_#000] focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-secondary text-surface text-[10px] font-bold uppercase tracking-widest px-6 py-2 hover:opacity-90 transition-opacity cursor-pointer border border-on-surface"
-              >
-                {t("stories.subscribe")}
-              </button>
-            </form>
-            {newsletterFeedback && (
-              <p className="font-label text-xs text-secondary font-bold leading-tight mt-1">
-                {newsletterFeedback}
-              </p>
-            )}
-          </div>
         </div>
       )}
     </div>
