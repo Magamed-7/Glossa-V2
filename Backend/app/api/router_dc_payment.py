@@ -56,20 +56,6 @@ async def _notify_user(order: Order):
         )
 
 
-async def _alert_admin(raw_text: str, parsed_amount, source: str):
-    from app.tasks.notifications import send_telegram_task
-
-    if not settings.ADMIN_TELEGRAM_ID:
-        logger.warning('ADMIN_TELEGRAM_ID not configured, cannot alert admin about unmatched payment')
-        return
-
-    send_telegram_task.delay(
-        chat_id=settings.ADMIN_TELEGRAM_ID,
-        title='⚠️ Непривязанный платёж',
-        body=f'Источник: {source}\nСумма: {parsed_amount}\nТекст: {raw_text}',
-    )
-
-
 async def _parse_webhook_body(request: Request) -> DcWebhookPayload:
     """Tolerant body parser for the phone-side forwarder.
 
@@ -150,7 +136,11 @@ async def dc_webhook(
             is_incoming=True, status='UNMATCHED', received_at=received_at,
         ))
         await db.commit()
-        await _alert_admin(payload.text, amount, payload.source)
+        # Про непривязанный платёж бот не пишет никому. Раньше сюда уходил текст
+        # банковского уведомления целиком — а это чужие деньги и чужие данные:
+        # отправитель, сумма, остаток по счёту. Платёж остаётся в payment_logs, где ему
+        # и место, а сообщение уходит только тогда, когда оплата действительно получена.
+        logger.info('incoming payment matched no pending order, amount=%s', amount)
         return {'status': 'unmatched'}
 
     order.status = 'paid'
