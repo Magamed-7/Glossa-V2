@@ -107,13 +107,17 @@ def _val(v, fallback="—"):
     return str(v)
 
 
-def _approx_vocab_size(profile: dict, languages: list) -> int:
-    """Always returns a rough word-count estimate for the PDF, even if the user
-    never took/confirmed the vocabulary-size test — falls back to the CEFR
-    benchmark for their current target-language level."""
+def _vocab_size_line(profile: dict, languages: list) -> str:
+    """Словарный запас: измеренный — числом, неизмеренный — честно как «тест не пройден».
+
+    Раньше при отсутствии теста в отчёт подставлялась табличная норма для уровня, и
+    выглядела она как личный результат. Ориентир остаётся, но подписан как ориентир.
+    """
     confirmed = profile.get("estimated_vocabulary_size")
+
     if confirmed:
-        return int(confirmed)
+        measured = _fmt_date(profile.get("vocabulary_estimated_at"))
+        return f"Словарный запас: {int(confirmed):,} слов (тест от {measured})".replace(",", " ")
 
     target_level = None
     for lang in languages or []:
@@ -121,7 +125,9 @@ def _approx_vocab_size(profile: dict, languages: list) -> int:
             target_level = (lang.get("level") or "").upper()
             break
 
-    return CEFR_VOCAB_BENCHMARK.get(target_level, CEFR_VOCAB_BENCHMARK["A1"])
+    typical = CEFR_VOCAB_BENCHMARK.get(target_level, CEFR_VOCAB_BENCHMARK["A1"])
+    level = target_level or "A1"
+    return f"Словарный запас: тест не пройден (норма {level} — ~{typical:,} слов)".replace(",", " ")
 
 
 def _lang_level_label(lang: dict) -> str:
@@ -187,10 +193,8 @@ def build_pdf(export_data: dict, user: object) -> bytes:
     plan_code = subscription.get("plan_code") or "Free"
     balance = wallet.get("balance", 0)
 
-    published_stories = [s for s in stories if not s.get("is_draft")]
-    draft_stories = [s for s in stories if s.get("is_draft")]
-
-    telegram_connected = "✓ подключён" if export_data.get("account", {}).get("telegram_chat_id") else "—"
+    published_stories = [s for s in stories if s.get("status") == "published"]
+    draft_stories = [s for s in stories if s.get("status") == "draft"]
 
     # ── Build flowables ───────────────────────────────────────────────────
     elems = []
@@ -231,7 +235,11 @@ def build_pdf(export_data: dict, user: object) -> bytes:
     # ── 2-column grid of blocks ───────────────────────────────────────────
     lang_lines = [_lang_level_label(l) for l in languages] if languages else ["—"]
 
-    unlocked = len([a for a in achiev if a.get("unlocked")]) if isinstance(achiev, list) else 0
+    # get_my_achievements отдаёт только заработанные достижения — считаем их, а не
+    # несуществующий флаг, из-за которого в отчёте всегда стоял ноль.
+    earned = achiev if isinstance(achiev, list) else []
+    unlocked = len(earned)
+    recent_titles = [a.get("title") for a in earned[:3] if a.get("title")]
 
     block_data = [
         [
@@ -256,14 +264,14 @@ def build_pdf(export_data: dict, user: object) -> bytes:
                 f"Всего карточек: {_val(deck_stats.get('cards_total'))}",
                 f"Слов выучено: {_val(deck_stats.get('learned_count'))}",
                 f"Удержание: {_val(deck_stats.get('retention_rate'))}%",
-                f"Примерный словарный запас: ~{_approx_vocab_size(profile, languages):,} слов".replace(",", " "),
+                _vocab_size_line(profile, languages),
             ]),
         ],
         [
             _block("ДОСТИЖЕНИЯ", [
                 f"Получено: {unlocked} достижений",
                 "★" * min(unlocked, 12) or "—",
-            ]),
+            ] + ([", ".join(recent_titles)] if recent_titles else [])),
             _block("ПОДПИСКА И КОШЕЛЁК", [
                 f"Тариф: {plan_display}",
                 f"Баланс: {balance} TJS",
@@ -304,7 +312,7 @@ def build_pdf(export_data: dict, user: object) -> bytes:
     elems.append(Spacer(1, 4 * mm))
     elems.append(HRFlowable(width="100%", thickness=1, color=BLACK, spaceAfter=4))
     elems.append(Paragraph(
-        f"Glossa · glossa.app · Создано {today}",
+        f"Glossa · glossa.best · Создано {today}",
         footer_style,
     ))
 
