@@ -21,7 +21,7 @@ const ASSISTANT_ERROR_KEYS = {
 // {type: "assistant_error", code} и держит сокет открытым. Здесь это превращается в реплику
 // наставника тёплым тоном (ASSISTANT_ERROR_KEYS), а не в техническое сообщение. Обрыв самого
 // сокета (сеть, деплой) — переподключаемся с экспоненциальной паузой, а не сразу сдаёмся.
-export function useAiChatSocket({ scenario, language, tutor }) {
+export function useAiChatSocket({ scenario, language, tutor, resumeSessionId = null, newChatKey = 0 }) {
   const t = useT();
   const { lang } = useI18n();
   // Родной/интерфейсный язык ученика — на сервере его больше неоткуда взять (lang живёт
@@ -49,7 +49,9 @@ export function useAiChatSocket({ scenario, language, tutor }) {
     let cancelled = false;
     retriedAuthRef.current = false;
     reconnectAttemptsRef.current = 0;
-    wantsFreshSessionRef.current = true;
+    // Открывая разговор из панели слева, ученик продолжает его, а не начинает заново.
+    wantsFreshSessionRef.current = !resumeSessionId;
+    setMessages([]);
 
     function scheduleReconnect() {
       if (cancelled) return;
@@ -79,6 +81,7 @@ export function useAiChatSocket({ scenario, language, tutor }) {
         tutor: tutor || "rose",
         fresh: wantsFreshSessionRef.current ? "1" : "0"
       });
+      if (resumeSessionId) params.set("session_id", String(resumeSessionId));
       wantsFreshSessionRef.current = false;
       const socket = new WebSocket(`${WS_URL}/ws/ai/chat?${params}`);
       socketRef.current = socket;
@@ -186,7 +189,7 @@ export function useAiChatSocket({ scenario, language, tutor }) {
       socketRef.current?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scenario, language, nativeLanguage, tutor]);
+  }, [scenario, language, nativeLanguage, tutor, resumeSessionId, newChatKey]);
 
   function sendMessage(text) {
     if (socketRef.current?.readyState !== WebSocket.OPEN) return;

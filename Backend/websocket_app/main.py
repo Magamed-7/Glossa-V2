@@ -233,9 +233,20 @@ async def ai_chat_ws(websocket: WebSocket):
         # просит новую сессию один раз на загрузку страницы (fresh=1). При обрыве связи
         # переподключение идёт уже без этого флага, чтобы не рвать диалог пополам.
         fresh = websocket.query_params.get('fresh') == '1'
-        session = await ai_chat.get_or_create_open_session(
-            user.id, scenario, language, db, native_language=native_language, force_new=fresh
-        )
+        # Открыв старый разговор из панели слева, ученик продолжает именно его —
+        # поэтому сессия берётся по номеру, а не подбирается заново.
+        requested_id = websocket.query_params.get('session_id')
+        session = None
+
+        if requested_id and requested_id.isdigit():
+            existing = await ai_chat.get_session(int(requested_id), db)
+            if existing is not None and existing.user_id == user.id:
+                session = existing
+
+        if session is None:
+            session = await ai_chat.get_or_create_open_session(
+                user.id, scenario, language, db, native_language=native_language, force_new=fresh
+            )
         history = await ai_chat.get_session_messages(session.id, db)
 
         await websocket.send_json({

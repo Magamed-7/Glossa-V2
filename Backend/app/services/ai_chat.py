@@ -437,11 +437,58 @@ async def get_session(session_id: int, db: AsyncSession):
     return result.scalar_one_or_none()
 
 
-async def get_user_sessions(user_id: int, db: AsyncSession):
-    result = await db.execute(
-        select(ChatSessions).where(ChatSessions.user_id == user_id).order_by(ChatSessions.started_at.desc())
+async def get_user_sessions(user_id: int, db: AsyncSession, scenario: str | None = None):
+    """Past conversations, newest first, optionally only those of one scenario.
+
+    Each carries a count and the opening line of the conversation so the sidebar can
+    show which conversation is which instead of a row of identical timestamps.
+    """
+    query = select(ChatSessions).where(ChatSessions.user_id == user_id)
+
+    if scenario:
+        query = query.where(ChatSessions.scenario == scenario)
+
+    sessions = (await db.execute(query.order_by(ChatSessions.started_at.desc()))).scalars().all()
+
+    if not sessions:
+        return []
+
+    ids = [session.id for session in sessions]
+
+    counts = dict(
+        (
+            await db.execute(
+                select(ChatMessages.session_id, func.count())
+                .where(ChatMessages.session_id.in_(ids))
+                .group_by(ChatMessages.session_id)
+            )
+        ).all()
     )
-    return result.scalars().all()
+
+    first_lines = {}
+    rows = (
+        await db.execute(
+            select(ChatMessages.session_id, ChatMessages.text, ChatMessages.role)
+            .where(ChatMessages.session_id.in_(ids), ChatMessages.role == 'user')
+            .order_by(ChatMessages.session_id, ChatMessages.id)
+        )
+    ).all()
+    for session_id, text, _role in rows:
+        first_lines.setdefault(session_id, text)
+
+    enriched = []
+    for session in sessions:
+        enriched.append({
+            'id': session.id,
+            'scenario': session.scenario,
+            'language': session.language,
+            'started_at': session.started_at,
+            'seconds_spent': session.seconds_spent,
+            'message_count': counts.get(session.id, 0),
+            'preview': (first_lines.get(session.id) or '')[:80] or None,
+        })
+
+    return enriched
 
 
 async def get_or_create_open_session(

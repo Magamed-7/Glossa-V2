@@ -569,6 +569,47 @@ export const en = {
     coverUpdated: "Cover updated",
   },
   tutor: {
+    callSpeaking: "Speaking",
+    callTimer: "Timer",
+    pickerTitle: "Which mentor would you like to talk to?",
+    pickerSubtitle: "Choose a mentor. Your choice shapes their character and the style of the conversation.",
+    back: "Back",
+    callWith: "Call: {name}",
+    toggleSubtitles: "Show or hide subtitles",
+    toggleMic: "Turn the microphone on or off",
+    endCall: "End the call",
+    mentors: {
+      rose: {
+        name: "Anya",
+        description: "A supportive, caring mentor. Builds an atmosphere of complete trust, so you can learn from your mistakes without fear.",
+      },
+      mint: {
+        name: "Kenzo",
+        description: "A thoughtful, systematic analyst. Helps you order your thoughts and lay the rules out logically.",
+      },
+      lavender: {
+        name: "Priya",
+        description: "An energetic, motivating speaker. Fills you with enthusiasm and draws you into the newest trends and technology.",
+      },
+      peach: {
+        name: "Carlos",
+        description: "A charismatic storyteller with a great sense of humour. Turns any conversation into a lively one.",
+      },
+      sky: {
+        name: "Alastair",
+        description: "An intellectual critic. Asks deep questions, loves a debate and pushes you to defend your point of view.",
+      },
+    },
+    history: {
+      title: "Conversations",
+      newChat: "New conversation",
+      empty: "No earlier conversations in this scenario yet.",
+      current: "Current",
+      messages: "{n} messages",
+      loadError: "Could not load the earlier conversations.",
+      open: "Open conversations",
+      close: "Hide conversations",
+    },
     eyebrow: "Live Session",
     titleLead: "The Oral",
     titleAccent: "Examiner",

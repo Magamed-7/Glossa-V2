@@ -6,6 +6,7 @@ import { useAiChatSocket } from "../lib/useAiChatSocket.js";
 import { useT } from "../lib/i18n.jsx";
 import { useTheme } from "../lib/theme.jsx";
 import { getTtsUrl } from "../lib/api/ai.js";
+import ChatHistoryPanel from "../components/tutor/ChatHistoryPanel.jsx";
 
 const PRESETS = {
   rose: {
@@ -192,8 +193,19 @@ export default function TutorChat() {
   // Tutor Preset Selection State
   const [tutor, setTutor] = useState(null);
 
+  // Открытая роль начинается с нового разговора, но любой прошлый в этой же роли можно
+  // продолжить: панель слева отдаёт сюда его номер.
+  const [resumeSessionId, setResumeSessionId] = useState(null);
+  const [historyReloadKey, setHistoryReloadKey] = useState(0);
+
   // Existing standard WebSocket chat connection
-  const { status, messages, sessionId, denyReason, sendMessage } = useAiChatSocket({ scenario, language, tutor });
+  const { status, messages, sessionId, denyReason, sendMessage } = useAiChatSocket({
+    scenario,
+    language,
+    tutor,
+    resumeSessionId,
+    newChatKey: historyReloadKey,
+  });
   const waitingForReply = messages.length > 0 && messages[messages.length - 1].role === "user";
   const showHistory = status === "open" || status === "reconnecting" || status === "closed";
 
@@ -637,7 +649,29 @@ export default function TutorChat() {
   };
 
   // Preset configuration
-  const activePreset = tutor ? PRESETS[tutor] : null;
+  const rawPreset = tutor ? PRESETS[tutor] : null;
+  // Имя и описание живут в локалях: раньше они были вшиты по-русски и оставались
+  // русскими даже когда весь остальной экран был на таджикском.
+  const mentorText = (id, field, fallback) => {
+    const value = t(`tutor.mentors.${id}.${field}`);
+    return value && !value.startsWith("tutor.") ? value : fallback;
+  };
+  const activePreset = rawPreset
+    ? {
+        ...rawPreset,
+        name: mentorText(rawPreset.id, "name", rawPreset.name),
+        accentText: mentorText(rawPreset.id, "description", rawPreset.accentText),
+      }
+    : null;
+
+  function openSession(id) {
+    setResumeSessionId(id);
+  }
+
+  function startNewChat() {
+    setResumeSessionId(null);
+    setHistoryReloadKey((key) => key + 1);
+  }
 
   return (
     <div className="relative min-h-[600px] w-full flex flex-col justify-center items-center">
@@ -695,9 +729,9 @@ export default function TutorChat() {
           <div className="bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 rounded-3xl w-full max-w-2xl p-6 shadow-2xl flex flex-col gap-5 text-[#160f22] dark:text-white">
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-headline text-xl font-extrabold">С каким репетитором вы хотите общаться?</h3>
+                <h3 className="font-headline text-xl font-extrabold">{t("tutor.pickerTitle")}</h3>
                 <p className="font-body text-xs text-neutral-500 dark:text-stone-400 mt-1">
-                  Выберите наставника. От выбора зависит характер и стиль общения.
+                  {t("tutor.pickerSubtitle")}
                 </p>
               </div>
               <button onClick={() => navigate("/tutor")} className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white text-xl font-bold p-1">
@@ -715,9 +749,9 @@ export default function TutorChat() {
                   <span className="w-10 h-10 rounded-full shrink-0 border border-neutral-300 dark:border-stone-700" style={{ background: p.orbBg }} />
                   <div className="flex-grow">
                     <div className="flex justify-between items-center">
-                      <span className="font-headline font-bold text-sm">{p.name}</span>
+                      <span className="font-headline font-bold text-sm">{mentorText(p.id, "name", p.name)}</span>
                     </div>
-                    <p className="font-body text-[11px] text-neutral-500 dark:text-stone-400 mt-0.5">{p.accentText}</p>
+                    <p className="font-body text-[11px] text-neutral-500 dark:text-stone-400 mt-0.5">{mentorText(p.id, "description", p.accentText)}</p>
                   </div>
                 </button>
               ))}
@@ -730,12 +764,21 @@ export default function TutorChat() {
       {tutor && !callActive && (
         <div
           id="chat-screen"
-          className="w-full max-w-5xl rounded-[32px] overflow-hidden z-30 flex flex-col h-[640px] transition-all duration-300 shadow-xl border-2"
+          className="w-full max-w-5xl rounded-[32px] overflow-hidden z-30 flex flex-col md:flex-row h-[640px] transition-all duration-300 shadow-xl border-2"
           style={{
             backgroundColor: isDarkMode ? "#0c0b0e" : "#ffffff",
             borderColor: isDarkMode ? "rgba(243, 244, 246, 0.15)" : "rgba(22, 15, 34, 0.12)"
           }}
         >
+          <ChatHistoryPanel
+            scenario={scenario}
+            activeSessionId={sessionId}
+            onOpenSession={openSession}
+            onNewChat={startNewChat}
+            reloadKey={historyReloadKey}
+          />
+
+          <div className="flex flex-col flex-1 min-w-0">
           {/* Header */}
           <div 
             className="border-b p-4 flex justify-between items-center z-40 transition-colors duration-200"
@@ -749,7 +792,7 @@ export default function TutorChat() {
                 onClick={() => navigate("/tutor")}
                 className="px-4 py-2 border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-900 hover:bg-neutral-50 dark:hover:bg-stone-850 rounded-2xl text-xs font-bold transition"
               >
-                ← Назад
+                ← {t("tutor.back")}
               </button>
               <div>
                 <div className="flex items-center gap-2">
@@ -834,6 +877,7 @@ export default function TutorChat() {
               isDarkMode={isDarkMode}
             />
           </div>
+          </div>
         </div>
       )}
 
@@ -846,15 +890,15 @@ export default function TutorChat() {
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
               <div>
-                <h2 className="font-headline font-black text-lg">Звонок: {activePreset.name}</h2>
+                <h2 className="font-headline font-black text-lg">{t("tutor.callWith", { name: activePreset.name })}</h2>
                 <span className="text-[10px] font-bold text-neutral-500 dark:text-neutral-300 uppercase tracking-widest">
-                  {callState === "listening" ? "Listening" : "Speaking"}
+                  {callState === "listening" ? t("tutor.callListening") : t("tutor.callSpeaking")}
                 </span>
               </div>
             </div>
             {/* Call Timer */}
             <div className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 px-4 py-1.5 rounded-full text-xs font-mono font-bold">
-              Timer: {String(Math.floor(callTimeSeconds / 60)).padStart(2, "0")}:{String(callTimeSeconds % 60).padStart(2, "0")}
+              {t("tutor.callTimer")}: {String(Math.floor(callTimeSeconds / 60)).padStart(2, "0")}:{String(callTimeSeconds % 60).padStart(2, "0")}
             </div>
           </div>
 
@@ -984,7 +1028,7 @@ export default function TutorChat() {
                 className={`w-12 h-12 rounded-full border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-950 flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all ${
                   showSubtitles ? "opacity-100" : "opacity-40"
                 }`}
-                title="Показать/скрыть субтитры"
+                title={t("tutor.toggleSubtitles")}
               >
                 <svg className="w-5 h-5 text-neutral-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
@@ -997,7 +1041,7 @@ export default function TutorChat() {
                 className={`w-12 h-12 rounded-full border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-950 flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all ${
                   micMuted ? "bg-red-50 dark:bg-red-950/20" : ""
                 }`}
-                title="Вкл/Выкл микрофон"
+                title={t("tutor.toggleMic")}
               >
                 {!micMuted ? (
                   <svg className="w-5 h-5 text-neutral-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1014,7 +1058,7 @@ export default function TutorChat() {
               <button
                 onClick={closeVoiceCall}
                 className="w-14 h-14 rounded-full border border-neutral-200 dark:border-stone-800 bg-red-500 hover:bg-red-600 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all"
-                title="Завершить звонок"
+                title={t("tutor.endCall")}
               >
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v2a2 2 0 00.224 1.216l3.62 3.62a2 2 0 001.52.508l3.036-.506a2 2 0 011.888 1.13l1.294 2.588a2 2 0 001.45 1.116l3.528.882a2 2 0 002.224-1.506l1.25-5a2 2 0 00-.73-2.106l-4.528-3.018A2 2 0 0015 3h-2a2 2 0 00-1.89 1.348l-.756 2.268A2 2 0 018.46 7.73L6.16 5.43A2 2 0 005.172 5H5z"/>

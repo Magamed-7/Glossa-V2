@@ -38,10 +38,11 @@ async def get_my_errors(
 
 @router_ai.get('/sessions', response_model=list[ChatSessionResponse])
 async def get_my_sessions(
+    scenario: str | None = None,
     db: AsyncSession = Depends(get_db),
     current_user=Depends(require_ai_access),
 ):
-    return await ai_chat.get_user_sessions(current_user.id, db)
+    return await ai_chat.get_user_sessions(current_user.id, db, scenario=scenario)
 
 
 @router_ai.get('/sessions/{session_id}/messages', response_model=list[ChatMessageResponse])

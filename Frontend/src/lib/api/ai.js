@@ -8,6 +8,15 @@ export function getMyErrors() {
   return api.get("/ai/errors/my");
 }
 
+export function getAiSessions(scenario) {
+  const params = scenario ? `?scenario=${encodeURIComponent(scenario)}` : "";
+  return api.get(`/ai/sessions${params}`);
+}
+
+export function getSessionMessages(sessionId) {
+  return api.get(`/ai/sessions/${sessionId}/messages`);
+}
+
 export function getSessionAnalysis(sessionId) {
   return api.get(`/ai/sessions/${sessionId}/analysis`);
 }
