@@ -273,6 +273,29 @@ body {
   box-shadow: 0 0 0 0 var(--color-tertiary);
 }
 
+/* --- Живой огонь серии --- */
+/* Пламя не просто окрашено — оно дышит: чуть меняет размер, яркость и свечение вокруг,
+   как настоящий огонь. Свечение берёт цвет текущей десятки дней через --streak-glow. */
+@keyframes streak-flame {
+  0%   { transform: scale(1) rotate(-1deg);    filter: drop-shadow(0 0 2px var(--streak-glow)) brightness(1); }
+  25%  { transform: scale(1.12) rotate(2deg);  filter: drop-shadow(0 0 6px var(--streak-glow)) brightness(1.25); }
+  50%  { transform: scale(1.04) rotate(-2deg); filter: drop-shadow(0 0 3px var(--streak-glow)) brightness(1.05); }
+  75%  { transform: scale(1.15) rotate(1deg);  filter: drop-shadow(0 0 8px var(--streak-glow)) brightness(1.3); }
+  100% { transform: scale(1) rotate(-1deg);    filter: drop-shadow(0 0 2px var(--streak-glow)) brightness(1); }
+}
+
+.streak-flame {
+  animation: streak-flame 1.6s ease-in-out infinite;
+  transform-origin: 50% 85%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .streak-flame {
+    animation: none;
+    filter: drop-shadow(0 0 3px var(--streak-glow));
+  }
+}
+
 /* --- Защита от вылезания текста за рамку --- */
 /* Русский и таджикский заметно длиннее английского: «View as others see it» — 21 символ,
    «Дидан чи тавре ки дигарон мебинанд» — 34. Кнопка, свёрстанная по английской строке,

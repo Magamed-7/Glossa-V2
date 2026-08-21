@@ -193,8 +193,9 @@ export default function TopAppBar({ hasUnread, user }) {
         >
           <Icon
             name="local_fire_department"
-            style={{ color: streakLit ? streakColor : undefined }}
-            className={`text-lg font-bold ${streakLit ? "animate-pulse" : "opacity-50 text-on-surface-variant"} ${
+            filled={streakLit}
+            style={streakLit ? { color: streakColor, "--streak-glow": streakColor } : undefined}
+            className={`text-lg font-bold ${streakLit ? "streak-flame" : "opacity-50 text-on-surface-variant"} ${
               isAnimating ? "animate-bounce" : ""
             }`}
           />
