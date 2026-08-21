@@ -273,12 +273,29 @@ body {
   box-shadow: 0 0 0 0 var(--color-tertiary);
 }
 
+/* --- Защита от вылезания текста за рамку --- */
+/* Русский и таджикский заметно длиннее английского: «View as others see it» — 21 символ,
+   «Дидан чи тавре ки дигарон мебинанд» — 34. Кнопка, свёрстанная по английской строке,
+   иначе рисует текст поверх собственной границы. Перенос по словам ничего не меняет,
+   пока подпись помещается, и спасает вёрстку, когда нет. */
+button,
+a,
+.btn-primary-neo,
+.btn-outline-neo,
+.card-neo,
+.neo-card {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
 /* --- Кнопки в стиле Neo-Retro Editorial --- */
 .btn-primary-neo,
 .btn-outline-neo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   border: 2px solid var(--color-tertiary);
   box-shadow: 4px 4px 0 0 var(--color-tertiary);
   transition: transform 0.15s ease, box-shadow 0.15s ease;

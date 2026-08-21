@@ -19,20 +19,20 @@ export default function MobileBottomNav() {
           to={item.to}
           end={item.end}
           className={({ isActive }) =>
-            `flex flex-col items-center ${isActive ? "text-secondary" : "text-on-surface-variant"}`
+            `flex flex-col items-center flex-1 min-w-0 px-1 ${isActive ? "text-secondary" : "text-on-surface-variant"}`
           }
         >
           {({ isActive }) => (
             <>
               <Icon name={item.icon} filled={isActive} />
-              <span className="text-[10px] font-bold uppercase">{t(item.labelKey)}</span>
+              <span className="text-[10px] font-bold uppercase w-full text-center leading-none truncate">{t(item.labelKey)}</span>
             </>
           )}
         </NavLink>
       ))}
       <NavLink
         to="/deck?new=1"
-        className="flex flex-col items-center text-on-surface-variant"
+        className="flex flex-col items-center flex-1 min-w-0 px-1 text-on-surface-variant"
         aria-label={t("nav.addNewWord")}
       >
         <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center -translate-y-4 border-2 border-tertiary shadow-md">
@@ -44,13 +44,13 @@ export default function MobileBottomNav() {
           key={item.to}
           to={item.to}
           className={({ isActive }) =>
-            `flex flex-col items-center ${isActive ? "text-secondary" : "text-on-surface-variant"}`
+            `flex flex-col items-center flex-1 min-w-0 px-1 ${isActive ? "text-secondary" : "text-on-surface-variant"}`
           }
         >
           {({ isActive }) => (
             <>
               <Icon name={item.icon} filled={isActive} />
-              <span className="text-[10px] font-bold uppercase">{t(item.labelKey)}</span>
+              <span className="text-[10px] font-bold uppercase w-full text-center leading-none truncate">{t(item.labelKey)}</span>
             </>
           )}
         </NavLink>

@@ -16,28 +16,28 @@ import { getAccessToken } from "../../lib/auth/tokens.js";
 
 const ICON_BOX = "flex items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0";
 
-const getStreakStyle = (days) => {
-  const colors = [
-    "#f97316", // 0-9 дн.
-    "#f59e0b", // 10-19 дн.
-    "#eab308", // 20-29 дн.
-    "#84cc16", // 30-39 дн.
-    "#22c55e", // 40-49 дн.
-    "#10b981", // 50-59 дн.
-    "#14b8a6", // 60-69 дн.
-    "#06b6d4", // 70-79 дн.
-    "#0ea5e9", // 80-89 дн.
-    "#3b82f6", // 90-99 дн.
-    "#6366f1", // 100-109 дн.
-    "#8b5cf6", // 110-119 дн.
-    "#a855f7", // 120-129 дн.
-    "#d946ef", // 130-139 дн.
-    "#ec4899", // 140-149 дн.
-    "#f43f5e"  // 150+ дн.
-  ];
-  const index = Math.floor(days / 10) % colors.length;
-  return colors[index];
-};
+// Каждые десять дней серия меняет цвет: первая декада — оранжевое пламя, дальше по кругу
+// через жёлтый, зелёный, синий к фиолетовому и малиновому.
+const STREAK_COLORS = [
+  "#f97316", // 0-9
+  "#f59e0b", // 10-19
+  "#eab308", // 20-29
+  "#84cc16", // 30-39
+  "#22c55e", // 40-49
+  "#10b981", // 50-59
+  "#14b8a6", // 60-69
+  "#06b6d4", // 70-79
+  "#0ea5e9", // 80-89
+  "#3b82f6", // 90-99
+  "#6366f1", // 100-109
+  "#8b5cf6", // 110-119
+  "#a855f7", // 120-129
+  "#d946ef", // 130-139
+  "#ec4899", // 140-149
+  "#f43f5e", // 150+
+];
+
+const getStreakColor = (days) => STREAK_COLORS[Math.floor(Math.max(0, days) / 10) % STREAK_COLORS.length];
 
 export default function TopAppBar({ hasUnread, user }) {
   const t = useT();
@@ -159,7 +159,10 @@ export default function TopAppBar({ hasUnread, user }) {
     };
   }, [streakState.streak, animatedStreak]);
 
-  const streakColor = getStreakStyle(streakState.streak);
+  // Горит вся кнопка целиком — рамка, фон, пламя и число одного цвета. Погасшая серия
+  // остаётся серой, чтобы разница читалась с одного взгляда.
+  const streakColor = getStreakColor(streakState.streak);
+  const streakLit = streakState.streakMaintained && streakState.streak > 0;
 
   function onLogout() {
     logout();
@@ -178,24 +181,28 @@ export default function TopAppBar({ hasUnread, user }) {
         {/* Daily Streak Indicator */}
         <Link
           to="/missions"
-          className="flex items-center gap-2 h-10 px-3 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
+          className={`flex items-center gap-2 h-10 px-3 border-2 transition-colors shrink-0 ${
+            streakLit ? "" : "border-tertiary hover:bg-surface-container"
+          }`}
+          style={
+            streakLit
+              ? { borderColor: streakColor, backgroundColor: `${streakColor}1f`, boxShadow: `2px 2px 0 0 ${streakColor}` }
+              : undefined
+          }
           title={streakState.streakMaintained ? "Active streak!" : "Streak broken! Go to missions page to restore."}
         >
-          <Icon 
-            name="local_fire_department" 
-            style={{ color: streakColor }} 
-            className={`text-lg font-bold ${
-              streakState.streakMaintained 
-                ? "animate-pulse" 
-                : "opacity-50"
-            } ${isAnimating ? "animate-bounce" : ""}`} 
-          />
-          <span 
-            className={`font-ledger text-sm font-black whitespace-nowrap inline-block transition-all duration-300 ${
-              isAnimating 
-                ? "scale-135 text-secondary rotate-6 font-extrabold" 
-                : "text-on-surface"
+          <Icon
+            name="local_fire_department"
+            style={{ color: streakLit ? streakColor : undefined }}
+            className={`text-lg font-bold ${streakLit ? "animate-pulse" : "opacity-50 text-on-surface-variant"} ${
+              isAnimating ? "animate-bounce" : ""
             }`}
+          />
+          <span
+            className={`font-ledger text-sm font-black whitespace-nowrap inline-block transition-all duration-300 ${
+              isAnimating ? "scale-135 rotate-6 font-extrabold" : ""
+            } ${streakLit ? "" : "text-on-surface-variant opacity-60"}`}
+            style={{ color: streakLit ? streakColor : undefined }}
           >
             {animatedStreak}
           </span>

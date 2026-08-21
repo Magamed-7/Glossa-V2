@@ -15,7 +15,8 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
     settings = await crud_settings.get_settings(user_id, db)
     daily_goal = settings.daily_goal
 
-    streak_obj = await streaks.touch_streak(user_id, db)
+    # Reading the dashboard is not an activity — only real study extends a streak.
+    streak_obj = await streaks.get_streak(user_id, db)
     
     # Check if month has changed to reset monthly restore counter
     current_month_str = date.today().strftime("%Y-%m")
@@ -37,14 +38,7 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
         max_restores = 10
 
     today = date.today()
-    streak_maintained = False
-    if streak_obj.last_activity_date:
-        if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
-            streak_maintained = True
-
-    # If the user has a saved prev_streak_before_reset that was reset, they are in a broken (restorable) state
-    if streak_obj.prev_streak_before_reset > streak_obj.current_streak:
-        streak_maintained = False
+    streak_maintained = streak_obj.current_streak > 0 and not streaks.is_broken(streak_obj, today)
 
 
     # 2. Get start of today (min time)

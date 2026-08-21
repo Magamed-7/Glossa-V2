@@ -129,10 +129,10 @@ export default function MyProfile() {
         {user?.id && (
           <Link
             to={`/profile/${user.id}`}
-            className="flex items-center gap-2 border-2 border-primary bg-surface dark:bg-stone-950 px-4 py-2 font-label text-label-md uppercase tracking-widest hover:bg-surface-container transition-colors shrink-0 hard-shadow"
+            className="flex items-center gap-2 border-2 border-primary bg-surface dark:bg-stone-950 px-4 py-2 font-label text-label-md uppercase tracking-wide hover:bg-surface-container transition-colors hard-shadow max-w-full md:max-w-xs"
           >
-            <Icon name="visibility" />
-            {t("profile.previewPublic")}
+            <Icon name="visibility" className="shrink-0" />
+            <span className="min-w-0 break-words leading-tight">{t("profile.previewPublic")}</span>
           </Link>
         )}
       </div>

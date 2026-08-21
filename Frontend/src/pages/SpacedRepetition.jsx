@@ -307,7 +307,7 @@ export default function SpacedRepetition() {
                   </div>
                   <button
                     onClick={handleReviewAllDue}
-                    className="bg-[#ffb054] hover:bg-[#ffa034] text-black border-2 border-black font-mono text-xs font-black uppercase px-4 py-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer whitespace-nowrap"
+                    className="bg-[#ffb054] hover:bg-[#ffa034] text-black border-2 border-black font-mono text-xs font-black uppercase px-4 py-2.5 shadow-[3px_3px_0_0_#000] hover:translate-y-0.5 active:translate-y-1 transition-all cursor-pointer text-center leading-tight"
                   >
                     {t("review.reviewAllBtn")} ({dueCards.length})
                   </button>

@@ -306,19 +306,11 @@ async def streak_ws(websocket: WebSocket):
             return
 
         try:
-            # Touch the streak on connection/visit!
-            streak_obj = await streaks.touch_streak(user.id, db)
+            # Visiting is not studying: report the streak, never extend it here.
+            streak_obj = await streaks.get_streak(user.id, db)
             
-            # Determine if it's maintained
             today = date.today()
-            streak_maintained = False
-            if streak_obj.last_activity_date:
-                if streak_obj.last_activity_date == today or streak_obj.last_activity_date == today - timedelta(days=1):
-                    streak_maintained = True
-
-            # If user has a saved prev_streak_before_reset that was reset, they are in a broken (restorable) state
-            if streak_obj.prev_streak_before_reset > streak_obj.current_streak:
-                streak_maintained = False
+            streak_maintained = streak_obj.current_streak > 0 and not streaks.is_broken(streak_obj, today)
 
             # Get user active subscription for max_restores
             from app.services import crud_subscription

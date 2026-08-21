@@ -260,7 +260,7 @@ export default function StoryReader() {
             </span>
             <Link
               to={nextId ? `/stories/${nextId}` : `/stories?level=${story.cefr_level}`}
-              className={`flex items-center gap-3 h-12 px-6 border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-surface font-label text-xs uppercase font-bold tracking-widest hover:bg-surface-variant transition-colors ${!nextId ? "opacity-35 cursor-not-allowed" : ""}`}
+              className={`flex items-center gap-3 min-h-12 px-6 py-2 border-[2px] border-on-surface shadow-[3px_3px_0_0_#000] bg-surface font-label text-xs uppercase font-bold tracking-wide text-center leading-tight hover:bg-surface-variant transition-colors ${!nextId ? "opacity-35 cursor-not-allowed" : ""}`}
             >
               {t("stories.nextStory")}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

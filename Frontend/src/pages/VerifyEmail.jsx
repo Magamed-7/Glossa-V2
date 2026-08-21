@@ -128,7 +128,7 @@ export default function VerifyEmail() {
             {t("auth.verifyEmail.verify")}
           </NeoButton>
 
-          <div className="flex justify-between items-center pt-4 border-t-2 border-surface-container-highest">
+          <div className="flex justify-center items-center pt-4 border-t-2 border-surface-container-highest">
             <button
               type="button"
               className="font-label text-label-md text-outline hover:text-secondary transition-colors underline disabled:opacity-50 disabled:cursor-not-allowed"
@@ -136,13 +136,6 @@ export default function VerifyEmail() {
               disabled={cooldown > 0 || resending}
             >
               {cooldown > 0 ? t("auth.verifyEmail.resendIn", { n: cooldown }) : t("auth.verifyEmail.resend")}
-            </button>
-            <button
-              type="button"
-              className="font-label text-label-md text-outline hover:text-secondary transition-colors underline"
-              onClick={() => navigate("/dashboard")}
-            >
-              {t("auth.verifyEmail.skip")}
             </button>
           </div>
         </form>

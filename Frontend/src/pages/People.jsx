@@ -4,7 +4,6 @@ import Icon from "../components/ui/Icon.jsx";
 import Avatar from "../components/ui/Avatar.jsx";
 import Skeleton from "../components/ui/Skeleton.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
-import FollowButton from "../components/profile/FollowButton.jsx";
 import { useApi } from "../lib/useApi.js";
 import { searchUsers } from "../lib/api/social.js";
 import { useT } from "../lib/i18n.jsx";
@@ -104,15 +103,16 @@ export default function People() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t-2 border-dotted border-primary pt-4 mt-auto">
+                {/* Подписка и сообщения живут на странице человека — здесь только вход туда,
+                    чтобы решение принималось после того, как его увидели целиком. */}
+                <div className="border-t-2 border-dotted border-primary pt-4 mt-auto">
                   <Link
                     to={`/profile/${user.id}`}
-                    className="font-label text-xs uppercase font-bold tracking-widest text-secondary hover:underline flex items-center gap-1"
+                    className="font-label text-xs uppercase font-bold tracking-widest text-secondary hover:underline flex items-center justify-center gap-1 text-center"
                   >
-                    {lookup("viewProfile", "View Profile")}
-                    <Icon name="arrow_forward" className="text-sm font-bold" />
+                    <span className="min-w-0 break-words">{lookup("viewProfile", "View Profile")}</span>
+                    <Icon name="arrow_forward" className="text-sm font-bold shrink-0" />
                   </Link>
-                  <FollowButton userId={user.id} />
                 </div>
               </div>
             );
