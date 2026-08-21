@@ -15,8 +15,7 @@ async def get_daily_missions(user_id: int, db: AsyncSession):
     settings = await crud_settings.get_settings(user_id, db)
     daily_goal = settings.daily_goal
 
-    # Reading the dashboard is not an activity — only real study extends a streak.
-    streak_obj = await streaks.get_streak(user_id, db)
+    streak_obj = await streaks.touch_streak(user_id, db)
     
     # Check if month has changed to reset monthly restore counter
     current_month_str = date.today().strftime("%Y-%m")

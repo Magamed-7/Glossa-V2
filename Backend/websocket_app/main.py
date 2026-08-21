@@ -306,8 +306,8 @@ async def streak_ws(websocket: WebSocket):
             return
 
         try:
-            # Visiting is not studying: report the streak, never extend it here.
-            streak_obj = await streaks.get_streak(user.id, db)
+            # Touch the streak on connection/visit!
+            streak_obj = await streaks.touch_streak(user.id, db)
             
             today = date.today()
             streak_maintained = streak_obj.current_streak > 0 and not streaks.is_broken(streak_obj, today)

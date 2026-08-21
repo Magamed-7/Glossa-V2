@@ -40,7 +40,7 @@ async def get_streak(user_id: int, db: AsyncSession):
 
 
 async def touch_streak(user_id: int, db: AsyncSession):
-    """Count today's study. Only real learning calls this — opening the site does not."""
+    """Count today as active: opening the site keeps the streak going."""
     streak = await get_streak(user_id, db)
     today = date.today()
 
