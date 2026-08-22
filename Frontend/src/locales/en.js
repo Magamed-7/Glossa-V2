@@ -355,6 +355,8 @@ export const en = {
       glossaLedger: "GLOSSA LEDGER",
       ledgerVerified: "LEDGER VERIFIED",
       btnKnow: "Know",
+      pressLeftArrow: "Press Left Arrow",
+      pressRightArrow: "Press Right Arrow",
       btnForget: "Forget",
       timeRemaining: "Time Remaining",
       context: "Context",

@@ -355,6 +355,8 @@ export const tg = {
       glossaLedger: "ДАФТАРИ GLOSSA",
       ledgerVerified: "ДАФТАР ТАЙИД ШУД",
       btnKnow: "Медонам",
+      pressLeftArrow: "Тирчаи чап",
+      pressRightArrow: "Тирчаи рост",
       btnForget: "Фармоӯш кардам",
       timeRemaining: "ВАҚТИ БОҚИМОНДА",
       context: "Контекст",

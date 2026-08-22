@@ -355,6 +355,8 @@ export const ru = {
       glossaLedger: "ЖУРНАЛ GLOSSA",
       ledgerVerified: "ЖУРНАЛ ПОДТВЕРЖДЕН",
       btnKnow: "Знаю",
+      pressLeftArrow: "Стрелка влево",
+      pressRightArrow: "Стрелка вправо",
       btnForget: "Забыл",
       timeRemaining: "ОСТАЛОСЬ ВРЕМЕНИ",
       context: "Контекст",

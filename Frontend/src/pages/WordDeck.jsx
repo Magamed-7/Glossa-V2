@@ -17,6 +17,7 @@ import { useT, useI18n } from "../lib/i18n.jsx";
 import { submitReview } from "../lib/api/reviews.js";
 import leveledVocab from "../data/leveled_vocab.json";
 import XpGainSummaryModal from "../components/ui/XpGainSummaryModal.jsx";
+import { nextTypedText } from "../lib/typewriterInput.js";
 
 const STATUS_CYCLE = ["learning", "learned", "hard", "skipped"];
 
@@ -256,6 +257,20 @@ export default function WordDeck() {
       clearInterval(interval);
     };
   }, [gameMode, typeIndex]);
+
+  // Курсор всегда в конце набранного. Строку мы и так собираем сами, но если курсор
+  // останется в начале, клавиатура будет предлагать не те подсказки и мигать не в том месте.
+  useEffect(() => {
+    if (gameMode !== "typewriter") return;
+    const field = typewriterInputRef.current;
+    if (!field || document.activeElement !== field) return;
+    const end = field.value.length;
+    try {
+      field.setSelectionRange(end, end);
+    } catch (e) {
+      /* поле может не поддерживать выделение — тогда и поправить нечего */
+    }
+  }, [typedText, gameMode]);
 
   function onStatusFilterChange(val) {
     const next = new URLSearchParams(searchParams);
@@ -585,13 +600,32 @@ export default function WordDeck() {
   }, [gameMode, recallWords, recallCombo]);
 
   // --- TYPEWRITER HANDLERS ---
+  //
+  // Пробел, дефис и апостроф игра подставляет сама. Клетка под пробелом выглядит как
+  // пустое место, и в карточке вроде «you are welcome» человеку негде было понять, что от
+  // него ждут нажатия пробела. Теперь он набирает только буквы.
+  //
+  // Слово собирается из событий ввода, а не из содержимого поля.
+  //
+  // Телефонная клавиатура не может поставить курсор в поле нулевого размера — он остаётся
+  // в начале, и каждая следующая буква вставала перед предыдущими: набранное «against»
+  // показывалось как «tsniaga». Порядок букв теперь задаём мы сами: пришла буква — дописали
+  // в конец, пришло удаление — убрали последнюю. Где браузер не сообщает, что именно
+  // произошло (вставка из буфера, подстановка слова клавиатурой), берём поле целиком.
   const handleTypewriterInput = (e) => {
-    const text = e.target.value;
-    playTypewriterSound();
-    setTypedText(text);
-
     const card = gameItems[typeIndex];
     if (!card) return;
+
+    const text = nextTypedText({
+      current: typedText,
+      inputType: e.nativeEvent?.inputType,
+      data: e.nativeEvent?.data,
+      fieldValue: e.target.value,
+      target: card.word,
+    });
+
+    playTypewriterSound();
+    setTypedText(text);
 
     if (text.toLowerCase().trim() === card.word.toLowerCase().trim()) {
       playBellSound();
@@ -849,8 +883,8 @@ export default function WordDeck() {
         <header className="w-full flex flex-col md:flex-row justify-between items-center gap-4 mb-8 z-10 max-w-5xl mx-auto">
           <div className="bg-surface border-2 border-black p-4 flex items-center gap-3 shadow-[4px_4px_0_0_#0F172A] neo-card">
             <span className="material-symbols-outlined text-secondary text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
-            <h1 className="font-serif text-3xl font-bold uppercase tracking-tight text-primary">
-              Speed Recall: Emergency Purge
+            <h1 className="font-serif text-2xl md:text-3xl font-bold uppercase tracking-tight text-primary min-w-0 break-words">
+              {t("deck.games.cardFlipTitle")}
             </h1>
           </div>
           <div className="flex items-center gap-4">
@@ -861,8 +895,8 @@ export default function WordDeck() {
               {t("deck.games.btnStopExit")}
             </button>
             <div className="bg-surface border-2 border-[#ba1a1a] px-6 py-2.5 flex flex-col items-end shadow-[4px_4px_0_0_#0F172A] neo-card">
-              <span className="text-[10px] text-[#ba1a1a] font-mono uppercase tracking-widest font-bold">Time Remaining</span>
-              <span className="font-serif text-4xl font-black text-[#ba1a1a] leading-none">60s</span>
+              <span className="text-[10px] text-[#ba1a1a] font-mono uppercase tracking-widest font-bold">{t("deck.games.timeRemaining")}</span>
+              <span className="font-serif text-4xl font-black text-[#ba1a1a] leading-none">{recallTimeLeft}s</span>
             </div>
           </div>
         </header>
@@ -881,8 +915,8 @@ export default function WordDeck() {
               className="bg-surface border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform -rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
             >
               <span className="material-symbols-outlined text-display-lg text-primary text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_left</span>
-              <span className="font-serif text-3xl font-bold text-primary tracking-tight">KNOW</span>
-              <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Left Arrow</span>
+              <span className="font-serif text-3xl font-bold text-primary tracking-tight">{t("deck.games.btnKnow")}</span>
+              <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">{t("deck.games.pressLeftArrow")}</span>
             </div>
           </div>
 
@@ -961,8 +995,8 @@ export default function WordDeck() {
               className="bg-surface border-2 border-black p-8 flex flex-col items-center gap-4 text-center transform rotate-2 shadow-[4px_4px_0px_0px_#0F172A] cursor-pointer hover:translate-y-0.5 active:translate-y-1 transition-all w-full select-none neo-card"
             >
               <span className="material-symbols-outlined text-display-lg text-[#ba1a1a] text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_right</span>
-              <span className="font-serif text-3xl font-bold text-[#ba1a1a] tracking-tight">FORGOT</span>
-              <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">Press Right Arrow</span>
+              <span className="font-serif text-3xl font-bold text-[#ba1a1a] tracking-tight">{t("deck.games.btnForget")}</span>
+              <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider font-bold">{t("deck.games.pressRightArrow")}</span>
             </div>
           </div>
 
@@ -1101,14 +1135,21 @@ export default function WordDeck() {
           </div>
 
           {/* Typewriter Character Inputs */}
-          <div className="relative z-10 flex justify-center flex-wrap gap-2 text-3xl md:text-5xl font-mono tracking-widest uppercase">
+          <div className="relative z-10 flex justify-center flex-wrap gap-1.5 md:gap-2 text-2xl sm:text-3xl md:text-5xl font-mono tracking-widest uppercase">
             {card.word.split("").map((char, index) => {
               const typedChar = typedText[index];
               const isFilled = typedChar !== undefined;
+
+              // Пробел между словами — это разрыв, а не клетка: клетку под ним человек
+              // принимает за незаполненную букву и не понимает, что от него хотят.
+              if (char === " ") {
+                return <span key={index} className="w-3 md:w-5" aria-hidden="true" />;
+              }
+
               return (
                 <span
                   key={index}
-                  className={`border-b-4 pb-2 px-2 font-bold ${
+                  className={`border-b-4 pb-2 px-1.5 md:px-2 font-bold ${
                     isFilled ? "border-primary text-primary" : "border-outline text-transparent"
                   }`}
                 >
@@ -1118,14 +1159,27 @@ export default function WordDeck() {
             })}
           </div>
 
-          {/* Hidden input to capture typing */}
+          {/*
+            Поле, в которое идёт набор. Оно прозрачное, но занимает всю карточку: в поле
+            нулевого размера телефонная клавиатура не может поставить курсор, и буквы
+            начинают вставать в обратном порядке. Автоподбор, автозамена, автозаглавные и
+            проверка орфографии выключены — иначе клавиатура подставляет в игру свои слова
+            вместо набранного.
+          */}
           <input
             ref={typewriterInputRef}
             type="text"
             value={typedText}
             onChange={handleTypewriterInput}
             maxLength={card.word.length}
-            className="absolute opacity-0 w-0 h-0"
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer bg-transparent border-0 outline-none"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            inputMode="text"
+            enterKeyHint="done"
+            aria-label={t("deck.games.typewriterHint")}
             autoFocus
           />
         </div>

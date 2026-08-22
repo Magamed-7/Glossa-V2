@@ -175,6 +175,10 @@ export default function QuizCard({ questions, lang, exerciseLabel, onFinish }) {
             <input
               autoFocus
               type="text"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && inputVal.trim() && submitText()}

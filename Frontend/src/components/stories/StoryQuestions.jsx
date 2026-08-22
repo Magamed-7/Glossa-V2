@@ -87,6 +87,10 @@ export default function StoryQuestions({ storyId, questions, locale, onCompleted
           ) : (
             <input
               className="w-full bg-surface-container-low border-2 border-tertiary px-4 py-3 font-body text-body-md outline-none focus:border-secondary"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
               value={answers[q.id] || ""}
               onChange={(e) => setAnswer(q.id, e.target.value)}
             />
