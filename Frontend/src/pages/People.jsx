@@ -108,7 +108,7 @@ export default function People() {
                 <div className="border-t-2 border-dotted border-primary pt-4 mt-auto">
                   <Link
                     to={`/profile/${user.id}`}
-                    className="font-label text-xs uppercase font-bold tracking-widest text-secondary hover:underline flex items-center justify-center gap-1 text-center"
+                    className="font-label text-xs uppercase font-bold tracking-widest text-secondary hover:underline flex items-center justify-center gap-1 text-center min-h-11 py-2"
                   >
                     <span className="min-w-0 break-words">{lookup("viewProfile", "View Profile")}</span>
                     <Icon name="arrow_forward" className="text-sm font-bold shrink-0" />

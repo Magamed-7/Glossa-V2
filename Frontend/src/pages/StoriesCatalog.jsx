@@ -239,19 +239,19 @@ export default function StoriesCatalog() {
               <div className="flex gap-4 font-label text-[10px] uppercase font-bold text-on-surface-variant">
                 <button
                   onClick={() => setFilterTab("all")}
-                  className={`cursor-pointer ${filterTab === "all" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
+                  className={`cursor-pointer inline-flex items-center min-h-11 md:min-h-0 px-1 ${filterTab === "all" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
                 >
                   {t("stories.allBooks")}
                 </button>
                 <button
                   onClick={() => setFilterTab("progress")}
-                  className={`cursor-pointer ${filterTab === "progress" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
+                  className={`cursor-pointer inline-flex items-center min-h-11 md:min-h-0 px-1 ${filterTab === "progress" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
                 >
                   {t("stories.inProgress")}
                 </button>
                 <button
                   onClick={() => setFilterTab("completed")}
-                  className={`cursor-pointer ${filterTab === "completed" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
+                  className={`cursor-pointer inline-flex items-center min-h-11 md:min-h-0 px-1 ${filterTab === "completed" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
                 >
                   {t("stories.completed")}
                 </button>
@@ -421,19 +421,19 @@ export default function StoriesCatalog() {
               <div className="flex gap-4 font-label text-[10px] uppercase font-bold text-on-surface-variant">
                 <button
                   onClick={() => setFilterTab("all")}
-                  className={`cursor-pointer ${filterTab === "all" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
+                  className={`cursor-pointer inline-flex items-center min-h-11 md:min-h-0 px-1 ${filterTab === "all" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
                 >
                   {t("stories.allBooks")}
                 </button>
                 <button
                   onClick={() => setFilterTab("progress")}
-                  className={`cursor-pointer ${filterTab === "progress" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
+                  className={`cursor-pointer inline-flex items-center min-h-11 md:min-h-0 px-1 ${filterTab === "progress" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
                 >
                   {t("stories.inProgress")}
                 </button>
                 <button
                   onClick={() => setFilterTab("completed")}
-                  className={`cursor-pointer ${filterTab === "completed" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
+                  className={`cursor-pointer inline-flex items-center min-h-11 md:min-h-0 px-1 ${filterTab === "completed" ? "text-secondary border-b border-secondary pb-0.5 font-bold" : ""}`}
                 >
                   {t("stories.completed")}
                 </button>

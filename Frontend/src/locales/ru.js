@@ -16,6 +16,8 @@ export const ru = {
     hidePassword: "Скрыть пароль",
   },
   nav: {
+    openMenu: "Открыть меню",
+    searchInMenu: "Поиск",
     dashboard: "ГЛАВНАЯ",
     insights: "АНАЛИТИКА",
     community: "СООБЩЕСТВО",

@@ -74,7 +74,7 @@ const WordAudioButton = forwardRef(function WordAudioButton({ audioUrl, accent, 
     <button
       ref={ref}
       type="button"
-      className={`inline-flex items-center gap-1 text-tertiary hover:text-secondary transition-colors disabled:opacity-50 ${
+      className={`inline-flex items-center justify-center gap-1 min-w-10 min-h-10 md:min-w-0 md:min-h-0 text-tertiary hover:text-secondary transition-colors disabled:opacity-50 ${
         state === "playing" ? "text-secondary" : ""
       } ${className}`}
       onClick={play}

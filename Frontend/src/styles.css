@@ -73,9 +73,12 @@
   --font-label: "Plus Jakarta Sans", system-ui, sans-serif;
   --font-ledger: "JetBrains Mono", ui-monospace, monospace;
 
-  /* --- Размеры шрифта --- */
-  --text-display-lg: 64px;
-  --text-display-lg--line-height: 72px;
+  /* --- Размеры шрифта ---
+     Крупные кегли заданы через clamp: на широком экране остаются прежними, на телефоне
+     сами ужимаются. Иначе «Редакционные тарифы» в 64 пикселя не влезает в 390 точек
+     ширины и растягивает страницу вбок — по-русски и по-таджикски слова длиннее. */
+  --text-display-lg: clamp(30px, 8.5vw, 64px);
+  --text-display-lg--line-height: 1.12;
   --text-display-lg--letter-spacing: -0.02em;
   --text-display-lg--font-weight: 600;
 
@@ -84,12 +87,12 @@
   --text-display-lg-mobile--letter-spacing: -0.01em;
   --text-display-lg-mobile--font-weight: 600;
 
-  --text-headline-lg: 40px;
-  --text-headline-lg--line-height: 48px;
+  --text-headline-lg: clamp(26px, 6.5vw, 40px);
+  --text-headline-lg--line-height: 1.2;
   --text-headline-lg--font-weight: 500;
 
-  --text-headline-md: 32px;
-  --text-headline-md--line-height: 40px;
+  --text-headline-md: clamp(22px, 5.5vw, 32px);
+  --text-headline-md--line-height: 1.25;
   --text-headline-md--font-weight: 500;
 
   --text-body-lg: 18px;
@@ -108,9 +111,10 @@
   /* --- Отступы --- */
   --spacing-base: 4px;
   --spacing-gutter: 24px;
-  --spacing-section-gap: 80px;
+  --spacing-section-gap: clamp(40px, 10vw, 80px);
   --spacing-margin-mobile: 16px;
   --spacing-margin-desktop: 64px;
+  --spacing-gutter-mobile: 16px;
 
   /* --- Радиусы (почти везде острые углы) --- */
   --radius-DEFAULT: 0.25rem;
@@ -452,5 +456,55 @@ a,
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Телефон ---
+   Правила, которые нужны только на узком экране. Всё, что шире экрана, режется по
+   ширине, а не растягивает страницу вбок: горизонтального скролла на сайте быть не
+   должно ни на одной странице и ни на одном из трёх языков. */
+html {
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 767px) {
+  /* Вырез камеры в альбомной ориентации: содержимое отступает от него, а не прячется под. */
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Safari на iPhone увеличивает страницу, когда фокус попадает в поле мельче 16px,
+     и обратно уже не отдаёт — поэтому на телефоне поля всегда 16px. */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Картинки и видео не растягивают страницу, какой бы ни пришёл размер.
+     Высоту не трогаем: аватарки и обложки заданы через h-full внутри своей рамки. */
+  img,
+  video,
+  canvas,
+  iframe {
+    max-width: 100%;
+  }
+
+  /* Длинное слово в ячейке или подписи переносится, а не уезжает за край. */
+  td,
+  th,
+  li,
+  p,
+  span,
+  label {
+    overflow-wrap: break-word;
   }
 }

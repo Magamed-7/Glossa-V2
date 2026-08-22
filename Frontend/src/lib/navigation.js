@@ -11,3 +11,14 @@ export const NAV_ITEMS = [
   { to: "/marketplace", labelKey: "nav.market", icon: "storefront" },
   { to: "/leaderboard", labelKey: "nav.ranking", icon: "leaderboard" },
 ];
+
+// Те же разделы, что и в боковой панели маркета — для выдвижного меню на телефоне.
+export const MARKET_NAV_ITEMS = [
+  { to: "/marketplace", labelKey: "market.directory", icon: "storefront", end: true },
+  { to: "/marketplace/stories", labelKey: "market.storiesNav", icon: "auto_stories" },
+  { to: "/marketplace/analytics", labelKey: "market.analytics", icon: "analytics" },
+  { to: "/marketplace/services", labelKey: "market.myServices", icon: "work" },
+  { to: "/marketplace/inbox", labelKey: "market.inbox", icon: "inbox" },
+  { to: "/marketplace/pricing", labelKey: "market.pricing", icon: "payments" },
+  { to: "/dashboard", labelKey: "market.return", icon: "arrow_back" },
+];

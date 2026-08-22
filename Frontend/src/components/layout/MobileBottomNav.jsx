@@ -12,7 +12,7 @@ const ITEMS = [
 export default function MobileBottomNav() {
   const t = useT();
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-surface border-t-2 border-tertiary md:hidden z-50 flex justify-around items-center py-3">
+    <nav className="fixed bottom-0 left-0 w-full bg-surface border-t-2 border-tertiary md:hidden z-40 flex justify-around items-center pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
       {ITEMS.slice(0, 2).map((item) => (
         <NavLink
           key={item.to}
@@ -25,7 +25,7 @@ export default function MobileBottomNav() {
           {({ isActive }) => (
             <>
               <Icon name={item.icon} filled={isActive} />
-              <span className="text-[10px] font-bold uppercase w-full text-center leading-none truncate">{t(item.labelKey)}</span>
+              <span className="text-[9px] font-bold uppercase w-full text-center leading-tight break-words line-clamp-2 mt-0.5">{t(item.labelKey)}</span>
             </>
           )}
         </NavLink>
@@ -50,7 +50,7 @@ export default function MobileBottomNav() {
           {({ isActive }) => (
             <>
               <Icon name={item.icon} filled={isActive} />
-              <span className="text-[10px] font-bold uppercase w-full text-center leading-none truncate">{t(item.labelKey)}</span>
+              <span className="text-[9px] font-bold uppercase w-full text-center leading-tight break-words line-clamp-2 mt-0.5">{t(item.labelKey)}</span>
             </>
           )}
         </NavLink>

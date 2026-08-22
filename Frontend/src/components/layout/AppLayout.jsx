@@ -1,9 +1,12 @@
+import { useCallback, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SideNavBar from "./SideNavBar.jsx";
 import TopAppBar from "./TopAppBar.jsx";
 import MobileBottomNav from "./MobileBottomNav.jsx";
+import MobileDrawer from "./MobileDrawer.jsx";
 import Fab from "./Fab.jsx";
 import Icon from "../ui/Icon.jsx";
+import { NAV_ITEMS } from "../../lib/navigation.js";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useNotificationPolling } from "../../lib/useNotificationPolling.js";
 import { useT } from "../../lib/i18n.jsx";
@@ -13,6 +16,9 @@ export default function AppLayout({ fab }) {
   const navigate = useNavigate();
   const { user: authUser, profile } = useAuth();
   const { hasUnread, activeToast, clearToast } = useNotificationPolling();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [balance, setBalance] = useState(null);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   const topBarUser =
     authUser && profile ? { username: authUser.username, photo_url: profile.photo_url } : undefined;
@@ -23,9 +29,24 @@ export default function AppLayout({ fab }) {
         {t("nav.skipToContent")}
       </a>
       <SideNavBar />
-      <main className="md:ml-64 min-h-screen relative overflow-hidden">
-        <TopAppBar user={topBarUser} hasUnread={hasUnread} />
-        <div id="main-content" className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-12 pb-24 md:pb-12">
+      <MobileDrawer
+        open={menuOpen}
+        onClose={closeMenu}
+        items={NAV_ITEMS}
+        balance={balance}
+        hasUnread={hasUnread}
+      />
+      <main className="md:ml-64 min-h-screen relative overflow-x-clip">
+        <TopAppBar
+          user={topBarUser}
+          hasUnread={hasUnread}
+          onOpenMenu={() => setMenuOpen(true)}
+          onBalance={setBalance}
+        />
+        <div
+          id="main-content"
+          className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12 pb-[calc(6.5rem+env(safe-area-inset-bottom))] md:pb-12"
+        >
           <Outlet />
         </div>
       </main>

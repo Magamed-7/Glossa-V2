@@ -14,7 +14,7 @@ import { getDailyMissions } from "../../lib/api/learning.js";
 import { WS_URL } from "../../lib/config.js";
 import { getAccessToken } from "../../lib/auth/tokens.js";
 
-const ICON_BOX = "flex items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0";
+const ICON_BOX = "items-center justify-center w-10 h-10 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0";
 
 // Каждые десять дней серия меняет цвет: первая декада — оранжевое пламя, дальше по кругу
 // через жёлтый, зелёный, синий к фиолетовому и малиновому.
@@ -39,7 +39,7 @@ const STREAK_COLORS = [
 
 const getStreakColor = (days) => STREAK_COLORS[Math.floor(Math.max(0, days) / 10) % STREAK_COLORS.length];
 
-export default function TopAppBar({ hasUnread, user }) {
+export default function TopAppBar({ hasUnread, user, onOpenMenu, onBalance }) {
   const t = useT();
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -50,6 +50,12 @@ export default function TopAppBar({ hasUnread, user }) {
   const [streakState, setStreakState] = useState({ streak: 0, streakMaintained: false });
   const [animatedStreak, setAnimatedStreak] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Кошелёк на телефоне живёт в выдвижном меню, а остаток запрашивается здесь — отдаём
+  // его наверх, чтобы не ходить в API второй раз.
+  useEffect(() => {
+    if (onBalance) onBalance(balance);
+  }, [balance, onBalance]);
 
   // Sync with initial API load
   useEffect(() => {
@@ -170,13 +176,27 @@ export default function TopAppBar({ hasUnread, user }) {
   }
 
   return (
-    <header className="bg-surface border-b-2 border-tertiary flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 sticky top-0 z-30">
-      <Link to="/dashboard" className="font-display text-2xl font-black uppercase tracking-tight text-tertiary shrink-0">
-        {t("loadingScreen.brand")}
-      </Link>
+    <header className="bg-surface border-b-2 border-tertiary flex justify-between items-center gap-2 w-full px-margin-mobile md:px-margin-desktop py-3 md:py-4 sticky top-0 z-30">
+      <div className="flex items-center gap-2 min-w-0">
+        {onOpenMenu && (
+          <button
+            type="button"
+            onClick={onOpenMenu}
+            aria-label={t("nav.openMenu")}
+            className="md:hidden flex items-center justify-center w-11 h-11 border-2 border-tertiary shrink-0"
+          >
+            <Icon name="menu" className="text-tertiary" />
+          </button>
+        )}
+        <Link to="/dashboard" className="font-display text-xl md:text-2xl font-black uppercase tracking-tight text-tertiary shrink-0 flex items-center min-h-11 md:min-h-0">
+          {t("loadingScreen.brand")}
+        </Link>
+      </div>
 
-      <div className="flex items-center gap-3">
-        <SearchBar />
+      <div className="flex items-center gap-2 md:gap-3">
+        <div className="hidden md:block">
+          <SearchBar />
+        </div>
 
         {/* Daily Streak Indicator */}
         <Link
@@ -214,7 +234,7 @@ export default function TopAppBar({ hasUnread, user }) {
 
         <Link
           to="/wallet"
-          className="flex items-center gap-2 h-10 px-3 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
+          className="hidden md:flex items-center gap-2 h-10 px-3 border-2 border-tertiary hover:bg-surface-container transition-colors shrink-0"
           aria-label={t("nav.wallet")}
         >
           <Icon name="account_balance_wallet" className="text-tertiary text-lg" />
@@ -223,20 +243,20 @@ export default function TopAppBar({ hasUnread, user }) {
           </span>
         </Link>
 
-        <Link to="/messenger" className={ICON_BOX} aria-label={t("nav.messenger")}>
+        <Link to="/messenger" className={`hidden md:flex ${ICON_BOX}`} aria-label={t("nav.messenger")}>
           <Icon name="chat" className="text-tertiary" />
         </Link>
 
-        <Link to="/notifications" className={`relative ${ICON_BOX}`} aria-label={t("nav.notifications")}>
+        <Link to="/notifications" className={`relative flex ${ICON_BOX}`} aria-label={t("nav.notifications")}>
           <Icon name="notifications" className="text-tertiary" />
           {hasUnread && (
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary rounded-full" aria-hidden="true" />
           )}
         </Link>
 
-        <ThemeToggle className={ICON_BOX} />
+        <ThemeToggle className={`hidden md:flex ${ICON_BOX}`} />
 
-        <Link to="/profile" className="shrink-0" aria-label={t("nav.myProfile")}>
+        <Link to="/profile" className="hidden md:block shrink-0" aria-label={t("nav.myProfile")}>
           {user === undefined ? (
             <Skeleton className="w-10 h-10" />
           ) : (
@@ -244,7 +264,13 @@ export default function TopAppBar({ hasUnread, user }) {
           )}
         </Link>
 
-        <button type="button" onClick={onLogout} className={ICON_BOX} aria-label={t("nav.logOut")} title={t("nav.logOut")}>
+        <button
+          type="button"
+          onClick={onLogout}
+          className={`hidden md:flex ${ICON_BOX}`}
+          aria-label={t("nav.logOut")}
+          title={t("nav.logOut")}
+        >
           <Icon name="logout" className="text-secondary" />
         </button>
       </div>

@@ -106,8 +106,12 @@ export default function StoryBody({ body, words, wordDictionary, storyId, level,
                 {partObj.text}
               </span>
               {isActive && (
-                <div className="absolute z-50 left-1/2 -translate-x-1/2 top-full mt-2">
-                  {/* Click outside listener can be added here or in WordTooltip, but since it's simple, we can add a fixed background overlay or rely on WordTooltip */}
+                /*
+                  На широком экране окошко висит прямо под словом. На телефоне так нельзя:
+                  у слова с краю строки окошко в 256 точек наполовину уходит за экран и
+                  становится недоступным — поэтому там оно всплывает снизу по центру.
+                */
+                <div className="fixed z-50 left-1/2 -translate-x-1/2 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] w-[min(18rem,calc(100vw-2rem))] md:absolute md:bottom-auto md:top-full md:mt-2 md:w-auto">
                   <WordTooltip
                     wordData={entry}
                     storyId={storyId}

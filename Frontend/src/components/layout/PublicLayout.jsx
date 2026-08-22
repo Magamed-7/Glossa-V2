@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import Icon from "../ui/Icon.jsx";
 import { useAuth } from "../../lib/auth/AuthContext.jsx";
 import { useT } from "../../lib/i18n.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
@@ -9,8 +11,12 @@ export default function PublicLayout() {
   const { status } = useAuth();
   const authed = status === "authenticated";
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => setMenuOpen(false), [location.pathname]);
 
   function goToPricing(e) {
+    setMenuOpen(false);
     if (location.pathname === "/") {
       e.preventDefault();
       document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -23,9 +29,9 @@ export default function PublicLayout() {
         {t("nav.skipToContent")}
       </a>
 
-      <header className="border-b-2 border-tertiary">
-        <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-4 flex items-center justify-between gap-6">
-          <Link to="/" className="font-display text-headline-md italic text-primary tracking-tighter">
+      <header className="border-b-2 border-tertiary relative">
+        <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-4 flex items-center justify-between gap-3 md:gap-6">
+          <Link to="/" className="font-display text-headline-md italic text-primary tracking-tighter shrink-0">
             Glossa
           </Link>
 
@@ -41,7 +47,7 @@ export default function PublicLayout() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
             <LanguageSwitcher />
             {authed ? (
@@ -55,7 +61,7 @@ export default function PublicLayout() {
               <>
                 <Link
                   to="/login"
-                  className="hidden sm:inline font-label text-label-md uppercase tracking-widest hover:text-secondary transition-colors"
+                  className="font-label text-label-md uppercase tracking-widest hover:text-secondary transition-colors"
                 >
                   {t("public.nav.login")}
                 </Link>
@@ -68,7 +74,61 @@ export default function PublicLayout() {
               </>
             )}
           </div>
+
+          {/* На телефоне «Зарегистрироваться» одно занимает полэкрана — всё уходит под кнопку меню. */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-expanded={menuOpen}
+            aria-label={t("nav.openMenu")}
+            className="md:hidden flex items-center justify-center w-11 h-11 border-2 border-tertiary shrink-0"
+          >
+            <Icon name={menuOpen ? "close" : "menu"} className="text-tertiary" />
+          </button>
         </div>
+
+        {menuOpen && (
+          <div className="md:hidden border-t-2 border-tertiary bg-surface px-margin-mobile py-4 flex flex-col gap-3">
+            <Link to="/#pricing" onClick={goToPricing} className="font-label text-label-md uppercase tracking-widest py-2">
+              {t("public.nav.pricing")}
+            </Link>
+            <Link to="/about" className="font-label text-label-md uppercase tracking-widest py-2">
+              {t("public.nav.about")}
+            </Link>
+            <Link to="/faq" className="font-label text-label-md uppercase tracking-widest py-2">
+              {t("public.nav.faq")}
+            </Link>
+
+            <div className="flex items-center gap-3 pt-2 border-t border-outline-variant">
+              <ThemeToggle className="flex items-center justify-center w-11 h-11 border-2 border-tertiary shrink-0" />
+              <LanguageSwitcher />
+            </div>
+
+            {authed ? (
+              <Link
+                to="/dashboard"
+                className="border-2 border-tertiary bg-secondary text-on-secondary px-4 py-3 text-center font-label text-label-md uppercase tracking-widest break-words"
+              >
+                {t("public.nav.dashboard")}
+              </Link>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <Link
+                  to="/login"
+                  className="border-2 border-tertiary px-4 py-3 text-center font-label text-label-md uppercase tracking-widest break-words"
+                >
+                  {t("public.nav.login")}
+                </Link>
+                <Link
+                  to="/register"
+                  className="border-2 border-tertiary bg-secondary text-on-secondary px-4 py-3 text-center font-label text-label-md uppercase tracking-widest break-words"
+                >
+                  {t("public.nav.register")}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </header>
 
       <main id="main-content" className="flex-1">

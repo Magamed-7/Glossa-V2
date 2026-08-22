@@ -7,6 +7,7 @@ import { useT } from "../lib/i18n.jsx";
 import { useTheme } from "../lib/theme.jsx";
 import { getTtsUrl } from "../lib/api/ai.js";
 import ChatHistoryPanel from "../components/tutor/ChatHistoryPanel.jsx";
+import Icon from "../components/ui/Icon.jsx";
 
 const PRESETS = {
   rose: {
@@ -197,6 +198,7 @@ export default function TutorChat() {
   // продолжить: панель слева отдаёт сюда его номер.
   const [resumeSessionId, setResumeSessionId] = useState(null);
   const [historyReloadKey, setHistoryReloadKey] = useState(0);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   // Existing standard WebSocket chat connection
   const { status, messages, sessionId, denyReason, sendMessage } = useAiChatSocket({
@@ -764,18 +766,29 @@ export default function TutorChat() {
       {tutor && !callActive && (
         <div
           id="chat-screen"
-          className="w-full max-w-5xl rounded-[32px] overflow-hidden z-30 flex flex-col md:flex-row h-[640px] transition-all duration-300 shadow-xl border-2"
+          className="w-full max-w-5xl rounded-[32px] overflow-hidden z-30 flex flex-col md:flex-row h-[calc(100dvh-12rem)] min-h-[420px] md:h-[640px] transition-all duration-300 shadow-xl border-2"
           style={{
             backgroundColor: isDarkMode ? "#0c0b0e" : "#ffffff",
             borderColor: isDarkMode ? "rgba(243, 244, 246, 0.15)" : "rgba(22, 15, 34, 0.12)"
           }}
         >
+          {/*
+            На телефоне панель прошлых разговоров занимала бы половину экрана, поэтому
+            она открывается кнопкой в шапке и закрывается, как только выбран разговор.
+          */}
           <ChatHistoryPanel
             scenario={scenario}
             activeSessionId={sessionId}
-            onOpenSession={openSession}
-            onNewChat={startNewChat}
+            onOpenSession={(id) => {
+              setHistoryOpen(false);
+              openSession(id);
+            }}
+            onNewChat={() => {
+              setHistoryOpen(false);
+              startNewChat();
+            }}
             reloadKey={historyReloadKey}
+            className={historyOpen ? "flex" : "hidden md:flex"}
           />
 
           <div className="flex flex-col flex-1 min-w-0">
@@ -787,12 +800,21 @@ export default function TutorChat() {
               borderColor: isDarkMode ? "rgba(243, 244, 246, 0.15)" : "rgba(22, 15, 34, 0.12)"
             }}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0">
               <button
                 onClick={() => navigate("/tutor")}
-                className="px-4 py-2 border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-900 hover:bg-neutral-50 dark:hover:bg-stone-850 rounded-2xl text-xs font-bold transition"
+                className="px-3 md:px-4 py-2 border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-900 hover:bg-neutral-50 dark:hover:bg-stone-850 rounded-2xl text-xs font-bold transition shrink-0"
               >
                 ← {t("tutor.back")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setHistoryOpen((o) => !o)}
+                aria-expanded={historyOpen}
+                aria-label={t("tutor.history.title")}
+                className="md:hidden px-3 py-2 border border-neutral-200 dark:border-stone-800 bg-white dark:bg-stone-900 rounded-2xl text-xs font-bold transition shrink-0"
+              >
+                <Icon name={historyOpen ? "close" : "forum"} className="text-base" />
               </button>
               <div>
                 <div className="flex items-center gap-2">

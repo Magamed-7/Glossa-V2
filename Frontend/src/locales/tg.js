@@ -16,6 +16,8 @@ export const tg = {
     hidePassword: "Пинҳон кардани парол",
   },
   nav: {
+    openMenu: "Кушодани меню",
+    searchInMenu: "Ҷустуҷӯ",
     dashboard: "САҲИФАИ АСОСӢ",
     insights: "ТАҲЛИЛ",
     community: "ҶОМЕА",

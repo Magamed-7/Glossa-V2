@@ -124,8 +124,15 @@ export default function Messenger() {
   }, [isTyping, typingUntil]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] border-2 border-tertiary bg-surface h-[calc(100vh-180px)] min-h-[500px]">
-      <aside className="border-r-2 border-tertiary flex flex-col min-h-0">
+    /*
+      На телефоне список и переписка не делят экран пополам — виден кто-то один: пока
+      разговор не выбран, это список, а как выбрали, список уступает место переписке и
+      возвращается по кнопке «назад».
+    */
+    <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] border-2 border-tertiary bg-surface h-[calc(100dvh-13rem)] md:h-[calc(100vh-180px)] min-h-[420px] md:min-h-[500px]">
+      <aside
+        className={`border-r-2 border-tertiary flex-col min-h-0 ${conversationId ? "hidden md:flex" : "flex"}`}
+      >
         <div className="flex items-center justify-between p-4 border-b-2 border-tertiary shrink-0">
           <h2 className="font-headline text-headline-md">{t("messenger.title")}</h2>
           <button
@@ -193,15 +200,23 @@ export default function Messenger() {
         </div>
       </aside>
 
-      <section className="flex flex-col min-h-0">
+      <section className={`flex-col min-h-0 ${conversationId ? "flex" : "hidden md:flex"}`}>
         {!activeConversation ? (
           <div className="flex-1 flex items-center justify-center p-8">
             <EmptyState icon="forum" title={t("messenger.pickConversation")} description={t("messenger.pickConversationDesc")} />
           </div>
         ) : (
           <>
-            <header className="flex items-center justify-between gap-3 p-4 border-b-2 border-tertiary shrink-0">
-              <div className="flex items-center gap-3 min-w-0">
+            <header className="flex items-center justify-between gap-3 p-3 md:p-4 border-b-2 border-tertiary shrink-0">
+              <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => navigate("/messenger")}
+                  aria-label={t("common.goBack")}
+                  className="md:hidden flex items-center justify-center w-10 h-10 border-2 border-tertiary shrink-0"
+                >
+                  <Icon name="arrow_back" className="text-tertiary" />
+                </button>
                 <Avatar
                   photoUrl={activeConversation.other_user?.photo_url}
                   name={activeConversation.other_user?.username}

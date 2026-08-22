@@ -16,25 +16,26 @@ export default function RankTable({ entries, myUserId, myEntry }) {
 
   return (
     <section className="border-2 border-tertiary bg-surface neo-card overflow-x-auto">
-      <table className="w-full text-left border-collapse min-w-[520px]">
+      {/* Три колонки помещаются и в 390 точек, если ужать поля — тянуть вбок не нужно. */}
+      <table className="w-full text-left border-collapse table-fixed md:table-auto">
         <caption className="sr-only">{t("leaderboard.captionSr")}</caption>
         <thead>
           <tr className="border-b-2 border-tertiary bg-surface-container-high">
             <th
               scope="col"
-              className="py-4 px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant w-16"
+              className="py-4 px-3 md:px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant w-12 md:w-16"
             >
               {t("leaderboard.rank")}
             </th>
             <th
               scope="col"
-              className="py-4 px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant"
+              className="py-4 px-3 md:px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant"
             >
               {t("leaderboard.scholar")}
             </th>
             <th
               scope="col"
-              className="py-4 px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right"
+              className="py-4 px-3 md:px-6 font-label text-xs uppercase tracking-widest text-on-surface-variant text-right w-20 md:w-auto"
             >
               {t("leaderboard.score")}
             </th>
@@ -54,11 +55,11 @@ export default function RankTable({ entries, myUserId, myEntry }) {
                     : "hover:bg-surface-variant"
                 }`}
               >
-                <td className="py-4 px-6 font-bold font-headline text-lg text-on-surface">
+                <td className="py-4 px-3 md:px-6 font-bold font-headline text-lg text-on-surface">
                   {entry.rank}
                 </td>
-                <td className="py-4 px-6">
-                  <Link to={`/profile/${entry.user_id}`} className="flex items-center gap-4 w-fit hover:underline">
+                <td className="py-4 px-3 md:px-6 min-w-0">
+                  <Link to={`/profile/${entry.user_id}`} className="flex items-center gap-2 md:gap-4 min-w-0 hover:underline">
                     <div className="grayscale group-hover:grayscale-0 transition-all">
                       <Avatar
                         photoUrl={entry.photo_url}
@@ -67,7 +68,7 @@ export default function RankTable({ entries, myUserId, myEntry }) {
                         size="sm"
                       />
                     </div>
-                    <span className="font-medium text-on-surface">
+                    <span className="font-medium text-on-surface min-w-0 break-words">
                       {entry.username || t("common.dash")}
                       {isMe && (
                         <span className="ml-2 text-xs font-label text-secondary uppercase tracking-widest">
@@ -77,7 +78,7 @@ export default function RankTable({ entries, myUserId, myEntry }) {
                     </span>
                   </Link>
                 </td>
-                <td className="py-4 px-6 text-right font-bold text-on-surface">
+                <td className="py-4 px-3 md:px-6 text-right font-bold text-on-surface">
                   {entry.score}
                 </td>
               </tr>
@@ -87,13 +88,13 @@ export default function RankTable({ entries, myUserId, myEntry }) {
           {/* Sticky "You" row if not in visible set */}
           {myEntry && !myRowIncluded && (
             <tr className="border-t-2 border-tertiary bg-secondary-container/20 border-l-4 border-l-secondary-container">
-              <td className="py-4 px-6 font-bold font-headline text-lg text-on-surface">
+              <td className="py-4 px-3 md:px-6 font-bold font-headline text-lg text-on-surface">
                 {myEntry.rank ?? t("common.dash")}
               </td>
-              <td className="py-4 px-6 font-medium text-on-surface">
+              <td className="py-4 px-3 md:px-6 font-medium text-on-surface">
                 {t("leaderboard.you")}
               </td>
-              <td className="py-4 px-6 text-right font-bold text-on-surface">{myEntry.score}</td>
+              <td className="py-4 px-3 md:px-6 text-right font-bold text-on-surface">{myEntry.score}</td>
             </tr>
           )}
         </tbody>

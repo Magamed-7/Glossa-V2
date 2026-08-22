@@ -32,7 +32,7 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
       <div className="flex items-center gap-3 mt-2 pt-3 border-t-2 border-surface-container-highest">
         <button
           type="button"
-          className="text-tertiary hover:text-secondary transition-colors"
+          className="text-tertiary hover:text-secondary transition-colors inline-flex items-center justify-center min-w-10 min-h-10 md:min-w-0 md:min-h-0"
           onClick={() => onPlayAudio(card)}
           aria-label={t("deck.playPronunciation")}
         >
@@ -40,7 +40,7 @@ export default function WordCard({ card, onStatusChange, onDelete, onPlayAudio }
         </button>
         <button
           type="button"
-          className="text-tertiary hover:text-secondary transition-colors"
+          className="text-tertiary hover:text-secondary transition-colors inline-flex items-center justify-center min-w-10 min-h-10 md:min-w-0 md:min-h-0"
           onClick={() => onStatusChange(card)}
           aria-label={t("deck.changeStatus")}
         >

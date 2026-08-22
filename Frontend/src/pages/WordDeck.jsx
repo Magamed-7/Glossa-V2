@@ -1252,40 +1252,40 @@ export default function WordDeck() {
         {/* Left Side: Filter Tabs and Cards List */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Tabs */}
-          <div className="flex gap-6 border-b-2 border-on-surface/10 pb-2 font-label text-sm md:text-base uppercase font-bold tracking-wider">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 md:gap-6 border-b-2 border-on-surface/10 pb-2 font-label text-sm md:text-base uppercase font-bold tracking-wider">
             <button
               onClick={() => onStatusFilterChange("")}
-              className={`cursor-pointer pb-2 ${statusFilter === "" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+              className={`cursor-pointer pb-2 pt-2 px-1 min-h-11 md:min-h-0 md:pt-0 flex items-center ${statusFilter === "" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
             >
               {t("deck.tabs.all")}
             </button>
             <button
               onClick={() => onStatusFilterChange("learning")}
-              className={`cursor-pointer pb-2 ${statusFilter === "learning" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+              className={`cursor-pointer pb-2 pt-2 px-1 min-h-11 md:min-h-0 md:pt-0 flex items-center ${statusFilter === "learning" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
             >
               {t("deck.tabs.learning")}
             </button>
             <button
               onClick={() => onStatusFilterChange("unlearned")}
-              className={`cursor-pointer pb-2 ${statusFilter === "unlearned" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+              className={`cursor-pointer pb-2 pt-2 px-1 min-h-11 md:min-h-0 md:pt-0 flex items-center ${statusFilter === "unlearned" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
             >
               {t("deck.tabs.unlearned")}
             </button>
             <button
               onClick={() => onStatusFilterChange("learned")}
-              className={`cursor-pointer pb-2 ${statusFilter === "learned" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+              className={`cursor-pointer pb-2 pt-2 px-1 min-h-11 md:min-h-0 md:pt-0 flex items-center ${statusFilter === "learned" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
             >
               {t("deck.tabs.learned")}
             </button>
             <button
               onClick={() => onStatusFilterChange("hard")}
-              className={`cursor-pointer pb-2 ${statusFilter === "hard" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
+              className={`cursor-pointer pb-2 pt-2 px-1 min-h-11 md:min-h-0 md:pt-0 flex items-center ${statusFilter === "hard" ? "border-b-[3px] border-on-surface font-black text-on-surface" : "text-on-surface-variant hover:text-on-surface"}`}
             >
               {t("deck.tabs.hard")}
             </button>
             <button
               onClick={() => onStatusFilterChange("skipped")}
-              className={`cursor-pointer pb-2 text-secondary ${statusFilter === "skipped" ? "border-b-[3px] border-secondary font-black" : "opacity-80 hover:opacity-100"}`}
+              className={`cursor-pointer pb-2 pt-2 px-1 min-h-11 md:min-h-0 md:pt-0 flex items-center text-secondary ${statusFilter === "skipped" ? "border-b-[3px] border-secondary font-black" : "opacity-80 hover:opacity-100"}`}
             >
               {t("deck.tabs.skipped")}
             </button>
@@ -1337,11 +1337,11 @@ export default function WordDeck() {
 
                   return (
                     <div key={card.id} className={getCardClasses(card.status)}>
-                      {/* Top Header: Always in one line (no wrapping!) */}
-                      <div className="flex flex-row justify-between items-center w-full gap-4">
+                      {/* Шапка карточки: в строку на широком экране, столбиком на телефоне */}
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full gap-3 sm:gap-4">
                         {/* Term and Styled Dropdown Badge */}
-                        <div className="flex flex-row items-center gap-4 flex-wrap">
-                          <h3 className="font-serif text-3xl font-bold uppercase tracking-tight text-on-surface">
+                        <div className="flex flex-row items-center gap-3 sm:gap-4 flex-wrap min-w-0">
+                          <h3 className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-tight text-on-surface min-w-0 break-words">
                             {card.word}
                           </h3>
                           {card.transcription && (
@@ -1367,7 +1367,7 @@ export default function WordDeck() {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex flex-row items-center gap-6 flex-shrink-0">
+                        <div className="flex flex-row items-center gap-4 sm:gap-6 flex-wrap sm:flex-shrink-0">
                           {isRevealed ? (
                             <button
                               onClick={() => toggleReveal(card.id)}
@@ -1515,7 +1515,7 @@ export default function WordDeck() {
                       key={lvl}
                       type="button"
                       onClick={() => setImportLevel(lvl)}
-                      className={`py-1.5 text-xs font-bold font-mono transition-colors cursor-pointer text-center ${
+                      className={`py-1.5 min-h-11 md:min-h-0 text-xs font-bold font-mono transition-colors cursor-pointer text-center ${
                         importLevel === lvl
                           ? "bg-secondary text-surface"
                           : "hover:bg-surface-variant"

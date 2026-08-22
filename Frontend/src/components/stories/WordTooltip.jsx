@@ -101,9 +101,10 @@ export default function WordTooltip({ wordData, storyId, level, onAdded, onClose
   }
 
   return (
-    <div onClick={(e) => e.stopPropagation()} className="relative bg-surface border-[3px] border-on-surface shadow-[4px_4px_0_0_#000] p-4 w-64 flex flex-col gap-3">
+    <div onClick={(e) => e.stopPropagation()} className="relative bg-surface border-[3px] border-on-surface shadow-[4px_4px_0_0_#000] p-4 w-full md:w-64 flex flex-col gap-3">
       {/* Down arrow pointing to the word */}
-      <div className="absolute -bottom-[10px] left-1/2 -translate-x-1/2 w-4 h-4 bg-surface border-b-[3px] border-r-[3px] border-on-surface transform rotate-45"></div>
+      {/* Стрелка указывает на слово — она нужна только там, где окошко стоит вплотную к нему. */}
+      <div className="hidden md:block absolute -bottom-[10px] left-1/2 -translate-x-1/2 w-4 h-4 bg-surface border-b-[3px] border-r-[3px] border-on-surface transform rotate-45"></div>
 
       <div className="flex justify-between items-start">
         <span className="font-label text-[10px] uppercase tracking-widest text-secondary font-bold mt-1">

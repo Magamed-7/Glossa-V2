@@ -4,6 +4,63 @@ import Icon from "../components/ui/Icon.jsx";
 import { useT, useI18n } from "../lib/i18n.jsx";
 import { api } from "../lib/api/client.js";
 
+const STATUS_DOT = {
+  active: "bg-green-500",
+  draft: "bg-amber-400",
+};
+
+function statusLabel(status, t) {
+  if (status === "active") return t("market.activeStatus");
+  if (status === "draft") return t("market.draftStatus");
+  return t("market.hiddenStatus");
+}
+
+/**
+ * Та же строка объявления, но для телефона.
+ *
+ * Пять колонок в 390 точек не помещаются, а тянуть таблицу вбок незачем: колонка «тип» у
+ * всех одинаковая, а остальное спокойно ложится в карточку.
+ */
+function ServiceCard({ svc, title, t }) {
+  return (
+    <div className="border-b-2 border-black dark:border-stone-850 last:border-b-0 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3 min-w-0">
+        <div className="w-10 h-10 border border-black bg-amber-100 flex items-center justify-center font-black text-xs text-black uppercase shrink-0">
+          {svc.category.substring(0, 3)}
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className="font-serif font-black text-sm text-black dark:text-stone-100 block break-words">
+            {title}
+          </span>
+          <span className="text-[9px] text-gray-400 dark:text-stone-500 font-mono block mt-0.5 break-words">
+            {t("market.lastEdited")}: {new Date(svc.created_at).toLocaleDateString()}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className={`w-2.5 h-2.5 rounded-full border border-black shrink-0 ${STATUS_DOT[svc.status] || "bg-stone-400"}`} />
+          <span className="text-black dark:text-stone-200 uppercase text-[10px] font-bold break-words">
+            {statusLabel(svc.status, t)}
+          </span>
+        </div>
+        <span className="font-mono text-xs font-bold text-black dark:text-stone-200 break-words min-w-0">
+          {svc.price == 0 ? t("market.priceFree") : `${svc.price} TJS/${svc.pricing_type}`}
+        </span>
+      </div>
+
+      <Link
+        to={`/marketplace/services/${svc.id}/edit`}
+        className="px-3 py-2.5 border border-black bg-[#FAF8F5] dark:bg-stone-800 text-black dark:text-stone-200 font-label text-[10px] uppercase font-black shadow-[1.5px_1.5px_0px_#000000] inline-flex items-center justify-center gap-1"
+      >
+        <Icon name="edit" className="text-xs" />
+        {t("market.edit")}
+      </Link>
+    </div>
+  );
+}
+
 export default function MarketplaceServices() {
   const t = useT();
   const { lang } = useI18n();
@@ -103,8 +160,20 @@ export default function MarketplaceServices() {
         </div>
       </div>
 
-      {/* Neubrutalist Data Table List view */}
-      <div className="bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] overflow-x-auto">
+      {/* Список объявлений: карточки на телефоне, таблица на широком экране */}
+      <div className="md:hidden bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a]">
+        {loading ? (
+          [1, 2].map((n) => <div key={n} className="h-24 bg-gray-50 dark:bg-stone-950/20 animate-pulse border-b-2 border-black dark:border-stone-850 last:border-b-0" />)
+        ) : paginated.length === 0 ? (
+          <p className="p-12 text-center text-gray-450 uppercase tracking-wide text-xs">{t("market.noListings")}</p>
+        ) : (
+          paginated.map((svc) => (
+            <ServiceCard key={svc.id} svc={svc} title={svc[`title_${lang}`] || svc.title} t={t} />
+          ))
+        )}
+      </div>
+
+      <div className="hidden md:block bg-white dark:bg-stone-900 border-2 border-black dark:border-stone-800 shadow-[4px_4px_0px_#000000] dark:shadow-[4px_4px_0px_#3a3a3a] overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[600px]">
           
           {/* Header Row */}
@@ -182,7 +251,7 @@ export default function MarketplaceServices() {
                           : "bg-stone-400"
                       }`} />
                       <span className="text-black dark:text-stone-200 uppercase text-[10px]">
-                        {svc.status === "active" ? t("market.activeStatus") : svc.status === "draft" ? t("market.draftStatus") : t("market.hiddenStatus")}
+                        {statusLabel(svc.status, t)}
                       </span>
                     </div>
                   </td>

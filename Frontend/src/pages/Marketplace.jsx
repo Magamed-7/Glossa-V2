@@ -290,7 +290,7 @@ export default function Marketplace() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full text-xs font-bold bg-surface border-2 border-primary p-2 text-primary focus:outline-none focus:ring-1 focus:ring-secondary"
+                className="w-full text-xs font-bold bg-surface border-2 border-primary p-2 min-h-11 md:min-h-0 text-primary focus:outline-none focus:ring-1 focus:ring-secondary"
               >
                 <option value="">{t("market.allTypes")}</option>
                 {CATEGORIES.map((c) => (
@@ -310,7 +310,7 @@ export default function Marketplace() {
                   <button
                     key={lvl}
                     onClick={() => setLevelGroup(lvl)}
-                    className={`px-3 py-2 border-2 border-primary font-label-md text-[10px] uppercase transition-colors font-bold ${
+                    className={`px-3 py-2 min-h-11 md:min-h-0 border-2 border-primary font-label-md text-[10px] uppercase transition-colors font-bold ${
                       levelGroup === lvl ? "bg-secondary text-on-secondary" : "bg-surface hover:bg-surface-container-high text-primary"
                     }`}
                   >

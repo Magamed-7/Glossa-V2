@@ -16,6 +16,8 @@ export const en = {
     hidePassword: "Hide password",
   },
   nav: {
+    openMenu: "Open menu",
+    searchInMenu: "Search",
     dashboard: "DASHBOARD",
     insights: "INSIGHTS",
     community: "COMMUNITY",

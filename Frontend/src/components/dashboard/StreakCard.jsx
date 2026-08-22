@@ -49,7 +49,7 @@ export default function StreakCard() {
         <div className="mt-6 pt-4 border-t-2 border-dashed border-tertiary/20 flex items-center justify-between">
           <Link
             to="/achievements"
-            className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1.5 font-bold"
+            className="font-label text-xs uppercase tracking-widest text-secondary hover:underline flex items-center gap-1.5 font-bold min-h-11 md:min-h-0"
           >
             <Icon name="military_tech" className="text-lg" />
             {t("dashboard.viewAchievements")}

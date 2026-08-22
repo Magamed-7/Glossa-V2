@@ -11,7 +11,7 @@ const LOCALES = { en: "en-GB", ru: "ru-RU", tg: "tg-TJ" };
  * видит свои разговоры именно в ней и может продолжить любой, а не искать нужный среди
  * всех подряд.
  */
-export default function ChatHistoryPanel({ scenario, activeSessionId, onOpenSession, onNewChat, reloadKey }) {
+export default function ChatHistoryPanel({ scenario, activeSessionId, onOpenSession, onNewChat, reloadKey, className = "" }) {
   const t = useT();
   const { lang } = useI18n();
   const [sessions, setSessions] = useState([]);
@@ -47,7 +47,9 @@ export default function ChatHistoryPanel({ scenario, activeSessionId, onOpenSess
   const started = sessions.filter((session) => session.message_count > 0 || session.id === activeSessionId);
 
   return (
-    <aside className="w-full md:w-64 shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-neutral-200 dark:border-stone-800 max-h-40 md:max-h-none">
+    <aside
+      className={`w-full md:w-64 shrink-0 flex-col border-b md:border-b-0 md:border-r border-neutral-200 dark:border-stone-800 min-h-0 ${className || "flex"}`}
+    >
       <div className="p-3 border-b border-neutral-200 dark:border-stone-800 flex items-center justify-between gap-2">
         <span className="font-headline text-[11px] font-black uppercase tracking-wider text-neutral-600 dark:text-stone-300 min-w-0 break-words">
           {t("tutor.history.title")}
