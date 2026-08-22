@@ -26,6 +26,7 @@ class CardResponse(BaseModel):
     translation: str
     example: str | None
     audio_url: str | None
+    accent: str | None = None
     transcription: str | None = None
     status: str
     ease_factor: float

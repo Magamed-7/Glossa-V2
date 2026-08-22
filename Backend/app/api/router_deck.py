@@ -15,7 +15,7 @@ from app.schemas.schema_learning import (
     ReviewSubmit,
     DailyMissionsResponse,
 )
-from app.services import crud_card, review, missions, streaks, crud_subscription
+from app.services import crud_card, review, missions, streaks, crud_subscription, transcription, word_audio
 
 router_deck = APIRouter(prefix='/deck', tags=['Deck'])
 router_reviews = APIRouter(prefix='/reviews', tags=['Reviews'])
@@ -42,7 +42,53 @@ async def create_card(
         if await check_transcription_quota(current_user.id, db):
             generate_card_transcription_task.delay(card.id)
 
+    # Слово, добавленное без звука, раньше так и оставалось немым, пока на кнопку записи
+    # не нажмут вручную. Ставим озвучку в очередь сразу: к следующему открытию словаря
+    # произношение уже лежит в общем архиве и подхватится само.
+    if not card.audio_url:
+        from app.tasks.ai import generate_word_audio_batch_task
+
+        level = await word_audio.level_for_user(current_user.id, db)
+        generate_word_audio_batch_task.delay([card.word], level)
+
     return card
+
+
+async def _fill_from_shared_archives(cards, user_id: int, db: AsyncSession):
+    """Дописать карточкам звук и транскрипцию из общих архивов.
+
+    Карточка получала произношение только если его сгенерировали именно для неё — а в
+    общем архиве оно к тому моменту чаще всего уже лежало, записанное для того же слова
+    в чьей-то другой колоде или в истории. Человек видел слово без кнопки звука, хотя
+    звук существовал. Здесь ничего не синтезируется: только чтение из готового.
+    """
+    silent = [c for c in cards if not c.audio_url]
+    without_transcription = [c for c in cards if not c.transcription]
+
+    if not silent and not without_transcription:
+        return cards
+
+    # Отцепляем карточки от сессии: дальше мы дописываем им поля только для ответа, и
+    # так исключено, что дополнение случайно уедет в базу при чужом коммите.
+    db.expunge_all()
+
+    if silent:
+        level = await word_audio.level_for_user(user_id, db)
+        found = await word_audio.get_many_cached([c.word for c in silent], level, db)
+        for card in silent:
+            match = found.get(card.word.strip().lower())
+            if match:
+                card.audio_url = match['audio_url']
+                card.accent = match['accent']
+
+    if without_transcription:
+        found = await transcription.get_many_cached([c.word for c in without_transcription], db)
+        for card in without_transcription:
+            match = found.get(card.word.strip().lower())
+            if match:
+                card.transcription = match
+
+    return cards
 
 
 @router_deck.get('/', response_model=list[CardResponse])
@@ -54,9 +100,10 @@ async def get_cards(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await crud_card.get_cards(
+    cards = await crud_card.get_cards(
         db, user_id=current_user.id, status=status, search=search, limit=limit, offset=offset
     )
+    return await _fill_from_shared_archives(cards, current_user.id, db)
 
 
 @router_deck.get('/{card_id}', response_model=CardResponse)
@@ -70,7 +117,8 @@ async def get_card(
     if card is None:
         raise AppError(code='CARD_NOT_FOUND', message='Card not found', status_code=404)
 
-    return card
+    filled = await _fill_from_shared_archives([card], current_user.id, db)
+    return filled[0]
 
 
 @router_deck.patch('/{card_id}/status', response_model=CardResponse)
@@ -129,7 +177,8 @@ async def get_reviews_today(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return await review.get_due_cards(current_user.id, db)
+    cards = await review.get_due_cards(current_user.id, db)
+    return await _fill_from_shared_archives(cards, current_user.id, db)
 
 
 @router_reviews.post('/{card_id}', response_model=ReviewResponse)

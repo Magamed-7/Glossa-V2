@@ -66,6 +66,12 @@ async def _generate_batch(words: list[str], db: AsyncSession):
     return generated
 
 
+async def get_many_cached(words: list[str], db: AsyncSession):
+    """Только то, что уже посчитано. Ничего не генерирует — можно звать прямо в обработчике."""
+    normalized = {_normalize(w) for w in words if w and w.strip()}
+    return await _cached(normalized, db)
+
+
 async def get_many(words: list[str], db: AsyncSession):
     normalized = {_normalize(w) for w in words if w and w.strip()}
     result = await _cached(normalized, db)

@@ -1,4 +1,5 @@
 import random
+import re
 
 ACCENT_POOL = ['en-US', 'en-GB', 'en-AU', 'en-IN', 'en-CA']
 
@@ -58,9 +59,44 @@ def pick_accent(level: str | None) -> str:
     return random.choice(accents_for_level(level))
 
 
+# У Microsoft нет ни одного таджикского голоса — проверено, ноль из 322. Таджикский
+# пишется кириллицей, поэтому кириллический текст читает русский голос: это не родное
+# произношение, зато наставника слышно. Раньше кириллицу пытался прочесть английский
+# голос, речевой сервис не возвращал ничего, и запрос падал с ошибкой.
+RUSSIAN_VOICE_BY_TUTOR = {
+    'rose': 'ru-RU-SvetlanaNeural',
+    'mint': 'ru-RU-DmitryNeural',
+    'lavender': 'ru-RU-SvetlanaNeural',
+    'peach': 'ru-RU-DmitryNeural',
+    'sky': 'ru-RU-DmitryNeural',
+}
+
+DEFAULT_ACCENT = 'en-US'
+DEFAULT_RUSSIAN_VOICE = 'ru-RU-SvetlanaNeural'
+
+_CYRILLIC = re.compile(r'[Ѐ-ӿ]')
+_LETTER = re.compile(r'[^\W\d_]', re.UNICODE)
+
+
+def is_cyrillic(text: str) -> bool:
+    """Написан ли текст кириллицей. Считаем по буквам, знаки и цифры не в счёт."""
+    letters = _LETTER.findall(text or '')
+    if not letters:
+        return False
+    cyrillic = sum(1 for letter in letters if _CYRILLIC.match(letter))
+    return cyrillic * 2 > len(letters)
+
+
 def edge_voice_for_accent(accent: str) -> str:
-    return EDGE_VOICE_BY_ACCENT[accent]
+    return EDGE_VOICE_BY_ACCENT.get(accent, EDGE_VOICE_BY_ACCENT[DEFAULT_ACCENT])
+
+
+def edge_voice_for_text(text: str, accent: str) -> str:
+    """Голос под текст: кириллицу читает русский голос того же пола, что и наставник."""
+    if is_cyrillic(text):
+        return RUSSIAN_VOICE_BY_TUTOR.get(accent, DEFAULT_RUSSIAN_VOICE)
+    return edge_voice_for_accent(accent)
 
 
 def piper_voice_for_accent(accent: str) -> str:
-    return PIPER_VOICE_BY_ACCENT[accent]
+    return PIPER_VOICE_BY_ACCENT.get(accent, PIPER_VOICE_BY_ACCENT[DEFAULT_ACCENT])

@@ -83,7 +83,13 @@ async def get_tts(
     from app.core.storage import upload_file, ALLOWED_AUDIO_TYPES
     import uuid
 
-    audio_bytes, content_type = await tts.synthesize(text, tutor)
+    try:
+        audio_bytes, content_type = await tts.synthesize(text, tutor)
+    except tts.VoiceUnavailable as exc:
+        # Речевой сервис недоступен — это не поломка на нашей стороне, и отвечать «что-то
+        # пошло не так» здесь неправильно: собеседник просто останется без голоса.
+        raise AppError(code='VOICE_UNAVAILABLE', message=str(exc), status_code=503) from exc
+
     extension = 'mp3' if content_type == 'audio/mpeg' else 'wav'
     audio_url = upload_file('pronunciations', audio_bytes, f"tutor_{uuid.uuid4().hex}.{extension}", content_type, ALLOWED_AUDIO_TYPES)
     return {"audio_url": audio_url}

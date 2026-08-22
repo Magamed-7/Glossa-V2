@@ -1,7 +1,7 @@
 import asyncio
 import logging
 
-from app.core.tts_voices import edge_voice_for_accent, piper_voice_for_accent
+from app.core.tts_voices import edge_voice_for_text, piper_voice_for_accent
 
 logger = logging.getLogger(__name__)
 
@@ -70,15 +70,29 @@ def _synthesize_piper(text: str, voice: str) -> bytes:
     return buffer.getvalue()
 
 
+class VoiceUnavailable(Exception):
+    """Ни один движок не смог озвучить текст."""
+
+
 async def synthesize(text: str, accent: str) -> tuple[bytes, str]:
     """Returns (audio_bytes, content_type) — edge-tts produces mp3, Piper (fallback) wav."""
-    edge_voice = edge_voice_for_accent(accent)
+    edge_voice = edge_voice_for_text(text, accent)
 
     try:
         return await _synthesize_edge(text, edge_voice), 'audio/mpeg'
     except Exception:
         logger.exception('edge-tts failed for %r (%s), falling back to Piper', text, accent)
 
+    # Piper — необязательный запасной движок, в образе его может не быть. Раньше его
+    # отсутствие всплывало наружу как ModuleNotFoundError и превращалось в «что-то пошло
+    # не так на нашей стороне»: вместо понятного «голос недоступен» человек получал
+    # ошибку сервера.
     piper_voice = piper_voice_for_accent(accent)
-    audio_bytes = await asyncio.to_thread(_synthesize_piper, text, piper_voice)
+    try:
+        audio_bytes = await asyncio.to_thread(_synthesize_piper, text, piper_voice)
+    except ModuleNotFoundError as exc:
+        raise VoiceUnavailable('запасной движок озвучки не установлен') from exc
+    except Exception as exc:
+        raise VoiceUnavailable('движки озвучки не смогли прочитать текст') from exc
+
     return audio_bytes, 'audio/wav'
