@@ -1,8 +1,10 @@
 import io
 import os
 import uuid
+from urllib.parse import urlsplit
 
 import boto3
+from botocore.client import Config
 
 from app.core.config import settings
 from app.core.errors import AppError
@@ -12,6 +14,24 @@ s3_client = boto3.client(
     endpoint_url=settings.MINIO_ENDPOINT,
     aws_access_key_id=settings.MINIO_ROOT_USER,
     aws_secret_access_key=settings.MINIO_ROOT_PASSWORD,
+)
+
+# Отдельный клиент только для подписи ссылок, наружу он не ходит.
+#
+# SigV4 включает в подпись хост и путь. Наружу ссылка идёт на glossa.best, а nginx
+# срезает префикс /files и отдаёт MinIO путь /{bucket}/{key} — ровно то, что подпишет
+# клиент с endpoint без префикса. Поэтому подписываем под публичный хост, а /files
+# дописываем в готовую ссылку.
+_public = urlsplit(settings.MINIO_PUBLIC_ENDPOINT)
+PUBLIC_ORIGIN = f'{_public.scheme}://{_public.netloc}'
+PUBLIC_PATH_PREFIX = _public.path.rstrip('/')
+
+_signing_client = boto3.client(
+    's3',
+    endpoint_url=PUBLIC_ORIGIN,
+    aws_access_key_id=settings.MINIO_ROOT_USER,
+    aws_secret_access_key=settings.MINIO_ROOT_PASSWORD,
+    config=Config(signature_version='s3v4', s3={'addressing_style': 'path'}),
 )
 
 ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/webp'}
@@ -135,16 +155,14 @@ def key_from_public_url(url: str):
 
 
 def presigned_url(bucket: str, key: str, expires: int = PRESIGNED_TTL_SECONDS):
-    signed = s3_client.generate_presigned_url(
+    signed = _signing_client.generate_presigned_url(
         'get_object',
         Params={'Bucket': bucket, 'Key': key},
         ExpiresIn=expires,
     )
-    # boto3 подписывает под внутренний адрес MinIO, а наружу всё ходит через наш домен.
-    # Подпись считается от пути и query, хост в неё не входит, поэтому замена безопасна.
-    internal = settings.MINIO_ENDPOINT.rstrip('/')
-    if signed.startswith(internal):
-        return settings.MINIO_PUBLIC_ENDPOINT.rstrip('/') + signed[len(internal):]
+
+    if PUBLIC_PATH_PREFIX and signed.startswith(PUBLIC_ORIGIN):
+        return PUBLIC_ORIGIN + PUBLIC_PATH_PREFIX + signed[len(PUBLIC_ORIGIN):]
 
     return signed
 
