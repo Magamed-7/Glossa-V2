@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import MessageList from "../components/tutor/MessageList.jsx";
 import ChatInput from "../components/tutor/ChatInput.jsx";
 import { useAiChatSocket } from "../lib/useAiChatSocket.js";
-import { useT } from "../lib/i18n.jsx";
+import { useVoiceCall } from "../lib/useVoiceCall.js";
+import { LANGS, useI18n, useT } from "../lib/i18n.jsx";
 import { useTheme } from "../lib/theme.jsx";
 import { getTtsUrl } from "../lib/api/ai.js";
 import ChatHistoryPanel from "../components/tutor/ChatHistoryPanel.jsx";
@@ -185,10 +186,15 @@ function StaggeredWords({ text, highlightColor, isUser }) {
 
 export default function TutorChat() {
   const t = useT();
+  const { lang } = useI18n();
+  // Родной язык ученика живёт только в localStorage фронта — наставнику его больше
+  // неоткуда взять, а объяснять правила он должен на понятном языке.
+  const nativeLanguage = LANGS.find((item) => item.code === lang)?.name || "Russian";
   const navigate = useNavigate();
   const { theme } = useTheme();
   const [searchParams] = useSearchParams();
   const scenario = searchParams.get("scenario") || "casual";
+  const debugTimings = searchParams.get("debug") === "1";
   const language = searchParams.get("language") || "English";
 
   // Tutor Preset Selection State
@@ -211,19 +217,27 @@ export default function TutorChat() {
   const waitingForReply = messages.length > 0 && messages[messages.length - 1].role === "user";
   const showHistory = status === "open" || status === "reconnecting" || status === "closed";
 
-  // Voice Call Overlay Simulation States
+  // Оверлей звонка. Сам разговор ведёт useVoiceCall: у него свой сокет, свой автомат
+  // хода и своя очередь воспроизведения. Здесь остаётся только то, что рисуется.
   const [callActive, setCallActive] = useState(false);
-  const [callState, setCallState] = useState("listening"); // 'listening' or 'speaking'
   const [callTimeSeconds, setCallTimeSeconds] = useState(0);
   const [showSubtitles, setShowSubtitles] = useState(true);
-  const [micMuted, setMicMuted] = useState(false);
-  // Subtitles track what is actually being said right now. Deriving them from callState
-  // instead showed the *previous* assistant reply during the wait for the new one.
-  const [subtitle, setSubtitle] = useState(null); // { text, isUser }
-  // Mirrored as state as well as a ref: the ref is for async callbacks (stale-closure
-  // safe), the state is what re-runs the speech-recognition effect — reading only the
-  // ref there meant the mic never restarted when processing finished.
-  const [isProcessing, setIsProcessing] = useState(false);
+
+  const voice = useVoiceCall({
+    scenario,
+    language,
+    nativeLanguage,
+    tutor,
+    langCode: getLangCode(language),
+    sessionId,
+  });
+
+  // Экрану достаточно двух состояний: наставник говорит или слушает. «Думает» рисуется
+  // так же, как речь, — ученику в этот момент всё равно нельзя перебивать пустоту.
+  const callState = voice.phase === "listening" ? "listening" : "speaking";
+  const micMuted = voice.muted;
+  const setMicMuted = voice.setMuted;
+  const subtitle = voice.subtitle;
 
   // Background Canvas Particles Ref & Logic
   const canvasRef = useRef(null);
@@ -232,7 +246,6 @@ export default function TutorChat() {
   activeTutorRef.current = tutor;
   const lastPlayedRef = useRef(null);
   const activeAudioRef = useRef(null);
-  const recognitionRef = useRef(null);
 
   const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -379,115 +392,6 @@ export default function TutorChat() {
     }
   }, [messages, tutor, callActive]);
 
-  // Live sync refs to avoid stale closures in Web Speech API handlers
-  const callActiveRef = useRef(callActive);
-  callActiveRef.current = callActive;
-  const micMutedRef = useRef(micMuted);
-  micMutedRef.current = micMuted;
-  const callStateRef = useRef(callState);
-  callStateRef.current = callState;
-  const isProcessingRef = useRef(false);
-  const audioPlayingRef = useRef(false);
-
-  const setProcessing = (value) => {
-    isProcessingRef.current = value;
-    setIsProcessing(value);
-  };
-
-  // Hard release valve for the call state machine. Any path that leaves the call
-  // "speaking" without audio actually playing (TTS failed, an assistant_error frame,
-  // a dropped audio frame) used to strand isProcessing=true forever, which silently
-  // killed the microphone for the rest of the call.
-  const resumeListening = () => {
-    if (!callActiveRef.current) return;
-    audioPlayingRef.current = false;
-    setProcessing(false);
-    setCallState("listening");
-  };
-
-  const stopSpeechRecognition = () => {
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.onresult = null;
-        recognitionRef.current.onerror = null;
-        recognitionRef.current.onend = null;
-        recognitionRef.current.abort();
-      } catch (e) {
-        // ignore
-      }
-      recognitionRef.current = null;
-    }
-  };
-
-  // Speech Recognition logic for voice call mode
-  useEffect(() => {
-    if (!callActive || micMuted || callState !== "listening" || isProcessing) {
-      stopSpeechRecognition();
-      return;
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      console.warn("SpeechRecognition is not supported in this browser.");
-      return;
-    }
-
-    stopSpeechRecognition();
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = getLangCode(language);
-    recognitionRef.current = recognition;
-
-    recognition.onresult = (event) => {
-      if (!callActiveRef.current || micMutedRef.current || isProcessingRef.current) {
-        return;
-      }
-
-      const transcript = event.results?.[0]?.[0]?.transcript;
-      if (transcript && transcript.trim()) {
-        setProcessing(true);
-        stopSpeechRecognition();
-        setCallState("speaking");
-        setSubtitle({ text: transcript.trim(), isUser: true });
-        sendMessage(transcript.trim());
-        if (tutor) {
-          triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
-        }
-      }
-    };
-
-    recognition.onerror = (event) => {
-      console.warn("Speech recognition error:", event.error);
-    };
-
-    recognition.onend = () => {
-      if (
-        callActiveRef.current &&
-        !micMutedRef.current &&
-        callStateRef.current === "listening" &&
-        !isProcessingRef.current
-      ) {
-        try {
-          recognition.start();
-        } catch (e) {
-          // ignore
-        }
-      }
-    };
-
-    try {
-      recognition.start();
-    } catch (e) {
-      console.warn("SpeechRecognition start failed:", e);
-    }
-
-    return () => {
-      stopSpeechRecognition();
-    };
-  }, [callActive, micMuted, callState, language, isProcessing]);
-
   // Voice Call Timer
   useEffect(() => {
     if (!callActive) return;
@@ -499,75 +403,40 @@ export default function TutorChat() {
     return () => clearInterval(timer);
   }, [callActive]);
 
-  // Autoplay incoming assistant replies and sync speaking states
+  // Пульс частиц, пока наставник говорит. Раньше он заводился внутри обработчика
+  // воспроизведения и глох вместе с ним; теперь зависит только от состояния звонка.
   useEffect(() => {
-    if (!messages || messages.length === 0) return;
+    if (!callActive || callState !== "speaking") return undefined;
+
+    const coreX = window.innerWidth / 2;
+    const coreY = window.innerHeight / 2;
+    triggerCallBurst(coreX, coreY);
+    const timer = setInterval(() => triggerCallBurst(coreX, coreY), 550);
+
+    return () => clearInterval(timer);
+  }, [callActive, callState]);
+
+  // Автовоспроизведение ответов в текстовом чате. В звонке звук идёт своим путём —
+  // по сокету кусками, — поэтому здесь чат и только чат: иначе во время разговора
+  // поверх живой речи заиграла бы ещё и запись из чужой сессии.
+  useEffect(() => {
+    if (callActive || !messages || messages.length === 0) return;
+
     const latest = messages[messages.length - 1];
+    if (latest.role !== "assistant" || !latest.audioUrl) return;
+    if (latest.audioUrl === lastPlayedRef.current) return;
 
-    if (latest.role === "assistant" && latest.audioUrl && latest.audioUrl !== lastPlayedRef.current) {
-      lastPlayedRef.current = latest.audioUrl;
+    lastPlayedRef.current = latest.audioUrl;
 
-      if (activeAudioRef.current) {
-        activeAudioRef.current.pause();
-      }
-
-      const audio = new Audio(latest.audioUrl);
-      activeAudioRef.current = audio;
-
-      if (callActiveRef.current) {
-        setProcessing(true);
-        audioPlayingRef.current = true;
-        stopSpeechRecognition();
-        setCallState("speaking");
-        setSubtitle({ text: latest.text, isUser: false });
-
-        const coreX = window.innerWidth / 2;
-        const coreY = window.innerHeight / 2;
-        triggerCallBurst(coreX, coreY);
-        const burstTimer = setInterval(() => {
-          triggerCallBurst(coreX, coreY);
-        }, 550);
-
-        const handleAudioFinish = () => {
-          clearInterval(burstTimer);
-          audioPlayingRef.current = false;
-          if (callActiveRef.current) {
-            setTimeout(resumeListening, 400);
-          }
-        };
-
-        audio.onended = handleAudioFinish;
-        audio.onerror = handleAudioFinish;
-      }
-
-      audio.play().catch(err => {
-        console.warn("Autoplay blocked or failed:", err);
-        // Blocked autoplay must not strand the call in "speaking" with a dead mic.
-        audioPlayingRef.current = false;
-        if (callActiveRef.current) setTimeout(resumeListening, 400);
-      });
+    if (activeAudioRef.current) {
+      activeAudioRef.current.pause();
     }
-  }, [messages]);
 
-  // The reply text now arrives before its voice (the server streams them as two frames),
-  // so "assistant message without audio" is a normal transient state — show it as
-  // subtitles immediately. It only becomes a fault if the voice never turns up, which
-  // this watchdog recovers from instead of freezing the call forever.
-  useEffect(() => {
-    if (!callActive || !messages || messages.length === 0) return undefined;
-
-    const latest = messages[messages.length - 1];
-    if (latest.role !== "assistant" || latest.audioUrl) return undefined;
-
-    setSubtitle({ text: latest.text, isUser: false });
-
-    // An error reply is never voiced at all — no point waiting out the full timeout.
-    const grace = latest.isError ? 1200 : VOICE_WATCHDOG_MS;
-    const timer = setTimeout(() => {
-      if (!audioPlayingRef.current) resumeListening();
-    }, grace);
-
-    return () => clearTimeout(timer);
+    const audio = new Audio(latest.audioUrl);
+    activeAudioRef.current = audio;
+    audio.play().catch((err) => {
+      console.warn("Автовоспроизведение заблокировано:", err);
+    });
   }, [messages, callActive]);
 
   const handleSend = (text) => {
@@ -575,79 +444,26 @@ export default function TutorChat() {
     if (tutor) {
       triggerCallBurst(window.innerWidth / 2, window.innerHeight / 2);
     }
-    if (callActive) {
-      setProcessing(true);
-      stopSpeechRecognition();
-      setCallState("speaking");
-      setSubtitle({ text, isUser: true });
-    }
   };
 
   const startVoiceCall = async () => {
-    callActiveRef.current = true;
-    setProcessing(true);
-    stopSpeechRecognition();
     setCallActive(true);
     setCallTimeSeconds(0);
-    setCallState("speaking");
+    await voice.start();
 
     const greetingText = activePreset.welcomeTemplates[scenario] || activePreset.welcomeTemplates.casual;
-    setSubtitle({ text: greetingText, isUser: false });
 
     try {
       const res = await getTtsUrl({ text: greetingText, tutor });
-      if (res && res.audio_url) {
-        if (activeAudioRef.current) {
-          activeAudioRef.current.pause();
-        }
-
-        const audio = new Audio(res.audio_url);
-        activeAudioRef.current = audio;
-
-        const coreX = window.innerWidth / 2;
-        const coreY = window.innerHeight / 2;
-        triggerCallBurst(coreX, coreY);
-        const burstTimer = setInterval(() => {
-          triggerCallBurst(coreX, coreY);
-        }, 550);
-
-        const handleAudioFinish = () => {
-          clearInterval(burstTimer);
-          audioPlayingRef.current = false;
-          if (callActiveRef.current) {
-            setTimeout(resumeListening, 400);
-          }
-        };
-
-        audio.onended = handleAudioFinish;
-        audio.onerror = handleAudioFinish;
-
-        audioPlayingRef.current = true;
-        await audio.play();
-      } else {
-        resumeListening();
-      }
+      await voice.speakLocal(greetingText, res?.audio_url);
     } catch (err) {
-      console.error("Failed to play welcome greeting audio:", err);
-      audioPlayingRef.current = false;
-      resumeListening();
+      console.warn("Приветствие не озвучилось:", err);
     }
   };
 
   const closeVoiceCall = () => {
-    callActiveRef.current = false;
-    audioPlayingRef.current = false;
-    setProcessing(false);
+    voice.stop();
     setCallActive(false);
-    setSubtitle(null);
-    stopSpeechRecognition();
-
-    if (activeAudioRef.current) {
-      activeAudioRef.current.pause();
-      activeAudioRef.current.onended = null;
-      activeAudioRef.current.onerror = null;
-      activeAudioRef.current = null;
-    }
   };
 
   // Preset configuration
@@ -1041,6 +857,18 @@ export default function TutorChat() {
                 )}
               </div>
             </div>
+
+            {/* Тайминги хода. Без них любая настройка скорости — гадание: непонятно,
+                ждём мы модель, синтез или собственный микрофон. Открывается по
+                ?debug=1, чтобы не мозолить глаза ученику. */}
+            {debugTimings && voice.timings && (
+              <div className="w-full px-4 py-2 rounded-2xl bg-black/70 text-white font-mono text-[10px] leading-relaxed">
+                <div>первый токен: {voice.timings.first_token_ms} мс</div>
+                <div>реплика дописана: {voice.timings.reply_done_ms} мс</div>
+                <div>озвучка готова: {voice.timings.audio_done_ms} мс</div>
+                <div>ход целиком: {voice.timings.turn_ms} мс</div>
+              </div>
+            )}
 
             {/* Controls */}
             <div className="flex items-center gap-5">

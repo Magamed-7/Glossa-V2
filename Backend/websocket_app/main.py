@@ -392,14 +392,17 @@ async def ai_call_ws(websocket: WebSocket):
                 session = existing
 
         if session is None:
+            # Без явного номера продолжаем текущий открытый разговор, а не заводим новый:
+            # звонок — это продолжение той же беседы, и в истории она должна остаться одной.
             session = await ai_chat.get_or_create_open_session(
-                user.id, scenario, language, db, native_language=native_language, force_new=True
+                user.id, scenario, language, db, native_language=native_language
             )
 
         await websocket.send_json({'type': 'call_ready', 'session_id': session.id, 'tutor': tutor})
 
-    ticker = asyncio.create_task(tick_session_time(websocket, user.id, session.id))
-    ticker.add_done_callback(_log_ticker_exception)
+    # Здесь нет тикера дневного лимита намеренно. Страница наставника всё время держит
+    # открытым /ws/ai/chat, и время уже считает он; второй тикер на том же экране просто
+    # сжигал бы лимит вдвое быстрее.
     current: asyncio.Task | None = None
 
     try:
@@ -439,7 +442,6 @@ async def ai_call_ws(websocket: WebSocket):
     finally:
         if current and not current.done():
             current.cancel()
-        ticker.cancel()
 
 
 @app.websocket('/ws/streak')
