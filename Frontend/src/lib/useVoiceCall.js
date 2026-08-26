@@ -24,10 +24,15 @@ const MIN_WORDS_TO_SEND = 1;
 // динамика, поэтому перебивание в этом окне не засчитываем.
 const BARGE_IN_GUARD_MS = 600;
 // Перебиванием считается только осмысленная реплика, а не одно слово-эхо.
-const BARGE_IN_MIN_WORDS = 2;
+const BARGE_IN_MIN_WORDS = 3;
 // Доля слов, совпавших с тем, что наставник произносит прямо сейчас. Выше порога —
 // это эхо из динамика, а не ученик.
 const ECHO_OVERLAP = 0.5;
+
+// Сколько ещё сверять услышанное с речью наставника после того, как он замолчал.
+// Динамик успевает отзвучать, микрофон ловит хвост фразы, а фаза уже «слушаю» — без
+// этого окна хвост уходил на сервер как реплика ученика.
+const ECHO_TAIL_MS = 1200;
 
 const WATCHDOG_MS = 12000;
 
@@ -70,8 +75,19 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
   const playHeadRef = useRef(0);
   const sourcesRef = useRef([]);
   const speakingSinceRef = useRef(0);
-  const spokenNowRef = useRef("");
+  // Весь текст, который наставник произносит в этом ходе. Раньше здесь лежало
+  // последнее ПОСТАВЛЕННОЕ В ОЧЕРЕДЬ предложение, а из динамика в этот момент звучало
+  // первое: синтез идёт параллельно, и пока играет кусок 0, сюда уже успевал попасть
+  // кусок 2. Сравнение шло не с тем, что слышно, совпадений находилось мало — и
+  // наставник принимал собственный голос за перебивание.
+  const spokenSoFarRef = useRef("");
+  const spokeUntilRef = useRef(0);
   const replyRef = useRef("");
+  // Номер реплики распознавания, которую уже отправили. Одна фраза ученика = один ход:
+  // непрерывное распознавание продолжает дополнять ту же реплику, и каждая следующая
+  // пауза слала удлинённый вариант, новый ход отменял предыдущий — наставник просто не
+  // успевал ответить.
+  const sentIndexRef = useRef(-1);
 
   const setPhaseBoth = useCallback((value) => {
     phaseRef.current = value;
@@ -139,7 +155,7 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
         speakingSinceRef.current = Date.now();
       }
       if (meta?.text) {
-        spokenNowRef.current = meta.text;
+        spokenSoFarRef.current = `${spokenSoFarRef.current} ${meta.text}`.trim();
       }
 
       sourcesRef.current.push(source);
@@ -148,7 +164,7 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
         // Очередь опустела и модель закончила — можно снова слушать.
         if (activeRef.current && sourcesRef.current.length === 0 && phaseRef.current === "speaking") {
           playHeadRef.current = 0;
-          spokenNowRef.current = "";
+          spokeUntilRef.current = Date.now();
           setPhaseBoth("listening");
         }
       };
@@ -175,6 +191,7 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
       turnRef.current += 1;
       stopPlayback();
       replyRef.current = "";
+      spokenSoFarRef.current = "";
       setSubtitle({ text: trimmed, isUser: true });
       setPhaseBoth("thinking");
       armWatchdog();
@@ -186,7 +203,7 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
   const interrupt = useCallback(() => {
     if (!activeRef.current) return;
     stopPlayback();
-    spokenNowRef.current = "";
+    spokenSoFarRef.current = "";
     send({ type: "cancel", turn: turnRef.current });
     setPhaseBoth("listening");
   }, [send, setPhaseBoth, stopPlayback]);
@@ -208,28 +225,42 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
   }, []);
 
   const handleTranscript = useCallback(
-    (text, isFinal) => {
+    (text, isFinal, index) => {
       if (!activeRef.current || mutedRef.current) return;
 
       const trimmed = text.trim();
       if (!trimmed) return;
 
-      // Наставник ещё говорит: либо это его же голос из динамика, либо ученик решил
-      // перебить. Разбираемся до того, как что-то отправлять.
+      // Эту фразу уже отправили. Непрерывное распознавание продолжает дополнять ту же
+      // реплику ещё секунду-другую после того, как человек замолчал, и каждая пауза
+      // слала удлинённый вариант: новый ход отменял предыдущий, наставник не успевал
+      // ответить, а микрофон со стороны выглядел как «всё ещё записывает».
+      if (index <= sentIndexRef.current) return;
+
       if (phaseRef.current === "speaking") {
+        // Наставник звучит: это либо его собственный голос из динамика, либо ученик
+        // решил перебить. Разбираемся до того, как что-то отправлять.
         const sinceStart = Date.now() - speakingSinceRef.current;
         const enough = words(trimmed).length >= BARGE_IN_MIN_WORDS;
-        if (sinceStart < BARGE_IN_GUARD_MS || !enough || looksLikeEcho(trimmed, spokenNowRef.current)) {
+        if (sinceStart < BARGE_IN_GUARD_MS || !enough || looksLikeEcho(trimmed, spokenSoFarRef.current)) {
           return;
         }
         interrupt();
+      } else if (Date.now() - spokeUntilRef.current < ECHO_TAIL_MS) {
+        // Наставник только что замолчал — отсеиваем хвост его же фразы.
+        if (looksLikeEcho(trimmed, spokenSoFarRef.current)) return;
       }
 
       interimRef.current = trimmed;
       clearTimeout(stableTimerRef.current);
 
+      const commit = (value) => {
+        sentIndexRef.current = index;
+        sayTurn(value);
+      };
+
       if (isFinal) {
-        sayTurn(trimmed);
+        commit(trimmed);
         return;
       }
 
@@ -237,7 +268,7 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
 
       // Не ждём вердикта браузера: если текст перестал меняться, фраза закончена.
       stableTimerRef.current = setTimeout(() => {
-        if (interimRef.current === trimmed) sayTurn(trimmed);
+        if (interimRef.current === trimmed && index > sentIndexRef.current) commit(trimmed);
       }, STABLE_SILENCE_MS);
     },
     [interrupt, sayTurn],
@@ -268,7 +299,7 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
     recognition.onresult = (event) => {
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
         const result = event.results[i];
-        handleTranscript(result[0]?.transcript || "", result.isFinal);
+        handleTranscript(result[0]?.transcript || "", result.isFinal, i);
       }
     };
 
@@ -334,6 +365,10 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
         if (event.data instanceof ArrayBuffer) {
           const meta = pendingMetaRef.current;
           pendingMetaRef.current = null;
+          // Кусок звука приходит без номера хода — берём его из описания, которое
+          // пришло кадром раньше. Без этой проверки остатки отменённого хода
+          // доигрывали поверх нового: наставник обрывал себя и тут же продолжал.
+          if (!meta || meta.turn !== turnRef.current) return;
           await enqueueAudio(event.data, meta);
           return;
         }
@@ -429,7 +464,9 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
     setSubtitle(null);
     sentTextRef.current = "";
     interimRef.current = "";
+    sentIndexRef.current = -1;
     turnRef.current = 0;
+    spokenSoFarRef.current = "";
     replyRef.current = "";
     setPhaseBoth("listening");
 
