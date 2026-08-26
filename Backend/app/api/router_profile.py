@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
 from app.core.errors import AppError
-from app.core.storage import ALLOWED_IMAGE_TYPES, read_upload, upload_file
+from app.core.storage import ALLOWED_IMAGE_TYPES, AVATAR_MAX_SIDE, read_upload, upload_file
 from app.db.database import get_db
 from app.schemas.schema_profile import (
     LanguageAdd,
@@ -51,7 +51,7 @@ async def upload_my_photo(
     current_user=Depends(get_current_user),
 ):
     file_bytes = await read_upload(file)
-    photo_url = upload_file('avatars', file_bytes, file.filename, file.content_type, ALLOWED_IMAGE_TYPES)
+    photo_url = upload_file('avatars', file_bytes, file.filename, file.content_type, ALLOWED_IMAGE_TYPES, max_side=AVATAR_MAX_SIDE)
     profile = await crud_profile.update_photo(current_user.id, photo_url, db)
     from app.services import crud_subscription
     sub = await crud_subscription.get_active_subscription(current_user.id, db)

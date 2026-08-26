@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.auth import get_current_user
 from app.core.errors import AppError
-from app.core.storage import ALLOWED_CHAT_FILE_TYPES, read_upload, upload_file
+from app.core.storage import ALLOWED_CHAT_FILE_TYPES, PICTURE_MAX_SIDE, read_upload, upload_file
 from app.db.database import get_db
 from app.schemas.schema_messenger import (
     AttachmentResponse,
@@ -99,5 +99,5 @@ async def upload_attachment(
         raise AppError(code='NOT_A_PARTICIPANT', message='You are not part of this conversation', status_code=403)
 
     file_bytes = await read_upload(file)
-    url = upload_file('chat-attachments', file_bytes, file.filename, file.content_type, ALLOWED_CHAT_FILE_TYPES)
+    url = upload_file('chat-attachments', file_bytes, file.filename, file.content_type, ALLOWED_CHAT_FILE_TYPES, max_side=PICTURE_MAX_SIDE)
     return {'url': url, 'name': file.filename, 'content_type': file.content_type}

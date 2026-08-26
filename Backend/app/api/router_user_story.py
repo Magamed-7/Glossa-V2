@@ -5,7 +5,7 @@ from app.api.auth import get_current_user
 from app.api.permissions import require_writer_level
 from app.core.errors import AppError
 from app.core.limits import enforce_own_story_limit
-from app.core.storage import ALLOWED_IMAGE_TYPES, read_upload, upload_file
+from app.core.storage import ALLOWED_IMAGE_TYPES, PICTURE_MAX_SIDE, read_upload, upload_file
 from app.db.database import get_db
 from app.schemas.schema_user_story import (
     AuthorStatsResponse,
@@ -183,7 +183,7 @@ async def upload_story_cover(
         raise AppError(code='STORY_NOT_FOUND', message='Story not found', status_code=404)
 
     file_bytes = await read_upload(file)
-    image_url = upload_file('story-images', file_bytes, file.filename, file.content_type, ALLOWED_IMAGE_TYPES)
+    image_url = upload_file('story-images', file_bytes, file.filename, file.content_type, ALLOWED_IMAGE_TYPES, max_side=PICTURE_MAX_SIDE)
     story.image_url = image_url
 
     await db.commit()

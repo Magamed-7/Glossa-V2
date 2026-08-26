@@ -1,3 +1,5 @@
+import io
+import os
 import uuid
 
 import boto3
@@ -27,6 +29,11 @@ ALLOWED_CHAT_FILE_TYPES = ALLOWED_IMAGE_TYPES | ALLOWED_AUDIO_TYPES | {
 UPLOAD_CHUNK_SIZE = 1024 * 1024
 MAX_UPLOAD_SIZE = 5 * 1024 * 1024
 
+AVATAR_MAX_SIDE = 512
+PICTURE_MAX_SIDE = 1280
+PICTURE_QUALITY = 82
+KEEP_AS_IS_SIZE = 200 * 1024
+
 
 async def read_upload(file):
     chunks = []
@@ -48,9 +55,47 @@ async def read_upload(file):
     return b''.join(chunks)
 
 
-def upload_file(bucket: str, file_bytes: bytes, filename: str, content_type: str, allowed_types: set[str]):
+def shrink_image(file_bytes: bytes, filename: str, content_type: str, max_side: int):
+    if content_type not in ALLOWED_IMAGE_TYPES:
+        return file_bytes, filename, content_type
+
+    try:
+        from PIL import Image, ImageOps
+    except ModuleNotFoundError:
+        return file_bytes, filename, content_type
+
+    try:
+        image = ImageOps.exif_transpose(Image.open(io.BytesIO(file_bytes)))
+    except Exception:
+        return file_bytes, filename, content_type
+
+    if max(image.size) <= max_side and len(file_bytes) <= KEEP_AS_IS_SIZE:
+        return file_bytes, filename, content_type
+
+    image.thumbnail((max_side, max_side), Image.LANCZOS)
+    buffer = io.BytesIO()
+    image.convert('RGB').save(buffer, format='JPEG', quality=PICTURE_QUALITY, optimize=True, progressive=True)
+    shrunk = buffer.getvalue()
+
+    if len(shrunk) >= len(file_bytes):
+        return file_bytes, filename, content_type
+
+    return shrunk, os.path.splitext(filename)[0] + '.jpg', 'image/jpeg'
+
+
+def upload_file(
+    bucket: str,
+    file_bytes: bytes,
+    filename: str,
+    content_type: str,
+    allowed_types: set[str],
+    max_side: int | None = None,
+):
     if content_type not in allowed_types:
         raise AppError(code='UNSUPPORTED_FILE_TYPE', message='Unsupported file type', status_code=400)
+
+    if max_side:
+        file_bytes, filename, content_type = shrink_image(file_bytes, filename, content_type, max_side)
 
     key = f'{uuid.uuid4()}_{filename}'
 
