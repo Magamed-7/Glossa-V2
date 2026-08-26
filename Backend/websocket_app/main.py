@@ -11,7 +11,7 @@ from app.core.limits import add_ai_seconds, check_ai_access
 from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
 from app.schemas.schema_messenger import MessageResponse
-from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user, streaks
+from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user, streaks, voice_call
 
 from app.core.redis_client import redis_client
 
@@ -303,6 +303,142 @@ async def ai_chat_ws(websocket: WebSocket):
     except WebSocketDisconnect:
         pass
     finally:
+        ticker.cancel()
+
+
+VOICE_MAX_TEXT = 1000
+
+
+async def _run_voice_turn(websocket: WebSocket, session, text: str, tutor: str, turn: int):
+    """Один ход голосового разговора: текст субтитрами, звук — по предложениям.
+
+    Каждый озвученный кусок уходит парой кадров: сначала json с описанием, сразу за ним
+    бинарный кадр со звуком. Пары идут по порядку, поэтому клиенту достаточно складывать
+    их в очередь воспроизведения, не разбираясь в идентификаторах.
+    """
+    try:
+        async with AsyncSessionLocal() as db:
+            async for event in voice_call.run_turn(session, text, db, tutor=tutor):
+                kind = event['type']
+
+                if kind == 'audio':
+                    await websocket.send_json({
+                        'type': 'audio_meta',
+                        'turn': turn,
+                        'index': event['index'],
+                        'content_type': event['content_type'],
+                        'bytes': len(event['audio']),
+                        'text': event['text'],
+                        'took_ms': event['took_ms'],
+                    })
+                    await websocket.send_bytes(event['audio'])
+                elif kind == 'done':
+                    await websocket.send_json({
+                        'type': 'turn_done',
+                        'turn': turn,
+                        'message_id': event['message_id'],
+                        'reply': event['reply'],
+                        'corrections': event['corrections'],
+                        'xp_earned': event['xp_earned'],
+                        'timings': event['timings'],
+                    })
+                else:
+                    await websocket.send_json({**event, 'turn': turn})
+    except asyncio.CancelledError:
+        # Ученик перебил наставника — это нормальный ход разговора, не ошибка.
+        raise
+    except Exception as exc:
+        logger.exception('Voice turn %s failed for session %s', turn, session.id)
+        try:
+            await websocket.send_json({**_assistant_error_frame(exc), 'turn': turn})
+        except Exception:
+            pass
+
+
+@app.websocket('/ws/ai/call')
+async def ai_call_ws(websocket: WebSocket):
+    """Голосовой звонок с наставником.
+
+    Отдельный сокет, а не режим /ws/ai/chat: у звонка своя механика хода (отмена на
+    перебивании, поток аудио) и свой промпт без JSON, и мешать это с текстовым чатом
+    значило бы усложнить оба.
+    """
+    await websocket.accept()
+
+    async with AsyncSessionLocal() as db:
+        user = await authenticate(websocket, db)
+
+        if user is None:
+            await websocket.close(code=4401, reason='Authentication required')
+            return
+
+        try:
+            await check_ai_access(user.id, db)
+        except AppError as exc:
+            await websocket.close(code=4403, reason=exc.message)
+            return
+
+        scenario = websocket.query_params.get('scenario', 'casual')
+        language = websocket.query_params.get('language', 'English')
+        native_language = websocket.query_params.get('native_language')
+        tutor = websocket.query_params.get('tutor', 'rose')
+
+        requested_id = websocket.query_params.get('session_id')
+        session = None
+
+        if requested_id and requested_id.isdigit():
+            existing = await ai_chat.get_session(int(requested_id), db)
+            if existing is not None and existing.user_id == user.id:
+                session = existing
+
+        if session is None:
+            session = await ai_chat.get_or_create_open_session(
+                user.id, scenario, language, db, native_language=native_language, force_new=True
+            )
+
+        await websocket.send_json({'type': 'call_ready', 'session_id': session.id, 'tutor': tutor})
+
+    ticker = asyncio.create_task(tick_session_time(websocket, user.id, session.id))
+    ticker.add_done_callback(_log_ticker_exception)
+    current: asyncio.Task | None = None
+
+    try:
+        while True:
+            try:
+                data = await websocket.receive_json()
+            except json.JSONDecodeError:
+                await websocket.send_json({'type': 'assistant_error', 'code': 'BAD_MESSAGE'})
+                continue
+
+            kind = data.get('type')
+            turn = data.get('turn', 0)
+
+            if kind == 'cancel':
+                if current and not current.done():
+                    current.cancel()
+                await websocket.send_json({'type': 'cancelled', 'turn': turn})
+                continue
+
+            if kind != 'say':
+                continue
+
+            text = (data.get('text') or '').strip()[:VOICE_MAX_TEXT]
+            if not text:
+                continue
+
+            # Новая реплика ученика всегда отменяет предыдущий ход: он либо перебил
+            # наставника, либо распознавание уточнило фразу и старый ответ уже не нужен.
+            if current and not current.done():
+                current.cancel()
+
+            await websocket.send_json({'type': 'turn_started', 'turn': turn, 'heard': text})
+            current = asyncio.create_task(_run_voice_turn(websocket, session, text, tutor, turn))
+            current.add_done_callback(_log_ticker_exception)
+    except WebSocketDisconnect:
+        pass
+    finally:
+        if current and not current.done():
+            current.cancel()
         ticker.cancel()
 
 
