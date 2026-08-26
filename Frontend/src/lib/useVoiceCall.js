@@ -14,11 +14,31 @@ import { refreshAccessToken } from "./api/client.js";
 // всё обрывается мгновенно.
 
 // Сколько молчать после последнего изменения распознанного текста, прежде чем считать
-// фразу законченной и не ждать вердикта браузера. Web Speech отдаёт isFinal только
-// через 1–1.5 секунды тишины — это самая заметная пауза во всём разговоре.
-const STABLE_SILENCE_MS = 420;
-// Совсем короткие обрывки («а», «мм») не отправляем — это обычно шум.
-const MIN_WORDS_TO_SEND = 1;
+// фразу законченной и не ждать вердикта браузера (Web Speech отдаёт isFinal только
+// через 1–1.5 секунды тишины).
+//
+// Пауза зависит от того, насколько фраза похожа на законченную. Первая версия ждала
+// 420 мс при одном слове — и наставник вклинивался прямо посреди фразы: 420 мс это
+// обычный промежуток между словами, особенно когда человек подбирает слова на чужом
+// языке. Ждать одинаково для всех тоже неправильно: на длинной готовой фразе лишняя
+// секунда молчания слышна.
+const SILENCE_LONG_MS = 700;    // 8 слов и больше — человек явно договорил мысль
+const SILENCE_MEDIUM_MS = 1000; // 4–7 слов
+const SILENCE_SHORT_MS = 1400;  // 2–3 слова: скорее всего продолжение впереди
+// Фраза, оборванная на таком слове, точно не закончена — ждём дольше.
+const CONTINUATION_EXTRA_MS = 600;
+// Одно слово само по себе не отправляем никогда: ждём вердикта браузера. «Да» и «нет»
+// он отдаёт быстро, а обрывок посреди фразы — не отдаёт вовсе.
+const MIN_WORDS_TO_SEND = 2;
+
+const CONTINUATION_WORDS = new Set([
+  'and', 'but', 'or', 'so', 'because', 'that', 'which', 'when', 'if', 'to', 'of', 'in',
+  'on', 'at', 'for', 'with', 'my', 'your', 'his', 'her', 'the', 'a', 'an', 'is', 'are',
+  'was', 'were', 'i', 'we', 'they', 'he', 'she', 'it', 'very', 'really', 'about',
+  'и', 'а', 'но', 'или', 'что', 'чтобы', 'когда', 'если', 'потому', 'мой', 'моя', 'мои',
+  'в', 'на', 'с', 'к', 'по', 'для', 'это', 'очень', 'я', 'мы', 'они', 'он', 'она',
+  'ва', 'ки', 'ба', 'аз', 'дар', 'ман', 'мо',
+]);
 
 // Первые полсекунды звучания наставника микрофон почти всегда слышит сам себя из
 // динамика, поэтому перебивание в этом окне не засчитываем.
@@ -37,6 +57,18 @@ const ECHO_TAIL_MS = 1200;
 const WATCHDOG_MS = 12000;
 
 const words = (text) => String(text || "").toLowerCase().match(/[\p{L}\p{N}']+/gu) || [];
+
+export function silenceFor(text) {
+  const list = words(text);
+  let wait = SILENCE_SHORT_MS;
+  if (list.length >= 8) wait = SILENCE_LONG_MS;
+  else if (list.length >= 4) wait = SILENCE_MEDIUM_MS;
+
+  const last = list[list.length - 1];
+  if (last && CONTINUATION_WORDS.has(last)) wait += CONTINUATION_EXTRA_MS;
+
+  return wait;
+}
 
 function looksLikeEcho(heard, spoken) {
   const heardWords = words(heard);
@@ -235,7 +267,14 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
       // реплику ещё секунду-другую после того, как человек замолчал, и каждая пауза
       // слала удлинённый вариант: новый ход отменял предыдущий, наставник не успевал
       // ответить, а микрофон со стороны выглядел как «всё ещё записывает».
-      if (index <= sentIndexRef.current) return;
+      // Эту фразу уже отправили. Пока наставник только думает, человек ещё может
+      // договорить — тогда заменяем ход, иначе хвост фразы просто пропал бы. Как
+      // только наставник заговорил, продолжение считается новой репликой.
+      if (index < sentIndexRef.current) return;
+      if (index === sentIndexRef.current) {
+        const grew = words(trimmed).length - words(sentTextRef.current).length;
+        if (phaseRef.current !== "thinking" || grew < 2) return;
+      }
 
       if (phaseRef.current === "speaking") {
         // Наставник звучит: это либо его собственный голос из динамика, либо ученик
@@ -266,10 +305,9 @@ export function useVoiceCall({ scenario, language, nativeLanguage, tutor, langCo
 
       if (words(trimmed).length < MIN_WORDS_TO_SEND) return;
 
-      // Не ждём вердикта браузера: если текст перестал меняться, фраза закончена.
       stableTimerRef.current = setTimeout(() => {
-        if (interimRef.current === trimmed && index > sentIndexRef.current) commit(trimmed);
-      }, STABLE_SILENCE_MS);
+        if (interimRef.current === trimmed) commit(trimmed);
+      }, silenceFor(trimmed));
     },
     [interrupt, sayTurn],
   );
