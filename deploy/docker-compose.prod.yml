@@ -210,6 +210,10 @@ services:
     image: coturn/coturn:4.6
     restart: unless-stopped
     network_mode: host
+    # Образ работает под nobody, а приватный ключ Let's Encrypt лежит под root 0600 —
+    # без этого TLS-слушатель молча не поднимался. Стартуем под root, читаем ключ и тут
+    # же сбрасываем права обратно на nobody (--proc-user/--proc-group ниже).
+    user: root
     volumes:
       - ${DATA_ROOT:-../../glossa-data}/certbot/conf:/etc/letsencrypt:ro
     command: >
@@ -226,6 +230,8 @@ services:
       --external-ip=${COTURN_EXTERNAL_IP}
       --cert=/etc/letsencrypt/live/glossa.best/fullchain.pem
       --pkey=/etc/letsencrypt/live/glossa.best/privkey.pem
+      --proc-user=nobody
+      --proc-group=nogroup
       --no-multicast-peers
       --no-tcp-relay
       --denied-peer-ip=0.0.0.0-0.255.255.255
