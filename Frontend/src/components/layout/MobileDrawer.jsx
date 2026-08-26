@@ -82,6 +82,7 @@ export default function MobileDrawer({ open, onClose, items, balance, hasUnread,
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-hidden={!open}
+        inert={open ? undefined : ""}
         aria-label={t("nav.primaryNav")}
       >
         <div className="flex items-center justify-between gap-2 p-4 border-b-2 border-tertiary shrink-0">
