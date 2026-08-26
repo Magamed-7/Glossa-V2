@@ -111,3 +111,54 @@ def upload_file(
 
 def get_file_url(bucket: str, key: str):
     return f'{settings.MINIO_PUBLIC_ENDPOINT}/{bucket}/{key}'
+
+
+# Личная переписка не должна лежать в открытом бакете: ключ объекта угадать нельзя,
+# но «нельзя угадать» — это не право доступа. Ссылки на вложения выдаются подписанными
+# и живут ровно столько, сколько нужно, чтобы открыть чат.
+PRIVATE_BUCKETS = {'chat-attachments'}
+PRESIGNED_TTL_SECONDS = 6 * 60 * 60
+
+
+def key_from_public_url(url: str):
+    """Разобрать сохранённую ссылку вида {PUBLIC_ENDPOINT}/{bucket}/{key}."""
+    prefix = settings.MINIO_PUBLIC_ENDPOINT.rstrip('/') + '/'
+    if not url or not url.startswith(prefix):
+        return None, None
+
+    tail = url[len(prefix):]
+    bucket, separator, key = tail.partition('/')
+    if not separator or not key:
+        return None, None
+
+    return bucket, key
+
+
+def presigned_url(bucket: str, key: str, expires: int = PRESIGNED_TTL_SECONDS):
+    signed = s3_client.generate_presigned_url(
+        'get_object',
+        Params={'Bucket': bucket, 'Key': key},
+        ExpiresIn=expires,
+    )
+    # boto3 подписывает под внутренний адрес MinIO, а наружу всё ходит через наш домен.
+    # Подпись считается от пути и query, хост в неё не входит, поэтому замена безопасна.
+    internal = settings.MINIO_ENDPOINT.rstrip('/')
+    if signed.startswith(internal):
+        return settings.MINIO_PUBLIC_ENDPOINT.rstrip('/') + signed[len(internal):]
+
+    return signed
+
+
+def signed_if_private(url: str | None):
+    """Отдать наружу подписанную ссылку, если объект лежит в закрытом бакете."""
+    if not url:
+        return url
+
+    bucket, key = key_from_public_url(url)
+    if bucket not in PRIVATE_BUCKETS or not key:
+        return url
+
+    try:
+        return presigned_url(bucket, key)
+    except Exception:
+        return url

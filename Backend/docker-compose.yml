@@ -154,7 +154,7 @@ services:
       mc anonymous set download local/story-images &&
       mc anonymous set download local/pronunciations &&
       mc anonymous set download local/story-audio &&
-      mc anonymous set download local/chat-attachments
+      mc anonymous set none local/chat-attachments
       "
 
   celery_beat:

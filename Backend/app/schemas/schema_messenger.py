@@ -1,7 +1,9 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
+
+from app.core.storage import signed_if_private
 
 MESSAGE_TYPES = Literal['text', 'voice', 'file', 'call']
 
@@ -28,6 +30,14 @@ class MessageResponse(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+    # В базе лежит постоянная ссылка, наружу уходит подписанная и недолговечная.
+    # Валидатор стоит здесь, а не в роутерах, потому что через эту же схему сообщения
+    # уходят и по REST, и по сокету — одно место вместо двух.
+    @field_validator('attachment_url')
+    @classmethod
+    def sign_attachment(cls, value: str | None):
+        return signed_if_private(value)
 
 
 class ConversationResponse(BaseModel):
