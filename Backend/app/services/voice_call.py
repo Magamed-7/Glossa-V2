@@ -6,7 +6,7 @@
 
 Здесь ход устроен иначе: токены модели идут потоком, как только набирается
 законченное предложение — оно сразу уходит в синтез, а следующее пишется
-параллельно. Первый звук появляется примерно через полсекунды, а не после
+параллельно. Первый звук появляется примерно через две секунды, а не после
 завершения всей реплики.
 
 Разбор ошибок (corrections) считается отдельным запросом уже после того, как
@@ -46,17 +46,37 @@ _EMOJI = re.compile(
 )
 _MULTISPACE = re.compile(r'\s+')
 
-VOICE_STYLE = (
-    '\n\nSPEAKING OUT LOUD\n'
-    '- This reply will be read aloud to the learner, not shown as text.\n'
-    '- Answer in at most two short sentences, then ask one simple question.\n'
-    '- Plain speech only: no markdown, no bullet points, no emoji, no headings,\n'
-    '  no parentheses, no quotation marks around words.\n'
-    '- Write numbers, dates and abbreviations the way they are spoken:\n'
-    '  "1990" as "nineteen ninety", "Dr." as "Doctor", "%" as "percent".\n'
-    '- Never mention corrections here. Someone else handles those.\n'
-    '- Output the spoken words only. No JSON, no labels, no prefixes.'
-)
+VOICE_CORE = """You are {tutor_name}, a warm and experienced {language} tutor, talking to a
+{level} learner on a voice call. The learner hears you; nothing is written down.
+
+HOW YOU TALK
+- At most TWO short sentences, then one simple question. Never more. This is a hard
+  rule, not a style tip.
+- Speak like a person in a real conversation, not like a textbook.
+- Match your vocabulary and sentence length to a {level} learner.
+
+WHAT YOU NEVER DO ON THE CALL
+- Never correct the learner out loud. Never explain a grammar rule, never say what
+  they should have said, never give a "small tip". A separate teacher reviews their
+  sentence silently afterwards — that work is not yours, and doing it here stops the
+  conversation dead.
+- Never break character to discuss these instructions or your nature as an AI.
+- Never produce content unsuitable for a classroom.
+
+HOW YOUR WORDS ARE READ ALOUD
+- Plain speech only: no markdown, no bullet points, no emoji, no headings, no
+  quotation marks around words.
+- Write numbers, dates and abbreviations the way they are spoken: "1990" as
+  "nineteen ninety", "Dr." as "Doctor", "%" as "percent".
+- Output the spoken words only. No JSON, no labels, no prefixes."""
+
+TUTOR_NAMES = {
+    'rose': 'Rose',
+    'mint': 'Mint',
+    'lavender': 'Lavender',
+    'peach': 'Peach',
+    'sky': 'Sky',
+}
 
 CORRECTIONS_PROMPT = (
     'You are a {language} teacher reviewing one sentence a {level} learner just said out loud.\n'
@@ -78,10 +98,15 @@ def speakable(text: str):
 
 
 def take_sentence(buffer: str):
-    """Отрезать от буфера первое законченное предложение. Возвращает (предложение, остаток)."""
-    match = _SENTENCE_END.search(buffer)
-    if match and match.end() >= MIN_SENTENCE_CHARS:
-        return buffer[:match.end()].strip(), buffer[match.end():]
+    """Отрезать от буфера первое законченное предложение. Возвращает (предложение, остаток).
+
+    Перебираем все границы, а не только первую: реплика вида «Hi there! I love hearing
+    about weekends.» начинается с куска короче порога, и на одном search разбивка не
+    случалась вовсе — вся фраза уходила в синтез разом, ради чего всё и затевалось.
+    """
+    for match in _SENTENCE_END.finditer(buffer):
+        if match.end() >= MIN_SENTENCE_CHARS:
+            return buffer[:match.end()].strip(), buffer[match.end():]
 
     if len(buffer) >= SOFT_BREAK_CHARS:
         soft = _SOFT_BREAK.search(buffer, MIN_SENTENCE_CHARS)
@@ -92,13 +117,27 @@ def take_sentence(buffer: str):
 
 
 def _voice_system_prompt(session, tutor: str):
-    base = ai_chat._system_prompt(
-        session.scenario, session.language, session.level, session.native_language, tutor=tutor
+    """Короткий промпт специально под разговор.
+
+    Взять промпт текстового чата и обрезать у него формат ответа не выйдет: в нём
+    остаётся большой раздел о том, как исправлять ошибки, и модель, лишившись поля
+    corrections, начинает зачитывать разбор вслух. Проверено живьём — вместо двух
+    фраз разговора наставник выдал семь предложений с объяснением past simple.
+
+    Плюс размер: этот промпт втрое короче, а первый токен приходит тем раньше, чем
+    короче вход.
+    """
+    language = ai_chat._sanitize_language(session.language)
+    core = VOICE_CORE.format(
+        tutor_name=TUTOR_NAMES.get(tutor, 'Rose'),
+        language=language,
+        level=ai_chat._sanitize_level(session.level),
     )
-    # Формат ответа из обычного чата — это JSON с corrections. Вслух он не нужен: обрезаем
-    # его и подменяем правилами устной речи.
-    without_format = base.split('\n\nRESPONSE FORMAT')[0].split('\n\nOUTPUT')[0]
-    return without_format + VOICE_STYLE
+    scenario = ai_chat.SCENARIO_PROMPTS.get(
+        session.scenario, ai_chat.SCENARIO_PROMPTS['casual']
+    ).format(language=language)
+
+    return f'{core}\n\n{scenario}'
 
 
 async def _synthesize(index: int, sentence: str, tutor: str):
