@@ -11,7 +11,7 @@ from app.core.limits import add_ai_seconds, check_ai_access
 from app.core.security import decode_access_token
 from app.db.database import AsyncSessionLocal
 from app.schemas.schema_messenger import MessageResponse
-from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user, streaks, voice_call
+from app.services import ai_chat, ai_mcp, crud_messenger, crud_notification, crud_user, streaks, tts, voice_call
 
 from app.core.redis_client import redis_client
 
@@ -64,6 +64,10 @@ async def lifespan(app: FastAPI):
     # отдельный процесс от app.main (там свой ai_mcp.connect() в своём lifespan), поэтому
     # у websocket_app должен быть свой собственный подключённый клиент, не общий с ним.
     await ai_mcp.connect()
+    # Модель Piper грузится около трёх с половиной секунд. Делаем это на старте и в
+    # отдельном потоке: иначе за загрузку заплатит первый же ход первого разговора,
+    # причём ровно в тот момент, когда edge-tts подвёл и запасной голос особенно нужен.
+    asyncio.create_task(asyncio.to_thread(tts.warm_piper))
     listener_task = asyncio.create_task(listen_leaderboard_updates())
     yield
     listener_task.cancel()

@@ -146,7 +146,8 @@ async def _synthesize(index: int, sentence: str, tutor: str):
         return None
 
     started = time.perf_counter()
-    audio_bytes, content_type = await tts.synthesize(spoken, tutor)
+    # fast_fail: в разговоре ждать ретраев чужого сервиса нечем — сразу местный голос.
+    audio_bytes, content_type = await tts.synthesize(spoken, tutor, fast_fail=True)
     return {
         'type': 'audio',
         'index': index,

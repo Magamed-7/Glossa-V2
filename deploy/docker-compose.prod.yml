@@ -106,6 +106,7 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      PIPER_VOICES_DIR: /piper
       CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
       CELERY_RESULT_BACKEND: redis://:${REDIS_PASSWORD}@redis:6379/1
     command: >
@@ -115,6 +116,7 @@ services:
     # the corpus is too big to bake into every image.
     volumes:
       - ../contents:/contents:ro
+      - ${DATA_ROOT:-../../glossa-data}/piper:/piper
     depends_on:
       postgres:
         condition: service_healthy
@@ -130,10 +132,13 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      PIPER_VOICES_DIR: /piper
     # Long-lived sockets are stateful, so this one stays a single uvicorn process
     # rather than being spread across gunicorn workers.
     command: >
       uvicorn websocket_app.main:app --host 0.0.0.0 --port 8002
+    volumes:
+      - ${DATA_ROOT:-../../glossa-data}/piper:/piper
     depends_on:
       postgres:
         condition: service_healthy
