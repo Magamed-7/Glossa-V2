@@ -581,6 +581,7 @@ export const ru = {
     callWith: "Звонок: {name}",
     toggleSubtitles: "Показать или скрыть субтитры",
     toggleMic: "Включить или выключить микрофон",
+    startCall: "Позвонить наставнику",
     endCall: "Завершить звонок",
     mentors: {
       rose: {

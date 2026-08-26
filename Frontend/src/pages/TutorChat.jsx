@@ -651,6 +651,8 @@ export default function TutorChat() {
             {/* Pulsing Call Trigger */}
             <button
               onClick={startVoiceCall}
+              aria-label={t("tutor.startCall")}
+              title={t("tutor.startCall")}
               className="w-12 h-12 rounded-full border border-neutral-200 dark:border-stone-800 text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all animate-pulse"
               style={{ background: isDarkMode ? activePreset.gradientStyleDark : activePreset.gradientStyleLight }}
             >

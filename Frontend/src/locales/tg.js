@@ -581,6 +581,7 @@ export const tg = {
     callWith: "Занг: {name}",
     toggleSubtitles: "Намоиш ё пинҳон кардани зерунвонҳо",
     toggleMic: "Фурӯзон ё хомӯш кардани микрофон",
+    startCall: "Ба устод занг занед",
     endCall: "Анҷоми занг",
     mentors: {
       rose: {

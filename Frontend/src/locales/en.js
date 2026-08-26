@@ -581,6 +581,7 @@ export const en = {
     callWith: "Call: {name}",
     toggleSubtitles: "Show or hide subtitles",
     toggleMic: "Turn the microphone on or off",
+    startCall: "Call the tutor",
     endCall: "End the call",
     mentors: {
       rose: {
