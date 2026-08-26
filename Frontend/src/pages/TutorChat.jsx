@@ -422,8 +422,18 @@ export default function TutorChat() {
   useEffect(() => {
     if (callActive || !messages || messages.length === 0) return;
 
-    const latest = messages[messages.length - 1];
-    if (latest.role !== "assistant" || !latest.audioUrl) return;
+    // Ищем последнюю озвученную реплику наставника, а не последнее сообщение вообще:
+    // после первого ответа в новой сессии список замыкает системная заметка про XP, и
+    // проверка «последний элемент — ответ наставника» на ней спотыкалась. Из-за этого
+    // первый ответ в каждом новом разговоре молчал.
+    let latest = null;
+    for (let i = messages.length - 1; i >= 0; i -= 1) {
+      if (messages[i].role === "assistant" && messages[i].audioUrl) {
+        latest = messages[i];
+        break;
+      }
+    }
+    if (!latest) return;
     if (latest.audioUrl === lastPlayedRef.current) return;
 
     lastPlayedRef.current = latest.audioUrl;
