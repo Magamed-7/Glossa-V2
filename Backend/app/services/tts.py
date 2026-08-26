@@ -10,6 +10,10 @@ EDGE_TTS_ATTEMPTS = 2
 # A voiced reply is only useful while the learner is still waiting for it, so a
 # flaky call is retried once and quickly rather than three times over 4.5s.
 EDGE_TTS_RETRY_DELAY_SECONDS = 0.4
+# Сколько ждать edge-tts в живом разговоре, прежде чем взять местный голос. Обычный
+# синтез укладывается в 0.4–0.9 с; когда сервис нездоров, он не отвечает отказом, а
+# висит до собственного таймаута — на бою это растянуло ход до 8.5 секунды.
+EDGE_CALL_TIMEOUT_SECONDS = 2.0
 
 # Загрузка модели Piper занимает около трёх с половиной секунд — держим её в памяти.
 # Без кеша каждое предложение в разговоре платило бы за загрузку заново, и запасной
@@ -110,16 +114,20 @@ class VoiceUnavailable(Exception):
 async def synthesize(text: str, accent: str, fast_fail: bool = False) -> tuple[bytes, str]:
     """Returns (audio_bytes, content_type) — edge-tts produces mp3, Piper (fallback) wav.
 
-    fast_fail=True — для живого разговора: одна попытка вместо двух и без паузы между
-    ними. Проверено на бою: когда edge-tts отвалился, ретраи растянули ход до 17.6 с при
-    готовой реплике за 0.97 с. В разговоре лучше сразу услышать местный голос похуже,
-    чем ждать хороший.
+    fast_fail=True — для живого разговора: одна попытка вместо двух, без паузы между
+    ними и с жёстким пределом ожидания. Проверено на бою дважды: сперва ретраи
+    растянули ход до 17.6 с при готовой реплике за 0.97 с, а потом одна попытка без
+    предела провисела 8.5 с — нездоровый edge-tts не отвечает отказом, он просто молчит.
+    В разговоре лучше сразу услышать местный голос похуже, чем ждать хороший.
     """
     edge_voice = edge_voice_for_text(text, accent)
 
     try:
         if fast_fail:
-            return await _synthesize_edge_once(text, edge_voice), 'audio/mpeg'
+            audio = await asyncio.wait_for(
+                _synthesize_edge_once(text, edge_voice), timeout=EDGE_CALL_TIMEOUT_SECONDS
+            )
+            return audio, 'audio/mpeg'
         return await _synthesize_edge(text, edge_voice), 'audio/mpeg'
     except Exception:
         logger.warning('edge-tts не справился с %r (%s), уходим на Piper', text[:60], accent)
