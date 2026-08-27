@@ -28,6 +28,7 @@ from app.api.router_streak import router_streak
 from app.api.router_subscription import router_subscription
 from app.api.router_telegram import router_telegram
 from app.api.router_user_story import router_user_story
+from app.core.config import settings
 from app.core.errors import register_exception_handlers
 from app.models import (
     model_achievement,
@@ -62,7 +63,7 @@ app = FastAPI(title='Glossa 🌍 — Language Learning API', lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=False,
     allow_methods=['*'],
     allow_headers=['*'],
