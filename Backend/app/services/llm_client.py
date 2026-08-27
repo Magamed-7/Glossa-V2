@@ -1,12 +1,18 @@
+import asyncio
 import logging
 
-from openai import AsyncOpenAI
+from openai import APIConnectionError, AsyncOpenAI
 
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
 REQUEST_TIMEOUT = 45.0
+# Встроенный DNS докера изредка не отвечает («Name or service not known»), и ход
+# разговора умирал целиком из-за моргнувшего резолвера. Пока не ушёл ни один токен,
+# повторить запрос безопасно — ученик ещё ничего не услышал.
+CONNECT_RETRIES = 2
+CONNECT_RETRY_DELAY_SECONDS = 0.25
 
 _client = AsyncOpenAI(
     api_key=settings.LLM_API_KEY, base_url=settings.LLM_BASE_URL, timeout=REQUEST_TIMEOUT, max_retries=0,
@@ -74,28 +80,36 @@ async def stream_llm(messages: list[dict], max_tokens: int | None = None):
     last_error = None
 
     for model in settings.LLM_MODELS:
-        started = False
-        try:
-            stream = await _client.chat.completions.create(
-                model=model,
-                messages=messages,
-                stream=True,
-                **kwargs,
-            )
-            async for chunk in stream:
-                if not chunk.choices:
+        for attempt in range(CONNECT_RETRIES):
+            started = False
+            try:
+                stream = await _client.chat.completions.create(
+                    model=model,
+                    messages=messages,
+                    stream=True,
+                    **kwargs,
+                )
+                async for chunk in stream:
+                    if not chunk.choices:
+                        continue
+                    delta = chunk.choices[0].delta
+                    piece = getattr(delta, 'content', None)
+                    if piece:
+                        started = True
+                        yield piece
+                return
+            except Exception as exc:
+                if started:
+                    logger.exception('LLM model %s broke mid-stream', model)
+                    raise
+
+                last_error = exc
+                if isinstance(exc, APIConnectionError) and attempt < CONNECT_RETRIES - 1:
+                    logger.warning('Не достучались до модели %s, пробуем ещё раз: %s', model, exc)
+                    await asyncio.sleep(CONNECT_RETRY_DELAY_SECONDS)
                     continue
-                delta = chunk.choices[0].delta
-                piece = getattr(delta, 'content', None)
-                if piece:
-                    started = True
-                    yield piece
-            return
-        except Exception as exc:
-            if started:
-                logger.exception('LLM model %s broke mid-stream', model)
-                raise
-            logger.warning('LLM model %s failed to start streaming, trying next: %s', model, exc)
-            last_error = exc
+
+                logger.warning('LLM model %s failed to start streaming, trying next: %s', model, exc)
+                break
 
     raise last_error
