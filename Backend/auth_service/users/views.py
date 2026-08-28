@@ -21,7 +21,12 @@ from users.serializers import (
     PasswordResetConfirmSerializer,
     PasswordResetVerifySerializer,
 )
-from users.throttles import EmailChangeRateThrottle, LoginRateThrottle, TwoFactorRateThrottle
+from users.throttles import (
+    EmailChangeRateThrottle,
+    LoginRateThrottle,
+    PasswordResetRateThrottle,
+    TwoFactorRateThrottle,
+)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -316,6 +321,7 @@ class PasswordResetRequestView(APIView):
 
 class PasswordResetConfirmView(APIView):
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [PasswordResetRateThrottle]
 
     def post(self, request):
         serializer = PasswordResetConfirmSerializer(data=request.data)
@@ -344,6 +350,7 @@ class PasswordResetConfirmView(APIView):
 
 class PasswordResetVerifyView(APIView):
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [PasswordResetRateThrottle]
 
     def post(self, request):
         serializer = PasswordResetVerifySerializer(data=request.data)

@@ -119,6 +119,11 @@ def create_pending_login(user):
     return token
 
 
+def resolve_pending_user_id(token):
+    user_id = redis_client.get(_pending_user_key(token))
+    return user_id
+
+
 def verify_login_code(token, code):
     stored_code = redis_client.get(_pending_code_key(token))
     user_id = redis_client.get(_pending_user_key(token))
