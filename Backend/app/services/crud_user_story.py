@@ -212,6 +212,9 @@ async def get_user_story_detail(story_id: int, user_id: int, db: AsyncSession):
     if story is None:
         return None
 
+    if story.status != 'published' and story.author_id != user_id:
+        return None
+
     story.views_count += 1
     await db.commit()
     await db.refresh(story)

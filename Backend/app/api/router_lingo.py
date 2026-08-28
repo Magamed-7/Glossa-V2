@@ -130,6 +130,8 @@ async def get_service(
     current_user=Depends(get_current_user)
 ):
     s = await crud_lingo.get_lingo_service(id, db)
+    if s.status != 'active' and s.provider_id != current_user.id:
+        raise HTTPException(status_code=404, detail='Lingo service not found')
     prov_name, prov_photo_url = await _get_provider_info(s.provider_id, db)
     return LingoServiceResponse(
         id=s.id,
